@@ -26,9 +26,21 @@ namespace Sodium
     /// </returns>
     public static string Hash(string message)
     {
+      return Hash(Encoding.UTF8.GetBytes(message));
+    }
+
+    /// <summary>
+    /// Hashes a byte array using the default algorithm  (currently SHA-2-512)
+    /// </summary>
+    /// <param name="message">
+    /// The message.
+    /// </param>
+    /// <returns>
+    /// </returns>
+    public static string Hash(byte[] message)
+    {
       var buffer = new byte[BYTES];
-      var msg = Encoding.UTF8.GetBytes(message);
-      _CryptoHash(buffer, msg, msg.Length);
+      _CryptoHash(buffer, message, message.Length);
 
       return Helper.BinaryToHex(buffer);
     }
