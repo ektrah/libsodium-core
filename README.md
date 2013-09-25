@@ -20,6 +20,7 @@ Methods supported:
  * crypto_hash_sha512
  * crypto_hash_sha256
  * crypto_generichash
+ * crypto_shorthash
 
 ## Requirements & Versions
 
