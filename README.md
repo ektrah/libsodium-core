@@ -17,6 +17,7 @@ Methods supported:
 
  * sodium_version_string
  * crypto_hash
+ * crypto_hash_sha512
 
 ## Requirements & Versions
 
