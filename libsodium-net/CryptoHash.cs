@@ -15,6 +15,15 @@ namespace Sodium
     private const int BYTES = 64;
     private const string PRIMITIVE = "sha512";
 
+    /// <summary>
+    /// Hashes a string using the default algorithm  (currently SHA-2-512)
+    /// </summary>
+    /// <param name="message">
+    /// The message.
+    /// </param>
+    /// <returns>
+    /// Hex-encoded hash.
+    /// </returns>
     public static string Hash(string message)
     {
       var buffer = new byte[BYTES];

@@ -4,14 +4,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Tests
 {
   /// <summary>
-  /// Tests for the SodiumVersion class
+  /// Tests for the CryptoHash class
   /// </summary>
   [TestClass()]
   public class CryptoHashTest
   {
 
     /// <summary>
-    /// A test for SodiumVersionString
+    /// Does CryptoHash.Hash return the expected value?
     /// </summary>
     [TestMethod()]
     public void BasicCryptoHashTest()
