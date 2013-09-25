@@ -21,6 +21,8 @@ Methods supported:
  * crypto_hash_sha256
  * crypto_generichash
  * crypto_shorthash
+ * crypto_secretbox
+ * crypto_secretbox_open
 
 ## Requirements & Versions
 
