@@ -16,6 +16,7 @@ Don't use it. It's not ready; I'll update this document as the project moves alo
 Methods supported:
 
  * sodium_version_string
+ * crypto_hash (partial)
 
 ## Requirements & Versions
 

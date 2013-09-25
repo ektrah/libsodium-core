@@ -50,6 +50,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CryptoHashTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VersionTest.cs" />
   </ItemGroup>
