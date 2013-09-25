@@ -60,7 +60,7 @@ namespace Sodium
       {
         if (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN)
         {
-          throw new ArgumentOutOfRangeException("key", key, 
+          throw new ArgumentOutOfRangeException("key", key.Length, 
             string.Format("key must be between {0} and {1} bytes in length.", KEY_BYTES_MIN, KEY_BYTES_MAX));
         }
 

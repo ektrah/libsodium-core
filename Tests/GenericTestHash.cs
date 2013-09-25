@@ -1,8 +1,6 @@
 ﻿using System.Text;
-
-using Sodium;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using Sodium;
 
 namespace Tests
 {
