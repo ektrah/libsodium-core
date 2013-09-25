@@ -7,7 +7,7 @@ using System.Text;
 namespace Sodium
 {
   /// <summary>
-  /// TODO: Update summary.
+  /// Provides hashing via selected primitive.
   /// </summary>
   public class CryptoHash
   {
