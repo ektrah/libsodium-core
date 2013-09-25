@@ -1,4 +1,6 @@
-﻿using Sodium;
+﻿using System.Text;
+
+using Sodium;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
@@ -76,7 +78,7 @@ namespace Tests
     public void CryptoHashSHA256ArrayTest()
     {
       string actual;
-      actual = CryptoHash.SHA256(System.Text.Encoding.ASCII.GetBytes("Adam Caudill"));
+      actual = CryptoHash.SHA256(Encoding.ASCII.GetBytes("Adam Caudill"));
       Assert.AreEqual(SHA256_HASH, actual);
     }
   }
