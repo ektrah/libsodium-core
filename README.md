@@ -13,6 +13,10 @@ Crypto is hard - much harder than your average developer understands. There is m
 
 Don't use it. It's not ready; I'll update this document as the project moves along.
 
+## Requirements & Versions
+
+This library is built in Visual Studio 2010, and targets .NET 4.0; it is compiled aganst libsodium v0.4.3.
+
 ## License
 
 NaCl has been released to the public domain to avoid copyright issues. libsodium is subject to the [ISC license](https://en.wikipedia.org/wiki/ISC_license), and this software is subject to the MIT license (see LICENSE).
