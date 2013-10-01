@@ -41,7 +41,7 @@ This is currently based on [BLAKE2b](https://blake2.net/), and has the following
 Note: Only libsodium's simplified interface is currently supported; the streaming interface is not implemented at this time. 
 
 #### crypto_shorthash
-`Sodium.ShortHash.Hash()` - Short, high-speed hashing, currently implanted via SipHash-2-4 and produces an 8 byte hash.
+`Sodium.ShortHash.Hash()` - Short, high-speed hashing, currently implanted via [SipHash-2-4](https://en.wikipedia.org/wiki/SipHash) and produces an 8 byte hash.
 
 #### crypto_secretbox
 `Sodium.SecretBox.Create()` - This method encrypts and authenticates a message. This is currently implemented via [Salsa20](https://en.wikipedia.org/wiki/Salsa20) and [Poly1305](https://en.wikipedia.org/wiki/Poly1305).
