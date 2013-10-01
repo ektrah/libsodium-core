@@ -44,7 +44,7 @@ Note: Only libsodium's simplified interface is currently supported; the streamin
 `Sodium.ShortHash.Hash()` - Short, high-speed hashing, currently implanted via [SipHash-2-4](https://en.wikipedia.org/wiki/SipHash) and produces an 8 byte hash.
 
 #### crypto_secretbox
-`Sodium.SecretBox.Create()` - This method encrypts and authenticates a message. This is currently implemented via [Salsa20](https://en.wikipedia.org/wiki/Salsa20) and [Poly1305](https://en.wikipedia.org/wiki/Poly1305).
+`Sodium.SecretBox.Create()` - This method encrypts and authenticates a message. This is currently implemented via [XSalsa20](https://en.wikipedia.org/wiki/Salsa20) and [Poly1305](https://en.wikipedia.org/wiki/Poly1305).
 
 Details:
 
