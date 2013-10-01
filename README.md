@@ -56,6 +56,14 @@ Note: As in any crypto system, it's important to avoid reusing a nonce, so the n
 #### crypto_secretbox_open
 `Sodium.SecretBox.Open()` - This method retrieves the message encrypted via `SecretBox.Create()`. To decrypt and authenticate the data, you pass the key, nonce, and cipher text; if there is an issue decrypting the message, you will receive a generic `CryptographicException` - the exact reason for the failure isn't provided.
 
+#### crypto_onetimeauth
+`Sodium.OneTimeAuth.Sign()` - Provides messages authentication via [Poly1305](https://en.wikipedia.org/wiki/Poly1305). The method takes a messages (as UTF-8 string or byte array), a 32 byte key (that must be used only once), and returns a 16 bytes signature.
+
+For this to be secure, it's required that the signing key only be used once.
+
+#### crypto_onetimeauth_verify
+`Sodium.OneTimeAuth.Verify()` - This verifies a signature generated via `crypto_onetimeauth`. To do so, it requires the original message, the 16 byte signature, and the 32 byte key.
+
 ## Requirements & Versions
 
 This library is built in Visual Studio 2010, and targets .NET 4.0; it is compiled against libsodium v0.4.3.
