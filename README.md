@@ -21,12 +21,12 @@ The following methods have been implemented and have at least basic unit tests i
 `Sodium.SodiumVersion.SodiumVersionString()` - This returns the version string on the `libsodium` library in use. Note, this is not the version of libsodium-net.
 
 #### crypto_hash
-`Sodium.CryptoHash.Hash` - This hashes a message (UTF-8 encoded `string` or `byte[]`) using the default algorithm, currently SHA-512. A byte array is returned.
+`Sodium.CryptoHash.Hash()` - This hashes a message (UTF-8 encoded `string` or `byte[]`) using the default algorithm, currently SHA-512. A byte array is returned.
 
 The `Sodium.CryptoHash` class also includes the following methods:
 
- * `SHA512` - Compute a SHA-512 hash (for compatibility if the default algorithm is ever changed). (`crypto_hash_sha512`)
- * `SHA256` - Compute a SHA-256 hash. (`crypto_hash_sha256 `)
+ * `SHA512()` - Compute a SHA-512 hash (for compatibility if the default algorithm is ever changed). (`crypto_hash_sha512`)
+ * `SHA256()` - Compute a SHA-256 hash. (`crypto_hash_sha256 `)
 
 #### crypto_generichash
 `Sodium.GenericHash.Hash()` - This is a multi-purpose fast hash, that has variable output size and an optional key. As with the `CryptoHash` methods, the input can be a UTF-8 encoded string, or a byte array, and a byte array is returned. 
