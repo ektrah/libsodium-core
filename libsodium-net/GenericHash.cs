@@ -24,7 +24,7 @@ namespace Sodium
     /// <returns>
     /// Returns a hex-encoded string.
     /// </returns>
-    public static string Hash(string message, string key, int bytes)
+    public static byte[] Hash(string message, string key, int bytes)
     {
       return Hash(message, Encoding.UTF8.GetBytes(key), bytes);
     }
@@ -38,7 +38,7 @@ namespace Sodium
     /// <returns>
     /// Returns a hex-encoded string.
     /// </returns>
-    public static string Hash(string message, byte[] key, int bytes)
+    public static byte[] Hash(string message, byte[] key, int bytes)
     {
       return Hash(Encoding.UTF8.GetBytes(message), key, bytes);
     }
@@ -52,7 +52,7 @@ namespace Sodium
     /// <returns>
     /// Returns a hex-encoded string.
     /// </returns>
-    public static string Hash(byte[] message, byte[] key, int bytes)
+    public static byte[] Hash(byte[] message, byte[] key, int bytes)
     {
       //validate the length of the key
       int keyLength;
@@ -75,7 +75,7 @@ namespace Sodium
       var buffer = new byte[bytes];
       _GenericHash(buffer, buffer.Length, message, message.Length, key, keyLength);
 
-      return Helper.BinaryToHex(buffer);
+      return buffer;
     }
 
     [DllImport("libsodium-4.dll", EntryPoint = "crypto_generichash", CallingConvention = CallingConvention.Cdecl)]
