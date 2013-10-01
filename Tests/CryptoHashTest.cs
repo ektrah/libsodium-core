@@ -22,9 +22,8 @@ namespace Tests
     [TestMethod()]
     public void CryptoHashStringTest()
     {
-      string actual;
-      actual = CryptoHash.Hash("Adam Caudill");
-      Assert.AreEqual(SHA512_HASH, actual);
+      var actual = CryptoHash.Hash("Adam Caudill");
+      CollectionAssert.AreEqual(Helper.HexToBinary(SHA512_HASH), actual);
     }
 
     /// <summary>
@@ -33,9 +32,8 @@ namespace Tests
     [TestMethod()]
     public void CryptoHashArrayTest()
     {
-      string actual;
-      actual = CryptoHash.Hash(System.Text.Encoding.ASCII.GetBytes("Adam Caudill"));
-      Assert.AreEqual(SHA512_HASH, actual);
+      var actual = CryptoHash.Hash(Encoding.ASCII.GetBytes("Adam Caudill"));
+      CollectionAssert.AreEqual(Helper.HexToBinary(SHA512_HASH), actual);
     }
 
     /// <summary>
@@ -44,9 +42,8 @@ namespace Tests
     [TestMethod()]
     public void CryptoHashSHA512StringTest()
     {
-      string actual;
-      actual = CryptoHash.SHA512("Adam Caudill");
-      Assert.AreEqual(SHA512_HASH, actual);
+      var actual = CryptoHash.SHA512("Adam Caudill");
+      CollectionAssert.AreEqual(Helper.HexToBinary(SHA512_HASH), actual);
     }
 
     /// <summary>
@@ -55,9 +52,8 @@ namespace Tests
     [TestMethod()]
     public void CryptoHashSHA512ArrayTest()
     {
-      string actual;
-      actual = CryptoHash.SHA512(System.Text.Encoding.ASCII.GetBytes("Adam Caudill"));
-      Assert.AreEqual(SHA512_HASH, actual);
+      var actual = CryptoHash.SHA512(Encoding.ASCII.GetBytes("Adam Caudill"));
+      CollectionAssert.AreEqual(Helper.HexToBinary(SHA512_HASH), actual);
     }
 
     /// <summary>
@@ -66,9 +62,8 @@ namespace Tests
     [TestMethod()]
     public void CryptoHashSHA256StringTest()
     {
-      string actual;
-      actual = CryptoHash.SHA256("Adam Caudill");
-      Assert.AreEqual(SHA256_HASH, actual);
+      var actual = CryptoHash.SHA256("Adam Caudill");
+      CollectionAssert.AreEqual(Helper.HexToBinary(SHA256_HASH), actual);
     }
 
     /// <summary>
@@ -77,9 +72,8 @@ namespace Tests
     [TestMethod()]
     public void CryptoHashSHA256ArrayTest()
     {
-      string actual;
-      actual = CryptoHash.SHA256(Encoding.ASCII.GetBytes("Adam Caudill"));
-      Assert.AreEqual(SHA256_HASH, actual);
+      var actual = CryptoHash.SHA256(Encoding.ASCII.GetBytes("Adam Caudill"));
+      CollectionAssert.AreEqual(Helper.HexToBinary(SHA256_HASH), actual);
     }
   }
 }

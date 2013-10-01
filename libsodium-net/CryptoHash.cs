@@ -25,7 +25,7 @@ namespace Sodium
     /// <returns>
     /// Hex-encoded hash.
     /// </returns>
-    public static string Hash(string message)
+    public static byte[] Hash(string message)
     {
       return Hash(Encoding.UTF8.GetBytes(message));
     }
@@ -38,12 +38,12 @@ namespace Sodium
     /// </param>
     /// <returns>
     /// </returns>
-    public static string Hash(byte[] message)
+    public static byte[] Hash(byte[] message)
     {
       var buffer = new byte[SHA512_BYTES];
       _CryptoHash(buffer, message, message.Length);
 
-      return Helper.BinaryToHex(buffer);
+      return buffer;
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ namespace Sodium
     /// <returns>
     /// Hex-encoded hash.
     /// </returns>
-    public static string SHA512(string message)
+    public static byte[] SHA512(string message)
     {
       return SHA512(Encoding.UTF8.GetBytes(message));
     }
@@ -68,12 +68,12 @@ namespace Sodium
     /// </param>
     /// <returns>
     /// </returns>
-    public static string SHA512(byte[] message)
+    public static byte[] SHA512(byte[] message)
     {
       var buffer = new byte[SHA512_BYTES];
       _SHA512(buffer, message, message.Length);
 
-      return Helper.BinaryToHex(buffer);
+      return buffer;
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ namespace Sodium
     /// <returns>
     /// Hex-encoded hash.
     /// </returns>
-    public static string SHA256(string message)
+    public static byte[] SHA256(string message)
     {
       return SHA256(Encoding.UTF8.GetBytes(message));
     }
@@ -98,12 +98,12 @@ namespace Sodium
     /// </param>
     /// <returns>
     /// </returns>
-    public static string SHA256(byte[] message)
+    public static byte[] SHA256(byte[] message)
     {
       var buffer = new byte[SHA256_BYTES];
       _SHA256(buffer, message, message.Length);
 
-      return Helper.BinaryToHex(buffer);
+      return buffer;
     }
 
     [DllImport("libsodium-4.dll", EntryPoint = "crypto_hash", CallingConvention = CallingConvention.Cdecl)]
