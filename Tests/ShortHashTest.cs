@@ -16,10 +16,9 @@ namespace Tests
     [TestMethod()]
     public void SimpleShortHash()
     {
-      var expected = "9ea31f0aa7ebaa82";
-      string actual;
-      actual = ShortHash.Hash("Adam Caudill", "0123456789123456");
-      Assert.AreEqual(expected, actual);
+      var expected = Helper.HexToBinary("9ea31f0aa7ebaa82");
+      var actual = ShortHash.Hash("Adam Caudill", "0123456789123456");
+      CollectionAssert.AreEqual(expected, actual);
     }
   }
 }
