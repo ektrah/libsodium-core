@@ -3,7 +3,10 @@ using System.Linq;
 
 namespace Sodium
 {
-  internal static class Helper
+  /// <summary>
+  /// Various utility methods.
+  /// </summary>
+  public static class Helper
   {
     /// <summary>
     /// Takes a byte array and returns a hex-encoded string
@@ -33,7 +36,7 @@ namespace Sodium
 
       var arr = new byte[hex.Length >> 1];
 
-      for (int i = 0; i < hex.Length >> 1; ++i)
+      for (var i = 0; i < (hex.Length >> 1); ++i)
       {
         arr[i] = (byte)((_GetHexVal(hex[i << 1]) << 4) + (_GetHexVal(hex[(i << 1) + 1])));
       }
