@@ -6,7 +6,7 @@ namespace Sodium
   /// <summary>
   /// Various utility methods.
   /// </summary>
-  public static class Helper
+  public static class Utilities
   {
     /// <summary>
     /// Takes a byte array and returns a hex-encoded string

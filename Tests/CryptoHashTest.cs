@@ -23,7 +23,7 @@ namespace Tests
     public void CryptoHashStringTest()
     {
       var actual = CryptoHash.Hash("Adam Caudill");
-      CollectionAssert.AreEqual(Helper.HexToBinary(SHA512_HASH), actual);
+      CollectionAssert.AreEqual(Utilities.HexToBinary(SHA512_HASH), actual);
     }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace Tests
     public void CryptoHashArrayTest()
     {
       var actual = CryptoHash.Hash(Encoding.ASCII.GetBytes("Adam Caudill"));
-      CollectionAssert.AreEqual(Helper.HexToBinary(SHA512_HASH), actual);
+      CollectionAssert.AreEqual(Utilities.HexToBinary(SHA512_HASH), actual);
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ namespace Tests
     public void CryptoHashSHA512StringTest()
     {
       var actual = CryptoHash.SHA512("Adam Caudill");
-      CollectionAssert.AreEqual(Helper.HexToBinary(SHA512_HASH), actual);
+      CollectionAssert.AreEqual(Utilities.HexToBinary(SHA512_HASH), actual);
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ namespace Tests
     public void CryptoHashSHA512ArrayTest()
     {
       var actual = CryptoHash.SHA512(Encoding.ASCII.GetBytes("Adam Caudill"));
-      CollectionAssert.AreEqual(Helper.HexToBinary(SHA512_HASH), actual);
+      CollectionAssert.AreEqual(Utilities.HexToBinary(SHA512_HASH), actual);
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ namespace Tests
     public void CryptoHashSHA256StringTest()
     {
       var actual = CryptoHash.SHA256("Adam Caudill");
-      CollectionAssert.AreEqual(Helper.HexToBinary(SHA256_HASH), actual);
+      CollectionAssert.AreEqual(Utilities.HexToBinary(SHA256_HASH), actual);
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ namespace Tests
     public void CryptoHashSHA256ArrayTest()
     {
       var actual = CryptoHash.SHA256(Encoding.ASCII.GetBytes("Adam Caudill"));
-      CollectionAssert.AreEqual(Helper.HexToBinary(SHA256_HASH), actual);
+      CollectionAssert.AreEqual(Utilities.HexToBinary(SHA256_HASH), actual);
     }
   }
 }

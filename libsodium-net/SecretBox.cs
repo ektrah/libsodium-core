@@ -73,7 +73,7 @@ namespace Sodium
     /// <returns></returns>
     public static byte[] Open(string cipherText, byte[] nonce, byte[] key)
     {
-      return Open(Helper.HexToBinary(cipherText), nonce, key);
+      return Open(Utilities.HexToBinary(cipherText), nonce, key);
     }
 
     /// <summary>
