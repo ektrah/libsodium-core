@@ -6,7 +6,7 @@ using System.Text;
 namespace Sodium
 {
   /// <summary>
-  /// Create & Open Secret Boxes.
+  /// Create and Open Secret Boxes.
   /// </summary>
   public static class SecretBox
   {
