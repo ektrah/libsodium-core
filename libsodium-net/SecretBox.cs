@@ -21,7 +21,7 @@ namespace Sodium
     /// <param name="nonce"></param>
     /// <param name="key"></param>
     /// <returns></returns>
-    public static string Create(string message, byte[] nonce, byte[] key)
+    public static byte[] Create(string message, byte[] nonce, byte[] key)
     {
       return Create(Encoding.UTF8.GetBytes(message), nonce, key);
     }
@@ -33,7 +33,7 @@ namespace Sodium
     /// <param name="nonce"></param>
     /// <param name="key"></param>
     /// <returns></returns>
-    public static string Create(byte[] message, byte[] nonce, byte[] key)
+    public static byte[] Create(byte[] message, byte[] nonce, byte[] key)
     {
       //validate the length of the key
       if (key == null || key.Length != KEY_BYTES)
@@ -61,7 +61,7 @@ namespace Sodium
         throw new CryptographicException("Failed to create SecretBox");
       }
 
-      return Helper.BinaryToHex(buffer);
+      return buffer;
     }
 
     /// <summary>
