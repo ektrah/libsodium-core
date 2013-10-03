@@ -55,6 +55,7 @@
     <Compile Include="OneTimeAuthTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecretBoxTest.cs" />
+    <Compile Include="SecretKeyAuthTest.cs" />
     <Compile Include="ShortHashTest.cs" />
     <Compile Include="VersionTest.cs" />
   </ItemGroup>

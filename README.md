@@ -64,6 +64,12 @@ For this to be secure, it's required that the signing key only be used once.
 #### crypto_onetimeauth_verify
 `Sodium.OneTimeAuth.Verify()` - This verifies a signature generated via `crypto_onetimeauth`. To do so, it requires the original message, the 16 byte signature, and the 32 byte key.
 
+#### crypto_auth
+`Sodium.SecretKeyAuth.Sign()` - Provides messages authentication via HMAC-SHA512-256. The method takes a messages (as UTF-8 string or byte array), a 32 byte key, and returns a 32 bytes signature.
+
+#### crypto_auth_verify
+`Sodium.SecretKeyAuth.Verify()` - This verifies a signature generated via `crypto_auth`. To do so, it requires the original message, the 32 byte signature, and the 32 byte key.
+
 ## Requirements & Versions
 
 This library is built in Visual Studio 2010, and targets .NET 4.0; it is compiled against libsodium v0.4.3.
