@@ -28,9 +28,7 @@ namespace Sodium
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; may be null, otherwise between 16 and 64 bytes.</param>
     /// <param name="bytes">The size (in bytes) of the desired result.</param>
-    /// <returns>
-    /// Returns a hex-encoded string.
-    /// </returns>
+    /// <returns>Returns a byte array.</returns>
     public static byte[] Hash(string message, string key, int bytes)
     {
       return Hash(message, Encoding.UTF8.GetBytes(key), bytes);
@@ -42,9 +40,7 @@ namespace Sodium
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; may be null, otherwise between 16 and 64 bytes.</param>
     /// <param name="bytes">The size (in bytes) of the desired result.</param>
-    /// <returns>
-    /// Returns a hex-encoded string.
-    /// </returns>
+    /// <returns>Returns a byte array.</returns>
     public static byte[] Hash(string message, byte[] key, int bytes)
     {
       return Hash(Encoding.UTF8.GetBytes(message), key, bytes);
@@ -56,9 +52,7 @@ namespace Sodium
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; may be null, otherwise between 16 and 64 bytes.</param>
     /// <param name="bytes">The size (in bytes) of the desired result.</param>
-    /// <returns>
-    /// Returns a hex-encoded string.
-    /// </returns>
+    /// <returns>Returns a byte array.</returns>
     public static byte[] Hash(byte[] message, byte[] key, int bytes)
     {
       //validate the length of the key
@@ -77,6 +71,13 @@ namespace Sodium
       {
         key = new byte[0];
         keyLength = 0;
+      }
+
+      //validate output length
+      if (bytes > BYTES_MAX || bytes < BYTES_MIN)
+      {
+        throw new ArgumentOutOfRangeException("bytes", bytes,
+          string.Format("bytes must be between {0} and {1} bytes in length.", BYTES_MIN, BYTES_MAX));
       }
 
       var buffer = new byte[bytes];
