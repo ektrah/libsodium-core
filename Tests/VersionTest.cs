@@ -1,6 +1,5 @@
-﻿using Sodium;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Sodium;
 
 namespace Tests
 {
@@ -18,7 +17,7 @@ namespace Tests
     public void SodiumVersionStringTest()
     {
       const string EXPECTED = "0.4.3";
-      var actual = SodiumVersion.SodiumVersionString();
+      var actual = SodiumCore.SodiumVersionString();
       Assert.AreEqual(EXPECTED, actual);
     }
   }
