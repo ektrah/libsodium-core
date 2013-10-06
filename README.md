@@ -84,6 +84,15 @@ For this to be secure, it's required that the signing key only be used once.
 #### crypto_sign_open
 `Sodium.PublicKeyAuth.Verify()` - Verifies the signature and returns the clear-text message using [Ed25519](http://ed25519.cr.yp.to/) and the supplied 32-byte public key. Throws a `CryptographicException` if verification fails.
 
+#### crypto_box_keypair
+`Sodium.PublicKeyBox.GenerateKeyPair()` - Generates a public/private Curve25519-XSalsa20-Poly1305 key pair based on a random seed. The public key is 32 bytes, the private key is 32 bytes.
+
+#### crypto_box
+`Sodium.PublicKeyBox.Create()` - Encrypts a message using the sender's private key, and the recipient's public key. Both keys are 32 bytes. Encryption / signing is performed via Curve25519-XSalsa20-Poly1305.
+
+#### crypto_box_open
+`Sodium.PublicKeyBox.Open()` - Decrypts and verifies the sender's signature using the recipient's private key and the sender's public key. Both keys are 32 bytes. Throws a `CryptographicException` if verification fails.
+
 ## Requirements & Versions
 
 This library is built in Visual Studio 2010, and targets .NET 4.0; it is compiled against libsodium v0.4.3.
