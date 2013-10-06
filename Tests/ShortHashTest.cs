@@ -11,6 +11,15 @@ namespace Tests
   public class ShortHashTest
   {
     /// <summary>
+    /// Verify that the length of the returned key is correct.
+    /// </summary>
+    [TestMethod()]
+    public void TestGenerateKey()
+    {
+      Assert.AreEqual(16, ShortHash.GenerateKey().Length);
+    }
+    
+    /// <summary>
     /// Does ShortHash.Hash() return the expected value?
     /// </summary>
     [TestMethod()]

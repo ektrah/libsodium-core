@@ -14,6 +14,20 @@ namespace Sodium
     private const int NONCE_BYTES = 24;
     private const int ZERO_BYTES = 32;
 
+    /// <summary>Generates a random 32 byte key.</summary>
+    /// <returns>Returns a byte array with 32 random bytes</returns>
+    public static byte[] GenerateKey()
+    {
+      return SodiumCore.GetRandomBytes(KEY_BYTES);
+    }
+
+    /// <summary>Generates a random 24 byte nonce.</summary>
+    /// <returns>Returns a byte array with 24 random bytes</returns>
+    public static byte[] GenerateNonce()
+    {
+      return SodiumCore.GetRandomBytes(NONCE_BYTES);
+    }
+
     /// <summary>
     /// Creates a Secret Box
     /// </summary>

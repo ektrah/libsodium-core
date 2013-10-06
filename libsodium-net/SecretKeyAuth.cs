@@ -14,6 +14,13 @@ namespace Sodium
     private const int KEY_BYTES = 32;
     private const int BYTES = 32;
 
+    /// <summary>Generates a random 32 byte key.</summary>
+    /// <returns>Returns a byte array with 32 random bytes</returns>
+    public static byte[] GenerateKey()
+    {
+      return SodiumCore.GetRandomBytes(KEY_BYTES);
+    }
+
     /// <summary>Signs a message with HMAC-SHA512-256.</summary>
     /// <param name="message">The message.</param>
     /// <param name="key">The 32 byte key.</param>

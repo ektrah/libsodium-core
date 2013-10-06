@@ -11,6 +11,15 @@ namespace Tests
   public class OneTimeAuthTest
   {
     /// <summary>
+    /// Verify that the length of the returned key is correct.
+    /// </summary>
+    [TestMethod()]
+    public void TestGenerateKey()
+    {
+      Assert.AreEqual(32, OneTimeAuth.GenerateKey().Length);
+    }
+
+    /// <summary>
     /// Does OneTimeAuth.Sign() return the expected value?
     /// </summary>
     [TestMethod()]

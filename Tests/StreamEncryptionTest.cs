@@ -11,6 +11,24 @@ namespace Tests
   public class StreamEncryptionTest
   {
     /// <summary>
+    /// Verify that the length of the returned key is correct.
+    /// </summary>
+    [TestMethod()]
+    public void TestGenerateKey()
+    {
+      Assert.AreEqual(32, StreamEncryption.GenerateKey().Length);
+    }
+
+    /// <summary>
+    /// Verify that the length of the returned key is correct.
+    /// </summary>
+    [TestMethod()]
+    public void TestGenerateNonce()
+    {
+      Assert.AreEqual(24, StreamEncryption.GenerateNonce().Length);
+    }
+
+    /// <summary>
     /// Does StreamEncryption.Encrypt() return the expected value?
     /// </summary>
     [TestMethod()]

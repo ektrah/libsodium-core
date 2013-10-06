@@ -11,6 +11,15 @@ namespace Tests
   public class SecretKeyAuthTest
   {
     /// <summary>
+    /// Verify that the length of the returned key is correct.
+    /// </summary>
+    [TestMethod()]
+    public void TestGenerateKey()
+    {
+      Assert.AreEqual(32, SecretKeyAuth.GenerateKey().Length);
+    }
+    
+    /// <summary>
     /// Does SecretKeyAuth.Sign() return the expected value?
     /// </summary>
     [TestMethod()]

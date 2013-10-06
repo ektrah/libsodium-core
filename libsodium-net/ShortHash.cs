@@ -13,6 +13,13 @@ namespace Sodium
     private const int BYTES = 8;
     private const int KEY_BYTES = 16;
 
+    /// <summary>Generates a random 16 byte key.</summary>
+    /// <returns>Returns a byte array with 16 random bytes</returns>
+    public static byte[] GenerateKey()
+    {
+      return SodiumCore.GetRandomBytes(KEY_BYTES);
+    }
+
     /// <summary>
     /// Hashes a message, with a key, using the SipHash-2-4 primitive.
     /// </summary>

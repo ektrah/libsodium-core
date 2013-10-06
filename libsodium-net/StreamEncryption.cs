@@ -13,6 +13,20 @@ namespace Sodium
     private const int KEY_BYTES = 32;
     private const int NONCE_BYTES = 24;
 
+    /// <summary>Generates a random 32 byte key.</summary>
+    /// <returns>Returns a byte array with 32 random bytes</returns>
+    public static byte[] GenerateKey()
+    {
+      return SodiumCore.GetRandomBytes(KEY_BYTES);
+    }
+
+    /// <summary>Generates a random 24 byte nonce.</summary>
+    /// <returns>Returns a byte array with 24 random bytes</returns>
+    public static byte[] GenerateNonce()
+    {
+      return SodiumCore.GetRandomBytes(NONCE_BYTES);
+    }
+
     /// <summary>
     /// Encryptes messages via XSalsa20
     /// </summary>

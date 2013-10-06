@@ -11,6 +11,24 @@ namespace Tests
   public class SecretBoxTest
   {
     /// <summary>
+    /// Verify that the length of the returned key is correct.
+    /// </summary>
+    [TestMethod()]
+    public void TestGenerateKey()
+    {
+      Assert.AreEqual(32, SecretBox.GenerateKey().Length);
+    }
+
+    /// <summary>
+    /// Verify that the length of the returned key is correct.
+    /// </summary>
+    [TestMethod()]
+    public void TestGenerateNonce()
+    {
+      Assert.AreEqual(24, SecretBox.GenerateNonce().Length);
+    }
+
+    /// <summary>
     /// Does SecretBox.Create() return the expected value?
     /// </summary>
     [TestMethod()]

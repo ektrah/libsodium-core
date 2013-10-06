@@ -11,6 +11,15 @@ namespace Tests
   public class GenericHashTest
   {
     /// <summary>
+    /// Verify that the length of the returned key is correct.
+    /// </summary>
+    [TestMethod()]
+    public void TestGenerateKey()
+    {
+      Assert.AreEqual(64, GenericHash.GenerateKey().Length);
+    }
+    
+    /// <summary>
     /// BLAKE2b, 32 bytes, no key
     /// </summary>
     [TestMethod()]

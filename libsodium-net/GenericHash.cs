@@ -15,6 +15,13 @@ namespace Sodium
     private const int KEY_BYTES_MIN = 16;
     private const int KEY_BYTES_MAX = 64;
 
+    /// <summary>Generates a random 64 byte key.</summary>
+    /// <returns>Returns a byte array with 64 random bytes</returns>
+    public static byte[] GenerateKey()
+    {
+      return SodiumCore.GetRandomBytes(KEY_BYTES_MAX);
+    }
+
     /// <summary>
     /// Hashes a message, with an optional key, using the BLAKE2b primitive.
     /// </summary>
