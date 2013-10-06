@@ -101,7 +101,20 @@ Note: Only libsodium's simplified interface is currently supported; the streamin
 ### Other
 
 #### sodium_version_string
-`Sodium.SodiumVersion.SodiumVersionString()` - This returns the version string on the `libsodium` library in use. Note, this is not the version of libsodium-net.
+`Sodium.SodiumCore.SodiumVersionString()` - This returns the version string on the `libsodium` library in use. Note, this is not the version of libsodium-net.
+
+#### randombytes_buf
+`Sodium.SodiumCore.GetRandomBytes()` - Gets a number of random bytes, suitable for use as a key or nonce. In classes where appropriate, there are `GenerateKey()` and/or `GenerateNonce()` functions that return a byte array of the correct size.
+
+### Non-libsodium Methods
+
+There are a small number of additional methods that extended or simplify the usage of this library.
+
+#### HexToBinary
+`Sodium.Utilities.HexToBinary()` - This method converts a lower-case hex-encoded string to a byte array.
+
+#### BinaryToHex
+`Sodium.Utilities.BinaryToHex()` - This method takes a byte array, and produces a lower-case hex-encoded string.
 
 ## Requirements & Versions
 
