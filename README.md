@@ -1,5 +1,5 @@
 # libsodium-net
-libsodium-net, or better said, [libsodium](https://github.com/jedisct1/libsodium) for .NET, is a C# wrapper around libsodium. For those that don't know, libsodium is a portable implementation of [Daniel Bernstein's](http://cr.yp.to/djb.html) fantastic [NaCl](http://nacl.cr.yp.to/) library. If you aren't familiar with NaCl, you should probably do some reading before using this library.
+libsodium-net, or better said, [libsodium](https://github.com/jedisct1/libsodium) for .NET, is a C# wrapper around libsodium. For those that don't know, libsodium is a portable implementation of [Daniel Bernstein's](http://cr.yp.to/djb.html) fantastic [NaCl](http://nacl.cr.yp.to/) library. If you aren't familiar with NaCl, I highly suggest that you look into libsodium and NaCl before using this library.
 
 ## Why
 
@@ -11,37 +11,35 @@ Crypto is hard - much harder than your average developer understands. There is m
 
 ## Status
 
-Experimental. This is still a work in progress, as such the API is subject to change and there may be bugs that have been missed.
+TL;DR: Experimental. 
+
+This is still a work in progress, as such the API is subject to change and there may be bugs that have been missed. Currently, not all of libsodium is implemented; though the most used methods should be; if there's anything that you need that libsodium supports that this library doesn't, please open an issue - or better, open a pull request.
 
 ## Methods Supported
 
 The following methods have been implemented and have at least basic unit tests in place to ensure they are producing the expected output. *(Listed in no particular order)*
 
-#### sodium_version_string
-`Sodium.SodiumVersion.SodiumVersionString()` - This returns the version string on the `libsodium` library in use. Note, this is not the version of libsodium-net.
+### Asymmetric
 
-#### crypto_hash
-`Sodium.CryptoHash.Hash()` - This hashes a message (UTF-8 encoded `string` or `byte[]`) using the default algorithm, currently SHA-512. A byte array is returned.
+#### crypto_sign_keypair
+`Sodium.PublicKeyAuth.GenerateKeyPair()` - Generates a public/private [Ed25519](http://ed25519.cr.yp.to/) key pair based on a random seed. The public key is 32 bytes, the private key is 64 bytes.
 
-The `Sodium.CryptoHash` class also includes the following methods:
+#### crypto_sign
+`Sodium.PublicKeyAuth.Sign()` - Signs a message with [Ed25519](http://ed25519.cr.yp.to/), based on the supplied 64 byte private key.
 
- * `SHA512()` - Compute a SHA-512 hash (for compatibility if the default algorithm is ever changed). (`crypto_hash_sha512`)
- * `SHA256()` - Compute a SHA-256 hash. (`crypto_hash_sha256 `)
+#### crypto_sign_open
+`Sodium.PublicKeyAuth.Verify()` - Verifies the signature and returns the clear-text message using [Ed25519](http://ed25519.cr.yp.to/) and the supplied 32-byte public key. Throws a `CryptographicException` if verification fails.
 
-#### crypto_generichash
-`Sodium.GenericHash.Hash()` - This is a multi-purpose fast hash, that has variable output size and an optional key. As with the `CryptoHash` methods, the input can be a UTF-8 encoded string, or a byte array, and a byte array is returned. 
+#### crypto_box_keypair
+`Sodium.PublicKeyBox.GenerateKeyPair()` - Generates a public/private Curve25519-XSalsa20-Poly1305 key pair based on a random seed. The public key is 32 bytes, the private key is 32 bytes.
 
-This is the most flexible hashing option; and the one I would recommend the most.
+#### crypto_box
+`Sodium.PublicKeyBox.Create()` - Encrypts a message using the sender's private key, and the recipient's public key. Both keys are 32 bytes. Encryption / signing is performed via Curve25519-XSalsa20-Poly1305.
 
-This is currently based on [BLAKE2b](https://blake2.net/), and has the following properties:
+#### crypto_box_open
+`Sodium.PublicKeyBox.Open()` - Decrypts and verifies the sender's signature using the recipient's private key and the sender's public key. Both keys are 32 bytes. Throws a `CryptographicException` if verification fails.
 
- * Variable output from 16 to 64 bytes.
- * Optional keyed mode, accepting a key from 16 to 64 bytes.
-
-Note: Only libsodium's simplified interface is currently supported; the streaming interface is not implemented at this time. 
-
-#### crypto_shorthash
-`Sodium.ShortHash.Hash()` - Short, high-speed hashing, currently implanted via [SipHash-2-4](https://en.wikipedia.org/wiki/SipHash) and produces an 8 byte hash.
+### Symmetric
 
 #### crypto_secretbox
 `Sodium.SecretBox.Create()` - This method encrypts and authenticates a message. This is currently implemented via [XSalsa20](https://en.wikipedia.org/wiki/Salsa20) and [Poly1305](https://en.wikipedia.org/wiki/Poly1305).
@@ -75,23 +73,35 @@ For this to be secure, it's required that the signing key only be used once.
 
 `Sodium.StreamEncryption.Decrypt()` - Decrypts messages via XSalsa20.
 
-#### crypto_sign_keypair
-`Sodium.PublicKeyAuth.GenerateKeyPair()` - Generates a public/private [Ed25519](http://ed25519.cr.yp.to/) key pair based on a random seed. The public key is 32 bytes, the private key is 64 bytes.
+### Hashing
 
-#### crypto_sign
-`Sodium.PublicKeyAuth.Sign()` - Signs a message with [Ed25519](http://ed25519.cr.yp.to/), based on the supplied 64 byte private key.
+#### crypto_hash
+`Sodium.CryptoHash.Hash()` - This hashes a message (UTF-8 encoded `string` or `byte[]`) using the default algorithm, currently SHA-512. A byte array is returned.
 
-#### crypto_sign_open
-`Sodium.PublicKeyAuth.Verify()` - Verifies the signature and returns the clear-text message using [Ed25519](http://ed25519.cr.yp.to/) and the supplied 32-byte public key. Throws a `CryptographicException` if verification fails.
+The `Sodium.CryptoHash` class also includes the following methods:
 
-#### crypto_box_keypair
-`Sodium.PublicKeyBox.GenerateKeyPair()` - Generates a public/private Curve25519-XSalsa20-Poly1305 key pair based on a random seed. The public key is 32 bytes, the private key is 32 bytes.
+ * `SHA512()` - Compute a SHA-512 hash (for compatibility if the default algorithm is ever changed). (`crypto_hash_sha512`)
+ * `SHA256()` - Compute a SHA-256 hash. (`crypto_hash_sha256 `)
 
-#### crypto_box
-`Sodium.PublicKeyBox.Create()` - Encrypts a message using the sender's private key, and the recipient's public key. Both keys are 32 bytes. Encryption / signing is performed via Curve25519-XSalsa20-Poly1305.
+#### crypto_generichash
+`Sodium.GenericHash.Hash()` - This is a multi-purpose fast hash, that has variable output size and an optional key. As with the `CryptoHash` methods, the input can be a UTF-8 encoded string, or a byte array, and a byte array is returned. 
 
-#### crypto_box_open
-`Sodium.PublicKeyBox.Open()` - Decrypts and verifies the sender's signature using the recipient's private key and the sender's public key. Both keys are 32 bytes. Throws a `CryptographicException` if verification fails.
+This is the most flexible hashing option; and the one I would recommend the most.
+
+This is currently based on [BLAKE2b](https://blake2.net/), and has the following properties:
+
+ * Variable output from 16 to 64 bytes.
+ * Optional keyed mode, accepting a key from 16 to 64 bytes.
+
+Note: Only libsodium's simplified interface is currently supported; the streaming interface is not implemented at this time. 
+
+#### crypto_shorthash
+`Sodium.ShortHash.Hash()` - Short, high-speed hashing, currently implanted via [SipHash-2-4](https://en.wikipedia.org/wiki/SipHash) and produces an 8 byte hash.
+
+### Other
+
+#### sodium_version_string
+`Sodium.SodiumVersion.SodiumVersionString()` - This returns the version string on the `libsodium` library in use. Note, this is not the version of libsodium-net.
 
 ## Requirements & Versions
 
