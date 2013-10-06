@@ -1,5 +1,5 @@
-﻿using System.Runtime.InteropServices;
-
+﻿using System;
+using System.Runtime.InteropServices;
 namespace Sodium
 {
   /// <summary>
@@ -11,17 +11,38 @@ namespace Sodium
     {
       _Init();
     }
-    
+
+    /// <summary>Gets random bytes</summary>
+    /// <param name="count">The count of bytes to return.</param>
+    /// <returns>An array of random bytes.</returns>
+    public static byte[] GetRandomBytes(int count)
+    {
+      var buffer = new byte[count];
+
+      _GetRandomBytes(buffer, count);
+
+      return buffer;
+    }
+
     /// <summary>
     /// Returns the version of libsodium in use.
     /// </summary>
     /// <returns>
     /// The sodium version string.
     /// </returns>
+    public static string SodiumVersionString()
+    {
+      var ptr = _SodiumVersionString();
+      return Marshal.PtrToStringAnsi(ptr);
+    }
+
     [DllImport("libsodium-4.dll", EntryPoint = "sodium_version_string", CallingConvention = CallingConvention.Cdecl)]
-    public static extern string SodiumVersionString();
+    private static extern IntPtr _SodiumVersionString();
 
     [DllImport("libsodium-4.dll", EntryPoint = "sodium_init", CallingConvention = CallingConvention.Cdecl)]
-    private static extern string _Init();
+    private static extern void _Init();
+
+    [DllImport("libsodium-4.dll", EntryPoint = "randombytes_buf", CallingConvention = CallingConvention.Cdecl)]
+    private static extern void _GetRandomBytes(byte[] buffer, int size);
   }
 }
