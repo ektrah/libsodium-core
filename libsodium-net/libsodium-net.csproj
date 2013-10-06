@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="CryptoHash.cs" />
     <Compile Include="GenericHash.cs" />
+    <Compile Include="KeyPair.cs" />
     <Compile Include="OneTimeAuth.cs" />
+    <Compile Include="PublicKeyAuth.cs" />
     <Compile Include="SecretKeyAuth.cs" />
     <Compile Include="StreamEncryption.cs" />
     <Compile Include="Utilities.cs" />
