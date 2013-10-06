@@ -45,6 +45,7 @@
     <Compile Include="GenericHash.cs" />
     <Compile Include="OneTimeAuth.cs" />
     <Compile Include="SecretKeyAuth.cs" />
+    <Compile Include="StreamEncryption.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecretBox.cs" />

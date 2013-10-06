@@ -57,6 +57,7 @@
     <Compile Include="SecretBoxTest.cs" />
     <Compile Include="SecretKeyAuthTest.cs" />
     <Compile Include="ShortHashTest.cs" />
+    <Compile Include="StreamEncryptionTest.cs" />
     <Compile Include="VersionTest.cs" />
   </ItemGroup>
   <ItemGroup>

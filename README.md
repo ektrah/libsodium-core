@@ -70,6 +70,11 @@ For this to be secure, it's required that the signing key only be used once.
 #### crypto_auth_verify
 `Sodium.SecretKeyAuth.Verify()` - This verifies a signature generated via `crypto_auth`. To do so, it requires the original message, the 32 byte signature, and the 32 byte key.
 
+#### crypto_stream_xor
+`Sodium.StreamEncryption.Encrypt()` - Encrypts a message via XSalsa20 using a 32 byte key and a 24 byte nonce. As always, it's critical that the nonce never be reused. This provides encryption only, not authentication.
+
+`Sodium.StreamEncryption.Decrypt()` - Decrypts messages via XSalsa20.
+
 ## Requirements & Versions
 
 This library is built in Visual Studio 2010, and targets .NET 4.0; it is compiled against libsodium v0.4.3.
