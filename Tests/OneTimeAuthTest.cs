@@ -5,7 +5,7 @@ using Sodium;
 namespace Tests
 {
   /// <summary>
-  /// Tests for the SodiumVersion class
+  /// Tests for the OneTimeAuth class
   /// </summary>
   [TestClass()]
   public class OneTimeAuthTest

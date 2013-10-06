@@ -5,7 +5,7 @@ using Sodium;
 namespace Tests
 {
   /// <summary>
-  /// Tests for the SodiumVersion class
+  /// Tests for the SecretBox class
   /// </summary>
   [TestClass()]
   public class SecretBoxTest

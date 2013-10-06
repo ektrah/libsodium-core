@@ -9,7 +9,6 @@ namespace Tests
   [TestClass()]
   public class VersionTest
   {
-
     /// <summary>
     /// A test for SodiumVersionString
     /// </summary>
