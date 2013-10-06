@@ -76,13 +76,13 @@ For this to be secure, it's required that the signing key only be used once.
 `Sodium.StreamEncryption.Decrypt()` - Decrypts messages via XSalsa20.
 
 #### crypto_sign_keypair
-`Sodium.PublicKeyAuth.GenerateKeyPair()` - Generates a public/private Ed25519 key pair based on a random seed. The public key is 32 bytes, the private key is 64 bytes.
+`Sodium.PublicKeyAuth.GenerateKeyPair()` - Generates a public/private [Ed25519](http://ed25519.cr.yp.to/) key pair based on a random seed. The public key is 32 bytes, the private key is 64 bytes.
 
 #### crypto_sign
-`Sodium.PublicKeyAuth.Sign()` - Signs a message with Ed25519, based on the supplied 64 byte private key.
+`Sodium.PublicKeyAuth.Sign()` - Signs a message with [Ed25519](http://ed25519.cr.yp.to/), based on the supplied 64 byte private key.
 
 #### crypto_sign_open
-`Sodium.PublicKeyAuth.Verify()` - Verifies the signature and returns the clear-text message using Ed25519 and the supplied 32-byte public key. Throws a `CryptographicException` if verification fails.
+`Sodium.PublicKeyAuth.Verify()` - Verifies the signature and returns the clear-text message using [Ed25519](http://ed25519.cr.yp.to/) and the supplied 32-byte public key. Throws a `CryptographicException` if verification fails.
 
 ## Requirements & Versions
 
