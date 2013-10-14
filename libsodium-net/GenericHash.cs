@@ -86,7 +86,7 @@ namespace Sodium
       return buffer;
     }
 
-    [DllImport("libsodium-4.dll", EntryPoint = "crypto_generichash", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport("libsodium", EntryPoint = "crypto_generichash", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenericHash(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
   }
 }

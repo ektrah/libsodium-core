@@ -36,13 +36,13 @@ namespace Sodium
       return Marshal.PtrToStringAnsi(ptr);
     }
 
-    [DllImport("libsodium-4.dll", EntryPoint = "sodium_version_string", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport("libsodium", EntryPoint = "sodium_version_string", CallingConvention = CallingConvention.Cdecl)]
     private static extern IntPtr _SodiumVersionString();
 
-    [DllImport("libsodium-4.dll", EntryPoint = "sodium_init", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport("libsodium", EntryPoint = "sodium_init", CallingConvention = CallingConvention.Cdecl)]
     private static extern void _Init();
 
-    [DllImport("libsodium-4.dll", EntryPoint = "randombytes_buf", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport("libsodium", EntryPoint = "randombytes_buf", CallingConvention = CallingConvention.Cdecl)]
     private static extern void _GetRandomBytes(byte[] buffer, int size);
   }
 }

@@ -69,7 +69,7 @@ namespace Sodium
       return buffer;
     }
 
-    [DllImport("libsodium-4.dll", EntryPoint = "crypto_shorthash", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport("libsodium", EntryPoint = "crypto_shorthash", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _ShortHash(byte[] buffer, byte[] message, long messageLength, byte[] key);
   }
 }
