@@ -119,7 +119,7 @@ namespace Sodium
       return buffer;
     }
 
-    [DllImport("libsodium-4.dll", EntryPoint = "crypto_stream_xor", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_stream_xor", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Encrypt(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
   }
 }

@@ -106,13 +106,13 @@ namespace Sodium
       return buffer;
     }
 
-    [DllImport("libsodium-4.dll", EntryPoint = "crypto_hash", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_hash", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _CryptoHash(byte[] buffer, byte[] message, long length);
 
-    [DllImport("libsodium-4.dll", EntryPoint = "crypto_hash_sha512", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_hash_sha512", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _SHA512(byte[] buffer, byte[] message, long length);
 
-    [DllImport("libsodium-4.dll", EntryPoint = "crypto_hash_sha256", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_hash_sha256", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _SHA256(byte[] buffer, byte[] message, long length);
   }
 }
