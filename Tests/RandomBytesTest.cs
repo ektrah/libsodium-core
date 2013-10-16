@@ -1,19 +1,19 @@
 ﻿using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sodium;
+using NUnit.Framework;
 
 namespace Tests
 {
   /// <summary>
   /// Tests for Random Bytes support
   /// </summary>
-  [TestClass()]
+  [TestFixture]
   public class RandomBytesTest
   {
     /// <summary>
     /// Does SodiumCore.GetRandomBytes() return something
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void GenerateBytesTest()
     {
       var actual = SodiumCore.GetRandomBytes(24);

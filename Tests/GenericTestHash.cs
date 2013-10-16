@@ -1,19 +1,19 @@
 ﻿using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sodium;
+using NUnit.Framework;
 
 namespace Tests
 {
   /// <summary>
   /// Tests for the GenericHash class
   /// </summary>
-  [TestClass()]
+  [TestFixture]
   public class GenericHashTest
   {
     /// <summary>
     /// Verify that the length of the returned key is correct.
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void TestGenerateKey()
     {
       Assert.AreEqual(64, GenericHash.GenerateKey().Length);
@@ -22,7 +22,7 @@ namespace Tests
     /// <summary>
     /// BLAKE2b, 32 bytes, no key
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void GenericHashNoKey()
     {
       var expected = Utilities.HexToBinary("53e27925e5786abe74e6bb7004980a6a38a8da2478efa1b6b2ae73964cfe4876");
@@ -33,7 +33,7 @@ namespace Tests
     /// <summary>
     /// BLAKE2b, 32 bytes, with key
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void GenericHashWithKey()
     {
       var expected = Utilities.HexToBinary("8866267f985204ae511980704ac85ec4936ee535c37541f342976b2cb3ac62fd");

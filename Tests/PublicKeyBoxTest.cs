@@ -1,13 +1,13 @@
 ﻿using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sodium;
+using NUnit.Framework;
 
 namespace Tests
 {
   /// <summary>
   /// Tests for the PublicKeyBox class
   /// </summary>
-  [TestClass()]
+  [TestFixture]
   public class PublicKeyBoxTest
   {
     // Test Key 1:
@@ -21,7 +21,7 @@ namespace Tests
     /// <summary>
     /// Does PublicKeyBox.GenerateKeyPair() return... something.
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void GenerateKeyTest()
     {
       var actual = PublicKeyBox.GenerateKeyPair();
@@ -34,7 +34,7 @@ namespace Tests
     /// <summary>
     /// Does PublicKeyBox.Sign() return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void SimpleAuthTest()
     {
       var expected = Utilities.HexToBinary("00000000000000000000000000000000aed04284c55860ad0f6379f235cc2cb8c32aba7a811b35cfac94f64d");
@@ -49,7 +49,7 @@ namespace Tests
     /// <summary>
     /// Does PublicKeyBox.Verify() return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void SimpleVerifyTest()
     {
       var expected = Encoding.UTF8.GetBytes("Adam Caudill");

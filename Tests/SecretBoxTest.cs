@@ -1,19 +1,19 @@
 ﻿using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sodium;
+using NUnit.Framework;
 
 namespace Tests
 {
   /// <summary>
   /// Tests for the SecretBox class
   /// </summary>
-  [TestClass()]
+  [TestFixture]
   public class SecretBoxTest
   {
     /// <summary>
     /// Verify that the length of the returned key is correct.
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void TestGenerateKey()
     {
       Assert.AreEqual(32, SecretBox.GenerateKey().Length);
@@ -22,7 +22,7 @@ namespace Tests
     /// <summary>
     /// Verify that the length of the returned key is correct.
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void TestGenerateNonce()
     {
       Assert.AreEqual(24, SecretBox.GenerateNonce().Length);
@@ -31,7 +31,7 @@ namespace Tests
     /// <summary>
     /// Does SecretBox.Create() return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void CreateSecretBox()
     {
       var expected = Utilities.HexToBinary("00000000000000000000000000000000b58d3c3e5ae78770b7db54e29e3885138a2f1ddb738f2309d9b38164");
@@ -45,7 +45,7 @@ namespace Tests
     /// <summary>
     /// Does SecretBox.open() return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void OpenSecretBox()
     {
       var expected = "Adam Caudill";
