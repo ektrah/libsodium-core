@@ -1,19 +1,19 @@
 ﻿using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sodium;
+using NUnit.Framework;
 
 namespace Tests
 {
   /// <summary>
   /// Tests for the OneTimeAuth class
   /// </summary>
-  [TestClass()]
+  [TestFixture]
   public class OneTimeAuthTest
   {
     /// <summary>
     /// Verify that the length of the returned key is correct.
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void TestGenerateKey()
     {
       Assert.AreEqual(32, OneTimeAuth.GenerateKey().Length);
@@ -22,7 +22,7 @@ namespace Tests
     /// <summary>
     /// Does OneTimeAuth.Sign() return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void SimpleAuthTest()
     {
       var expected = Utilities.HexToBinary("07577518b48b4980354844c8fe1b253f");
@@ -33,7 +33,7 @@ namespace Tests
     /// <summary>
     /// Does OneTimeAuth.Verify() return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void SimpleVerifyTest()
     {
       var actual = OneTimeAuth.Verify(Encoding.UTF8.GetBytes("Adam Caudill"), 

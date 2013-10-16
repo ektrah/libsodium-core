@@ -1,19 +1,19 @@
 ﻿using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sodium;
+using NUnit.Framework;
 
 namespace Tests
 {
   /// <summary>
   /// Tests for the PublicKeyAuth class
   /// </summary>
-  [TestClass()]
+  [TestFixture]
   public class PublicKeyAuthTest
   {
     /// <summary>
     /// Does PublicKeyAuth.GenerateKeyPair() return... something.
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void GenerateKeyTest()
     {
       var actual = PublicKeyAuth.GenerateKeyPair();
@@ -26,7 +26,7 @@ namespace Tests
     /// <summary>
     /// Does PublicKeyAuth.Sign() return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void SimpleAuthTest()
     {
       var expected = Utilities.HexToBinary("8d5436accbe258a6b252c1140f38d7b8dc6196619945818b72512b6a8019d86dfeeb56f40c4d4b983d97dfeed37948527256c3567d6b253757fcfb32bef56f0b4164616d2043617564696c6c");
@@ -38,7 +38,7 @@ namespace Tests
     /// <summary>
     /// Does SecretKeyAuth.Verify() return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void SimpleVerifyTest()
     {
       var expected = Encoding.UTF8.GetBytes("Adam Caudill");
