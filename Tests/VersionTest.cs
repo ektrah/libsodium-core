@@ -1,18 +1,18 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sodium;
+﻿using Sodium;
+using NUnit.Framework;
 
 namespace Tests
 {
   /// <summary>
   /// Tests for the SodiumVersion class
   /// </summary>
-  [TestClass()]
+  [TestFixture]
   public class VersionTest
   {
     /// <summary>
     /// A test for SodiumVersionString
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void SodiumVersionStringTest()
     {
       const string EXPECTED = "0.4.3";

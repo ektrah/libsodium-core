@@ -1,19 +1,19 @@
 ﻿using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sodium;
+using NUnit.Framework;
 
 namespace Tests
 {
   /// <summary>
   /// Tests for the ShortHash class
   /// </summary>
-  [TestClass()]
+  [TestFixture]
   public class ShortHashTest
   {
     /// <summary>
     /// Verify that the length of the returned key is correct.
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void TestGenerateKey()
     {
       Assert.AreEqual(16, ShortHash.GenerateKey().Length);
@@ -22,7 +22,7 @@ namespace Tests
     /// <summary>
     /// Does ShortHash.Hash() return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void SimpleShortHash()
     {
       var expected = Utilities.HexToBinary("9ea31f0aa7ebaa82");

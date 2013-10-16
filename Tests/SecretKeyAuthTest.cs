@@ -1,19 +1,19 @@
 ﻿using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sodium;
+using NUnit.Framework;
 
 namespace Tests
 {
   /// <summary>
   /// Tests for the SecretKeyAuth class
   /// </summary>
-  [TestClass()]
+  [TestFixture]
   public class SecretKeyAuthTest
   {
     /// <summary>
     /// Verify that the length of the returned key is correct.
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void TestGenerateKey()
     {
       Assert.AreEqual(32, SecretKeyAuth.GenerateKey().Length);
@@ -22,7 +22,7 @@ namespace Tests
     /// <summary>
     /// Does SecretKeyAuth.Sign() return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void SimpleAuthTest()
     {
       var expected = Utilities.HexToBinary("9f44681a662b7cde80c4eb34db5102b62a8b482272e3cceef73a334ec1d321c0");
@@ -33,7 +33,7 @@ namespace Tests
     /// <summary>
     /// Does SecretKeyAuth.Verify() return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void SimpleVerifyTest()
     {
       var actual = SecretKeyAuth.Verify(Encoding.UTF8.GetBytes("Adam Caudill"),

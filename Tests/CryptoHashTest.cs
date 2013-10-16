@@ -1,14 +1,14 @@
 ﻿using System.Text;
 
 using Sodium;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Tests
 {
   /// <summary>
   /// Tests for the CryptoHash class
   /// </summary>
-  [TestClass()]
+  [TestFixture]
   public class CryptoHashTest
   {
     //hashes of "Adam Caudill"
@@ -19,7 +19,7 @@ namespace Tests
     /// <summary>
     /// Does CryptoHash.Hash(string) return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void CryptoHashStringTest()
     {
       var actual = CryptoHash.Hash("Adam Caudill");
@@ -29,7 +29,7 @@ namespace Tests
     /// <summary>
     /// Does CryptoHash.Hash(byte[]) return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void CryptoHashArrayTest()
     {
       var actual = CryptoHash.Hash(Encoding.ASCII.GetBytes("Adam Caudill"));
@@ -39,7 +39,7 @@ namespace Tests
     /// <summary>
     /// Does CryptoHash.SHA512(string) return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void CryptoHashSHA512StringTest()
     {
       var actual = CryptoHash.SHA512("Adam Caudill");
@@ -49,7 +49,7 @@ namespace Tests
     /// <summary>
     /// Does CryptoHash.SHA512(byte[]) return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void CryptoHashSHA512ArrayTest()
     {
       var actual = CryptoHash.SHA512(Encoding.ASCII.GetBytes("Adam Caudill"));
@@ -59,7 +59,7 @@ namespace Tests
     /// <summary>
     /// Does CryptoHash.SHA256(string) return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void CryptoHashSHA256StringTest()
     {
       var actual = CryptoHash.SHA256("Adam Caudill");
@@ -69,7 +69,7 @@ namespace Tests
     /// <summary>
     /// Does CryptoHash.SHA256(byte[]) return the expected value?
     /// </summary>
-    [TestMethod()]
+    [Test]
     public void CryptoHashSHA256ArrayTest()
     {
       var actual = CryptoHash.SHA256(Encoding.ASCII.GetBytes("Adam Caudill"));
