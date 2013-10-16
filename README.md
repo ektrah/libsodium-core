@@ -118,7 +118,7 @@ There are a small number of additional methods that extended or simplify the usa
 
 ## Requirements & Versions
 
-This library is built in Visual Studio 2010, and targets .NET 4.0; it is compiled against libsodium v0.4.3.
+This library can be built in Visual Studio 2010 and MonoDevelop 3.x, and targets .NET 4.0; it is compiled against libsodium v0.4.3.
 
 ## Notes
 
