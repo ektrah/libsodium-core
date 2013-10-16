@@ -87,13 +87,13 @@ namespace Sodium
       return final;
     }
 
-    [DllImport("libsodium", EntryPoint = "crypto_sign_keypair", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_sign_keypair", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenerateKeyPair(byte[] publicKey, byte[] secretKey);
 
-    [DllImport("libsodium", EntryPoint = "crypto_sign", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_sign", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Sign(byte[] buffer, ref long bufferLength, byte[] message, long messageLength, byte[] key);
 
-    [DllImport("libsodium", EntryPoint = "crypto_sign_open", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_sign_open", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Verify(byte[] buffer, ref long bufferLength, byte[] signedMessage, long signedMessageLength, byte[] key);
   }
 }

@@ -85,10 +85,10 @@ namespace Sodium
       return ret == 0;
     }
 
-    [DllImport("libsodium", EntryPoint = "crypto_onetimeauth", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_onetimeauth", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Sign(byte[] buffer, byte[] message, long messageLength, byte[] key);
 
-    [DllImport("libsodium", EntryPoint = "crypto_onetimeauth_verify", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_onetimeauth_verify", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
   }
 }

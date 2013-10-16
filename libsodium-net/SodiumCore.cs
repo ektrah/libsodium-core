@@ -7,6 +7,12 @@ namespace Sodium
   /// </summary>
   public static class SodiumCore
   {
+    #if __MonoCS__
+      internal const string LIBRARY_NAME = "libsodium";
+    #else
+      internal const string LIBRARY_NAME = "libsodium-4.dll";
+    #endif
+    
     static SodiumCore()
     {
       _Init();
@@ -36,13 +42,13 @@ namespace Sodium
       return Marshal.PtrToStringAnsi(ptr);
     }
 
-    [DllImport("libsodium", EntryPoint = "sodium_version_string", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(LIBRARY_NAME, EntryPoint = "sodium_version_string", CallingConvention = CallingConvention.Cdecl)]
     private static extern IntPtr _SodiumVersionString();
 
-    [DllImport("libsodium", EntryPoint = "sodium_init", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(LIBRARY_NAME, EntryPoint = "sodium_init", CallingConvention = CallingConvention.Cdecl)]
     private static extern void _Init();
 
-    [DllImport("libsodium", EntryPoint = "randombytes_buf", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(LIBRARY_NAME, EntryPoint = "randombytes_buf", CallingConvention = CallingConvention.Cdecl)]
     private static extern void _GetRandomBytes(byte[] buffer, int size);
   }
 }

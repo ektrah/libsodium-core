@@ -125,13 +125,13 @@ namespace Sodium
       return final;
     }
 
-    [DllImport("libsodium", EntryPoint = "crypto_box_keypair", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_box_keypair", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenerateKeyPair(byte[] publicKey, byte[] secretKey);
 
-    [DllImport("libsodium", EntryPoint = "crypto_box", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_box", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Create(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
 
-    [DllImport("libsodium", EntryPoint = "crypto_box_open", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_box_open", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Open(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
   }
 }
