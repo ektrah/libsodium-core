@@ -26,6 +26,18 @@ namespace Sodium
       return new KeyPair(publicKey, privateKey);
     }
 
+    /// <summary>Creates a new key pair based on a random seed.</summary>
+    /// <returns></returns>
+    public static KeyPair GenerateKeyPair(byte[] seed)
+    {
+      var publicKey = new byte[PUBLIC_KEY_BYTES];
+      var privateKey = new byte[SECRET_KEY_BYTES];
+
+      _GenerateKeyPair(publicKey, privateKey, seed);
+
+      return new KeyPair(publicKey, privateKey);
+    }
+
     /// <summary>Signs a message with Ed25519.</summary>
     /// <param name="message">The message.</param>
     /// <param name="key">The 64 byte private key.</param>
@@ -89,6 +101,9 @@ namespace Sodium
 
     [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_sign_keypair", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenerateKeyPair(byte[] publicKey, byte[] secretKey);
+
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_sign_seed_keypair", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _GenerateKeyPair(byte[] publicKey, byte[] secretKey, byte[] seed);
 
     [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_sign", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Sign(byte[] buffer, ref long bufferLength, byte[] message, long messageLength, byte[] key);
