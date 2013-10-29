@@ -26,7 +26,8 @@ namespace Sodium
       return new KeyPair(publicKey, privateKey);
     }
 
-    /// <summary>Creates a new key pair based on a random seed.</summary>
+    /// <summary>Creates a new key pair based on the provided seed.</summary>
+    /// <param name="seed">The seed.</param>
     /// <returns></returns>
     public static KeyPair GenerateKeyPair(byte[] seed)
     {
