@@ -24,6 +24,9 @@ The following methods have been implemented and have at least basic unit tests i
 #### crypto_sign_keypair
 `Sodium.PublicKeyAuth.GenerateKeyPair()` - Generates a public/private [Ed25519](http://ed25519.cr.yp.to/) key pair based on a random seed. The public key is 32 bytes, the private key is 64 bytes.
 
+#### crypto_sign_seed_keypair
+`Sodium.PublicKeyAuth.GenerateKeyPair()` - Generates a public/private [Ed25519](http://ed25519.cr.yp.to/) key pair based on the provided seed to allow deterministic key generation. The public key is 32 bytes, the private key is 64 bytes, seed must be 32 bytes.
+
 #### crypto_sign
 `Sodium.PublicKeyAuth.Sign()` - Signs a message with [Ed25519](http://ed25519.cr.yp.to/), based on the supplied 64 byte private key.
 
