@@ -9,8 +9,10 @@ namespace Sodium
   {
     #if __MonoCS__
       internal const string LIBRARY_NAME = "libsodium";
+    #elif WIN64
+      internal const string LIBRARY_NAME = "libsodium-64.dll";
     #else
-      internal const string LIBRARY_NAME = "libsodium-4.dll";
+      internal const string LIBRARY_NAME = "libsodium.dll";
     #endif
     
     static SodiumCore()
