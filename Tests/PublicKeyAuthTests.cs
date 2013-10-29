@@ -22,6 +22,20 @@ namespace Tests
       Assert.IsNotNull(actual.PrivateKey);
       Assert.IsNotNull(actual.PublicKey);
     }
+
+    /// <summary>
+    /// Does PublicKeyAuth.GenerateKeyPair(seed) return the expected value?
+    /// </summary>
+    [Test]
+    public void GenerateKeySeedTest()
+    {
+      var expected = new KeyPair(Utilities.HexToBinary("76a1592044a6e4f511265bca73a604d90b0529d1df602be30a19a9257660d1f5"),
+        Utilities.HexToBinary("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff76a1592044a6e4f511265bca73a604d90b0529d1df602be30a19a9257660d1f5"));
+      var actual = PublicKeyAuth.GenerateKeyPair(Utilities.HexToBinary("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
+
+      CollectionAssert.AreEqual(expected.PublicKey, actual.PublicKey);
+      CollectionAssert.AreEqual(expected.PrivateKey, actual.PrivateKey);
+    }
     
     /// <summary>
     /// Does PublicKeyAuth.Sign() return the expected value?
