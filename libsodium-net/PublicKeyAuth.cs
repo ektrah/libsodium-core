@@ -13,6 +13,7 @@ namespace Sodium
     private const int SECRET_KEY_BYTES = 64;
     private const int PUBLIC_KEY_BYTES = 32;
     private const int BYTES = 64;
+    private const int SEED_BYTES = 32;
 
     /// <summary>Creates a new key pair based on a random seed.</summary>
     /// <returns></returns>
@@ -33,6 +34,13 @@ namespace Sodium
     {
       var publicKey = new byte[PUBLIC_KEY_BYTES];
       var privateKey = new byte[SECRET_KEY_BYTES];
+
+      //validate the length of the seed
+      if (seed == null || seed.Length != SEED_BYTES)
+      {
+        throw new ArgumentOutOfRangeException("seed", (seed == null) ? 0 : seed.Length,
+          string.Format("seed must be {0} bytes in length.", SEED_BYTES));
+      }
 
       _GenerateKeyPair(publicKey, privateKey, seed);
 
