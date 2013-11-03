@@ -127,6 +127,10 @@ This library can be built in Visual Studio 2010 and MonoDevelop 3.x, and targets
 
 Any method that takes a String, has an overload that accepts a byte array; Strings are assumed to be UTF8; if this is not the case, please convert it to bytes yourself and use the overloads that accept byte arrays.
 
+## File Signing
+
+Starting with version 0.3.0, all files are GPG signed to simplify validation. Files are signed with key ID `0x22CAD57A659CA2BC`, fingerprint: `E88AA5A5EB1162B8CAE0A52422CAD57A659CA2BC`. You can find the key on [keys.gnupg.net](http://keys.gnupg.net/pks/lookup?op=get&search=0x22CAD57A659CA2BC) or on my [personal web site](http://adamcaudill.com/pgp/).
+
 ## License
 
 NaCl has been released to the public domain to avoid copyright issues. libsodium is subject to the [ISC license](https://en.wikipedia.org/wiki/ISC_license), and this software is subject to the MIT license (see LICENSE).
