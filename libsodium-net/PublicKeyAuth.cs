@@ -76,7 +76,7 @@ namespace Sodium
       var final = new byte[bufferLength];
       Array.Copy(buffer, 0, final, 0, bufferLength);
 
-      return buffer;
+      return final;
     }
 
     /// <summary>Verifies a message signed with the Sign method.</summary>
