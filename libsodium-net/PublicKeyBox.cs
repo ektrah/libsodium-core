@@ -27,6 +27,25 @@ namespace Sodium
       return new KeyPair(publicKey, privateKey);
     }
 
+    /// <summary>Creates a new key pair based on the provided private key.</summary>
+    /// <param name="privateKey">The private key.</param>
+    /// <returns></returns>
+    public static KeyPair GenerateKeyPair(byte[] privateKey)
+    {
+      var publicKey = new byte[PUBLIC_KEY_BYTES];
+
+      //validate the length of the seed
+      if (privateKey == null || privateKey.Length != SECRET_KEY_BYTES)
+      {
+        throw new ArgumentOutOfRangeException("privateKey", (privateKey == null) ? 0 : privateKey.Length,
+          string.Format("privateKey must be {0} bytes in length.", SECRET_KEY_BYTES));
+      }
+
+      ScalarMult.Base(publicKey, privateKey);
+
+      return new KeyPair(publicKey, privateKey);
+    }
+
     /// <summary>Creates a Box</summary>
     /// <param name="message"></param>
     /// <param name="nonce"></param>

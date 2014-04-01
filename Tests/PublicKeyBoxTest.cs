@@ -32,6 +32,16 @@ namespace Tests
     }
 
     /// <summary>
+    /// Does PublicKeyBox.GenerateKeyPair(privateKey) return the rigt public key
+    /// </summary>
+    [Test]
+    public void GenerateKeyFromPrivateTest()
+    {
+      var actual = PublicKeyBox.GenerateKeyPair(Utilities.HexToBinary("2a5c92fac62514f793c0bfd374f629a138c5702793a32c61dadc593728a15975"));
+      CollectionAssert.AreEqual(Utilities.HexToBinary("753cb95919b15b76654b1969c554a4aaf8334402ef1468cb40a602b9c9fd2c13"), actual.PublicKey);
+    }
+
+    /// <summary>
     /// Does PublicKeyBox.Sign() return the expected value?
     /// </summary>
     [Test]
