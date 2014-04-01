@@ -109,6 +109,9 @@ Note: Only libsodium's simplified interface is currently supported; the streamin
 #### randombytes_buf
 `Sodium.SodiumCore.GetRandomBytes()` - Gets a number of random bytes, suitable for use as a key or nonce. In classes where appropriate, there are `GenerateKey()` and/or `GenerateNonce()` functions that return a byte array of the correct size.
 
+#### crypto_scalarmult
+`Sodium.ScalarMult.Mult` (and related methods) - Provides an interface to perform scalar multiplication.
+
 ### Non-libsodium Methods
 
 There are a small number of additional methods that extended or simplify the usage of this library.
