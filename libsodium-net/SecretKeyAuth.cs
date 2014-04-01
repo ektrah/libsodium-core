@@ -22,7 +22,7 @@ namespace Sodium
     /// <summary>Signs a message with HMAC-SHA512-256.</summary>
     /// <param name="message">The message.</param>
     /// <param name="key">The 32 byte key.</param>
-    /// <returns>16 byte authentication code.</returns>
+    /// <returns>32 byte authentication code.</returns>
     public static byte[] Sign(string message, byte[] key)
     {
       return Sign(Encoding.UTF8.GetBytes(message), key);
