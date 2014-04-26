@@ -1,4 +1,4 @@
-# libsodium-net
+# libsodium-net [![Build Status](https://travis-ci.org/fraga/libsodium-net.svg?branch=enableTravis)](https://travis-ci.org/fraga/libsodium-net)
 libsodium-net, or better said, [libsodium](https://github.com/jedisct1/libsodium) for .NET, is a C# wrapper around libsodium. For those that don't know, libsodium is a portable implementation of [Daniel Bernstein's](http://cr.yp.to/djb.html) fantastic [NaCl](http://nacl.cr.yp.to/) library. If you aren't familiar with NaCl, I highly suggest that you look into libsodium and NaCl before using this library.
 
 ## Why
