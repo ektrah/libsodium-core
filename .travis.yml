@@ -2,6 +2,6 @@ language: c
 install:
   - sudo apt-get install mono-devel mono-gmcs nunit-console
 script:
-  - ./travis-build-libsodium.sh
+  - bash travis-build-libsodium.sh
   - xbuild libsodium-net.sln
   - nunit-console ./Tests/bin/Debug/Tests.dll
