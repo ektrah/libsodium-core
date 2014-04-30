@@ -4,3 +4,4 @@ git checkout tags/0.4.5
 ./autogen.sh
 ./configure
 make && sudo make install
+sudo ldconfig
