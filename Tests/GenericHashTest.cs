@@ -40,5 +40,23 @@ namespace Tests
       var actual = GenericHash.Hash("Adam Caudill", "This is a test key", 32);
       CollectionAssert.AreEqual(expected, actual);
     }
+
+    /// <summary>
+    /// Generics the hash salt personal.
+    /// </summary>
+    [Test]
+    public void GenericHashSaltPersonalShouldFail()
+    {
+      byte[] output, key, message, personal, salt;
+
+      output = null;
+      key = GenericHash.GenerateKey();
+      message = Encoding.UTF8.GetBytes("this is a message to hash with salt and personal");
+      salt = Encoding.UTF8.GetBytes("put some salt");
+      personal = Encoding.UTF8.GetBytes("personal test");
+
+      Assert.AreEqual(1, GenericHash.HashSaltPersonal(out output, message, key, salt, personal));
+
+    }
   }
 }

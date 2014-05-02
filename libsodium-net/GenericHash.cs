@@ -86,7 +86,25 @@ namespace Sodium
       return buffer;
     }
 
+    /// <summary>
+    /// Determines the result based on hashing a message with a key, a salt and a personal parameter.
+    /// </summary>
+    /// <returns><c>1</c> if the hash was generated correctly.</returns>
+    /// <param name="result">Result.</param>
+    /// <param name="message">Message.</param>
+    /// <param name="key">Key.</param>
+    /// <param name="salt">Salt.</param>
+    /// <param name="personal">Personal.</param>
+    public static int HashSaltPersonal(out byte[] output, byte[] message, byte[] key, byte[] salt, byte[] personal)
+    {
+      return _GenericHashSaltPersonal(out output, message, key, message.GetLongLength(0), BYTES_MAX, salt, personal);
+    }
+
     [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_generichash", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenericHash(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
+
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_generichash_blake2b_salt_personal", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _GenericHashSaltPersonal(out byte[] output, byte[] message, byte[] key, long outputLenght, long inputLength, byte[] salt, byte[] personal);
+
   }
 }
