@@ -95,7 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CryptoHashTest.cs" />
-    <Compile Include="GenericTestHash.cs" />
     <Compile Include="OneTimeAuthTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicKeyAuthTests.cs" />
@@ -107,6 +106,7 @@
     <Compile Include="StreamEncryptionTest.cs" />
     <Compile Include="VersionTest.cs" />
     <Compile Include="ScalarMultTest.cs" />
+    <Compile Include="GenericHashTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libsodium-net\libsodium-net.csproj">
