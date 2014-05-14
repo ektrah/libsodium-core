@@ -1,12 +1,19 @@
 language: c
+
 os:
  - osx
  - linux
+
+env:
+ - TRAVIS_OS_UNAME=$(uname -s)
+
 install:
- - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then bash travis-linux-deps.sh; fi
- - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then bash travis-osx-deps.sh; fi
+ - if [[ $TRAVIS_OS_UNAME = 'Linux' ]]; then bash travis-linux-deps.sh; fi
+ - if [[ $TRAVIS_OS_UNAME = 'Darwin' ]]; then bash travis-osx-deps.sh; fi
+
 before_script:
  - bash travis-build-libsodium.sh
+
 script:
  - xbuild libsodium-net.sln
  - nunit-console ./Tests/bin/Debug/Tests.dll
