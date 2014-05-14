@@ -16,4 +16,4 @@ before_script:
 
 script:
  - xbuild libsodium-net.sln
- - nunit-console ./Tests/bin/Debug/Tests.dll
+ - bash nunit-console.sh ./Tests/bin/Debug/Tests.dll
