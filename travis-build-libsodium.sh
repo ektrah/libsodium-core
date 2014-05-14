@@ -7,4 +7,4 @@ git checkout tags/0.5.0
 ./autogen.sh
 ./configure
 make && sudo make install
-sudo ldconfig
+if [[ $TRAVIS_OS_UNAME = 'Linux' ]]; then sudo ldconfig; fi
