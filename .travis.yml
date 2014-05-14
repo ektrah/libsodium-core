@@ -1,7 +1,12 @@
 language: c
+os:
+ - osx
+ - linux
 install:
-  - sudo apt-get install mono-devel mono-gmcs nunit-console
+ - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then .travis-linux-deps.sh; fi
+ - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then .travis-osx-deps.sh; fi
+before_script:
+ - ./travis-build-libsodium.sh
 script:
-  - bash travis-build-libsodium.sh
-  - xbuild libsodium-net.sln
-  - nunit-console ./Tests/bin/Debug/Tests.dll
+ - xbuild libsodium-net.sln
+ - nunit-console ./Tests/bin/Debug/Tests.dll
