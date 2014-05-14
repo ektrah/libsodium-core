@@ -3,10 +3,10 @@ os:
  - osx
  - linux
 install:
- - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then .travis-linux-deps.sh; fi
- - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then .travis-osx-deps.sh; fi
+ - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then bash travis-linux-deps.sh; fi
+ - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then bash travis-osx-deps.sh; fi
 before_script:
- - ./travis-build-libsodium.sh
+ - bash travis-build-libsodium.sh
 script:
  - xbuild libsodium-net.sln
  - nunit-console ./Tests/bin/Debug/Tests.dll
