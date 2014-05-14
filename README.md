@@ -142,7 +142,7 @@ There are a small number of additional methods that extended or simplify the usa
 
 ## Requirements & Versions
 
-This library can be built in Visual Studio 2010, Xamarin Studio (MonoDevelop 3.x supported), and targets .NET 4.0; it is compiled against libsodium v0.4.5.
+This library can be built in Visual Studio 2010, Xamarin Studio (MonoDevelop 3.x supported), and targets .NET 4.0; it is compiled against libsodium v0.5.0.
 
 ## Notes
 
