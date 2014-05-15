@@ -1,7 +1,19 @@
 language: c
+
+os:
+ - osx
+ - linux
+
+env:
+ - TRAVIS_OS_UNAME=$(uname -s)
+
 install:
-  - sudo apt-get install mono-devel mono-gmcs nunit-console
+ - if [[ $TRAVIS_OS_UNAME = 'Linux' ]]; then bash travis-linux-deps.sh; fi
+ - if [[ $TRAVIS_OS_UNAME = 'Darwin' ]]; then bash travis-osx-deps.sh; fi
+
+before_script:
+ - bash travis-build-libsodium.sh
+
 script:
-  - bash travis-build-libsodium.sh
-  - xbuild libsodium-net.sln
-  - nunit-console ./Tests/bin/Debug/Tests.dll
+ - xbuild libsodium-net.sln
+ - bash nunit-console.sh ./Tests/bin/Debug/Tests.dll
