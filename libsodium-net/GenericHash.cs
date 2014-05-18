@@ -97,14 +97,16 @@ namespace Sodium
     /// <param name="personal">Personal.</param>
     public static int HashSaltPersonal(out byte[] output, byte[] message, byte[] key, byte[] salt, byte[] personal)
     {
-      return _GenericHashSaltPersonal(out output, message, key, message.GetLongLength(0), BYTES_MAX, salt, personal);
+      output = new byte[BYTES_MAX];
+
+      return _GenericHashSaltPersonal(out output, output.GetLongLength(0), message, message.GetLongLength(0), key, BYTES_MAX, salt, personal);
     }
 
     [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_generichash", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenericHash(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
 
     [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_generichash_blake2b_salt_personal", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _GenericHashSaltPersonal(out byte[] output, byte[] message, byte[] key, long outputLenght, long inputLength, byte[] salt, byte[] personal);
+    private static extern int _GenericHashSaltPersonal(out byte[] output, long outputLength, byte[] message, long messageLen, byte[] key, long keyLength, byte[] salt, byte[] personal);
 
   }
 }
