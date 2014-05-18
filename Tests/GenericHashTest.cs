@@ -49,6 +49,17 @@ namespace Tests
     {
       byte[] output, key, message, personal, salt;
 
+      salt = Encoding.UTF8.GetBytes(new char[]{
+        '5', 'b', '6', 'b', '4', '1', 'e', 'd', '9', 'b', '3', '4', '3', 'f', 'e', '0'
+      });
+      personal = Encoding.UTF8.GetBytes(new char[]{
+        '5', '1', '2', '6', 'f', 'b', '2', 'a', '3', '7', '4', '0', '0', 'd', '2', 'a'
+      });
+
+      key = Encoding.UTF8.GetBytes(new char[] {
+        'k', 'e', 'y'
+      });
+
       output = null;
       key = GenericHash.GenerateKey();
       message = Encoding.UTF8.GetBytes("this is a message to hash with salt and personal");
