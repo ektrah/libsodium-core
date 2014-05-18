@@ -56,9 +56,7 @@ namespace Tests
         '5', '1', '2', '6', 'f', 'b', '2', 'a', '3', '7', '4', '0', '0', 'd', '2', 'a'
       });
 
-      key = Encoding.UTF8.GetBytes(new char[] {
-        'k', 'e', 'y'
-      });
+      key = GenericHash.GenerateKey();
 
       output = null;
       key = GenericHash.GenerateKey();
