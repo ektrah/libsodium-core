@@ -122,4 +122,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup Condition="$(OS) == 'Windows_NT'">
+    <PostBuildEvent>xcopy /y /r "$(TargetDir)Dependencies\*.dll" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(OS) != 'Windows_NT'">
+    <PostBuildEvent>cp -r $(TargetDir)Dependencies/*.dll .</PostBuildEvent>
+  </PropertyGroup>
 </Project>
