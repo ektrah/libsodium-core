@@ -47,25 +47,16 @@ namespace Tests
     [Test]
     public void GenericHashSaltPersonal()
     {
-      byte[] output, key, message, personal, salt;
+      string salt, personal, key;
 
-      salt = Encoding.UTF8.GetBytes(new char[]{
-        '5', 'b', '6', 'b', '4', '1', 'e', 'd', '9', 'b', '3', '4', '3', 'f', 'e', '0'
-      });
-      personal = Encoding.UTF8.GetBytes(new char[]{
-        '5', '1', '2', '6', 'f', 'b', '2', 'a', '3', '7', '4', '0', '0', 'd', '2', 'a'
-      });
+      salt = "5b6b41ed9b343fe0";
+      personal = "5126fb2a37400d2a";
+      key = "123456789112345";
 
-      key = GenericHash.GenerateKey();
+      string expected = "62d2997fd7787b8114154dc79e76e53f9f9e3a705aa83f2477555887cc9ba9a3a460674d7e2b999d75e9cc243c105362afd22920aa6c22d7e64cb16c939ea9cb";
+      string actual = Utilities.BinaryToHex(GenericHash.HashSaltPersonal ("message", key, salt, personal));
 
-      output = null;
-      key = GenericHash.GenerateKey();
-      message = Encoding.UTF8.GetBytes("this is a message to hash with salt and personal");
-      salt = Encoding.UTF8.GetBytes("put some salt");
-      personal = Encoding.UTF8.GetBytes("personal test");
-
-      Assert.AreEqual(1, GenericHash.HashSaltPersonal(out output, message, key, salt, personal));
-
+      Assert.AreEqual(expected, actual);
     }
   }
 }
