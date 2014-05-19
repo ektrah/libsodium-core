@@ -14,6 +14,10 @@ namespace Sodium
     private const int BYTES_MAX = 64;
     private const int KEY_BYTES_MIN = 16;
     private const int KEY_BYTES_MAX = 64;
+    private const int BLAKE2B_OUTBYTES = 64;
+    private const int BLAKE2B_KEYBYTES = 64;
+    private const int BLAKE2B_SALTBYTES = 16;
+    private const int BLAKE2B_PERSONALBYTES = 16;
 
     /// <summary>Generates a random 64 byte key.</summary>
     /// <returns>Returns a byte array with 64 random bytes</returns>
