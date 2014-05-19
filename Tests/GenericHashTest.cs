@@ -45,7 +45,7 @@ namespace Tests
     /// Generics the hash salt personal.
     /// </summary>
     [Test]
-    public void GenericHashSaltPersonalShouldFail()
+    public void GenericHashSaltPersonal()
     {
       byte[] output, key, message, personal, salt;
 
