@@ -4,7 +4,7 @@ Thank you for your interest in this project, on behalf of the authors and users,
 
 ### Using the issue tracker
 
-The [issue tracker](<%= config.issues %>) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following restrictions:
+The [issue tracker](https://github.com/adamcaudill/libsodium-net/issues?state=open) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following restrictions:
 
  * Please **do not** use the issue tracker for personal support requests (use [Stack Overflow](http://stackoverflow.com) or your preferred forum).
  * Please **do not** derail or troll issues. Keep the discussion on topic and respect the opinions of others.
