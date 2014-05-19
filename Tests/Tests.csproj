@@ -89,9 +89,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="nunit.framework">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="nunit.framework"/>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CryptoHashTest.cs" />
