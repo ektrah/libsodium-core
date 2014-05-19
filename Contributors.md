@@ -4,4 +4,4 @@ Those listed below have contributed to `libsodium-net`, and are the copyright ho
 
  * Adam Caudill <adam@adamcaudill.com>
  * Jestin Stoffel <jestin.stoffel@gmail.com>
- * Rodrigo Fraga
+ * Rodrigo Fraga <rodrigo.fraga@gmail.com>
