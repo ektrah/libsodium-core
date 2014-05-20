@@ -14,7 +14,7 @@ namespace Sodium
     private const int BYTES_MAX = 64;
     private const int KEY_BYTES_MIN = 16;
     private const int KEY_BYTES_MAX = 64;
-    private const int BLAKE2B_OUTBYTES = 64;
+    private const int OUT_BYTES = 64;
     private const int SALT_BYTES = 16;
     private const int PERSONAL_BYTES = 16;
 
@@ -124,7 +124,7 @@ namespace Sodium
       if (personal.Length != PERSONAL_BYTES)
         throw new ArgumentOutOfRangeException (string.Format ("Personal bytes must be {0} bytes in length.", PERSONAL_BYTES));
 
-      byte[] buffer = new byte[BLAKE2B_OUTBYTES];
+      byte[] buffer = new byte[OUT_BYTES];
 
       _GenericHashSaltPersonal(buffer, buffer.Length, message, message.LongLength, key, key.Length, salt, personal);
 
