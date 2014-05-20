@@ -51,7 +51,7 @@ namespace Tests
 
       salt = "5b6b41ed9b343fe0";
       personal = "5126fb2a37400d2a";
-      key = "123456789112345";
+      key = "1234567891123456";
 
       string expected = "62d2997fd7787b8114154dc79e76e53f9f9e3a705aa83f2477555887cc9ba9a3a460674d7e2b999d75e9cc243c105362afd22920aa6c22d7e64cb16c939ea9cb";
       string actual = Utilities.BinaryToHex(GenericHash.HashSaltPersonal ("message", key, salt, personal));
