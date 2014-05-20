@@ -54,7 +54,7 @@ namespace Tests
       key = "1234567891123456";
 
       string expected = "2a4ed94ed58eb8d099f52a5ebed051648cc34f29dccd0f25b215e28672b28de8f86a4666d60456ea93e25c5f1fbec1387d861e2b9ab498169a2ad2da3649f84b";
-      string actual = Utilities.BinaryToHex(GenericHash.HashSaltPersonal ("message", null, salt, personal));
+      string actual = Utilities.BinaryToHex(GenericHash.HashSaltPersonal ("message", key, salt, personal));
 
       Assert.AreEqual(expected, actual);
     }
