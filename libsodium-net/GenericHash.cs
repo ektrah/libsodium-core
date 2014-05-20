@@ -15,7 +15,6 @@ namespace Sodium
     private const int KEY_BYTES_MIN = 16;
     private const int KEY_BYTES_MAX = 64;
     private const int BLAKE2B_OUTBYTES = 64;
-    private const int BLAKE2B_KEYBYTES = 64;
     private const int BLAKE2B_SALTBYTES = 16;
     private const int BLAKE2B_PERSONALBYTES = 16;
 
@@ -116,8 +115,8 @@ namespace Sodium
       if (message == null || key == null || salt == null || personal == null)
         throw new ArgumentNullException("Message, key, salt or personal cannot be null");
 
-      if (key.Length == 0 || key.Length > BLAKE2B_KEYBYTES)
-        throw new ArgumentOutOfRangeException (string.Format ("Key must be {0} bytes in length.", BLAKE2B_KEYBYTES));
+      if (key.Length == 0 || key.Length > KEY_BYTES_MAX)
+        throw new ArgumentOutOfRangeException (string.Format ("Key must be {0} bytes in length.", KEY_BYTES_MAX));
 
       if (salt.Length == 0 || salt.Length > BLAKE2B_SALTBYTES)
         throw new ArgumentOutOfRangeException (string.Format ("Salt must be {0} bytes in length.", BLAKE2B_SALTBYTES));
