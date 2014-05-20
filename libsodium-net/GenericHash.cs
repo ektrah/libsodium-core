@@ -115,8 +115,11 @@ namespace Sodium
       if (message == null || salt == null || personal == null)
         throw new ArgumentNullException("Message, salt or personal cannot be null");
 
-      if (key.Length == 0 || key.Length > KEY_BYTES_MAX)
-        throw new ArgumentOutOfRangeException (string.Format ("Key must be {0} bytes in length.", KEY_BYTES_MAX));
+      if (key != null && (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN))
+        throw new ArgumentOutOfRangeException (string.Format ("key must be between {0} and {1} bytes in length.", KEY_BYTES_MIN, KEY_BYTES_MAX));
+
+      if (key == null)
+        key = new byte[0];
 
       if (salt.Length != SALT_BYTES)
         throw new ArgumentOutOfRangeException (string.Format ("Salt must be {0} bytes in length.", SALT_BYTES));
