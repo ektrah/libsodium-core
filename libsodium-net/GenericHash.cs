@@ -16,7 +16,7 @@ namespace Sodium
     private const int KEY_BYTES_MAX = 64;
     private const int BLAKE2B_OUTBYTES = 64;
     private const int BLAKE2B_SALTBYTES = 16;
-    private const int BLAKE2B_PERSONALBYTES = 16;
+    private const int PERSONAL_BYTES = 16;
 
     /// <summary>Generates a random 64 byte key.</summary>
     /// <returns>Returns a byte array with 64 random bytes</returns>
@@ -118,11 +118,11 @@ namespace Sodium
       if (key.Length == 0 || key.Length > KEY_BYTES_MAX)
         throw new ArgumentOutOfRangeException (string.Format ("Key must be {0} bytes in length.", KEY_BYTES_MAX));
 
-      if (salt.Length == 0 || salt.Length > BLAKE2B_SALTBYTES)
+      if (salt.Length != BLAKE2B_SALTBYTES)
         throw new ArgumentOutOfRangeException (string.Format ("Salt must be {0} bytes in length.", BLAKE2B_SALTBYTES));
 
-      if (personal.Length == 0 || personal.Length > BLAKE2B_PERSONALBYTES)
-        throw new ArgumentOutOfRangeException (string.Format ("Personal bytes must be {0} bytes in length.", BLAKE2B_PERSONALBYTES));
+      if (personal.Length != PERSONAL_BYTES)
+        throw new ArgumentOutOfRangeException (string.Format ("Personal bytes must be {0} bytes in length.", PERSONAL_BYTES));
 
       byte[] buffer = new byte[BLAKE2B_OUTBYTES];
 
