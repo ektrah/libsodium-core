@@ -138,7 +138,7 @@ namespace Sodium
     private static extern int _GenericHash(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
 
     [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_generichash_blake2b_salt_personal", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _GenericHashSaltPersonal(byte[] buffer, int bufferLength, byte[] message, long messageLen, byte[] key, int keyLength, byte[] salt, byte[] personal);
+    private static extern int _GenericHashSaltPersonal(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength, byte[] salt, byte[] personal);
 
   }
 }
