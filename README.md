@@ -119,7 +119,7 @@ Note: Only libsodium's simplified interface is currently supported; the streamin
 #### crypto_shorthash
 `Sodium.ShortHash.Hash()` - Short, high-speed hashing, currently implanted via [SipHash-2-4](https://en.wikipedia.org/wiki/SipHash) and produces an 8 byte hash.
 
-### crypto_generichash_blake2b_salt_personal
+#### crypto_generichash_blake2b_salt_personal
 `Sodium.GenericHash.HashSaltPersonal()` - Hash with salt, personal and optional key.
 
 ### Other
