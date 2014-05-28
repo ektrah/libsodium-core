@@ -44,7 +44,10 @@ namespace Sodium
       }
 
       var buffer = new byte[BYTES];
-      _Sign(buffer, message, message.Length, key);
+      if (SodiumCore.Is64)
+        _Sign64(buffer, message, message.Length, key);
+      else
+        _Sign86(buffer, message, message.Length, key);
 
       return buffer;
     }
@@ -80,15 +83,23 @@ namespace Sodium
           string.Format("signature must be {0} bytes in length.", BYTES));
       }
 
-      var ret = _Verify(signature, message, message.Length, key);
+      var ret = SodiumCore.Is64
+                  ? _Verify64(signature, message, message.Length, key)
+                  : _Verify86(signature, message, message.Length, key);
 
       return ret == 0;
     }
 
-    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_onetimeauth", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Sign(byte[] buffer, byte[] message, long messageLength, byte[] key);
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_onetimeauth", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Sign64(byte[] buffer, byte[] message, long messageLength, byte[] key);
 
-    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_onetimeauth_verify", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_onetimeauth_verify", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Verify64(byte[] signature, byte[] message, long messageLength, byte[] key);
+
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_onetimeauth", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Sign86(byte[] buffer, byte[] message, long messageLength, byte[] key);
+
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_onetimeauth_verify", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Verify86(byte[] signature, byte[] message, long messageLength, byte[] key);
   }
 }
