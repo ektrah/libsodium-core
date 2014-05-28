@@ -147,6 +147,8 @@ There are a small number of additional methods that extended or simplify the usa
 
 This library can be built in Visual Studio 2010, Xamarin Studio (MonoDevelop 3.x supported), and targets .NET 4.0; it is compiled against libsodium v0.5.0.
 
+On OSX & Linux, your copy of `libsodium` must be compiled for the same architecture as your copy of Mono. If you are running a 32bit process, your copy of `libsodium` must be 32bit as well.
+
 ## Notes
 
 Any method that takes a String, has an overload that accepts a byte array; Strings are assumed to be UTF8; if this is not the case, please convert it to bytes yourself and use the overloads that accept byte arrays.
