@@ -14,6 +14,9 @@ namespace Sodium
     private const int BYTES_MAX = 64;
     private const int KEY_BYTES_MIN = 16;
     private const int KEY_BYTES_MAX = 64;
+    private const int OUT_BYTES = 64;
+    private const int SALT_BYTES = 16;
+    private const int PERSONAL_BYTES = 16;
 
     /// <summary>Generates a random 64 byte key.</summary>
     /// <returns>Returns a byte array with 64 random bytes</returns>
@@ -86,7 +89,56 @@ namespace Sodium
       return buffer;
     }
 
+    /// <summary>
+    /// Generates a hash based on a key, salt and personal strings
+    /// </summary>
+    /// <returns><c>byte</c> hashed message</returns>
+    /// <param name="message">Message.</param>
+    /// <param name="key">Key.</param>
+    /// <param name="salt">Salt.</param>
+    /// <param name="personal">Personal.</param>
+    public static byte[] HashSaltPersonal(string message, string key, string salt, string personal)
+    {
+      return HashSaltPersonal(Encoding.UTF8.GetBytes(message), Encoding.UTF8.GetBytes(key), Encoding.UTF8.GetBytes(salt), Encoding.UTF8.GetBytes(personal));
+    }
+
+    /// <summary>
+    /// Generates a hash based on a key, salt and personal bytes
+    /// </summary>
+    /// <returns><c>byte</c> hashed message</returns>
+    /// <param name="message">Message.</param>
+    /// <param name="key">Key.</param>
+    /// <param name="salt">Salt.</param>
+    /// <param name="personal">Personal.</param>
+    public static byte[] HashSaltPersonal(byte[] message, byte[] key, byte[] salt, byte[] personal)
+    {
+      if (message == null || salt == null || personal == null)
+        throw new ArgumentNullException("Message, salt or personal cannot be null");
+
+      if (key != null && (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN))
+        throw new ArgumentOutOfRangeException (string.Format ("key must be between {0} and {1} bytes in length.", KEY_BYTES_MIN, KEY_BYTES_MAX));
+
+      if (key == null)
+        key = new byte[0];
+
+      if (salt.Length != SALT_BYTES)
+        throw new ArgumentOutOfRangeException (string.Format ("Salt must be {0} bytes in length.", SALT_BYTES));
+
+      if (personal.Length != PERSONAL_BYTES)
+        throw new ArgumentOutOfRangeException (string.Format ("Personal bytes must be {0} bytes in length.", PERSONAL_BYTES));
+
+      byte[] buffer = new byte[OUT_BYTES];
+
+      _GenericHashSaltPersonal(buffer, buffer.Length, message, message.LongLength, key, key.Length, salt, personal);
+
+      return buffer;
+    }
+
     [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_generichash", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenericHash(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
+
+    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_generichash_blake2b_salt_personal", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _GenericHashSaltPersonal(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength, byte[] salt, byte[] personal);
+
   }
 }
