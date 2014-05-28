@@ -41,7 +41,11 @@ namespace Sodium
     public static byte[] Hash(byte[] message)
     {
       var buffer = new byte[SHA512_BYTES];
-      _CryptoHash(buffer, message, message.Length);
+
+      if (SodiumCore.Is64)
+        _CryptoHash64(buffer, message, message.Length);
+      else
+        _CryptoHash86(buffer, message, message.Length);
 
       return buffer;
     }
@@ -71,7 +75,11 @@ namespace Sodium
     public static byte[] SHA512(byte[] message)
     {
       var buffer = new byte[SHA512_BYTES];
-      _SHA512(buffer, message, message.Length);
+
+      if (SodiumCore.Is64)
+        _SHA51264(buffer, message, message.Length);
+      else
+        _SHA51286(buffer, message, message.Length);
 
       return buffer;
     }
@@ -101,18 +109,31 @@ namespace Sodium
     public static byte[] SHA256(byte[] message)
     {
       var buffer = new byte[SHA256_BYTES];
-      _SHA256(buffer, message, message.Length);
+
+      if (SodiumCore.Is64)
+        _SHA25664(buffer, message, message.Length);
+      else
+        _SHA25686(buffer, message, message.Length);
 
       return buffer;
     }
 
-    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_hash", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _CryptoHash(byte[] buffer, byte[] message, long length);
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_hash", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _CryptoHash64(byte[] buffer, byte[] message, long length);
 
-    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_hash_sha512", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _SHA512(byte[] buffer, byte[] message, long length);
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_hash_sha512", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _SHA51264(byte[] buffer, byte[] message, long length);
 
-    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_hash_sha256", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _SHA256(byte[] buffer, byte[] message, long length);
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_hash_sha256", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _SHA25664(byte[] buffer, byte[] message, long length);
+
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_hash", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _CryptoHash86(byte[] buffer, byte[] message, long length);
+
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_hash_sha512", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _SHA51286(byte[] buffer, byte[] message, long length);
+
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_hash_sha256", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _SHA25686(byte[] buffer, byte[] message, long length);
   }
 }

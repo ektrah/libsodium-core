@@ -63,7 +63,11 @@ namespace Sodium
       }
 
       var buffer = new byte[message.Length];
-      var ret = _Encrypt(buffer, message, message.Length, nonce, key);
+      int ret;
+
+      ret = SodiumCore.Is64
+              ? _Encrypt64(buffer, message, message.Length, nonce, key)
+              : _Encrypt86(buffer, message, message.Length, nonce, key);
 
       if (ret != 0)
       {
@@ -109,7 +113,10 @@ namespace Sodium
       }
 
       var buffer = new byte[cipherText.Length];
-      var ret = _Encrypt(buffer, cipherText, cipherText.Length, nonce, key);
+
+      var ret = SodiumCore.Is64
+                  ? _Encrypt64(buffer, cipherText, cipherText.Length, nonce, key)
+                  : _Encrypt86(buffer, cipherText, cipherText.Length, nonce, key);
 
       if (ret != 0)
       {
@@ -119,7 +126,10 @@ namespace Sodium
       return buffer;
     }
 
-    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_stream_xor", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Encrypt(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_stream_xor", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Encrypt64(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
+
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_stream_xor", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Encrypt86(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
   }
 }

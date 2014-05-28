@@ -22,7 +22,10 @@ namespace Sodium
       var publicKey = new byte[PUBLIC_KEY_BYTES];
       var privateKey = new byte[SECRET_KEY_BYTES];
 
-      _GenerateKeyPair(publicKey, privateKey);
+      if (SodiumCore.Is64)
+        _GenerateKeyPair64(publicKey, privateKey);
+      else
+        _GenerateKeyPair86(publicKey, privateKey);
 
       return new KeyPair(publicKey, privateKey);
     }
@@ -42,7 +45,10 @@ namespace Sodium
           string.Format("seed must be {0} bytes in length.", SEED_BYTES));
       }
 
-      _GenerateKeyPair(publicKey, privateKey, seed);
+      if (SodiumCore.Is64)
+        _GenerateKeyPair64(publicKey, privateKey, seed);
+      else
+        _GenerateKeyPair86(publicKey, privateKey, seed);
 
       return new KeyPair(publicKey, privateKey);
     }
@@ -71,7 +77,11 @@ namespace Sodium
 
       var buffer = new byte[message.Length + BYTES];
       long bufferLength = 0;
-      _Sign(buffer, ref bufferLength, message, message.Length, key);
+
+      if (SodiumCore.Is64)
+        _Sign64(buffer, ref bufferLength, message, message.Length, key);
+      else
+        _Sign86(buffer, ref bufferLength, message, message.Length, key);
 
       var final = new byte[bufferLength];
       Array.Copy(buffer, 0, final, 0, bufferLength);
@@ -95,7 +105,9 @@ namespace Sodium
       var buffer = new byte[signedMessage.Length];
       long bufferLength = 0;
 
-      var ret = _Verify(buffer, ref bufferLength, signedMessage, signedMessage.Length, key);
+      var ret = SodiumCore.Is64
+                  ? _Verify64(buffer, ref bufferLength, signedMessage, signedMessage.Length, key)
+                  : _Verify86(buffer, ref bufferLength, signedMessage, signedMessage.Length, key);
 
       if (ret != 0)
       {
@@ -108,16 +120,28 @@ namespace Sodium
       return final;
     }
 
-    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_sign_keypair", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _GenerateKeyPair(byte[] publicKey, byte[] secretKey);
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_sign_keypair", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _GenerateKeyPair64(byte[] publicKey, byte[] secretKey);
 
-    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_sign_seed_keypair", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _GenerateKeyPair(byte[] publicKey, byte[] secretKey, byte[] seed);
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_sign_seed_keypair", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _GenerateKeyPair64(byte[] publicKey, byte[] secretKey, byte[] seed);
 
-    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_sign", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Sign(byte[] buffer, ref long bufferLength, byte[] message, long messageLength, byte[] key);
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_sign", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Sign64(byte[] buffer, ref long bufferLength, byte[] message, long messageLength, byte[] key);
 
-    [DllImport(SodiumCore.LIBRARY_NAME, EntryPoint = "crypto_sign_open", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Verify(byte[] buffer, ref long bufferLength, byte[] signedMessage, long signedMessageLength, byte[] key);
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_sign_open", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Verify64(byte[] buffer, ref long bufferLength, byte[] signedMessage, long signedMessageLength, byte[] key);
+
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_sign_keypair", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _GenerateKeyPair86(byte[] publicKey, byte[] secretKey);
+
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_sign_seed_keypair", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _GenerateKeyPair86(byte[] publicKey, byte[] secretKey, byte[] seed);
+
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_sign", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Sign86(byte[] buffer, ref long bufferLength, byte[] message, long messageLength, byte[] key);
+
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_sign_open", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Verify86(byte[] buffer, ref long bufferLength, byte[] signedMessage, long signedMessageLength, byte[] key);
   }
 }
