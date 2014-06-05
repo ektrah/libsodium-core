@@ -2,6 +2,40 @@
 
 Thank you for your interest in this project, on behalf of the authors and users, we appreciate your contribution. This document outlines some of the basic things that you need to know to save your time and ours. The goal here is to ensure that we all follow the same processes, methods, and standards.
 
+### Contributing Process Overview
+
+* Make your changes on a feature branch
+* Verify if all tests pass locally
+* Create a pull request (Travis CI will kick in)
+* We will then review your code, CI logs and provide feedback
+* Code will then be merged after all requirements are met
+
+### Coding
+
+#### Style
+
+In general, we follow standard C# style with one notable exception: no tabs, 2 space indent. When making changes, please try to match the style of the existing code.
+
+Please if you see compiler warnings fix them.
+
+#### Security
+
+As the purpose of this library is to make it easier for developers to implement secure crypto, all changes must meet the following requirements:
+
+ * Must not introduce a weakness, or potential weakness. If there is doubt, a change won't be merged.
+ * Must not add confusion to the interface. Usability is critical.
+ * Must not reference libraries beyond [libsodium](https://github.com/jedisct1/libsodium) and those shipped with the .NET Framework.
+ * Code must be clear, readable, well commented. Code the isn't clear makes audits more difficult.
+ * Must not include crypto implementations. All implementations must be in `libsodium`.
+
+#### Unit Tests
+
+Unit tests must be present for all functionality that calls into `libsodium`, and should be present for functionality in this project. When possible, the test values from `libsodium` should be used. Unit tests are ran as part of the CI process, and must pass for a change to be merged.
+
+#### Multi-Platform
+
+Keep in mind that `libsodium-net` is multi-platform, so it's easy to break functionality in other platform you can't test. Keep an eye on travis as it will build for osX and Linux.
+
 ### Using the issue tracker
 
 The [issue tracker](https://github.com/adamcaudill/libsodium-net/issues?state=open) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following restrictions:
@@ -54,31 +88,3 @@ Good pull requests (patches, improvements, new features) are a fantastic help. T
 If this is your first contribution, please add your name and email address to the end of the `Contributors.md` file.
 
 Pull requests will not be merged if we do not have clean builds from our CI system. In case of issues with the CI system, the merge will be delayed until the system is corrected.
-
-#### Style
-
-In general, we follow standard C# style with one notable exception: no tabs, 2 space indent. When making changes, please try to match the style of the existing code.
-
-#### Unit Tests
-
-Unit tests must be present for all functionality that calls into `libsodium`, and should be present for functionality in this project. When possible, the test values from `libsodium` should be used. Unit tests are ran as part of the CI process, and must pass for a change to be merged.
-
-#### Security
-
-As the purpose of this library is to make it easier for developers to implement secure crypto, all changes must meet the following requirements:
-
- * Must not introduce a weakness, or potential weakness. If there is doubt, a change won't be merged.
- * Must not add confusion to the interface. Usability is critical.
- * Must not reference libraries beyond [libsodium](https://github.com/jedisct1/libsodium) and those shipped with the .NET Framework.
- * Code must be clear, readable, well commented. Code the isn't clear makes audits more difficult.
- * Must not include crypto implementations. All implementations must be in `libsodium`.
-
-#### Process Overview
-
-When a pull request is received, one of the developers with commit access will review your change, and ask for more information if necessary. If the change meets the goals of the project, and doesn't immediately violate any requirements, that developer will then review the code and leave feedback and verify that all requirements are met.
-
-Once any identified issues are addressed, the CI system's build log will be checked to verify that all tests passed, and that no warnings are introduced. Once everything is confirmed to be right, the request can then be merged at the developers discretion.
-
-For small code changes or documentation changes, changes will likely be merged within a day. If the change requires a more detailed review, or raises potential security issues that need to be discussed, it may take quite a bit longer.
-
-Requests may be rejected for various reasons, if a request is rejected a detailed explanation will be provided.
