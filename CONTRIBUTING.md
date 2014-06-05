@@ -10,7 +10,9 @@ Thank you for your interest in this project, on behalf of the authors and users,
 * We will then review your code, CI logs and provide feedback
 * Code will then be merged after all requirements are met
 
-### Coding Style
+### Coding
+
+#### Style
 
 In general, we follow standard C# style with one notable exception: no tabs, 2 space indent. When making changes, please try to match the style of the existing code.
 
