@@ -75,10 +75,8 @@ As the purpose of this library is to make it easier for developers to implement 
 
 #### Process Overview
 
-When a pull request is received, one of the developers with commit access will review your change, and ask for more information if necessary. If the change meets the goals of the project, and doesn't immediately violate any requirements, that developer will then review the code and leave feedback and verify that all requirements are met.
-
-Once any identified issues are addressed, the CI system's build log will be checked to verify that all tests passed, and that no warnings are introduced. Once everything is confirmed to be right, the request can then be merged at the developers discretion.
-
-For small code changes or documentation changes, changes will likely be merged within a day. If the change requires a more detailed review, or raises potential security issues that need to be discussed, it may take quite a bit longer.
-
-Requests may be rejected for various reasons, if a request is rejected a detailed explanation will be provided.
+* Make your changes on a feature branch
+* Verify if all tests pass locally
+* Create a pull request (Travis CI will kick in, check Travis CI)
+* We will then review your code, CI logs and provide feedback
+* Code will then be merged after all requirements are met
