@@ -2,6 +2,14 @@
 
 Thank you for your interest in this project, on behalf of the authors and users, we appreciate your contribution. This document outlines some of the basic things that you need to know to save your time and ours. The goal here is to ensure that we all follow the same processes, methods, and standards.
 
+### Contributing Process Overview
+
+* Make your changes on a feature branch
+* Verify if all tests pass locally
+* Create a pull request (Travis CI will kick in, check Travis CI)
+* We will then review your code, CI logs and provide feedback
+* Code will then be merged after all requirements are met
+
 ### Using the issue tracker
 
 The [issue tracker](https://github.com/adamcaudill/libsodium-net/issues?state=open) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following restrictions:
@@ -72,11 +80,3 @@ As the purpose of this library is to make it easier for developers to implement 
  * Must not reference libraries beyond [libsodium](https://github.com/jedisct1/libsodium) and those shipped with the .NET Framework.
  * Code must be clear, readable, well commented. Code the isn't clear makes audits more difficult.
  * Must not include crypto implementations. All implementations must be in `libsodium`.
-
-#### Process Overview
-
-* Make your changes on a feature branch
-* Verify if all tests pass locally
-* Create a pull request (Travis CI will kick in, check Travis CI)
-* We will then review your code, CI logs and provide feedback
-* Code will then be merged after all requirements are met
