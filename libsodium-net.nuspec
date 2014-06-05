@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>libsodium-net</id>
+        <version>$version$beta</version>
+        <title>libsodium for .NET</title>
+        <authors>adamcaudill</authors>
+        <licenseUrl>https://raw.githubusercontent.com/adamcaudill/libsodium-net/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/adamcaudill/libsodium-net</projectUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>A secure cryptographic library</description>
+        <copyright>Copyright (c) 2013 - 2014 Adam Caudill &amp; Contributors</copyright>
+        <language>en-US</language>
+    </metadata>
+    <files>
+        <file src="libsodium-net\bin\Release\libsodium-64.dll" target="lib\libsodium-64.dll" />
+        <file src="libsodium-net\bin\Release\libsodium.dll" target="lib\libsodium.dll" />
+        <file src="libsodium-net\bin\Release\Sodium.dll" target="lib\Sodium.dll" />
+        <file src="libsodium-net\bin\Release\sodium.dll.config" target="lib\sodium.dll.config" />
+    </files>
+</package>
