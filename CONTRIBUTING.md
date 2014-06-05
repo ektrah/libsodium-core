@@ -26,6 +26,10 @@ As the purpose of this library is to make it easier for developers to implement 
  * Code must be clear, readable, well commented. Code the isn't clear makes audits more difficult.
  * Must not include crypto implementations. All implementations must be in `libsodium`.
 
+#### Unit Tests
+
+Unit tests must be present for all functionality that calls into `libsodium`, and should be present for functionality in this project. When possible, the test values from `libsodium` should be used. Unit tests are ran as part of the CI process, and must pass for a change to be merged.
+
 ### Using the issue tracker
 
 The [issue tracker](https://github.com/adamcaudill/libsodium-net/issues?state=open) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following restrictions:
@@ -78,7 +82,3 @@ Good pull requests (patches, improvements, new features) are a fantastic help. T
 If this is your first contribution, please add your name and email address to the end of the `Contributors.md` file.
 
 Pull requests will not be merged if we do not have clean builds from our CI system. In case of issues with the CI system, the merge will be delayed until the system is corrected.
-
-#### Unit Tests
-
-Unit tests must be present for all functionality that calls into `libsodium`, and should be present for functionality in this project. When possible, the test values from `libsodium` should be used. Unit tests are ran as part of the CI process, and must pass for a change to be merged.
