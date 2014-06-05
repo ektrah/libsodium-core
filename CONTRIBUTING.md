@@ -6,7 +6,7 @@ Thank you for your interest in this project, on behalf of the authors and users,
 
 * Make your changes on a feature branch
 * Verify if all tests pass locally
-* Create a pull request (Travis CI will kick in, check Travis CI)
+* Create a pull request (Travis CI will kick in)
 * We will then review your code, CI logs and provide feedback
 * Code will then be merged after all requirements are met
 
