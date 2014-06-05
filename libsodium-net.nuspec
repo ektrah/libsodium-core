@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>libsodium-net</id>
-        <version>0.4.0beta</version>
+        <version>0.4.0-beta</version>
         <title>libsodium for .NET</title>
         <authors>adamcaudill</authors>
         <licenseUrl>https://raw.githubusercontent.com/adamcaudill/libsodium-net/master/LICENSE</licenseUrl>
@@ -13,9 +13,9 @@
         <language>en-US</language>
     </metadata>
     <files>
-        <file src="libsodium-net\bin\Release\libsodium-64.dll" target="lib\libsodium-64.dll" />
-        <file src="libsodium-net\bin\Release\libsodium.dll" target="lib\libsodium.dll" />
-        <file src="libsodium-net\bin\Release\Sodium.dll" target="lib\Sodium.dll" />
-        <file src="libsodium-net\bin\Release\sodium.dll.config" target="lib\sodium.dll.config" />
+        <file src="libsodium-net\bin\Release\libsodium-64.dll" target="lib\Net40\libsodium-64.dll" />
+        <file src="libsodium-net\bin\Release\libsodium.dll" target="lib\Net40\libsodium.dll" />
+        <file src="libsodium-net\bin\Release\Sodium.dll" target="lib\Net40\Sodium.dll" />
+        <file src="libsodium-net\bin\Release\sodium.dll.config" target="lib\Net40\sodium.dll.config" />
     </files>
 </package>
