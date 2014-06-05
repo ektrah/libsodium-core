@@ -16,6 +16,16 @@ In general, we follow standard C# style with one notable exception: no tabs, 2 s
 
 Please if you see compiler warnings fix them.
 
+#### Security
+
+As the purpose of this library is to make it easier for developers to implement secure crypto, all changes must meet the following requirements:
+
+ * Must not introduce a weakness, or potential weakness. If there is doubt, a change won't be merged.
+ * Must not add confusion to the interface. Usability is critical.
+ * Must not reference libraries beyond [libsodium](https://github.com/jedisct1/libsodium) and those shipped with the .NET Framework.
+ * Code must be clear, readable, well commented. Code the isn't clear makes audits more difficult.
+ * Must not include crypto implementations. All implementations must be in `libsodium`.
+
 ### Using the issue tracker
 
 The [issue tracker](https://github.com/adamcaudill/libsodium-net/issues?state=open) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following restrictions:
@@ -72,13 +82,3 @@ Pull requests will not be merged if we do not have clean builds from our CI syst
 #### Unit Tests
 
 Unit tests must be present for all functionality that calls into `libsodium`, and should be present for functionality in this project. When possible, the test values from `libsodium` should be used. Unit tests are ran as part of the CI process, and must pass for a change to be merged.
-
-#### Security
-
-As the purpose of this library is to make it easier for developers to implement secure crypto, all changes must meet the following requirements:
-
- * Must not introduce a weakness, or potential weakness. If there is doubt, a change won't be merged.
- * Must not add confusion to the interface. Usability is critical.
- * Must not reference libraries beyond [libsodium](https://github.com/jedisct1/libsodium) and those shipped with the .NET Framework.
- * Code must be clear, readable, well commented. Code the isn't clear makes audits more difficult.
- * Must not include crypto implementations. All implementations must be in `libsodium`.
