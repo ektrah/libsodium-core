@@ -32,6 +32,10 @@ As the purpose of this library is to make it easier for developers to implement 
 
 Unit tests must be present for all functionality that calls into `libsodium`, and should be present for functionality in this project. When possible, the test values from `libsodium` should be used. Unit tests are ran as part of the CI process, and must pass for a change to be merged.
 
+#### Multi-Platform
+
+Keep in mind that `libsodium-net` is multi-platform, so it's easy to break functionality in other platform you can't test. Keep an eye on travis as it will build for osX and Linux.
+
 ### Using the issue tracker
 
 The [issue tracker](https://github.com/adamcaudill/libsodium-net/issues?state=open) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following restrictions:
