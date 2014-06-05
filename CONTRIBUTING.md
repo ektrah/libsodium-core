@@ -10,6 +10,12 @@ Thank you for your interest in this project, on behalf of the authors and users,
 * We will then review your code, CI logs and provide feedback
 * Code will then be merged after all requirements are met
 
+### Coding Style
+
+In general, we follow standard C# style with one notable exception: no tabs, 2 space indent. When making changes, please try to match the style of the existing code.
+
+Please if you see compiler warnings fix them.
+
 ### Using the issue tracker
 
 The [issue tracker](https://github.com/adamcaudill/libsodium-net/issues?state=open) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following restrictions:
@@ -62,10 +68,6 @@ Good pull requests (patches, improvements, new features) are a fantastic help. T
 If this is your first contribution, please add your name and email address to the end of the `Contributors.md` file.
 
 Pull requests will not be merged if we do not have clean builds from our CI system. In case of issues with the CI system, the merge will be delayed until the system is corrected.
-
-#### Style
-
-In general, we follow standard C# style with one notable exception: no tabs, 2 space indent. When making changes, please try to match the style of the existing code.
 
 #### Unit Tests
 
