@@ -13,10 +13,18 @@ namespace Sodium
     /// </summary>
     /// <param name="data">Data to be encoded</param>
     /// <returns>Hex-encoded string, lowercase.</returns>
+    /// <remarks>Bit fiddling by CodeInChaos</remarks>
     public static string BinaryToHex(byte[] data)
     {
-      //TODO: Find a faster version of this...
-      return string.Concat(data.Select(b => b.ToString("x2")));
+      char[] c = new char[data.Length * 2];
+      int b;
+      for (int i = 0; i < data.Length; i++) {
+          b = data[i] >> 4;
+          c[i * 2] = (char)(55 + b + (((b-10)>>31)&-7));
+          b = data[i] & 0xF;
+          c[i * 2 + 1] = (char)(55 + b + (((b-10)>>31)&-7));
+        }
+      return new string(c);
     }
 
     /// <summary>
