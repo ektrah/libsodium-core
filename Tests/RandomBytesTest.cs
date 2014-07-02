@@ -14,7 +14,7 @@ namespace Tests
     /// Does SodiumCore.GetRandomBytes() return something
     /// </summary>
     [Test]
-    public void GenerateBytesTest()
+    public void GetRandomBytesTest()
     {
       byte[] v16, v32, v64;
 
