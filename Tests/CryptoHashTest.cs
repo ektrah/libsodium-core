@@ -32,7 +32,7 @@ namespace Tests
     [Test]
     public void CryptoHashArrayTest()
     {
-      var actual = CryptoHash.Hash(Encoding.ASCII.GetBytes("Adam Caudill"));
+      var actual = CryptoHash.Hash(Encoding.UTF8.GetBytes("Adam Caudill"));
       CollectionAssert.AreEqual(Utilities.HexToBinary(SHA512_HASH), actual);
     }
 
@@ -52,7 +52,7 @@ namespace Tests
     [Test]
     public void CryptoHashSHA512ArrayTest()
     {
-      var actual = CryptoHash.SHA512(Encoding.ASCII.GetBytes("Adam Caudill"));
+      var actual = CryptoHash.SHA512(Encoding.UTF8.GetBytes("Adam Caudill"));
       CollectionAssert.AreEqual(Utilities.HexToBinary(SHA512_HASH), actual);
     }
 
@@ -72,7 +72,7 @@ namespace Tests
     [Test]
     public void CryptoHashSHA256ArrayTest()
     {
-      var actual = CryptoHash.SHA256(Encoding.ASCII.GetBytes("Adam Caudill"));
+      var actual = CryptoHash.SHA256(Encoding.UTF8.GetBytes("Adam Caudill"));
       CollectionAssert.AreEqual(Utilities.HexToBinary(SHA256_HASH), actual);
     }
   }

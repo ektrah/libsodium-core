@@ -26,7 +26,7 @@ namespace Tests
     public void GenericHashNoKey()
     {
       var expected = Utilities.HexToBinary("53e27925e5786abe74e6bb7004980a6a38a8da2478efa1b6b2ae73964cfe4876");
-      var actual = GenericHash.Hash(Encoding.ASCII.GetBytes("Adam Caudill"), null, 32);
+      var actual = GenericHash.Hash(Encoding.UTF8.GetBytes("Adam Caudill"), null, 32);
       CollectionAssert.AreEqual(expected, actual);
     }
 

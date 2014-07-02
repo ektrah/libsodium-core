@@ -36,9 +36,9 @@ namespace Tests
     {
       var expected = Utilities.HexToBinary("00000000000000000000000000000000b58d3c3e5ae78770b7db54e29e3885138a2f1ddb738f2309d9b38164");
       var actual = SecretBox.Create(
-        Encoding.ASCII.GetBytes("Adam Caudill"),
-        Encoding.ASCII.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
-        Encoding.ASCII.GetBytes("12345678901234567890123456789012"));
+        Encoding.UTF8.GetBytes("Adam Caudill"),
+        Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
+        Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -51,8 +51,8 @@ namespace Tests
       var expected = "Adam Caudill";
       var actual = Encoding.UTF8.GetString(SecretBox.Open(
         Utilities.HexToBinary("00000000000000000000000000000000b58d3c3e5ae78770b7db54e29e3885138a2f1ddb738f2309d9b38164"),
-        Encoding.ASCII.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
-        Encoding.ASCII.GetBytes("12345678901234567890123456789012")));
+        Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
+        Encoding.UTF8.GetBytes("12345678901234567890123456789012")));
       Assert.AreEqual(expected, actual);
     }
   }
