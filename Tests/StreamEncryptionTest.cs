@@ -36,10 +36,10 @@ namespace Tests
     {
       var expected = Utilities.HexToBinary("c7b7f04c00e14b02dd56c78c");
       var actual = StreamEncryption.Encrypt(
-        Encoding.ASCII.GetBytes("Adam Caudill"),
-        Encoding.ASCII.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
-        Encoding.ASCII.GetBytes("12345678901234567890123456789012"));
-      CollectionAssert.AreEqual(expected, actual);
+        Encoding.UTF8.GetBytes("Adam Caudill"),
+        Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
+        Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
+      Assert.AreEqual(expected, actual);
     }
 
     /// <summary>
@@ -51,8 +51,8 @@ namespace Tests
       var expected = "Adam Caudill";
       var actual = Encoding.UTF8.GetString(StreamEncryption.Decrypt(
         Utilities.HexToBinary("c7b7f04c00e14b02dd56c78c"),
-        Encoding.ASCII.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
-        Encoding.ASCII.GetBytes("12345678901234567890123456789012")));
+        Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
+        Encoding.UTF8.GetBytes("12345678901234567890123456789012")));
       Assert.AreEqual(expected, actual);
     }
   }
