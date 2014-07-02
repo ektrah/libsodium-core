@@ -19,16 +19,18 @@ namespace Tests
     //  Private Key: d4c8438482d5d103a2315251a5eed7c46017864a02ddc4c8b03f0ede8cb3ef9b
     
     /// <summary>
-    /// Does PublicKeyBox.GenerateKeyPair() return... something.
+    /// Keys must not be null and size is 32
     /// </summary>
     [Test]
-    public void GenerateKeyTest()
+    public void GenerateKeyPairTest()
     {
-      var actual = PublicKeyBox.GenerateKeyPair();
+      KeyPair aliceKeypair = PublicKeyBox.GenerateKeyPair();
 
-      //need a better test
-      Assert.IsNotNull(actual.PrivateKey);
-      Assert.IsNotNull(actual.PublicKey);
+      Assert.IsNotNull(aliceKeypair.PrivateKey);
+      Assert.IsNotNull(aliceKeypair.PublicKey);
+
+      Assert.AreEqual(32, aliceKeypair.PrivateKey.Length);
+      Assert.AreEqual(32, aliceKeypair.PublicKey.Length);
     }
 
     /// <summary>
