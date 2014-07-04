@@ -19,33 +19,35 @@ namespace Tests
     //  Private Key: d4c8438482d5d103a2315251a5eed7c46017864a02ddc4c8b03f0ede8cb3ef9b
     
     /// <summary>
-    /// Does PublicKeyBox.GenerateKeyPair() return... something.
+    /// Keys must not be null and size is 32
     /// </summary>
     [Test]
-    public void GenerateKeyTest()
+    public void GenerateKeyPairTest()
     {
-      var actual = PublicKeyBox.GenerateKeyPair();
+      KeyPair aliceKeypair = PublicKeyBox.GenerateKeyPair();
 
-      //need a better test
-      Assert.IsNotNull(actual.PrivateKey);
-      Assert.IsNotNull(actual.PublicKey);
+      Assert.IsNotNull(aliceKeypair.PrivateKey);
+      Assert.IsNotNull(aliceKeypair.PublicKey);
+
+      Assert.AreEqual(32, aliceKeypair.PrivateKey.Length);
+      Assert.AreEqual(32, aliceKeypair.PublicKey.Length);
     }
 
     /// <summary>
     /// Does PublicKeyBox.GenerateKeyPair(privateKey) return the rigt public key
     /// </summary>
     [Test]
-    public void GenerateKeyFromPrivateTest()
+    public void GenerateKeyPairFromPrivateTest()
     {
       var actual = PublicKeyBox.GenerateKeyPair(Utilities.HexToBinary("2a5c92fac62514f793c0bfd374f629a138c5702793a32c61dadc593728a15975"));
       CollectionAssert.AreEqual(Utilities.HexToBinary("753cb95919b15b76654b1969c554a4aaf8334402ef1468cb40a602b9c9fd2c13"), actual.PublicKey);
     }
 
     /// <summary>
-    /// Does PublicKeyBox.Sign() return the expected value?
+    /// Does PublicKeyBox.Create creates the right data?
     /// </summary>
     [Test]
-    public void SimpleAuthTest()
+    public void SimpleCreateTest()
     {
       var expected = Utilities.HexToBinary("00000000000000000000000000000000aed04284c55860ad0f6379f235cc2cb8c32aba7a811b35cfac94f64d");
       var actual = PublicKeyBox.Create(
@@ -57,10 +59,10 @@ namespace Tests
     }
 
     /// <summary>
-    /// Does PublicKeyBox.Verify() return the expected value?
+    /// Does PublicKeyBox.Open() return the expected value?
     /// </summary>
     [Test]
-    public void SimpleVerifyTest()
+    public void SimpleOpenTest()
     {
       var expected = Encoding.UTF8.GetBytes("Adam Caudill");
       var actual = PublicKeyBox.Open(
