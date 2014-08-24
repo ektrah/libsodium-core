@@ -13,7 +13,7 @@ namespace Sodium
     private const int PUBLIC_KEY_BYTES = 32;
     private const int SECRET_KEY_BYTES = 32;
     private const int NONCE_BYTES = 24;
-    private const int ZERO_BYTES = 32;
+    private const int MAC_BYTES = 16;
 
     /// <summary>Creates a new key pair based on a random seed.</summary>
     /// <returns></returns>
@@ -89,14 +89,10 @@ namespace Sodium
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
       }
 
-      //pad the message, to start with ZERO_BYTES null bytes
-      var paddedMessage = new byte[message.Length + ZERO_BYTES];
-      Array.Copy(message, 0, paddedMessage, ZERO_BYTES, message.Length);
-
-      var buffer = new byte[paddedMessage.Length];
+      var buffer = new byte[message.Length + MAC_BYTES];
       var ret = SodiumCore.Is64
-                  ? _Create64(buffer, paddedMessage, paddedMessage.Length, nonce, publicKey, secretKey)
-                  : _Create86(buffer, paddedMessage, paddedMessage.Length, nonce, publicKey, secretKey);
+                  ? _Create64(buffer, message, message.Length, nonce, publicKey, secretKey)
+                  : _Create86(buffer, message, message.Length, nonce, publicKey, secretKey);
 
       if (ret != 0)
       {
@@ -135,7 +131,32 @@ namespace Sodium
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
       }
 
-      var buffer = new byte[cipherText.Length];
+      //check to see if there are MAC_BYTES of leading nulls, if so, trim.
+      //this is required due to an error in older versions.
+      if (cipherText[0] == 0)
+      {
+        //check to see if trim is needed
+        var trim = true;
+        for (var i = 0; i < MAC_BYTES - 1; i++)
+        {
+          if (cipherText[i] != 0)
+          {
+            trim = false;
+            break;
+          }
+        }
+
+        //if the leading MAC_BYTES are null, trim it off before going on.
+        if (trim)
+        {
+          var temp = new byte[cipherText.Length - MAC_BYTES];
+          Array.Copy(cipherText, MAC_BYTES, temp, 0, cipherText.Length - MAC_BYTES);
+
+          cipherText = temp;
+        }
+      }
+
+      var buffer = new byte[cipherText.Length - MAC_BYTES];
       var ret = SodiumCore.Is64
                   ? _Open64(buffer, cipherText, cipherText.Length, nonce, publicKey, secretKey)
                   : _Open86(buffer, cipherText, cipherText.Length, nonce, publicKey, secretKey);
@@ -145,28 +166,28 @@ namespace Sodium
         throw new CryptographicException("Failed to open SecretBox");
       }
 
-      var final = new byte[buffer.Length - ZERO_BYTES];
-      Array.Copy(buffer, ZERO_BYTES, final, 0, buffer.Length - ZERO_BYTES);
+      //var final = new byte[buffer.Length - ZERO_BYTES];
+      //Array.Copy(buffer, ZERO_BYTES, final, 0, buffer.Length - ZERO_BYTES);
 
-      return final;
+      return buffer;
     }
 
     [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_box_keypair", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenerateKeyPair64(byte[] publicKey, byte[] secretKey);
 
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_box", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Create64(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
-
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_box_open", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Open64(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
-
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_box_keypair", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenerateKeyPair86(byte[] publicKey, byte[] secretKey);
 
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_box", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_box_easy", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Create64(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
+
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_box_easy", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Create86(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
 
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_box_open", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_box_open_easy", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Open64(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
+
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_box_open_easy", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Open86(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
   }
 }
