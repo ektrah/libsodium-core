@@ -124,10 +124,10 @@ Note: Only libsodium's simplified interface is currently supported; the streamin
 #### crypto_generichash_blake2b_salt_personal
 `Sodium.GenericHash.HashSaltPersonal()` - Hash with salt, personal and optional key.
 
-#### crypto_pwhash_scryptxsalsa208sha256_str
+#### crypto_pwhash_scryptsalsa208sha256_str
 `Sodium.PasswordHash.HashSalsa208Sha256()` - Returns the hash is a string format, which includes the generated salt.
 
-#### crypto_pwhash_scryptxsalsa208sha256_str_verify
+#### crypto_pwhash_scryptsalsa208sha256_str_verify
 `Sodium.PasswordHash.HashSalsa208Sha256Verify()` - Verifies that a hash generated with `HashSalsa208Sha256` matches the supplied password.
 
 ### Other
@@ -153,7 +153,7 @@ There are a small number of additional methods that extended or simplify the usa
 
 ## Requirements & Versions
 
-This library can be built in Visual Studio 2010, Xamarin Studio (MonoDevelop 3.x supported), and targets .NET 4.0; it is compiled against libsodium v0.6.1.
+This library can be built in Visual Studio 2010, Xamarin Studio (MonoDevelop 3.x supported), and targets .NET 4.0; it is compiled against libsodium v0.7.0.
 
 On OSX & Linux, your copy of `libsodium` must be compiled for the same architecture as your copy of Mono. If you are running a 32bit process, your copy of `libsodium` must be 32bit as well.
 
@@ -163,7 +163,7 @@ Any method that takes a String, has an overload that accepts a byte array; Strin
 
 ## File Signing
 
-Starting with version 0.3.0, all files are GPG signed to simplify validation. Files are signed with key ID `0x22CAD57A659CA2BC`, fingerprint: `E88AA5A5EB1162B8CAE0A52422CAD57A659CA2BC`. You can find the key on [keys.gnupg.net](http://keys.gnupg.net/pks/lookup?op=get&search=0x22CAD57A659CA2BC) or on my [personal web site](http://adamcaudill.com/pgp/).
+Starting with version 0.3.0, all files are GPG signed to simplify validation. Files are signed with key ID `0x22CAD57A659CA2BC`, fingerprint: `E88AA5A5EB1162B8CAE0A52422CAD57A659CA2BC`. You can find the key on [pgp.mit.edu](https://pgp.mit.edu/pks/lookup?search=0x22CAD57A659CA2BC) or on my [personal web site](https://adamcaudill.com/pgp/).
 
 ## License
 

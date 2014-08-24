@@ -64,11 +64,11 @@ namespace Sodium
       return ret == 0;
     }
 
-    //crypto_pwhash_scryptxsalsa208sha256_str
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_pwhash_scryptxsalsa208sha256_str", CallingConvention = CallingConvention.Cdecl)]
+    //crypto_pwhash_scryptsalsa208sha256_str
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_pwhash_scryptsalsa208sha256_str", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _SCRYPTX_SALSA208_SHA256_STR_X64(byte[] buffer, byte[] password, long passwordLen, long opsLimit, int memLimit);
 
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_pwhash_scryptxsalsa208sha256_str", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_pwhash_scryptsalsa208sha256_str", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _SCRYPTX_SALSA208_SHA256_STR_X86(byte[] buffer, byte[] password, long passwordLen, long opsLimit, int memLimit);
 
     //crypto_pwhash_scryptxsalsa208sha256 - unused
@@ -78,11 +78,11 @@ namespace Sodium
     //[DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_pwhash_scryptxsalsa208sha256", CallingConvention = CallingConvention.Cdecl)]
     //private static extern int _SCRYPTX_SALSA208_SHA256_X86(byte[] buffer, long bufferLen, byte[] password, long passwordLen, byte[] salt, long opsLimit, int memLimit);
 
-    //crypto_pwhash_scryptxsalsa208sha256_str_verify
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_pwhash_scryptxsalsa208sha256_str_verify", CallingConvention = CallingConvention.Cdecl)]
+    //crypto_pwhash_scryptsalsa208sha256_str_verify
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_pwhash_scryptsalsa208sha256_str_verify", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _SCRYPTX_SALSA208_SHA256_VERIFY_X86(byte[] buffer, byte[] password, long passLength);
 
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_pwhash_scryptxsalsa208sha256_str_verify", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_pwhash_scryptsalsa208sha256_str_verify", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _SCRYPTX_SALSA208_SHA256_VERIFY_X64(byte[] buffer, byte[] password, long passLength);
   }
 }
