@@ -49,7 +49,7 @@ namespace Tests
     [Test]
     public void SimpleCreateTest()
     {
-      var expected = Utilities.HexToBinary("00000000000000000000000000000000aed04284c55860ad0f6379f235cc2cb8c32aba7a811b35cfac94f64d");
+      var expected = Utilities.HexToBinary("aed04284c55860ad0f6379f235cc2cb8c32aba7a811b35cfac94f64d");
       var actual = PublicKeyBox.Create(
         Encoding.UTF8.GetBytes("Adam Caudill"),
         Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
@@ -63,6 +63,21 @@ namespace Tests
     /// </summary>
     [Test]
     public void SimpleOpenTest()
+    {
+      var expected = Encoding.UTF8.GetBytes("Adam Caudill");
+      var actual = PublicKeyBox.Open(
+        Utilities.HexToBinary("aed04284c55860ad0f6379f235cc2cb8c32aba7a811b35cfac94f64d"),
+        Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
+        Utilities.HexToBinary("d4c8438482d5d103a2315251a5eed7c46017864a02ddc4c8b03f0ede8cb3ef9b"),
+        Utilities.HexToBinary("753cb95919b15b76654b1969c554a4aaf8334402ef1468cb40a602b9c9fd2c13"));
+      CollectionAssert.AreEqual(expected, actual);
+    }
+
+    /// <summary>
+    /// Does PublicKeyBox.Open() return the expected value when including extra padding from old versions?
+    /// </summary>
+    [Test]
+    public void SimpleLegacyOpenTest()
     {
       var expected = Encoding.UTF8.GetBytes("Adam Caudill");
       var actual = PublicKeyBox.Open(
