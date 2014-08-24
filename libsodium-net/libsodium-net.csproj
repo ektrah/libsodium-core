@@ -54,6 +54,7 @@
     <Compile Include="ShortHash.cs" />
     <Compile Include="SodiumCore.cs" />
     <Compile Include="ScalarMult.cs" />
+    <Compile Include="PasswordHash.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\libsodium.dll">
