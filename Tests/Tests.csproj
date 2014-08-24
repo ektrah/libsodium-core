@@ -57,6 +57,7 @@
     <Compile Include="VersionTest.cs" />
     <Compile Include="ScalarMultTest.cs" />
     <Compile Include="GenericHashTest.cs" />
+    <Compile Include="PasswordHashTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libsodium-net\libsodium-net.csproj">
