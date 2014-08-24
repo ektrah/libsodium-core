@@ -124,6 +124,12 @@ Note: Only libsodium's simplified interface is currently supported; the streamin
 #### crypto_generichash_blake2b_salt_personal
 `Sodium.GenericHash.HashSaltPersonal()` - Hash with salt, personal and optional key.
 
+#### crypto_pwhash_scryptxsalsa208sha256_str
+`Sodium.PasswordHash.HashSalsa208Sha256()` - Returns the hash is a string format, which includes the generated salt.
+
+#### crypto_pwhash_scryptxsalsa208sha256_str_verify
+`Sodium.PasswordHash.HashSalsa208Sha256Verify()` - Verifies that a hash generated with `HashSalsa208Sha256` matches the supplied password.
+
 ### Other
 
 #### sodium_version_string
