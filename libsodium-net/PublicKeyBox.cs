@@ -13,7 +13,6 @@ namespace Sodium
     private const int PUBLIC_KEY_BYTES = 32;
     private const int SECRET_KEY_BYTES = 32;
     private const int NONCE_BYTES = 24;
-    private const int ZERO_BYTES = 32;
     private const int MAC_BYTES = 16;
 
     /// <summary>Creates a new key pair based on a random seed.</summary>
