@@ -163,7 +163,7 @@ Any method that takes a String, has an overload that accepts a byte array; Strin
 
 ## File Signing
 
-Starting with version 0.3.0, all files are GPG signed to simplify validation. Files are signed with key ID `0x22CAD57A659CA2BC`, fingerprint: `E88AA5A5EB1162B8CAE0A52422CAD57A659CA2BC`. You can find the key on [pgp.mit.edu](https://pgp.mit.edu/pks/lookup?search=0x22CAD57A659CA2BC) or on my [personal web site](https://adamcaudill.com/pgp/).
+Starting with version 0.4.0, all files are signed via a Certum.pl Code Signing certificate. The files are signed under the name `Open Source Developer, Adam Caudill` - this can be used to ensure that the files haven't been altered.
 
 ## License
 
