@@ -19,7 +19,7 @@ This is still a work in progress, as such the API is subject to change and there
 
 ## Installation
 
-**Windows**: For Windows, the `libsodium` library is included in the [release](https://github.com/adamcaudill/libsodium-net/releases) packages. Just download the correct version for your platform (x84 or x64; there's no universal version, sorry).
+**Windows**: For Windows, the `libsodium` library is included in the [release](https://github.com/adamcaudill/libsodium-net/releases) packages. Or just use the [NuGet version](https://www.nuget.org/packages/libsodium-net/) which has everything you need.
 
 **OSX**: For OSX, `libsodium-net` can easily be built in Xamarin Studio, and `libsodium` can be installed easily via `brew`:
 
