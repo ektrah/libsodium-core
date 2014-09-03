@@ -20,6 +20,24 @@ namespace Tests
     }
 
     [Test]
+    public void HashSalsa208Sha256InteractiveTest()
+    {
+        const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
+        var hash = PasswordHash.HashSalsa208Sha256(PASSWORD, HashSalsa208Sha256Limit.Interactive);
+
+        Assert.IsTrue(PasswordHash.HashSalsa208Sha256Verify(hash, PASSWORD));
+    }
+
+    [Test]
+    public void HashSalsa208Sha256SensitiveTest()
+    {
+        const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
+        var hash = PasswordHash.HashSalsa208Sha256(PASSWORD, HashSalsa208Sha256Limit.Sensitive);
+
+        Assert.IsTrue(PasswordHash.HashSalsa208Sha256Verify(hash, PASSWORD));
+    }
+
+    [Test]
     public void HashSalsa208Sha256VerifyTest()
     {
       const int OUTPUT = 1;
