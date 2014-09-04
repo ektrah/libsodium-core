@@ -12,7 +12,7 @@ namespace Tests
     {
       const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
       //See: http://doc.libsodium.org/key_derivation/README.html (MEM_LIMIT: It is recommended to allow the function to use at least 16 megabytes.)
-      const long OPS_LIMIT = 481326; //~0.48 MB
+      const long OPS_LIMIT = 481326;
       const int MEM_LIMIT = 7256678; //~7.26 MB
 
       var hash = PasswordHash.HashSalsa208Sha256String(PASSWORD, OPS_LIMIT, MEM_LIMIT);
