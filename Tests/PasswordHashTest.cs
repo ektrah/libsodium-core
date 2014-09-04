@@ -23,29 +23,29 @@ namespace Tests
     [Test]
     public void HashSalsa208Sha256InteractiveTest()
     {
-        const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
-        var hash = PasswordHash.HashSalsa208Sha256String(PASSWORD, HashSalsa208Sha256Limit.Interactive);
+      const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
+      var hash = PasswordHash.HashSalsa208Sha256String(PASSWORD, HashSalsa208Sha256Limit.Interactive);
 
-        Assert.IsTrue(PasswordHash.HashSalsa208Sha256StringVerify(hash, PASSWORD));
+      Assert.IsTrue(PasswordHash.HashSalsa208Sha256StringVerify(hash, PASSWORD));
     }
 
     [Test]
     public void HashSalsa208Sha256ModerateTest()
     {
-        const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
-        var hash = PasswordHash.HashSalsa208Sha256String(PASSWORD, HashSalsa208Sha256Limit.Moderate);
+      const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
+      var hash = PasswordHash.HashSalsa208Sha256String(PASSWORD, HashSalsa208Sha256Limit.Moderate);
 
-        Assert.IsTrue(PasswordHash.HashSalsa208Sha256StringVerify(hash, PASSWORD));
+      Assert.IsTrue(PasswordHash.HashSalsa208Sha256StringVerify(hash, PASSWORD));
     }
 
     [Test]
     public void HashSalsa208Sha256SensitiveTest()
     {
-        const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
-        //Could cause OutOfMemoryException
-        var hash = PasswordHash.HashSalsa208Sha256String(PASSWORD, HashSalsa208Sha256Limit.Sensitive);
+      const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
+      //Could cause OutOfMemoryException
+      var hash = PasswordHash.HashSalsa208Sha256String(PASSWORD, HashSalsa208Sha256Limit.Sensitive);
 
-        Assert.IsTrue(PasswordHash.HashSalsa208Sha256StringVerify(hash, PASSWORD));
+      Assert.IsTrue(PasswordHash.HashSalsa208Sha256StringVerify(hash, PASSWORD));
     }
 
     /// <summary>
@@ -53,11 +53,11 @@ namespace Tests
     /// </summary>
     public class HashSalsa208Sha256TestObject
     {
-        public string Password { get; set; }
-        public string Salt { get; set; }
-        public long OpsLimit { get; set; }
-        public int MemLimit { get; set; }
-        public long OutputLength { get; set; }
+      public string Password { get; set; }
+      public string Salt { get; set; }
+      public long OpsLimit { get; set; }
+      public int MemLimit { get; set; }
+      public long OutputLength { get; set; }
     }
 
     /// <summary>
@@ -66,8 +66,8 @@ namespace Tests
     [Test]
     public void HashSalsa208Sha256_Long_Test()
     {
-        //Some of the values are from: https://github.com/jedisct1/libsodium/blob/master/test/default/pwhash.c
-        var testObjects = new List<HashSalsa208Sha256TestObject>()
+      //Some of the values are from: https://github.com/jedisct1/libsodium/blob/master/test/default/pwhash.c
+      var testObjects = new List<HashSalsa208Sha256TestObject>()
         { 
             new HashSalsa208Sha256TestObject {Password="a347ae92bce9f80f6f595a4480fc9c2fe7e7d7148d371e9487d75f5c23008ffae065577a928febd9b1973a5a95073acdbeb6a030cfc0d79caa2dc5cd011cef02c08da232d76d52dfbca38ca8dcbd665b17d1665f7cf5fe59772ec909733b24de97d6f58d220b20c60d7c07ec1fd93c52c31020300c6c1facd77937a597c7a6", Salt="5541fbc995d5c197ba290346d2c559dedf405cf97e5f95482143202f9e74f5c2", OpsLimit=481326, MemLimit=7256678, OutputLength=155},
             new HashSalsa208Sha256TestObject {Password="e125cee61c8cb7778d9e5ad0a6f5d978ce9f84de213a8556d9ffe202020ab4a6ed9074a4eb3416f9b168f137510f3a30b70b96cbfa219ff99f6c6eaffb15c06b60e00cc2890277f0fd3c622115772f7048adaebed86e", Salt="f1192dd5dc2368b9cd421338b22433455ee0a3699f9379a08b9650ea2c126f0d", OpsLimit=695191, MemLimit=15738350, OutputLength=55},
@@ -81,10 +81,10 @@ namespace Tests
             new HashSalsa208Sha256TestObject {Password="a14975c26c088755a8b715ff2528d647cd343987fcf4aa25e7194a8417fb2b4b3f7268da9f3182b4cfb22d138b2749d673a47ecc7525dd15a0a3c66046971784bb63d7eae24cc84f2631712075a10e10a96b0e0ee67c43e01c423cb9c44e5371017e9c496956b632158da3fe12addecb88912e6759bc37f9af2f45af72c5cae3b179ffb676a697de6ebe45cd4c16d4a9d642d29ddc0186a0a48cb6cd62bfc3dd229d313b301560971e740e2cf1f99a9a090a5b283f35475057e96d7064e2e0fc81984591068d55a3b4169f22cccb0745a2689407ea1901a0a766eb99", Salt="3d968b2752b8838431165059319f3ff8910b7b8ecb54ea01d3f54769e9d98daf", OpsLimit=717248, MemLimit=10784179, OutputLength=167}
         };
 
-        foreach (HashSalsa208Sha256TestObject testObject in testObjects)
-        {
-            Assert.AreEqual(testObject.OutputLength, PasswordHash.HashSalsa208Sha256(testObject.Password, testObject.Salt, testObject.OpsLimit, testObject.MemLimit, testObject.OutputLength).Length);
-        }
+      foreach (HashSalsa208Sha256TestObject testObject in testObjects)
+      {
+        Assert.AreEqual(testObject.OutputLength, PasswordHash.HashSalsa208Sha256(testObject.Password, testObject.Salt, testObject.OpsLimit, testObject.MemLimit, testObject.OutputLength).Length);
+      }
     }
 
     /// <summary>
@@ -93,15 +93,15 @@ namespace Tests
     [Test]
     public void HashSalsa208Sha256_32_Test()
     {
-        const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
-        const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(on9}4#!/_h#a7wqK{Nt$T?W>,mt8NqYq&6U<GB1$,<$j>,rSYI2GRDd:Bcm";
-        const long OUTPUT_LENGTH = 32;
-        var hash1 = PasswordHash.HashSalsa208Sha256(PASSWORD, SALT, HashSalsa208Sha256Limit.Interactive, OUTPUT_LENGTH);
-        var hash2 = PasswordHash.HashSalsa208Sha256(PASSWORD, SALT, HashSalsa208Sha256Limit.Interactive, OUTPUT_LENGTH);
+      const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
+      const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(on9}4#!/_h#a7wqK{Nt$T?W>,mt8NqYq&6U<GB1$,<$j>,rSYI2GRDd:Bcm";
+      const long OUTPUT_LENGTH = 32;
+      var hash1 = PasswordHash.HashSalsa208Sha256(PASSWORD, SALT, HashSalsa208Sha256Limit.Interactive, OUTPUT_LENGTH);
+      var hash2 = PasswordHash.HashSalsa208Sha256(PASSWORD, SALT, HashSalsa208Sha256Limit.Interactive, OUTPUT_LENGTH);
 
-        Assert.AreEqual(OUTPUT_LENGTH, hash1.Length);
-        Assert.AreEqual(OUTPUT_LENGTH, hash2.Length);
-        Assert.AreEqual(hash1, hash2);
+      Assert.AreEqual(OUTPUT_LENGTH, hash1.Length);
+      Assert.AreEqual(OUTPUT_LENGTH, hash2.Length);
+      Assert.AreEqual(hash1, hash2);
     }
 
     /// <summary>
@@ -110,15 +110,15 @@ namespace Tests
     [Test]
     public void HashSalsa208Sha256_128_Test()
     {
-        const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
-        const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(on9}4#!/_h#a7wqK{Nt$T?W>,mt8NqYq&6U<GB1$,<$j>,rSYI2GRDd:Bcm";
-        const long OUTPUT_LENGTH = 128;
-        var hash1 = PasswordHash.HashSalsa208Sha256(PASSWORD, SALT, HashSalsa208Sha256Limit.Interactive, OUTPUT_LENGTH);
-        var hash2 = PasswordHash.HashSalsa208Sha256(PASSWORD, SALT, HashSalsa208Sha256Limit.Interactive, OUTPUT_LENGTH);
+      const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
+      const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(on9}4#!/_h#a7wqK{Nt$T?W>,mt8NqYq&6U<GB1$,<$j>,rSYI2GRDd:Bcm";
+      const long OUTPUT_LENGTH = 128;
+      var hash1 = PasswordHash.HashSalsa208Sha256(PASSWORD, SALT, HashSalsa208Sha256Limit.Interactive, OUTPUT_LENGTH);
+      var hash2 = PasswordHash.HashSalsa208Sha256(PASSWORD, SALT, HashSalsa208Sha256Limit.Interactive, OUTPUT_LENGTH);
 
-        Assert.AreEqual(OUTPUT_LENGTH, hash1.Length);
-        Assert.AreEqual(OUTPUT_LENGTH, hash2.Length);
-        Assert.AreEqual(hash1, hash2);
+      Assert.AreEqual(OUTPUT_LENGTH, hash1.Length);
+      Assert.AreEqual(OUTPUT_LENGTH, hash2.Length);
+      Assert.AreEqual(hash1, hash2);
     }
 
     /// <summary>
@@ -127,15 +127,15 @@ namespace Tests
     [Test]
     public void HashSalsa208Sha256_512_Test()
     {
-        const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
-        const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(on9}4#!/_h#a7wqK{Nt$T?W>,mt8NqYq&6U<GB1$,<$j>,rSYI2GRDd:Bcm";
-        const long OUTPUT_LENGTH = 512;
-        var hash1 = PasswordHash.HashSalsa208Sha256(PASSWORD, SALT, HashSalsa208Sha256Limit.Interactive, OUTPUT_LENGTH);
-        var hash2 = PasswordHash.HashSalsa208Sha256(PASSWORD, SALT, HashSalsa208Sha256Limit.Interactive, OUTPUT_LENGTH);
+      const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
+      const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(on9}4#!/_h#a7wqK{Nt$T?W>,mt8NqYq&6U<GB1$,<$j>,rSYI2GRDd:Bcm";
+      const long OUTPUT_LENGTH = 512;
+      var hash1 = PasswordHash.HashSalsa208Sha256(PASSWORD, SALT, HashSalsa208Sha256Limit.Interactive, OUTPUT_LENGTH);
+      var hash2 = PasswordHash.HashSalsa208Sha256(PASSWORD, SALT, HashSalsa208Sha256Limit.Interactive, OUTPUT_LENGTH);
 
-        Assert.AreEqual(OUTPUT_LENGTH, hash1.Length);
-        Assert.AreEqual(OUTPUT_LENGTH, hash2.Length);
-        Assert.AreEqual(hash1, hash2);
+      Assert.AreEqual(OUTPUT_LENGTH, hash1.Length);
+      Assert.AreEqual(OUTPUT_LENGTH, hash2.Length);
+      Assert.AreEqual(hash1, hash2);
     }
 
     [Test]
@@ -156,8 +156,9 @@ namespace Tests
         new[] {"Y0!?iQa9M%5ekffW(`", "$7$A6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5"},
       };
 
-      foreach (var test in tests) {
-          Assert.IsTrue(PasswordHash.HashSalsa208Sha256StringVerify(test[OUTPUT], test[PASS]));
+      foreach (var test in tests)
+      {
+        Assert.IsTrue(PasswordHash.HashSalsa208Sha256StringVerify(test[OUTPUT], test[PASS]));
       }
     }
   }
