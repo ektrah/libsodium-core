@@ -10,7 +10,7 @@ namespace Tests
     /// Tests for the Utitlities class
     /// </summary>
     [TestFixture]
-    public class UtitlitiesTest
+    public class UtilitiesTest
     {
         /// <summary>
         /// A simple test for validating the hex method.
