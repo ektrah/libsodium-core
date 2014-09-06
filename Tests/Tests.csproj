@@ -54,6 +54,7 @@
     <Compile Include="SecretKeyAuthTest.cs" />
     <Compile Include="ShortHashTest.cs" />
     <Compile Include="StreamEncryptionTest.cs" />
+    <Compile Include="UtilitiesTest.cs" />
     <Compile Include="VersionTest.cs" />
     <Compile Include="ScalarMultTest.cs" />
     <Compile Include="GenericHashTest.cs" />

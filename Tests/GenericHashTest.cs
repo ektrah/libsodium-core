@@ -53,7 +53,9 @@ namespace Tests
       personal = "5126fb2a37400d2a";
       key = "1234567891123456";
 
-      string expected = "2A4ED94ED58EB8D099F52A5EBED051648CC34F29DCCD0F25B215E28672B28DE8F86A4666D60456EA93E25C5F1FBEC1387D861E2B9AB498169A2AD2DA3649F84B";
+      //Changed BinaryToHex from upper to lower
+      //string expected = "2A4ED94ED58EB8D099F52A5EBED051648CC34F29DCCD0F25B215E28672B28DE8F86A4666D60456EA93E25C5F1FBEC1387D861E2B9AB498169A2AD2DA3649F84B";
+      string expected = "2a4ed94ed58eb8d099f52a5ebed051648cc34f29dccd0f25b215e28672b28de8f86a4666d60456ea93e25c5f1fbec1387d861e2b9ab498169a2ad2da3649f84b";
       string actual = Utilities.BinaryToHex(GenericHash.HashSaltPersonal ("message", key, salt, personal));
 
       Assert.AreEqual(expected, actual);
