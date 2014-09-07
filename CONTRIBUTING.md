@@ -34,7 +34,11 @@ Unit tests must be present for all functionality that calls into `libsodium`, an
 
 #### Multi-Platform
 
-Keep in mind that `libsodium-net` is multi-platform, so it's easy to break functionality in other platform you can't test. Keep an eye on travis as it will build for osX and Linux.
+Keep in mind that `libsodium-net` is multi-platform, so it's easy to break functionality in other platform you can't test. Keep an eye on travis as it will build for OSX and Linux.
+
+#### Commits
+
+Commit messages should be descriptive, clear, and meaningful. Every logical change should be a separate commit, while avoiding excessive commits. While it's not necessary to [squash](http://davidwalsh.name/squash-commits-git) Pull Requests to a single commit, Pull Requests should contain the minimum number of commits to clearly express the changes made. If an excessive number of commits are included in a Pull Request, the request may be closed and the submitter asked to re-submit after squashing the commits.
 
 ### Using the issue tracker
 
