@@ -91,6 +91,18 @@ For this to be secure, it's required that the signing key only be used once.
 #### crypto_auth_verify
 `Sodium.SecretKeyAuth.Verify()` - This verifies a signature generated via `crypto_auth`. To do so, it requires the original message, the 32 byte signature, and the 32 byte key.
 
+#### crypto_auth_hmacsha256
+`Sodium.SecretKeyAuth.SignHmacSha256()` - Provides messages authentication via HMAC-256. The method takes a messages (as UTF-8 string or byte array), a 32 byte key, and returns a 32 bytes signature.
+
+#### crypto_auth_hmacsha256_verify
+`Sodium.SecretKeyAuth.VerifyHmacSha256()` - This verifies a signature generated via `crypto_auth_hmacsha256`. To do so, it requires the original message, the 32 byte signature, and the 32 byte key.
+
+#### crypto_auth_hmacsha512
+`Sodium.SecretKeyAuth.SignHmacSha512()` - Provides messages authentication via HMAC-512. The method takes a messages (as UTF-8 string or byte array), a 32 byte key, and returns a 64 bytes signature.
+
+#### crypto_auth_hmacsha512_verify
+`Sodium.SecretKeyAuth.VerifyHmacSha512()` - This verifies a signature generated via `crypto_auth_hmacsha512`. To do so, it requires the original message, the 64 byte signature, and the 32 byte key.
+
 #### crypto_stream_xor
 `Sodium.StreamEncryption.Encrypt()` - Encrypts a message via XSalsa20 using a 32 byte key and a 24 byte nonce. As always, it's critical that the nonce never be reused. This provides encryption only, not authentication.
 
@@ -125,10 +137,13 @@ Note: Only libsodium's simplified interface is currently supported; the streamin
 `Sodium.GenericHash.HashSaltPersonal()` - Hash with salt, personal and optional key.
 
 #### crypto_pwhash_scryptsalsa208sha256_str
-`Sodium.PasswordHash.HashSalsa208Sha256()` - Returns the hash is a string format, which includes the generated salt.
+`Sodium.PasswordHash.HashSalsa208Sha256String()` - Returns the hash is a string format, which includes the generated salt.
 
 #### crypto_pwhash_scryptsalsa208sha256_str_verify
-`Sodium.PasswordHash.HashSalsa208Sha256Verify()` - Verifies that a hash generated with `HashSalsa208Sha256` matches the supplied password.
+`Sodium.PasswordHash.HashSalsa208Sha256StringVerify()` - Verifies that a hash generated with `HashSalsa208Sha256String` matches the supplied password.
+
+#### crypto_pwhash_scryptsalsa208sha256
+`Sodium.PasswordHash.HashSalsa208Sha256()` - Derives a secret key of any size from a password and a salt. There exists an overloaded version with some predefined limits for an easy usage.
 
 ### Other
 
@@ -141,15 +156,21 @@ Note: Only libsodium's simplified interface is currently supported; the streamin
 #### crypto_scalarmult
 `Sodium.ScalarMult.Mult` (and related methods) - Provides an interface to perform scalar multiplication.
 
+### Utilities and Helper
+
+#### HexToBinary
+`Sodium.Utilities.HexToBinary()` - This method converts a hex-encoded string (lower-case, upper-case or with some extra chars like: Hyphen, Colon and Space) to a byte array.
+
+#### BinaryToHex
+`Sodium.Utilities.BinaryToHex()` - This method takes a byte array, and produces a lower-case hex-encoded string.
+
 ### Non-libsodium Methods
 
 There are a small number of additional methods that extended or simplify the usage of this library.
 
-#### HexToBinary
-`Sodium.Utilities.HexToBinary()` - This method converts a lower-case hex-encoded string to a byte array.
+`Sodium.Utilities.BinaryToHex()` - This method takes a byte array, and produces a lower-case or upper-case hex-encoded string, it also can add some extra chars (Hyphen, Colon and Space) to generate a human readable format.
 
-#### BinaryToHex
-`Sodium.Utilities.BinaryToHex()` - This method takes a byte array, and produces a lower-case hex-encoded string.
+Note: This method don`t use the sodium_bin2hex implementation.
 
 ## Requirements & Versions
 
