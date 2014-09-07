@@ -4,9 +4,7 @@ using System.Text;
 
 namespace Sodium
 {
-  /// <summary>
-  /// Short hash function.
-  /// </summary>
+  /// <summary>Short hash function.</summary>
   public static class ShortHash
   {
     //this was pulled from the headers; should be more dynamic
@@ -20,40 +18,28 @@ namespace Sodium
       return SodiumCore.GetRandomBytes(KEY_BYTES);
     }
 
-    /// <summary>
-    /// Hashes a message, with a key, using the SipHash-2-4 primitive.
-    /// </summary>
+    /// <summary>Hashes a message, with a key, using the SipHash-2-4 primitive.</summary>
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; must be 16 bytes.</param>
-    /// <returns>
-    /// Returns a hex-encoded string.
-    /// </returns>
+    /// <returns>Returns a hex-encoded string.</returns>
     public static byte[] Hash(string message, string key)
     {
       return Hash(message, Encoding.UTF8.GetBytes(key));
     }
 
-    /// <summary>
-    /// Hashes a message, with a key, using the SipHash-2-4 primitive.
-    /// </summary>
+    /// <summary>Hashes a message, with a key, using the SipHash-2-4 primitive.</summary>
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; must be 16 bytes.</param>
-    /// <returns>
-    /// Returns a hex-encoded string.
-    /// </returns>
+    /// <returns>Returns a hex-encoded string.</returns>
     public static byte[] Hash(string message, byte[] key)
     {
       return Hash(Encoding.UTF8.GetBytes(message), key);
     }
 
-    /// <summary>
-    /// Hashes a message, with a key, using the SipHash-2-4 primitive.
-    /// </summary>
+    /// <summary>Hashes a message, with a key, using the SipHash-2-4 primitive.</summary>
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; must be 16 bytes.</param>
-    /// <returns>
-    /// Returns a hex-encoded string.
-    /// </returns>
+    /// <returns>Returns a hex-encoded string.</returns>
     public static byte[] Hash(byte[] message, byte[] key)
     {
       //validate the length of the key
@@ -73,9 +59,9 @@ namespace Sodium
       return buffer;
     }
 
+    //crypto_shorthash
     [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_shorthash", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _ShortHash64(byte[] buffer, byte[] message, long messageLength, byte[] key);
-
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_shorthash", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _ShortHash86(byte[] buffer, byte[] message, long messageLength, byte[] key);
   }

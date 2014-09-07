@@ -5,9 +5,7 @@ using System.Text;
 
 namespace Sodium
 {
-  /// <summary>
-  /// Encrypt and decrypt messages via XSalsa20
-  /// </summary>
+  /// <summary>Encrypt and decrypt messages via XSalsa20</summary>
   public static class StreamEncryption
   {
     private const int KEY_BYTES = 32;
@@ -27,9 +25,7 @@ namespace Sodium
       return SodiumCore.GetRandomBytes(NONCE_BYTES);
     }
 
-    /// <summary>
-    /// Encryptes messages via XSalsa20
-    /// </summary>
+    /// <summary>Encryptes messages via XSalsa20</summary>
     /// <param name="message"></param>
     /// <param name="nonce"></param>
     /// <param name="key"></param>
@@ -39,9 +35,7 @@ namespace Sodium
       return Encrypt(Encoding.UTF8.GetBytes(message), nonce, key);
     }
 
-    /// <summary>
-    /// Encryptes messages via XSalsa20
-    /// </summary>
+    /// <summary>Encryptes messages via XSalsa20</summary>
     /// <param name="message"></param>
     /// <param name="nonce"></param>
     /// <param name="key"></param>
@@ -63,23 +57,18 @@ namespace Sodium
       }
 
       var buffer = new byte[message.Length];
-      int ret;
-
-      ret = SodiumCore.Is64
+      
+      var ret = SodiumCore.Is64
               ? _Encrypt64(buffer, message, message.Length, nonce, key)
               : _Encrypt86(buffer, message, message.Length, nonce, key);
 
       if (ret != 0)
-      {
         throw new CryptographicException("Error encrypting message.");
-      }
 
       return buffer;
     }
 
-    /// <summary>
-    /// Decryptes messages via XSalsa20
-    /// </summary>
+    /// <summary>Decryptes messages via XSalsa20</summary>
     /// <param name="cipherText">Hex-encoded string to be opened</param>
     /// <param name="nonce"></param>
     /// <param name="key"></param>
@@ -89,9 +78,7 @@ namespace Sodium
       return Decrypt(Utilities.HexToBinary(cipherText), nonce, key);
     }
 
-    /// <summary>
-    /// Decryptes messages via XSalsa20
-    /// </summary>
+    /// <summary>Decryptes messages via XSalsa20</summary>
     /// <param name="cipherText"></param>
     /// <param name="nonce"></param>
     /// <param name="key"></param>
@@ -119,16 +106,14 @@ namespace Sodium
                   : _Encrypt86(buffer, cipherText, cipherText.Length, nonce, key);
 
       if (ret != 0)
-      {
         throw new CryptographicException("Erorr derypting message.");
-      }
 
       return buffer;
     }
 
+    //crypto_stream_xor
     [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_stream_xor", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Encrypt64(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
-
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_stream_xor", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Encrypt86(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
   }

@@ -60,21 +60,21 @@ namespace Sodium
       return Marshal.PtrToStringAnsi(ptr);
     }
 
+    //sodium_version_string
     [DllImport(LIBRARY_X86, EntryPoint = "sodium_version_string", CallingConvention = CallingConvention.Cdecl)]
     private static extern IntPtr _SodiumVersionString86();
-
-    [DllImport(LIBRARY_X86, EntryPoint = "sodium_init", CallingConvention = CallingConvention.Cdecl)]
-    private static extern void _Init86();
-
-    [DllImport(LIBRARY_X86, EntryPoint = "randombytes_buf", CallingConvention = CallingConvention.Cdecl)]
-    private static extern void _GetRandomBytes86(byte[] buffer, int size);
-
     [DllImport(LIBRARY_X64, EntryPoint = "sodium_version_string", CallingConvention = CallingConvention.Cdecl)]
     private static extern IntPtr _SodiumVersionString64();
 
+    //sodium_init
+    [DllImport(LIBRARY_X86, EntryPoint = "sodium_init", CallingConvention = CallingConvention.Cdecl)]
+    private static extern void _Init86();
     [DllImport(LIBRARY_X64, EntryPoint = "sodium_init", CallingConvention = CallingConvention.Cdecl)]
     private static extern void _Init64();
 
+    //randombytes_buf
+    [DllImport(LIBRARY_X86, EntryPoint = "randombytes_buf", CallingConvention = CallingConvention.Cdecl)]
+    private static extern void _GetRandomBytes86(byte[] buffer, int size);
     [DllImport(LIBRARY_X64, EntryPoint = "randombytes_buf", CallingConvention = CallingConvention.Cdecl)]
     private static extern void _GetRandomBytes64(byte[] buffer, int size);
   }

@@ -1,26 +1,19 @@
-﻿using System.Text;
+﻿using NUnit.Framework;
 using Sodium;
-using NUnit.Framework;
 
 namespace Tests
 {
-  /// <summary>
-  /// Tests for Random Bytes support
-  /// </summary>
+  /// <summary>Tests for Random Bytes support</summary>
   [TestFixture]
   public class RandomBytesTest
   {
-    /// <summary>
-    /// Does SodiumCore.GetRandomBytes() return something
-    /// </summary>
+    /// <summary>Does SodiumCore.GetRandomBytes() return something</summary>
     [Test]
     public void GetRandomBytesTest()
     {
-      byte[] v16, v32, v64;
-
-      v16 = SodiumCore.GetRandomBytes(16);
-      v32 = SodiumCore.GetRandomBytes(32);
-      v64 = SodiumCore.GetRandomBytes(64);
+      var v16 = SodiumCore.GetRandomBytes(16);
+      var v32 = SodiumCore.GetRandomBytes(32);
+      var v64 = SodiumCore.GetRandomBytes(64);
 
       Assert.IsNotNull(v16);
       Assert.IsNotNull(v32);

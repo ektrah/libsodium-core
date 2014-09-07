@@ -4,15 +4,11 @@ using NUnit.Framework;
 
 namespace Tests
 {
-  /// <summary>
-  /// Tests for the PublicKeyAuth class
-  /// </summary>
+  /// <summary>Tests for the PublicKeyAuth class</summary>
   [TestFixture]
   public class PublicKeyAuthTest
   {
-    /// <summary>
-    /// Does PublicKeyAuth.GenerateKeyPair() return... something.
-    /// </summary>
+    /// <summary>Does PublicKeyAuth.GenerateKeyPair() return... something.</summary>
     [Test]
     public void GenerateKeyTest()
     {
@@ -23,9 +19,7 @@ namespace Tests
       Assert.IsNotNull(actual.PublicKey);
     }
 
-    /// <summary>
-    /// Does PublicKeyAuth.GenerateKeyPair(seed) return the expected value?
-    /// </summary>
+    /// <summary>Does PublicKeyAuth.GenerateKeyPair(seed) return the expected value?</summary>
     [Test]
     public void GenerateKeySeedTest()
     {
@@ -37,9 +31,7 @@ namespace Tests
       CollectionAssert.AreEqual(expected.PrivateKey, actual.PrivateKey);
     }
     
-    /// <summary>
-    /// Does PublicKeyAuth.Sign() return the expected value?
-    /// </summary>
+    /// <summary>Does PublicKeyAuth.Sign() return the expected value?</summary>
     [Test]
     public void SimpleAuthTest()
     {
@@ -49,9 +41,7 @@ namespace Tests
       CollectionAssert.AreEqual(expected, actual);
     }
 
-    /// <summary>
-    /// Does SecretKeyAuth.Verify() return the expected value?
-    /// </summary>
+    /// <summary>Does SecretKeyAuth.Verify() return the expected value?</summary>
     [Test]
     public void SimpleVerifyTest()
     {

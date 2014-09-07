@@ -5,9 +5,7 @@ using System.Text;
 
 namespace Sodium
 {
-  /// <summary>
-  /// Create and Open Boxes.
-  /// </summary>
+  /// <summary>Create and Open Boxes.</summary>
   public static class PublicKeyBox
   {
     private const int PUBLIC_KEY_BYTES = 32;
@@ -162,31 +160,26 @@ namespace Sodium
                   : _Open86(buffer, cipherText, cipherText.Length, nonce, publicKey, secretKey);
 
       if (ret != 0)
-      {
         throw new CryptographicException("Failed to open SecretBox");
-      }
-
-      //var final = new byte[buffer.Length - ZERO_BYTES];
-      //Array.Copy(buffer, ZERO_BYTES, final, 0, buffer.Length - ZERO_BYTES);
-
+      
       return buffer;
     }
 
+    //crypto_box_keypair
     [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_box_keypair", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenerateKeyPair64(byte[] publicKey, byte[] secretKey);
-
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_box_keypair", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenerateKeyPair86(byte[] publicKey, byte[] secretKey);
 
+    //crypto_box_easy
     [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_box_easy", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Create64(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
-
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_box_easy", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Create86(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
 
+    //crypto_box_open_easy
     [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_box_open_easy", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Open64(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
-
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_box_open_easy", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Open86(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
   }

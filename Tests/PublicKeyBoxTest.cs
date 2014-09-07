@@ -4,9 +4,7 @@ using NUnit.Framework;
 
 namespace Tests
 {
-  /// <summary>
-  /// Tests for the PublicKeyBox class
-  /// </summary>
+  /// <summary>Tests for the PublicKeyBox class</summary>
   [TestFixture]
   public class PublicKeyBoxTest
   {
@@ -18,13 +16,11 @@ namespace Tests
     //  Public Key: 83638e30326e2f55509286ac86afeb5bfd0732a3d11747bd50eb96bb9ec85645
     //  Private Key: d4c8438482d5d103a2315251a5eed7c46017864a02ddc4c8b03f0ede8cb3ef9b
     
-    /// <summary>
-    /// Keys must not be null and size is 32
-    /// </summary>
+    /// <summary>Keys must not be null and size is 32</summary>
     [Test]
     public void GenerateKeyPairTest()
     {
-      KeyPair aliceKeypair = PublicKeyBox.GenerateKeyPair();
+      var aliceKeypair = PublicKeyBox.GenerateKeyPair();
 
       Assert.IsNotNull(aliceKeypair.PrivateKey);
       Assert.IsNotNull(aliceKeypair.PublicKey);
@@ -33,9 +29,7 @@ namespace Tests
       Assert.AreEqual(32, aliceKeypair.PublicKey.Length);
     }
 
-    /// <summary>
-    /// Does PublicKeyBox.GenerateKeyPair(privateKey) return the rigt public key
-    /// </summary>
+    /// <summary>Does PublicKeyBox.GenerateKeyPair(privateKey) return the rigt public key</summary>
     [Test]
     public void GenerateKeyPairFromPrivateTest()
     {
@@ -43,9 +37,7 @@ namespace Tests
       CollectionAssert.AreEqual(Utilities.HexToBinary("753cb95919b15b76654b1969c554a4aaf8334402ef1468cb40a602b9c9fd2c13"), actual.PublicKey);
     }
 
-    /// <summary>
-    /// Does PublicKeyBox.Create creates the right data?
-    /// </summary>
+    /// <summary>Does PublicKeyBox.Create creates the right data?</summary>
     [Test]
     public void SimpleCreateTest()
     {
@@ -58,9 +50,7 @@ namespace Tests
       CollectionAssert.AreEqual(expected, actual);
     }
 
-    /// <summary>
-    /// Does PublicKeyBox.Open() return the expected value?
-    /// </summary>
+    /// <summary>Does PublicKeyBox.Open() return the expected value?</summary>
     [Test]
     public void SimpleOpenTest()
     {
@@ -73,9 +63,7 @@ namespace Tests
       CollectionAssert.AreEqual(expected, actual);
     }
 
-    /// <summary>
-    /// Does PublicKeyBox.Open() return the expected value when including extra padding from old versions?
-    /// </summary>
+    /// <summary>Does PublicKeyBox.Open() return the expected value when including extra padding from old versions?</summary>
     [Test]
     public void SimpleLegacyOpenTest()
     {

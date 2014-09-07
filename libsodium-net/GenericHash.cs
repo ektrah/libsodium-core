@@ -25,9 +25,7 @@ namespace Sodium
       return SodiumCore.GetRandomBytes(KEY_BYTES_MAX);
     }
 
-    /// <summary>
-    /// Hashes a message, with an optional key, using the BLAKE2b primitive.
-    /// </summary>
+    /// <summary>Hashes a message, with an optional key, using the BLAKE2b primitive.</summary>
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; may be null, otherwise between 16 and 64 bytes.</param>
     /// <param name="bytes">The size (in bytes) of the desired result.</param>
@@ -37,9 +35,7 @@ namespace Sodium
       return Hash(message, Encoding.UTF8.GetBytes(key), bytes);
     }
 
-    /// <summary>
-    /// Hashes a message, with an optional key, using the BLAKE2b primitive.
-    /// </summary>
+    /// <summary>Hashes a message, with an optional key, using the BLAKE2b primitive.</summary>
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; may be null, otherwise between 16 and 64 bytes.</param>
     /// <param name="bytes">The size (in bytes) of the desired result.</param>
@@ -49,9 +45,7 @@ namespace Sodium
       return Hash(Encoding.UTF8.GetBytes(message), key, bytes);
     }
 
-    /// <summary>
-    /// Hashes a message, with an optional key, using the BLAKE2b primitive.
-    /// </summary>
+    /// <summary>Hashes a message, with an optional key, using the BLAKE2b primitive.</summary>
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; may be null, otherwise between 16 and 64 bytes.</param>
     /// <param name="bytes">The size (in bytes) of the desired result.</param>
@@ -93,9 +87,7 @@ namespace Sodium
       return buffer;
     }
 
-    /// <summary>
-    /// Generates a hash based on a key, salt and personal strings
-    /// </summary>
+    /// <summary>Generates a hash based on a key, salt and personal strings</summary>
     /// <returns><c>byte</c> hashed message</returns>
     /// <param name="message">Message.</param>
     /// <param name="key">Key.</param>
@@ -106,18 +98,22 @@ namespace Sodium
       return HashSaltPersonal(Encoding.UTF8.GetBytes(message), Encoding.UTF8.GetBytes(key), Encoding.UTF8.GetBytes(salt), Encoding.UTF8.GetBytes(personal));
     }
 
-    /// <summary>
-    /// Generates a hash based on a key, salt and personal bytes
-    /// </summary>
+    /// <summary>Generates a hash based on a key, salt and personal bytes</summary>
     /// <returns><c>byte</c> hashed message</returns>
     /// <param name="message">Message.</param>
     /// <param name="key">Key.</param>
     /// <param name="salt">Salt.</param>
-    /// <param name="personal">Personal.</param>
+    /// <param name="personal">Personal string.</param>
     public static byte[] HashSaltPersonal(byte[] message, byte[] key, byte[] salt, byte[] personal)
     {
-      if (message == null || salt == null || personal == null)
-        throw new ArgumentNullException("Message, salt or personal cannot be null");
+      if (message == null)
+        throw new ArgumentNullException("message", "Message cannot be null");
+
+      if (salt == null)
+        throw new ArgumentNullException("salt", "Salt cannot be null");
+
+      if (personal == null)
+        throw new ArgumentNullException("personal", "Personal string cannot be null");
 
       if (key != null && (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN))
         throw new ArgumentOutOfRangeException (string.Format ("key must be between {0} and {1} bytes in length.", KEY_BYTES_MIN, KEY_BYTES_MAX));
@@ -131,7 +127,7 @@ namespace Sodium
       if (personal.Length != PERSONAL_BYTES)
         throw new ArgumentOutOfRangeException (string.Format ("Personal bytes must be {0} bytes in length.", PERSONAL_BYTES));
 
-      byte[] buffer = new byte[OUT_BYTES];
+      var buffer = new byte[OUT_BYTES];
 
       if (SodiumCore.Is64)
         _GenericHashSaltPersonal64(buffer, buffer.Length, message, message.LongLength, key, key.Length, salt, personal);
@@ -141,15 +137,15 @@ namespace Sodium
       return buffer;
     }
 
+    //crypto_generichash
     [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_generichash", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenericHash64(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
-
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_generichash_blake2b_salt_personal", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _GenericHashSaltPersonal64(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength, byte[] salt, byte[] personal);
-
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_generichash", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenericHash86(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
 
+    //crypto_generichash_blake2b_salt_personal
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_generichash_blake2b_salt_personal", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _GenericHashSaltPersonal64(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength, byte[] salt, byte[] personal);
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_generichash_blake2b_salt_personal", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenericHashSaltPersonal86(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength, byte[] salt, byte[] personal);
 

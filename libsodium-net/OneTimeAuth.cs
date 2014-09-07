@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Sodium
 {
-  /// <summary>
-  /// One Time Message Authentication
-  /// </summary>
+  /// <summary>One Time Message Authentication</summary>
   public static class OneTimeAuth
   {
     private const int KEY_BYTES = 32;
@@ -44,6 +40,7 @@ namespace Sodium
       }
 
       var buffer = new byte[BYTES];
+
       if (SodiumCore.Is64)
         _Sign64(buffer, message, message.Length, key);
       else
@@ -90,15 +87,15 @@ namespace Sodium
       return ret == 0;
     }
 
+    //crypto_onetimeauth
     [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_onetimeauth", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Sign64(byte[] buffer, byte[] message, long messageLength, byte[] key);
-
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_onetimeauth_verify", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Verify64(byte[] signature, byte[] message, long messageLength, byte[] key);
-
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_onetimeauth", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Sign86(byte[] buffer, byte[] message, long messageLength, byte[] key);
 
+    //crypto_onetimeauth_verify
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_onetimeauth_verify", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Verify64(byte[] signature, byte[] message, long messageLength, byte[] key);
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_onetimeauth_verify", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Verify86(byte[] signature, byte[] message, long messageLength, byte[] key);
   }

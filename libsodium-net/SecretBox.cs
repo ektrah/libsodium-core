@@ -5,9 +5,7 @@ using System.Text;
 
 namespace Sodium
 {
-  /// <summary>
-  /// Create and Open Secret Boxes.
-  /// </summary>
+  /// <summary>Create and Open Secret Boxes.</summary>
   public static class SecretBox
   {
     private const int KEY_BYTES = 32;
@@ -28,9 +26,7 @@ namespace Sodium
       return SodiumCore.GetRandomBytes(NONCE_BYTES);
     }
 
-    /// <summary>
-    /// Creates a Secret Box
-    /// </summary>
+    /// <summary>Creates a Secret Box</summary>
     /// <param name="message"></param>
     /// <param name="nonce"></param>
     /// <param name="key"></param>
@@ -40,9 +36,7 @@ namespace Sodium
       return Create(Encoding.UTF8.GetBytes(message), nonce, key);
     }
 
-    /// <summary>
-    /// Creates a Secret Box
-    /// </summary>
+    /// <summary>Creates a Secret Box</summary>
     /// <param name="message"></param>
     /// <param name="nonce"></param>
     /// <param name="key"></param>
@@ -73,16 +67,12 @@ namespace Sodium
                   : _Create86(buffer, paddedMessage, paddedMessage.Length, nonce, key);
 
       if (ret != 0)
-      {
         throw new CryptographicException("Failed to create SecretBox");
-      }
 
       return buffer;
     }
 
-    /// <summary>
-    /// Opens a Secret Box
-    /// </summary>
+    /// <summary>Opens a Secret Box</summary>
     /// <param name="cipherText">Hex-encoded string to be opened</param>
     /// <param name="nonce"></param>
     /// <param name="key"></param>
@@ -92,9 +82,7 @@ namespace Sodium
       return Open(Utilities.HexToBinary(cipherText), nonce, key);
     }
 
-    /// <summary>
-    /// Opens a Secret Box
-    /// </summary>
+    /// <summary>Opens a Secret Box</summary>
     /// <param name="cipherText"></param>
     /// <param name="nonce"></param>
     /// <param name="key"></param>
@@ -121,9 +109,7 @@ namespace Sodium
                   : _Open86(buffer, cipherText, cipherText.Length, nonce, key);
 
       if (ret != 0)
-      {
         throw new CryptographicException("Failed to open SecretBox");
-      }
 
       var final = new byte[buffer.Length - ZERO_BYTES];
       Array.Copy(buffer, ZERO_BYTES, final, 0, buffer.Length - ZERO_BYTES);
@@ -131,15 +117,15 @@ namespace Sodium
       return final;
     }
 
+    //crypto_secretbox
     [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_secretbox", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Create64(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
-
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_secretbox_open", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Open64(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] key);
-
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_secretbox", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Create86(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
 
+    //crypto_secretbox_open
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_secretbox_open", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _Open64(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] key);
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_secretbox_open", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Open86(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] key);
   }

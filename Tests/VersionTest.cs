@@ -3,15 +3,11 @@ using NUnit.Framework;
 
 namespace Tests
 {
-  /// <summary>
-  /// Tests for the SodiumVersion class
-  /// </summary>
+  /// <summary>Tests for the SodiumVersion class</summary>
   [TestFixture]
   public class VersionTest
   {
-    /// <summary>
-    /// A test for SodiumVersionString
-    /// </summary>
+    /// <summary>A test for SodiumVersionString</summary>
     [Test]
     public void SodiumVersionStringTest()
     {

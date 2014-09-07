@@ -115,8 +115,8 @@ For this to be secure, it's required that the signing key only be used once.
 
 The `Sodium.CryptoHash` class also includes the following methods:
 
- * `SHA512()` - Compute a SHA-512 hash (for compatibility if the default algorithm is ever changed). (`crypto_hash_sha512`)
- * `SHA256()` - Compute a SHA-256 hash. (`crypto_hash_sha256 `)
+ * `Sha512()` - Compute a SHA-512 hash (for compatibility if the default algorithm is ever changed). (`crypto_hash_sha512`)
+ * `Sha256()` - Compute a SHA-256 hash. (`crypto_hash_sha256 `)
 
 #### crypto_generichash
 `Sodium.GenericHash.Hash()` - This is a multi-purpose fast hash, that has variable output size and an optional key. As with the `CryptoHash` methods, the input can be a UTF-8 encoded string, or a byte array, and a byte array is returned. 
@@ -137,13 +137,13 @@ Note: Only libsodium's simplified interface is currently supported; the streamin
 `Sodium.GenericHash.HashSaltPersonal()` - Hash with salt, personal and optional key.
 
 #### crypto_pwhash_scryptsalsa208sha256_str
-`Sodium.PasswordHash.HashSalsa208Sha256String()` - Returns the hash is a string format, which includes the generated salt.
+`Sodium.PasswordHash.ScryptHashString()` - Returns the hash is a string format, which includes the generated salt.
 
 #### crypto_pwhash_scryptsalsa208sha256_str_verify
-`Sodium.PasswordHash.HashSalsa208Sha256StringVerify()` - Verifies that a hash generated with `HashSalsa208Sha256String` matches the supplied password.
+`Sodium.PasswordHash.ScryptHashStringVerify()` - Verifies that a hash generated with `ScryptHashString` matches the supplied password.
 
 #### crypto_pwhash_scryptsalsa208sha256
-`Sodium.PasswordHash.HashSalsa208Sha256()` - Derives a secret key of any size from a password and a salt. There exists an overloaded version with some predefined limits for an easy usage.
+`Sodium.PasswordHash.ScryptHashBinary()` - Derives a secret key of any size from a password and a salt. There exists an overloaded version with some predefined limits for an easy usage.
 
 ### Other
 

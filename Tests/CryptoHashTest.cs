@@ -5,9 +5,7 @@ using NUnit.Framework;
 
 namespace Tests
 {
-  /// <summary>
-  /// Tests for the CryptoHash class
-  /// </summary>
+  /// <summary>Tests for the CryptoHash class</summary>
   [TestFixture]
   public class CryptoHashTest
   {
@@ -16,9 +14,7 @@ namespace Tests
 
     private const string SHA256_HASH = "00b7d1c5871ebc343c24114f87434a9af321405606fbde47d33278ed21f2e068";
 
-    /// <summary>
-    /// Does CryptoHash.Hash(string) return the expected value?
-    /// </summary>
+    /// <summary>Does CryptoHash.Hash(string) return the expected value?</summary>
     [Test]
     public void CryptoHashStringTest()
     {
@@ -26,9 +22,7 @@ namespace Tests
       CollectionAssert.AreEqual(Utilities.HexToBinary(SHA512_HASH), actual);
     }
 
-    /// <summary>
-    /// Does CryptoHash.Hash(byte[]) return the expected value?
-    /// </summary>
+    /// <summary>Does CryptoHash.Hash(byte[]) return the expected value?</summary>
     [Test]
     public void CryptoHashArrayTest()
     {
@@ -36,43 +30,35 @@ namespace Tests
       CollectionAssert.AreEqual(Utilities.HexToBinary(SHA512_HASH), actual);
     }
 
-    /// <summary>
-    /// Does CryptoHash.SHA512(string) return the expected value?
-    /// </summary>
+    /// <summary>Does CryptoHash.Sha512(string) return the expected value?</summary>
     [Test]
-    public void CryptoHashSHA512StringTest()
+    public void CryptoHashSha512StringTest()
     {
-      var actual = CryptoHash.SHA512("Adam Caudill");
+      var actual = CryptoHash.Sha512("Adam Caudill");
       CollectionAssert.AreEqual(Utilities.HexToBinary(SHA512_HASH), actual);
     }
 
-    /// <summary>
-    /// Does CryptoHash.SHA512(byte[]) return the expected value?
-    /// </summary>
+    /// <summary>Does CryptoHash.Sha512(byte[]) return the expected value?</summary>
     [Test]
-    public void CryptoHashSHA512ArrayTest()
+    public void CryptoHashSha512ArrayTest()
     {
-      var actual = CryptoHash.SHA512(Encoding.UTF8.GetBytes("Adam Caudill"));
+      var actual = CryptoHash.Sha512(Encoding.UTF8.GetBytes("Adam Caudill"));
       CollectionAssert.AreEqual(Utilities.HexToBinary(SHA512_HASH), actual);
     }
 
-    /// <summary>
-    /// Does CryptoHash.SHA256(string) return the expected value?
-    /// </summary>
+    /// <summary>Does CryptoHash.Sha256(string) return the expected value?</summary>
     [Test]
-    public void CryptoHashSHA256StringTest()
+    public void CryptoHashSha256StringTest()
     {
-      var actual = CryptoHash.SHA256("Adam Caudill");
+      var actual = CryptoHash.Sha256("Adam Caudill");
       CollectionAssert.AreEqual(Utilities.HexToBinary(SHA256_HASH), actual);
     }
 
-    /// <summary>
-    /// Does CryptoHash.SHA256(byte[]) return the expected value?
-    /// </summary>
+    /// <summary>Does CryptoHash.Sha256(byte[]) return the expected value?</summary>
     [Test]
-    public void CryptoHashSHA256ArrayTest()
+    public void CryptoHashSha256ArrayTest()
     {
-      var actual = CryptoHash.SHA256(Encoding.UTF8.GetBytes("Adam Caudill"));
+      var actual = CryptoHash.Sha256(Encoding.UTF8.GetBytes("Adam Caudill"));
       CollectionAssert.AreEqual(Utilities.HexToBinary(SHA256_HASH), actual);
     }
   }

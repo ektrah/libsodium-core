@@ -1,27 +1,20 @@
-﻿using System.Text;
+﻿using NUnit.Framework;
 using Sodium;
-using NUnit.Framework;
 
 namespace Tests
 {
-  /// <summary>
-  /// Tests for the ShortHash class
-  /// </summary>
+  /// <summary>Tests for the ShortHash class</summary>
   [TestFixture]
   public class ShortHashTest
   {
-    /// <summary>
-    /// Verify that the length of the returned key is correct.
-    /// </summary>
+    /// <summary>Verify that the length of the returned key is correct.</summary>
     [Test]
     public void TestGenerateKey()
     {
       Assert.AreEqual(16, ShortHash.GenerateKey().Length);
     }
     
-    /// <summary>
-    /// Does ShortHash.Hash() return the expected value?
-    /// </summary>
+    /// <summary>Does ShortHash.Hash() return the expected value?</summary>
     [Test]
     public void SimpleShortHash()
     {
