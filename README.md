@@ -158,19 +158,19 @@ Note: Only libsodium's simplified interface is currently supported; the streamin
 
 ### Utilities and Helper
 
-#### HexToBinary
+#### sodium_hex2bin
 `Sodium.Utilities.HexToBinary()` - This method converts a hex-encoded string (lower-case, upper-case or with some extra chars like: Hyphen, Colon and Space) to a byte array.
 
-#### BinaryToHex
+#### sodium_bin2hex
 `Sodium.Utilities.BinaryToHex()` - This method takes a byte array, and produces a lower-case hex-encoded string.
 
 ### Non-libsodium Methods
 
 There are a small number of additional methods that extended or simplify the usage of this library.
 
-`Sodium.Utilities.BinaryToHex()` - This method takes a byte array, and produces a lower-case or upper-case hex-encoded string, it also can add some extra chars (Hyphen, Colon and Space) to generate a human readable format.
+`Sodium.Utilities.BinaryToHex()` - This overload takes a byte array, and produces a lower-case or upper-case hex-encoded string, it also can add some extra chars (Hyphen, Colon and Space) to generate a human readable format.
 
-Note: This method don`t use the sodium_bin2hex implementation.
+Note: This overload doesn't use the sodium_bin2hex implementation.
 
 ## Requirements & Versions
 
