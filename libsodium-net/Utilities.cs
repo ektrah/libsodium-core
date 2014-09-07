@@ -150,7 +150,7 @@ namespace Sodium
             throw new Exception("Internal error, decoding failed.");
         }
 
-        //remove the trailing nulls from the array, if there where some format characters in the hex string
+        //remove the trailing nulls from the array, if there were some format characters in the hex string before
         if (arr.Length != bin_length)
         {
             var tmp = new byte[bin_length];
