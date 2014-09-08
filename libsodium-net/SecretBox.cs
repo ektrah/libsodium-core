@@ -218,7 +218,7 @@ namespace Sodium
                     : _OpenDetached86(buffer, cipherText, mac, cipherText.Length, nonce, key);
 
         if (ret != 0)
-            throw new CryptographicException("Failed to open SecretBox");
+            throw new CryptographicException("Failed to open detached SecretBox");
 
         return buffer;
     }
