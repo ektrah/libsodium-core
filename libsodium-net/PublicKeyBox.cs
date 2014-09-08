@@ -8,8 +8,8 @@ namespace Sodium
   /// <summary>Create and Open Boxes.</summary>
   public static class PublicKeyBox
   {
-    private const int PUBLIC_KEY_BYTES = 32;
-    private const int SECRET_KEY_BYTES = 32;
+    public const int PUBLIC_KEY_BYTES = 32;
+    public const int SECRET_KEY_BYTES = 32;
     private const int NONCE_BYTES = 24;
     private const int MAC_BYTES = 16;
 
