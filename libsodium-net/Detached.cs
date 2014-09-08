@@ -1,25 +1,25 @@
 ﻿namespace Sodium
 {
-    /// <summary>A cipher / mac pair.</summary>
-  public class Detached
+  /// <summary>A ciphertext / mac pair.</summary>
+  public class DetachedBox
   {
-      /// <summary>Initializes a new instance of the <see cref="Detached"/> class.</summary>
-    public Detached()
+    /// <summary>Initializes a new instance of the <see cref="DetachedBox"/> class.</summary>
+    public DetachedBox()
     {
       //do nothing
     }
 
-    /// <summary>Initializes a new instance of the <see cref="Detached"/> class.</summary>
-    /// <param name="cipher">The cipher.</param>
+    /// <summary>Initializes a new instance of the <see cref="DetachedBox"/> class.</summary>
+    /// <param name="cipherText">The cipher.</param>
     /// <param name="mac">The 16 byte mac.</param>
-    public Detached(byte[] cipher, byte[] mac)
+    public DetachedBox(byte[] cipherText, byte[] mac)
     {
-      Cipher = cipher;
+      CipherText = cipherText;
       Mac = mac;
     }
 
     /// <summary>Gets or sets the Cipher.</summary>
-    public byte[] Cipher { get; set; }
+    public byte[] CipherText { get; set; }
 
     /// <summary>Gets or sets the MAC.</summary>
     public byte[] Mac { get; set; }

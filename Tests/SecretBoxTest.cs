@@ -31,6 +31,7 @@ namespace Tests
         Encoding.UTF8.GetBytes("Adam Caudill"),
         Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
         Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
+
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -43,6 +44,7 @@ namespace Tests
         Utilities.HexToBinary("00000000000000000000000000000000b58d3c3e5ae78770b7db54e29e3885138a2f1ddb738f2309d9b38164"),
         Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
         Encoding.UTF8.GetBytes("12345678901234567890123456789012")));
+
       Assert.AreEqual(EXPECTED, actual);
     }
 
@@ -56,8 +58,10 @@ namespace Tests
         Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
         Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
 
-      byte[] clear = SecretBox.OpenDetached(actual.Cipher, actual.Mac, Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
-      Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
+      var clear = SecretBox.OpenDetached(actual.CipherText, actual.Mac, 
+        Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"), 
+        Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
+
       Assert.AreEqual(clear, expected);
     }
   }

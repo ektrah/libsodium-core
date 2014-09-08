@@ -64,8 +64,8 @@ namespace Sodium
 
       var buffer = new byte[paddedMessage.Length];
       var ret = SodiumCore.Is64
-                  ? _Create64(buffer, paddedMessage, paddedMessage.Length, nonce, key)
-                  : _Create86(buffer, paddedMessage, paddedMessage.Length, nonce, key);
+          ? _Create64(buffer, paddedMessage, paddedMessage.Length, nonce, key)
+          : _Create86(buffer, paddedMessage, paddedMessage.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to create SecretBox");
@@ -78,9 +78,9 @@ namespace Sodium
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>A detached object with a cipher and a mac.</returns>
-    public static Detached CreateDetached(string message, byte[] nonce, byte[] key)
+    public static DetachedBox CreateDetached(string message, byte[] nonce, byte[] key)
     {
-        return CreateDetached(Encoding.UTF8.GetBytes(message), nonce, key);
+      return CreateDetached(Encoding.UTF8.GetBytes(message), nonce, key);
     }
 
     /// <summary>Creates detached a Secret Box</summary>
@@ -88,33 +88,33 @@ namespace Sodium
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>A detached object with a cipher and a mac.</returns>
-    public static Detached CreateDetached(byte[] message, byte[] nonce, byte[] key)
+    public static DetachedBox CreateDetached(byte[] message, byte[] nonce, byte[] key)
     {
-        //validate the length of the key
-        if (key == null || key.Length != KEY_BYTES)
-        {
-            throw new ArgumentOutOfRangeException("key", (key == null) ? 0 : key.Length,
-              string.Format("key must be {0} bytes in length.", KEY_BYTES));
-        }
+      //validate the length of the key
+      if (key == null || key.Length != KEY_BYTES)
+      {
+        throw new ArgumentOutOfRangeException("key", (key == null) ? 0 : key.Length,
+          string.Format("key must be {0} bytes in length.", KEY_BYTES));
+      }
 
-        //validate the length of the nonce
-        if (nonce == null || nonce.Length != NONCE_BYTES)
-        {
-            throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-              string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
-        }
+      //validate the length of the nonce
+      if (nonce == null || nonce.Length != NONCE_BYTES)
+      {
+        throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+          string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
+      }
 
-        var cipher = new byte[message.Length];
-        var mac = new byte[MAC_BYTES];
+      var cipher = new byte[message.Length];
+      var mac = new byte[MAC_BYTES];
 
-        var ret = SodiumCore.Is64
-                    ? _CreateDetached64(cipher, mac, message, message.Length, nonce, key)
-                    : _CreateDetached86(cipher, mac, message, message.Length, nonce, key);
+      var ret = SodiumCore.Is64
+          ? _CreateDetached64(cipher, mac, message, message.Length, nonce, key)
+          : _CreateDetached86(cipher, mac, message, message.Length, nonce, key);
 
-        if (ret != 0)
-            throw new CryptographicException("Failed to create detached SecretBox");
+      if (ret != 0)
+        throw new CryptographicException("Failed to create detached SecretBox");
 
-        return new Detached(cipher, mac);
+      return new DetachedBox(cipher, mac);
     }
 
     /// <summary>Opens a Secret Box</summary>
@@ -147,11 +147,11 @@ namespace Sodium
         throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
       }
-      
+
       var buffer = new byte[cipherText.Length];
       var ret = SodiumCore.Is64
-                  ? _Open64(buffer, cipherText, cipherText.Length, nonce, key)
-                  : _Open86(buffer, cipherText, cipherText.Length, nonce, key);
+          ? _Open64(buffer, cipherText, cipherText.Length, nonce, key)
+          : _Open86(buffer, cipherText, cipherText.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to open SecretBox");
@@ -170,7 +170,7 @@ namespace Sodium
     /// <returns></returns>
     public static byte[] OpenDetached(string cipherText, byte[] mac, byte[] nonce, byte[] key)
     {
-        return OpenDetached(Utilities.HexToBinary(cipherText), mac, nonce, key);
+      return OpenDetached(Utilities.HexToBinary(cipherText), mac, nonce, key);
     }
 
     /// <summary>Opens a detached Secret Box</summary>
@@ -178,9 +178,9 @@ namespace Sodium
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="key">The 32 byte nonce.</param>
     /// <returns></returns>
-    public static byte[] OpenDetached(Detached detached, byte[] nonce, byte[] key)
+    public static byte[] OpenDetached(DetachedBox detached, byte[] nonce, byte[] key)
     {
-        return OpenDetached(detached.Cipher, detached.Mac, nonce, key);
+      return OpenDetached(detached.CipherText, detached.Mac, nonce, key);
     }
 
     /// <summary>Opens a detached Secret Box</summary>
@@ -191,36 +191,36 @@ namespace Sodium
     /// <returns></returns>
     public static byte[] OpenDetached(byte[] cipherText, byte[] mac, byte[] nonce, byte[] key)
     {
-        //validate the length of the key
-        if (key == null || key.Length != KEY_BYTES)
-        {
-            throw new ArgumentOutOfRangeException("key", (key == null) ? 0 : key.Length,
-              string.Format("key must be {0} bytes in length.", KEY_BYTES));
-        }
+      //validate the length of the key
+      if (key == null || key.Length != KEY_BYTES)
+      {
+        throw new ArgumentOutOfRangeException("key", (key == null) ? 0 : key.Length,
+          string.Format("key must be {0} bytes in length.", KEY_BYTES));
+      }
 
-        //validate the length of the nonce
-        if (nonce == null || nonce.Length != NONCE_BYTES)
-        {
-            throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-              string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
-        }
+      //validate the length of the nonce
+      if (nonce == null || nonce.Length != NONCE_BYTES)
+      {
+        throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+          string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
+      }
 
-        //validate the length of the mac
-        if (mac == null || mac.Length != MAC_BYTES)
-        {
-            throw new ArgumentOutOfRangeException("mac", (mac == null) ? 0 : mac.Length,
-              string.Format("mac must be {0} bytes in length.", MAC_BYTES));
-        }
+      //validate the length of the mac
+      if (mac == null || mac.Length != MAC_BYTES)
+      {
+        throw new ArgumentOutOfRangeException("mac", (mac == null) ? 0 : mac.Length,
+          string.Format("mac must be {0} bytes in length.", MAC_BYTES));
+      }
 
-        var buffer = new byte[cipherText.Length];
-        var ret = SodiumCore.Is64
-                    ? _OpenDetached64(buffer, cipherText, mac, cipherText.Length, nonce, key)
-                    : _OpenDetached86(buffer, cipherText, mac, cipherText.Length, nonce, key);
+      var buffer = new byte[cipherText.Length];
+      var ret = SodiumCore.Is64
+          ? _OpenDetached64(buffer, cipherText, mac, cipherText.Length, nonce, key)
+          : _OpenDetached86(buffer, cipherText, mac, cipherText.Length, nonce, key);
 
-        if (ret != 0)
-            throw new CryptographicException("Failed to open detached SecretBox");
+      if (ret != 0)
+        throw new CryptographicException("Failed to open detached SecretBox");
 
-        return buffer;
+      return buffer;
     }
 
     //crypto_secretbox
