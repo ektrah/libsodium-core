@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using NUnit.Framework;
 using Sodium;
 
@@ -53,7 +52,7 @@ namespace Tests
     }
 
     [Test]
-    public void PublicKeyAuth_Convert_To_Curve25519()
+    public void PublicKeyAuthConvertToCurve25519()
     {
       var keypairSeed = new byte[]{
         0x42, 0x11, 0x51, 0xa4, 0x59, 0xfa, 0xea, 0xde,
@@ -71,8 +70,10 @@ namespace Tests
       var curve25519Pk = PublicKeyAuth.ConvertEd25519PublicKeyToCurve25519PublicKey(ed25519Pk);
       var curve25519Sk = PublicKeyAuth.ConvertEd25519SecretKeyToCurve25519SecretKey(ed25519SkPk);
 
-      Console.WriteLine("curve25519 pk: {0}", BitConverter.ToString(curve25519Pk).Replace("-", ""));
-      Console.WriteLine("curve25519 sk: {0}", BitConverter.ToString(curve25519Sk).Replace("-", ""));
+      Assert.AreEqual(Utilities.BinaryToHex(curve25519Pk, Utilities.HexFormat.None, Utilities.HexCase.Upper),
+                      "F1814F0E8FF1043D8A44D25BABFF3CEDCAE6C22C3EDAA48F857AE70DE2BAAE50");
+      Assert.AreEqual(Utilities.BinaryToHex(curve25519Sk, Utilities.HexFormat.None, Utilities.HexCase.Upper),
+                      "8052030376D47112BE7F73ED7A019293DD12AD910B654455798B4667D73DE166");
 
       for(var i = 0; i < 500; i++)
       {

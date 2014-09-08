@@ -8,8 +8,9 @@ namespace Sodium
   /// <summary>Create and Open Boxes.</summary>
   public static class PublicKeyBox
   {
-    public const int PUBLIC_KEY_BYTES = 32;
-    public const int SECRET_KEY_BYTES = 32;
+    public const int PublicKeyBytes = 32;
+    public const int SecretKeyBytes = 32;
+
     private const int NONCE_BYTES = 24;
     private const int MAC_BYTES = 16;
 
@@ -17,8 +18,8 @@ namespace Sodium
     /// <returns></returns>
     public static KeyPair GenerateKeyPair()
     {
-      var publicKey = new byte[PUBLIC_KEY_BYTES];
-      var privateKey = new byte[SECRET_KEY_BYTES];
+      var publicKey = new byte[PublicKeyBytes];
+      var privateKey = new byte[SecretKeyBytes];
 
       if (SodiumCore.Is64)
         _GenerateKeyPair64(publicKey, privateKey);
@@ -33,13 +34,13 @@ namespace Sodium
     /// <returns></returns>
     public static KeyPair GenerateKeyPair(byte[] privateKey)
     {
-      var publicKey = new byte[PUBLIC_KEY_BYTES];
+      var publicKey = new byte[PublicKeyBytes];
 
       //validate the length of the seed
-      if (privateKey == null || privateKey.Length != SECRET_KEY_BYTES)
+      if (privateKey == null || privateKey.Length != SecretKeyBytes)
       {
         throw new ArgumentOutOfRangeException("privateKey", (privateKey == null) ? 0 : privateKey.Length,
-          string.Format("privateKey must be {0} bytes in length.", SECRET_KEY_BYTES));
+          string.Format("privateKey must be {0} bytes in length.", SecretKeyBytes));
       }
 
       ScalarMult.Base(publicKey, privateKey);
@@ -67,17 +68,17 @@ namespace Sodium
     public static byte[] Create(byte[] message, byte[] nonce, byte[] secretKey, byte[] publicKey)
     {
       //validate the length of the secret key
-      if (secretKey == null || secretKey.Length != SECRET_KEY_BYTES)
+      if (secretKey == null || secretKey.Length != SecretKeyBytes)
       {
         throw new ArgumentOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-          string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
+          string.Format("key must be {0} bytes in length.", SecretKeyBytes));
       }
 
       //validate the length of the public key
-      if (publicKey == null || publicKey.Length != PUBLIC_KEY_BYTES)
+      if (publicKey == null || publicKey.Length != PublicKeyBytes)
       {
         throw new ArgumentOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
-          string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
+          string.Format("key must be {0} bytes in length.", PublicKeyBytes));
       }
 
       //validate the length of the nonce
@@ -109,17 +110,17 @@ namespace Sodium
     public static byte[] Open(byte[] cipherText, byte[] nonce, byte[] secretKey, byte[] publicKey)
     {
       //validate the length of the secret key
-      if (secretKey == null || secretKey.Length != SECRET_KEY_BYTES)
+      if (secretKey == null || secretKey.Length != SecretKeyBytes)
       {
         throw new ArgumentOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-          string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
+          string.Format("key must be {0} bytes in length.", SecretKeyBytes));
       }
 
       //validate the length of the public key
-      if (publicKey == null || publicKey.Length != PUBLIC_KEY_BYTES)
+      if (publicKey == null || publicKey.Length != PublicKeyBytes)
       {
         throw new ArgumentOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
-          string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
+          string.Format("key must be {0} bytes in length.", PublicKeyBytes));
       }
 
       //validate the length of the nonce

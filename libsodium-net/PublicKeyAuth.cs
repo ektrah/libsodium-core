@@ -121,23 +121,23 @@ namespace Sodium
     /// <returns>The curve25519 public key.</returns>
     public static byte[] ConvertEd25519PublicKeyToCurve25519PublicKey(byte[] ed25519PublicKey)
     {
-        //validate the length of the key
-        if (ed25519PublicKey == null || ed25519PublicKey.Length != PUBLIC_KEY_BYTES)
-        {
-            throw new ArgumentOutOfRangeException("ed25519PublicKey", (ed25519PublicKey == null) ? 0 : ed25519PublicKey.Length,
-              string.Format("ed25519PublicKey must be {0} bytes in length.", PUBLIC_KEY_BYTES));
-        }
+      //validate the length of the key
+      if (ed25519PublicKey == null || ed25519PublicKey.Length != PUBLIC_KEY_BYTES)
+      {
+        throw new ArgumentOutOfRangeException("ed25519PublicKey", (ed25519PublicKey == null) ? 0 : ed25519PublicKey.Length,
+          string.Format("ed25519PublicKey must be {0} bytes in length.", PUBLIC_KEY_BYTES));
+      }
 
-        var buffer = new byte[PublicKeyBox.PUBLIC_KEY_BYTES];
+      var buffer = new byte[PublicKeyBox.PublicKeyBytes];
 
-        var ret = SodiumCore.Is64
-                    ? _Ed25519PublicKeyToCurve25519PublicKey64(buffer, ed25519PublicKey)
-                    : _Ed25519PublicKeyToCurve25519PublicKey86(buffer, ed25519PublicKey);
+      var ret = SodiumCore.Is64
+          ? _Ed25519PublicKeyToCurve25519PublicKey64(buffer, ed25519PublicKey)
+          : _Ed25519PublicKeyToCurve25519PublicKey86(buffer, ed25519PublicKey);
 
-        if (ret != 0)
-            throw new CryptographicException("Failed to convert public key.");
+      if (ret != 0)
+        throw new CryptographicException("Failed to convert public key.");
 
-        return buffer;
+      return buffer;
     }
 
     /// <summary>Converts the ed25519 secret key to curve25519 secret key.</summary>
@@ -145,23 +145,23 @@ namespace Sodium
     /// <returns>The curve25519 secret key.</returns>
     public static byte[] ConvertEd25519SecretKeyToCurve25519SecretKey(byte[] ed25519SecretKey)
     {
-        //validate the length of the key, which can be appended with the public key or not (both are allowed)
-        if (ed25519SecretKey == null || (ed25519SecretKey.Length != PUBLIC_KEY_BYTES && ed25519SecretKey.Length != SECRET_KEY_BYTES))
-        {
-            throw new ArgumentOutOfRangeException("ed25519SecretKey", (ed25519SecretKey == null) ? 0 : ed25519SecretKey.Length,
-              string.Format("ed25519SecretKey must be either {0} or {1} bytes in length.", PUBLIC_KEY_BYTES, SECRET_KEY_BYTES));
-        }
+      //validate the length of the key, which can be appended with the public key or not (both are allowed)
+      if (ed25519SecretKey == null || (ed25519SecretKey.Length != PUBLIC_KEY_BYTES && ed25519SecretKey.Length != SECRET_KEY_BYTES))
+      {
+        throw new ArgumentOutOfRangeException("ed25519SecretKey", (ed25519SecretKey == null) ? 0 : ed25519SecretKey.Length,
+          string.Format("ed25519SecretKey must be either {0} or {1} bytes in length.", PUBLIC_KEY_BYTES, SECRET_KEY_BYTES));
+      }
 
-        var buffer = new byte[PublicKeyBox.SECRET_KEY_BYTES];
+      var buffer = new byte[PublicKeyBox.SecretKeyBytes];
 
-        var ret = SodiumCore.Is64
-                    ? _Ed25519SecretKeyToCurve25519SecretKey64(buffer, ed25519SecretKey)
-                    : _Ed25519SecretKeyToCurve25519SecretKey86(buffer, ed25519SecretKey);
+      var ret = SodiumCore.Is64
+          ? _Ed25519SecretKeyToCurve25519SecretKey64(buffer, ed25519SecretKey)
+          : _Ed25519SecretKeyToCurve25519SecretKey86(buffer, ed25519SecretKey);
 
-        if (ret != 0)
-            throw new CryptographicException("Failed to convert secret key.");
+      if (ret != 0)
+        throw new CryptographicException("Failed to convert secret key.");
 
-        return buffer;
+      return buffer;
     }
 
     //crypto_sign_keypair
