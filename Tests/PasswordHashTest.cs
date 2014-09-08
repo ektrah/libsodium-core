@@ -84,8 +84,27 @@ namespace Tests
 
       foreach (var testObject in testObjects)
       {
-        Assert.AreEqual(testObject.OutputLength, PasswordHash.ScryptHashBinary(testObject.Password, testObject.Salt, testObject.OpsLimit, testObject.MemLimit, testObject.OutputLength).Length);
+        Assert.AreEqual(testObject.OutputLength, PasswordHash.ScryptHashBinary(Utilities.HexToBinary(testObject.Password), Utilities.HexToBinary(testObject.Salt), testObject.OpsLimit, testObject.MemLimit, testObject.OutputLength).Length);
       }
+    }
+
+    /// <summary>
+    /// Derives a 32 byte long secret key from a password and a salt.
+    /// </summary>
+    [Test]
+    public void ScryptHashBinary32ByteTest()
+    {
+      const string PASSWORD = "e125cee61c8cb7778d9e5ad0a6f5d978ce9f84de213a8556d9ffe202020ab4a6ed9074a4eb3416f9b168f137510f3a30b70b96cbfa219ff99f6c6eaffb15c06b60e00cc2890277f0fd3c622115772f7048adaebed86e";
+      const string SALT = "44071f6d181561670bda728d43fb79b443bb805afdebaf98622b5165e01b15fb";
+      const long OUTPUT_LENGTH = 32;
+      var hash1 = PasswordHash.ScryptHashBinary(Utilities.HexToBinary(PASSWORD), Utilities.HexToBinary(SALT), 
+        PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
+      var hash2 = PasswordHash.ScryptHashBinary(Utilities.HexToBinary(PASSWORD), Utilities.HexToBinary(SALT), 
+        PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
+
+      Assert.AreEqual(OUTPUT_LENGTH, hash1.Length);
+      Assert.AreEqual(OUTPUT_LENGTH, hash2.Length);
+      Assert.AreEqual(hash1, hash2);
     }
 
     /// <summary>
@@ -95,7 +114,7 @@ namespace Tests
     public void ScryptHashBinary32Test()
     {
       const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
-      const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(on9}4#!/_h#a7wqK{Nt$T?W>,mt8NqYq&6U<GB1$,<$j>,rSYI2GRDd:Bcm";
+      const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(o";
       const long OUTPUT_LENGTH = 32;
       var hash1 = PasswordHash.ScryptHashBinary(PASSWORD, SALT, PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
       var hash2 = PasswordHash.ScryptHashBinary(PASSWORD, SALT, PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
@@ -112,7 +131,7 @@ namespace Tests
     public void ScryptHashBinary128Test()
     {
       const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
-      const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(on9}4#!/_h#a7wqK{Nt$T?W>,mt8NqYq&6U<GB1$,<$j>,rSYI2GRDd:Bcm";
+      const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(o";
       const long OUTPUT_LENGTH = 128;
       var hash1 = PasswordHash.ScryptHashBinary(PASSWORD, SALT, PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
       var hash2 = PasswordHash.ScryptHashBinary(PASSWORD, SALT, PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
@@ -129,7 +148,7 @@ namespace Tests
     public void ScryptHashBinary512Test()
     {
       const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
-      const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(on9}4#!/_h#a7wqK{Nt$T?W>,mt8NqYq&6U<GB1$,<$j>,rSYI2GRDd:Bcm";
+      const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(o";
       const long OUTPUT_LENGTH = 512;
       var hash1 = PasswordHash.ScryptHashBinary(PASSWORD, SALT, PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
       var hash2 = PasswordHash.ScryptHashBinary(PASSWORD, SALT, PasswordHash.Strength.Interactive, OUTPUT_LENGTH);

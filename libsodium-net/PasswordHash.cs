@@ -31,6 +31,38 @@ namespace Sodium
 
     /// <summary>Returns the hash in a string format, which includes the generated salt.</summary>
     /// <param name="password">The password.</param>
+    /// <param name="limit">The limit for computation.</param>
+    /// <returns>Returns an zero-terminated ASCII encoded string of the computed password and hash.</returns>
+    public static string ScryptHashString(string password, Strength limit = Strength.Interactive)
+    {
+      int memLimit;
+      long opsLimit;
+
+      switch (limit)
+      {
+        case Strength.Interactive:
+          opsLimit = OPSLIMIT_INTERACTIVE;
+          memLimit = MEMLIMIT_INTERACTIVE;
+          break;
+        case Strength.Moderate:
+          opsLimit = OPSLIMIT_MODERATE;
+          memLimit = MEMLIMIT_MODERATE;
+          break;
+        case Strength.Sensitive:
+          opsLimit = OPSLIMIT_SENSITIVE;
+          memLimit = MEMLIMIT_SENSITIVE;
+          break;
+        default:
+          opsLimit = OPSLIMIT_INTERACTIVE;
+          memLimit = MEMLIMIT_INTERACTIVE;
+          break;
+      }
+
+      return ScryptHashString(password, opsLimit, memLimit);
+    }
+
+    /// <summary>Returns the hash in a string format, which includes the generated salt.</summary>
+    /// <param name="password">The password.</param>
     /// <param name="opsLimit">Represents a maximum amount of computations to perform.</param>
     /// <param name="memLimit">Is the maximum amount of RAM that the function will use, in bytes.</param>
     /// <returns>Returns an zero-terminated ASCII encoded string of the computed password and hash.</returns>
@@ -59,18 +91,25 @@ namespace Sodium
       return Encoding.UTF8.GetString(buffer);
     }
 
-    /// <summary>Returns the hash in a string format, which includes the generated salt.</summary>
+    /// <summary>Derives a secret key of any size from a password and a salt.</summary>
     /// <param name="password">The password.</param>
+    /// <param name="salt">The salt.</param>
     /// <param name="limit">The limit for computation.</param>
-    /// <returns>Returns an zero-terminated ASCII encoded string of the computed password and hash.</returns>
-    public static string ScryptHashString(string password, Strength limit = Strength.Interactive)
+    /// <param name="outputLength">The length of the computed output array.</param>
+    /// <returns>Returns a byte array of the given size.</returns>
+    public static byte[] ScryptHashBinary(string password, string salt, Strength limit = Strength.Interactive, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
     {
-      if (password == null)
-        throw new ArgumentNullException("password", "Password cannot be null");
+      return ScryptHashBinary(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(salt), limit, outputLength);
+    }
 
-      var buffer = new byte[SCRYPT_SALSA208_SHA256_BYTES];
-      var pass = Encoding.UTF8.GetBytes(password);
-
+    /// <summary>Derives a secret key of any size from a password and a salt.</summary>
+    /// <param name="password">The password.</param>
+    /// <param name="salt">The salt.</param>
+    /// <param name="limit">The limit for computation.</param>
+    /// <param name="outputLength">The length of the computed output array.</param>
+    /// <returns>Returns a byte array of the given size.</returns>
+    public static byte[] ScryptHashBinary(byte[] password, byte[] salt, Strength limit = Strength.Interactive, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
+    {
       int memLimit;
       long opsLimit;
 
@@ -94,13 +133,7 @@ namespace Sodium
           break;
       }
 
-      var ret = SodiumCore.Is64 ? _HashString64(buffer, pass, pass.LongLength, opsLimit, memLimit) : 
-        _HashString86(buffer, pass, pass.LongLength, opsLimit, memLimit);
-
-      if (ret != 0)
-        throw new OutOfMemoryException("Internal error, hash failed");
-
-      return Encoding.UTF8.GetString(buffer);
+      return ScryptHashBinary(password, salt, opsLimit, memLimit, outputLength);
     }
 
     /// <summary>
@@ -114,11 +147,31 @@ namespace Sodium
     /// <returns>Returns a byte array of the given size.</returns>
     public static byte[] ScryptHashBinary(string password, string salt, long opsLimit, int memLimit, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
     {
+      var pass = Encoding.UTF8.GetBytes(password);
+      var saltAsBytes = Encoding.UTF8.GetBytes(salt);
+
+      return ScryptHashBinary(pass, saltAsBytes, opsLimit, memLimit, outputLength);
+    }
+
+    /// <summary>
+    /// Derives a secret key of any size from a password and a salt.
+    /// </summary>
+    /// <param name="password">The password.</param>
+    /// <param name="salt">The salt.</param>
+    /// <param name="opsLimit">Represents a maximum amount of computations to perform.</param>
+    /// <param name="memLimit">Is the maximum amount of RAM that the function will use, in bytes.</param>
+    /// <param name="outputLength">The length of the computed output array.</param>
+    /// <returns>Returns a byte array of the given size.</returns>
+    public static byte[] ScryptHashBinary(byte[] password, byte[] salt, long opsLimit, int memLimit, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
+    {
       if (password == null)
         throw new ArgumentNullException("password", "Password cannot be null");
 
       if (salt == null)
         throw new ArgumentNullException("salt", "Salt cannot be null");
+
+      if (salt.Length != SCRYPT_SALSA208_SHA256_SALTBYTES)
+        throw new ArgumentOutOfRangeException("salt", "salt must be 32 bytes");
 
       if (opsLimit <= 0)
         throw new ArgumentOutOfRangeException("opsLimit", "opsLimit cannot be zero or negative");
@@ -130,62 +183,9 @@ namespace Sodium
         throw new ArgumentOutOfRangeException("outputLength", "OutputLength cannot be zero or negative");
 
       var buffer = new byte[outputLength];
-      var pass = Encoding.UTF8.GetBytes(password);
-      var saltAsBytes = Encoding.UTF8.GetBytes(salt);
 
-      var ret = SodiumCore.Is64 ? _HashBinary64(buffer, buffer.Length, pass, pass.LongLength, saltAsBytes, opsLimit, memLimit) : 
-        _HashBinary86(buffer, buffer.Length, pass, pass.LongLength, saltAsBytes, opsLimit, memLimit);
-
-      if (ret != 0)
-        throw new OutOfMemoryException("Internal error, hash failed");
-
-      return buffer;
-    }
-
-    /// <summary>Derives a secret key of any size from a password and a salt.</summary>
-    /// <param name="password">The password.</param>
-    /// <param name="salt">The salt.</param>
-    /// <param name="limit">The limit for computation.</param>
-    /// <param name="outputLength">The length of the computed output array.</param>
-    /// <returns>Returns a byte array of the given size.</returns>
-    public static byte[] ScryptHashBinary(string password, string salt, Strength limit = Strength.Interactive, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
-    {
-      if (password == null)
-        throw new ArgumentNullException("password", "Password cannot be null");
-      if (salt == null)
-        throw new ArgumentNullException("salt", "Salt cannot be null");
-      if (outputLength < 1)
-        throw new ArgumentOutOfRangeException("outputLength", "OutputLength must be greater 0");
-
-      var buffer = new byte[outputLength];
-      var pass = Encoding.UTF8.GetBytes(password);
-      var saltAsBytes = Encoding.UTF8.GetBytes(salt);
-
-      int memLimit;
-      long opsLimit;
-
-      switch (limit)
-      {
-        case Strength.Interactive:
-          opsLimit = OPSLIMIT_INTERACTIVE;
-          memLimit = MEMLIMIT_INTERACTIVE;
-          break;
-        case Strength.Moderate:
-          opsLimit = OPSLIMIT_MODERATE;
-          memLimit = MEMLIMIT_MODERATE;
-          break;
-        case Strength.Sensitive:
-          opsLimit = OPSLIMIT_SENSITIVE;
-          memLimit = MEMLIMIT_SENSITIVE;
-          break;
-        default:
-          opsLimit = OPSLIMIT_INTERACTIVE;
-          memLimit = MEMLIMIT_INTERACTIVE;
-          break;
-      }
-
-      var ret = SodiumCore.Is64 ? _HashBinary64(buffer, buffer.Length, pass, pass.LongLength, saltAsBytes, opsLimit, memLimit) : 
-        _HashBinary86(buffer, buffer.Length, pass, pass.LongLength, saltAsBytes, opsLimit, memLimit);
+      var ret = SodiumCore.Is64 ? _HashBinary64(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit) :
+        _HashBinary86(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit);
 
       if (ret != 0)
         throw new OutOfMemoryException("Internal error, hash failed");
