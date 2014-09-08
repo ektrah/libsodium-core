@@ -45,5 +45,20 @@ namespace Tests
         Encoding.UTF8.GetBytes("12345678901234567890123456789012")));
       Assert.AreEqual(EXPECTED, actual);
     }
+
+    /// <summary>Does SecretBox.CreateDetached() and SecretBox.OpenDetached() work?</summary>
+    [Test]
+    public void DetachedSecretBox()
+    {
+      var expected = Utilities.HexToBinary("4164616d2043617564696c6c");
+      var actual = SecretBox.CreateDetached(
+        Encoding.UTF8.GetBytes("Adam Caudill"),
+        Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
+        Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
+
+      byte[] clear = SecretBox.OpenDetached(actual.Cipher, actual.Mac, Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
+      Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
+      Assert.AreEqual(clear, expected);
+    }
   }
 }

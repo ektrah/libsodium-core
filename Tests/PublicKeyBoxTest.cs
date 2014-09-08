@@ -75,5 +75,20 @@ namespace Tests
         Utilities.HexToBinary("753cb95919b15b76654b1969c554a4aaf8334402ef1468cb40a602b9c9fd2c13"));
       CollectionAssert.AreEqual(expected, actual);
     }
+
+    [Test]
+    public void DetachedBox()
+    {
+        var expected = Utilities.HexToBinary("4164616d2043617564696c6c");
+        var actual = PublicKeyBox.CreateDetached(
+        Encoding.UTF8.GetBytes("Adam Caudill"),
+        Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
+        Utilities.HexToBinary("2a5c92fac62514f793c0bfd374f629a138c5702793a32c61dadc593728a15975"),
+        Utilities.HexToBinary("83638e30326e2f55509286ac86afeb5bfd0732a3d11747bd50eb96bb9ec85645"));
+
+        byte[] clear = PublicKeyBox.OpenDetached(actual.Cipher, actual.Mac, Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
+        Utilities.HexToBinary("2a5c92fac62514f793c0bfd374f629a138c5702793a32c61dadc593728a15975"), Utilities.HexToBinary("83638e30326e2f55509286ac86afeb5bfd0732a3d11747bd50eb96bb9ec85645"));
+        Assert.AreEqual(clear, expected);
+    }
   }
 }

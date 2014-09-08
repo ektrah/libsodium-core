@@ -101,6 +101,59 @@ namespace Sodium
       return buffer;
     }
 
+    /// <summary>Creates detached a Box</summary>
+    /// <param name="message">The message.</param>
+    /// <param name="nonce">The 24 byte nonce.</param>
+    /// <param name="secretKey">The secret key to sign message with.</param>
+    /// <param name="publicKey">The recipient's public key.</param>
+    /// <returns>A detached object with a cipher and a mac.</returns>
+    public static Detached CreateDetached(string message, byte[] nonce, byte[] secretKey, byte[] publicKey)
+    {
+        return CreateDetached(Encoding.UTF8.GetBytes(message), nonce, secretKey, publicKey);
+    }
+
+    /// <summary>Creates a detached Box</summary>
+    /// <param name="message">The message.</param>
+    /// <param name="nonce">The 24 byte nonce.</param>
+    /// <param name="secretKey">The secret key to sign message with.</param>
+    /// <param name="publicKey">The recipient's public key.</param>
+    /// <returns>A detached object with a cipher and a mac.</returns>
+    public static Detached CreateDetached(byte[] message, byte[] nonce, byte[] secretKey, byte[] publicKey)
+    {
+        //validate the length of the secret key
+        if (secretKey == null || secretKey.Length != SecretKeyBytes)
+        {
+            throw new ArgumentOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
+              string.Format("key must be {0} bytes in length.", SecretKeyBytes));
+        }
+
+        //validate the length of the public key
+        if (publicKey == null || publicKey.Length != PublicKeyBytes)
+        {
+            throw new ArgumentOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
+              string.Format("key must be {0} bytes in length.", PublicKeyBytes));
+        }
+
+        //validate the length of the nonce
+        if (nonce == null || nonce.Length != NONCE_BYTES)
+        {
+            throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+              string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
+        }
+
+        var cipher = new byte[message.Length];
+        var mac = new byte[MAC_BYTES];
+
+        var ret = SodiumCore.Is64
+                    ? _CreateDetached64(cipher, mac, message, message.Length, nonce, secretKey, publicKey)
+                    : _CreateDetached86(cipher, mac, message, message.Length, nonce, secretKey, publicKey);
+
+        if (ret != 0)
+            throw new CryptographicException("Failed to create detached Box");
+
+        return new Detached(cipher, mac);
+    }
+
     /// <summary>Opens a Box</summary>
     /// <param name="cipherText"></param>
     /// <param name="nonce"></param>
@@ -166,6 +219,77 @@ namespace Sodium
       return buffer;
     }
 
+    /// <summary>Opens a detached Box</summary>
+    /// <param name="cipherText">Hex-encoded string to be opened</param>
+    /// <param name="mac">The 16 byte mac.</param>
+    /// <param name="nonce">The 24 byte nonce.</param>
+    /// <param name="secretKey">The recipient's secret key.</param>
+    /// <param name="publicKey">The sender's public key.</param>
+    /// <returns></returns>
+    public static byte[] OpenDetached(string cipherText, byte[] mac, byte[] nonce, byte[] secretKey, byte[] publicKey)
+    {
+        return OpenDetached(Utilities.HexToBinary(cipherText), mac, nonce, secretKey, publicKey);
+    }
+
+    /// <summary>Opens a detached Box</summary>
+    /// <param name="detached">A detached object.</param>
+    /// <param name="nonce">The 24 byte nonce.</param>
+    /// <param name="secretKey">The recipient's secret key.</param>
+    /// <param name="publicKey">The sender's public key.</param>
+    /// <returns></returns>
+    public static byte[] OpenDetached(Detached detached, byte[] nonce, byte[] secretKey, byte[] publicKey)
+    {
+        return OpenDetached(detached.Cipher, detached.Mac, nonce, secretKey, publicKey);
+    }
+
+    /// <summary>Opens a detached Box</summary>
+    /// <param name="cipherText">The cipherText.</param>
+    /// <param name="mac">The 16 byte mac.</param>
+    /// <param name="nonce">The 24 byte nonce.</param>
+    /// <param name="secretKey">The recipient's secret key.</param>
+    /// <param name="publicKey">The sender's public key.</param>
+    /// <returns></returns>
+    public static byte[] OpenDetached(byte[] cipherText, byte[] mac, byte[] nonce, byte[] secretKey, byte[] publicKey)
+    {
+        //validate the length of the secret key
+        if (secretKey == null || secretKey.Length != SecretKeyBytes)
+        {
+            throw new ArgumentOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
+              string.Format("key must be {0} bytes in length.", SecretKeyBytes));
+        }
+
+        //validate the length of the public key
+        if (publicKey == null || publicKey.Length != PublicKeyBytes)
+        {
+            throw new ArgumentOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
+              string.Format("key must be {0} bytes in length.", PublicKeyBytes));
+        }
+
+        //validate the length of the mac
+        if (mac == null || mac.Length != MAC_BYTES)
+        {
+            throw new ArgumentOutOfRangeException("mac", (mac == null) ? 0 : mac.Length,
+              string.Format("mac must be {0} bytes in length.", MAC_BYTES));
+        }
+
+        //validate the length of the nonce
+        if (nonce == null || nonce.Length != NONCE_BYTES)
+        {
+            throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+              string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
+        }
+
+        var buffer = new byte[cipherText.Length];
+        var ret = SodiumCore.Is64
+                    ? _OpenDetached64(buffer, cipherText, mac, cipherText.Length, nonce, secretKey, publicKey)
+                    : _OpenDetached86(buffer, cipherText, mac, cipherText.Length, nonce, secretKey, publicKey);
+
+        if (ret != 0)
+            throw new CryptographicException("Failed to open detached Box");
+
+        return buffer;
+    }
+
     //crypto_box_keypair
     [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_box_keypair", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _GenerateKeyPair64(byte[] publicKey, byte[] secretKey);
@@ -183,5 +307,17 @@ namespace Sodium
     private static extern int _Open64(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_box_open_easy", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Open86(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
+
+    //crypto_box_detached
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_box_detached", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _CreateDetached64(byte[] cipher, byte[] mac, byte[] message, long messageLength, byte[] nonce, byte[] pk, byte[] sk);
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_box_detached", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _CreateDetached86(byte[] cipher, byte[] mac, byte[] message, long messageLength, byte[] nonce, byte[] pk, byte[] sk);
+
+    //crypto_box_open_detached
+    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_box_open_detached", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _OpenDetached64(byte[] buffer, byte[] cipherText, byte[] mac, long cipherTextLength, byte[] nonce, byte[] pk, byte[] sk);
+    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_box_open_detached", CallingConvention = CallingConvention.Cdecl)]
+    private static extern int _OpenDetached86(byte[] buffer, byte[] cipherText, byte[] mac, long cipherTextLength, byte[] nonce, byte[] pk, byte[] sk);
   }
 }
