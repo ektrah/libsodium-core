@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>libsodium-net</id>
-        <version>0.5.0-beta1</version>
+        <version>0.5.0-beta4</version>
         <title>libsodium for .NET</title>
         <authors>adamcaudill</authors>
         <licenseUrl>https://raw.githubusercontent.com/adamcaudill/libsodium-net/master/LICENSE</licenseUrl>
@@ -11,11 +11,17 @@
         <description>A secure cryptographic library</description>
         <copyright>Copyright (c) 2013 - 2014 Adam Caudill &amp; Contributors</copyright>
         <language>en-US</language>
+        <references>
+            <reference file="Sodium.dll" />
+        </references>
+        <dependencies>
+            <dependency id="Baseclass.Contrib.Nuget.Output" />
+        </dependencies>
     </metadata>
     <files>
-        <file src="_signing\bin\libsodium-64.dll" target="lib\Net40\libsodium-64.dll" />
-        <file src="_signing\bin\libsodium.dll" target="lib\Net40\libsodium.dll" />
+        <file src="_signing\bin\libsodium-64.dll" target="output\libsodium-64.dll" />
+        <file src="_signing\bin\libsodium.dll" target="output\libsodium.dll" />
         <file src="_signing\bin\Sodium.dll" target="lib\Net40\Sodium.dll" />
-        <file src="libsodium-net\bin\Release\sodium.dll.config" target="lib\Net40\sodium.dll.config" />
+        <file src="libsodium-net\bin\Release\sodium.dll.config" target="output\sodium.dll.config" />
     </files>
 </package>
