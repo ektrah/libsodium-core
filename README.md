@@ -53,6 +53,12 @@ The following methods have been implemented and have at least basic unit tests i
 #### crypto_sign_open
 `Sodium.PublicKeyAuth.Verify()` - Verifies the signature and returns the clear-text message using [Ed25519](http://ed25519.cr.yp.to/) and the supplied 32-byte public key. Throws a `CryptographicException` if verification fails.
 
+#### crypto_sign_ed25519_pk_to_curve25519
+`Sodium.PublicKeyAuth.ConvertEd25519PublicKeyToCurve25519PublicKey()` - Converts a Ed25519 public key, to a Curve25519 public key.
+
+#### crypto_sign_ed25519_sk_to_curve25519
+`Sodium.PublicKeyAuth.ConvertEd25519SecretKeyToCurve25519SecretKey()` - Converts a Ed25519 private key, to a Curve25519 private key.
+
 #### crypto_box_keypair
 `Sodium.PublicKeyBox.GenerateKeyPair()` - Generates a public/private Curve25519-XSalsa20-Poly1305 key pair based on a random seed. The public key is 32 bytes, the private key is 32 bytes.
 
@@ -61,6 +67,12 @@ The following methods have been implemented and have at least basic unit tests i
 
 #### crypto_box_open
 `Sodium.PublicKeyBox.Open()` - Decrypts and verifies the sender's signature using the recipient's private key and the sender's public key. Both keys are 32 bytes. Throws a `CryptographicException` if verification fails.
+
+#### crypto_box_detached
+`Sodium.PublicKeyBox.CreateDetached()` - Similar to `crypto_box`, except returns a `DedatchedBox` object, with the cipher text and MAC separated.
+
+#### crypto_box_open_detached
+`Sodium.PublicKeyBox.OpenDetached()` - Similar to `crypto_box_open`, except dealing with a detached MAC. See `crypto_box_detached`.
 
 ### Symmetric
 
@@ -76,6 +88,12 @@ Note: As in any crypto system, it's important to avoid reusing a nonce, so the n
 
 #### crypto_secretbox_open
 `Sodium.SecretBox.Open()` - This method retrieves the message encrypted via `SecretBox.Create()`. To decrypt and authenticate the data, you pass the key, nonce, and cipher text; if there is an issue decrypting the message, you will receive a generic `CryptographicException` - the exact reason for the failure isn't provided.
+
+#### crypto_secretbox_detached
+`Sodium.SecretBox.CreateDetached()` - Similar to `crypto_secretbox`, except returns a `DedatchedBox` object, with the cipher text and MAC separated.
+
+#### crypto_box_open_detached
+`Sodium.SecretBox.OpenDetached()` - Similar to `crypto_secretbox_open`, except dealing with a detached MAC. See `crypto_secretbox_detached`.
 
 #### crypto_onetimeauth
 `Sodium.OneTimeAuth.Sign()` - Provides messages authentication via [Poly1305](https://en.wikipedia.org/wiki/Poly1305). The method takes a messages (as UTF-8 string or byte array), a 32 byte key (that must be used only once), and returns a 16 bytes signature.
