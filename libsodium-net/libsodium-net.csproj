@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="CryptoHash.cs" />
     <Compile Include="GenericHash.cs" />
-    <Compile Include="Detached.cs" />
+    <Compile Include="DetachedBox.cs" />
     <Compile Include="KeyPair.cs" />
     <Compile Include="OneTimeAuth.cs" />
     <Compile Include="PublicKeyAuth.cs" />
