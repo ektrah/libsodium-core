@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 
 namespace Sodium
 {
@@ -18,7 +19,9 @@ namespace Sodium
         throw new ArgumentOutOfRangeException("privateKey", "Private Key length must be a multiple of 16 bytes.");
 
       _publicKey = publicKey;
+
       _privateKey = privateKey;
+      ProtectedMemory.Protect(_privateKey, MemoryProtectionScope.SameProcess);
     }
 
     ~KeyPair()
@@ -35,7 +38,15 @@ namespace Sodium
     /// <summary>Gets or sets the Private Key.</summary>
     public byte[] PrivateKey
     {
-      get { return _privateKey; }
+      get
+      {
+        ProtectedMemory.Unprotect(_privateKey, MemoryProtectionScope.SameProcess);
+        var tmp = new byte[_privateKey.Length];
+        Array.Copy(_privateKey, tmp, tmp.Length);
+        ProtectedMemory.Protect(_privateKey, MemoryProtectionScope.SameProcess);
+
+        return tmp;
+      }
     }
 
     /// <summary>Dispose of private key in memory.</summary>
