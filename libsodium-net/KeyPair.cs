@@ -21,7 +21,7 @@ namespace Sodium
       _publicKey = publicKey;
 
       _privateKey = privateKey;
-      ProtectedMemory.Protect(_privateKey, MemoryProtectionScope.SameProcess);
+      _ProtectKey();
     }
 
     ~KeyPair()
@@ -40,10 +40,10 @@ namespace Sodium
     {
       get
       {
-        ProtectedMemory.Unprotect(_privateKey, MemoryProtectionScope.SameProcess);
+        _UnprotectKey();
         var tmp = new byte[_privateKey.Length];
         Array.Copy(_privateKey, tmp, tmp.Length);
-        ProtectedMemory.Protect(_privateKey, MemoryProtectionScope.SameProcess);
+        _ProtectKey();
 
         return tmp;
       }
@@ -54,6 +54,20 @@ namespace Sodium
     {
       if (_privateKey != null && _privateKey.Length > 0)
         Array.Clear(_privateKey, 0, _privateKey.Length);
+    }
+
+    private void _ProtectKey()
+    {
+      #if !__MonoCS__
+        ProtectedMemory.Protect(_privateKey, MemoryProtectionScope.SameProcess);
+      #endif
+    }
+
+    private void _UnprotectKey()
+    {
+      #if !__MonoCS__
+        ProtectedMemory.Unprotect(_privateKey, MemoryProtectionScope.SameProcess);
+      #endif
     }
   }
 }
