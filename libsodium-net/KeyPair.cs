@@ -1,27 +1,73 @@
-﻿namespace Sodium
+﻿using System;
+using System.Security.Cryptography;
+
+namespace Sodium
 {
   /// <summary>A public / private key pair.</summary>
-  public class KeyPair
+  public class KeyPair : IDisposable
   {
-    /// <summary>Initializes a new instance of the <see cref="KeyPair"/> class.</summary>
-    public KeyPair()
-    {
-      //do nothing
-    }
+    private readonly byte[] _publicKey;
+    private readonly byte[] _privateKey;
 
     /// <summary>Initializes a new instance of the <see cref="KeyPair"/> class.</summary>
     /// <param name="publicKey">The public key.</param>
     /// <param name="privateKey">The private key.</param>
     public KeyPair(byte[] publicKey, byte[] privateKey)
     {
-      PublicKey = publicKey;
-      PrivateKey = privateKey;
+      //verify that the private key length is a multiple of 16
+      if (privateKey.Length % 16 != 0)
+        throw new ArgumentOutOfRangeException("privateKey", "Private Key length must be a multiple of 16 bytes.");
+
+      _publicKey = publicKey;
+
+      _privateKey = privateKey;
+      _ProtectKey();
+    }
+
+    ~KeyPair()
+    {
+      Dispose();
     }
 
     /// <summary>Gets or sets the Public Key.</summary>
-    public byte[] PublicKey { get; set; }
+    public byte[] PublicKey
+    {
+      get { return _publicKey; }
+    }
 
     /// <summary>Gets or sets the Private Key.</summary>
-    public byte[] PrivateKey { get; set; }
+    public byte[] PrivateKey
+    {
+      get
+      {
+        _UnprotectKey();
+        var tmp = new byte[_privateKey.Length];
+        Array.Copy(_privateKey, tmp, tmp.Length);
+        _ProtectKey();
+
+        return tmp;
+      }
+    }
+
+    /// <summary>Dispose of private key in memory.</summary>
+    public void Dispose()
+    {
+      if (_privateKey != null && _privateKey.Length > 0)
+        Array.Clear(_privateKey, 0, _privateKey.Length);
+    }
+
+    private void _ProtectKey()
+    {
+      #if !__MonoCS__
+        ProtectedMemory.Protect(_privateKey, MemoryProtectionScope.SameProcess);
+      #endif
+    }
+
+    private void _UnprotectKey()
+    {
+      #if !__MonoCS__
+        ProtectedMemory.Unprotect(_privateKey, MemoryProtectionScope.SameProcess);
+      #endif
+    }
   }
 }
