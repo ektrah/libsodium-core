@@ -13,6 +13,10 @@ namespace Sodium
     /// <param name="privateKey">The private key.</param>
     public KeyPair(byte[] publicKey, byte[] privateKey)
     {
+      //verify that the private key length is a multiple of 16
+      if (privateKey.Length % 16 != 0)
+        throw new ArgumentOutOfRangeException("privateKey", "Private Key length must be a multiple of 16 bytes.");
+
       _publicKey = publicKey;
       _privateKey = privateKey;
     }
