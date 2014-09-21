@@ -7,13 +7,8 @@ namespace Sodium
   /// </summary>
   public static class SodiumCore
   {
-    #if __MonoCS__
-      internal const string LIBRARY_X86 = "libsodium";
-      internal const string LIBRARY_X64 = "libsodium";
-    #else
-      internal const string LIBRARY_X86 = "libsodium.dll";
-      internal const string LIBRARY_X64 = "libsodium-64.dll";
-    #endif
+    internal const string LIBRARY_X86 = "libsodium.dll";
+    internal const string LIBRARY_X64 = "libsodium-64.dll";
 
     internal static bool Is64 { get; private set; }
     
