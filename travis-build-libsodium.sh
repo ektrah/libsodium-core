@@ -3,7 +3,7 @@ set -ev
 
 git clone git://github.com/jedisct1/libsodium.git
 cd libsodium
-git checkout tags/0.7.0
+git checkout tags/0.7.1
 ./autogen.sh
 if [[ $TRAVIS_OS_UNAME = 'Darwin' ]]; then 
   export CFLAGS="-Os -m32 -arch i386";
