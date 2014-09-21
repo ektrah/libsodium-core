@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CryptoHash.cs" />
+    <Compile Include="DynamicInvoke.cs" />
     <Compile Include="GenericHash.cs" />
     <Compile Include="DetachedBox.cs" />
     <Compile Include="KeyPair.cs" />

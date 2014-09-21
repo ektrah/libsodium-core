@@ -9,6 +9,7 @@ namespace Sodium
   {
     internal const string LIBRARY_X86 = "libsodium.dll";
     internal const string LIBRARY_X64 = "libsodium-64.dll";
+    internal const string LIBRARY_MONO = "libsodium";
 
     internal static bool Is64 { get; private set; }
     
@@ -16,10 +17,8 @@ namespace Sodium
     {
       Is64 = (IntPtr.Size == 8);
 
-      if (Is64)
-        _Init64();
-      else
-        _Init86();
+      var init = DynamicInvoke.GetDynamicInvoke<_Init>("sodium_init", LibraryName());
+      init();
     }
 
     /// <summary>Gets random bytes</summary>
@@ -29,10 +28,8 @@ namespace Sodium
     {
       var buffer = new byte[count];
 
-      if (Is64)
-        _GetRandomBytes64(buffer, count);
-      else
-        _GetRandomBytes86(buffer, count);
+      var rnd = DynamicInvoke.GetDynamicInvoke<_GetRandomBytes>("randombytes_buf", LibraryName());
+      rnd(buffer, count);
 
       return buffer;
     }
@@ -45,12 +42,8 @@ namespace Sodium
     /// </returns>
     public static string SodiumVersionString()
     {
-      IntPtr ptr;
-
-      if (Is64)
-        ptr = _SodiumVersionString64();
-      else
-        ptr = _SodiumVersionString86();
+      var ver = DynamicInvoke.GetDynamicInvoke<_SodiumVersionString>("sodium_version_string", LibraryName());
+      var ptr = ver();
 
       return Marshal.PtrToStringAnsi(ptr);
     }
@@ -60,22 +53,23 @@ namespace Sodium
       return Type.GetType("Mono.Runtime") != null;
     }
 
-    //sodium_version_string
-    [DllImport(LIBRARY_X86, EntryPoint = "sodium_version_string", CallingConvention = CallingConvention.Cdecl)]
-    private static extern IntPtr _SodiumVersionString86();
-    [DllImport(LIBRARY_X64, EntryPoint = "sodium_version_string", CallingConvention = CallingConvention.Cdecl)]
-    private static extern IntPtr _SodiumVersionString64();
+    internal static string LibraryName()
+    {
+      string lib;
 
-    //sodium_init
-    [DllImport(LIBRARY_X86, EntryPoint = "sodium_init", CallingConvention = CallingConvention.Cdecl)]
-    private static extern void _Init86();
-    [DllImport(LIBRARY_X64, EntryPoint = "sodium_init", CallingConvention = CallingConvention.Cdecl)]
-    private static extern void _Init64();
+      lib = Is64 ? LIBRARY_X64 : LIBRARY_X86;
 
-    //randombytes_buf
-    [DllImport(LIBRARY_X86, EntryPoint = "randombytes_buf", CallingConvention = CallingConvention.Cdecl)]
-    private static extern void _GetRandomBytes86(byte[] buffer, int size);
-    [DllImport(LIBRARY_X64, EntryPoint = "randombytes_buf", CallingConvention = CallingConvention.Cdecl)]
-    private static extern void _GetRandomBytes64(byte[] buffer, int size);
+      //if we're on mono, override
+      if (IsRunningOnMono())
+      {
+        lib = LIBRARY_MONO;
+      }
+
+      return lib;
+    }
+
+    private delegate IntPtr _SodiumVersionString();
+    private delegate void _Init();
+    private delegate void _GetRandomBytes(byte[] buffer, int size);
   }
 }
