@@ -58,16 +58,18 @@ namespace Sodium
 
     private void _ProtectKey()
     {
-      #if !__MonoCS__
+      if (!SodiumCore.IsRunningOnMono())
+      {
         ProtectedMemory.Protect(_privateKey, MemoryProtectionScope.SameProcess);
-      #endif
+      }
     }
 
     private void _UnprotectKey()
     {
-      #if !__MonoCS__
+      if (!SodiumCore.IsRunningOnMono())
+      {
         ProtectedMemory.Unprotect(_privateKey, MemoryProtectionScope.SameProcess);
-      #endif
+      }
     }
   }
 }

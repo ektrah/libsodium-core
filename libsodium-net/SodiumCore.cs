@@ -55,6 +55,11 @@ namespace Sodium
       return Marshal.PtrToStringAnsi(ptr);
     }
 
+    internal static bool IsRunningOnMono()
+    {
+      return Type.GetType("Mono.Runtime") != null;
+    }
+
     //sodium_version_string
     [DllImport(LIBRARY_X86, EntryPoint = "sodium_version_string", CallingConvention = CallingConvention.Cdecl)]
     private static extern IntPtr _SodiumVersionString86();
