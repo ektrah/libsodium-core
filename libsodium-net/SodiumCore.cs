@@ -9,6 +9,7 @@ namespace Sodium
   {
     internal const string LIBRARY_X86 = "libsodium.dll";
     internal const string LIBRARY_X64 = "libsodium-64.dll";
+    internal const string LIBRARY_MONO = "libsodium";
 
     internal static bool Is64 { get; private set; }
     
@@ -54,20 +55,21 @@ namespace Sodium
 
     internal static string LibraryName()
     {
-      if (Is64)
-        return LIBRARY_X64;
-      else
-        return LIBRARY_X86;
+      string lib;
+
+      lib = Is64 ? LIBRARY_X64 : LIBRARY_X86;
+
+      //if we're on mono, override
+      if (IsRunningOnMono())
+      {
+        lib = LIBRARY_MONO;
+      }
+
+      return lib;
     }
 
     private delegate IntPtr _SodiumVersionString();
     private delegate void _Init();
     private delegate void _GetRandomBytes(byte[] buffer, int size);
-
-    //randombytes_buf
-    [DllImport(LIBRARY_X86, EntryPoint = "randombytes_buf", CallingConvention = CallingConvention.Cdecl)]
-    private static extern void _GetRandomBytes86(byte[] buffer, int size);
-    [DllImport(LIBRARY_X64, EntryPoint = "randombytes_buf", CallingConvention = CallingConvention.Cdecl)]
-    private static extern void _GetRandomBytes64(byte[] buffer, int size);
   }
 }
