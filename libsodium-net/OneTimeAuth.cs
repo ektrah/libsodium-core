@@ -86,16 +86,7 @@ namespace Sodium
 
     //crypto_onetimeauth
     private delegate int _Sign(byte[] buffer, byte[] message, long messageLength, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_onetimeauth", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Sign64(byte[] buffer, byte[] message, long messageLength, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_onetimeauth", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Sign86(byte[] buffer, byte[] message, long messageLength, byte[] key);
-
     //crypto_onetimeauth_verify
     private delegate int _Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_onetimeauth_verify", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Verify64(byte[] signature, byte[] message, long messageLength, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_onetimeauth_verify", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Verify86(byte[] signature, byte[] message, long messageLength, byte[] key);
   }
 }
