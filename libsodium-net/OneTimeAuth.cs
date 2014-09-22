@@ -41,10 +41,8 @@ namespace Sodium
 
       var buffer = new byte[BYTES];
 
-      if (SodiumCore.Is64)
-        _Sign64(buffer, message, message.Length, key);
-      else
-        _Sign86(buffer, message, message.Length, key);
+      var sign = DynamicInvoke.GetDynamicInvoke<_Sign>("crypto_onetimeauth", SodiumCore.LibraryName());
+      sign(buffer, message, message.Length, key);
 
       return buffer;
     }
@@ -80,20 +78,21 @@ namespace Sodium
           string.Format("signature must be {0} bytes in length.", BYTES));
       }
 
-      var ret = SodiumCore.Is64
-                  ? _Verify64(signature, message, message.Length, key)
-                  : _Verify86(signature, message, message.Length, key);
+      var verify = DynamicInvoke.GetDynamicInvoke<_Verify>("crypto_onetimeauth_verify", SodiumCore.LibraryName());
+      var ret = verify(signature, message, message.Length, key);
 
       return ret == 0;
     }
 
     //crypto_onetimeauth
+    private delegate int _Sign(byte[] buffer, byte[] message, long messageLength, byte[] key);
     [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_onetimeauth", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Sign64(byte[] buffer, byte[] message, long messageLength, byte[] key);
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_onetimeauth", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Sign86(byte[] buffer, byte[] message, long messageLength, byte[] key);
 
     //crypto_onetimeauth_verify
+    private delegate int _Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
     [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_onetimeauth_verify", CallingConvention = CallingConvention.Cdecl)]
     private static extern int _Verify64(byte[] signature, byte[] message, long messageLength, byte[] key);
     [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_onetimeauth_verify", CallingConvention = CallingConvention.Cdecl)]
