@@ -29,6 +29,13 @@ namespace Tests
       Assert.AreEqual(32, aliceKeypair.PublicKey.Length);
     }
 
+    /// <summary>Verify that the length of the returned key is correct.</summary>
+    [Test]
+    public void TestGenerateNonce()
+    {
+        Assert.AreEqual(24, PublicKeyBox.GenerateNonce().Length);
+    }
+
     /// <summary>Does PublicKeyBox.GenerateKeyPair(privateKey) return the rigt public key</summary>
     [Test]
     public void GenerateKeyPairFromPrivateTest()

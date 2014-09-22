@@ -46,6 +46,13 @@ namespace Sodium
       return new KeyPair(publicKey, privateKey);
     }
 
+    /// <summary>Generates a random 24 byte nonce.</summary>
+    /// <returns>Returns a byte array with 24 random bytes</returns>
+    public static byte[] GenerateNonce()
+    {
+        return SodiumCore.GetRandomBytes(NONCE_BYTES);
+    }
+
     /// <summary>Creates a Box</summary>
     /// <param name="message"></param>
     /// <param name="nonce"></param>
