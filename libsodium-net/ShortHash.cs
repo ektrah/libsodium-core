@@ -50,19 +50,13 @@ namespace Sodium
       }
 
       var buffer = new byte[BYTES];
-      
-      if (SodiumCore.Is64)
-        _ShortHash64(buffer, message, message.Length, key);
-      else
-        _ShortHash86(buffer, message, message.Length, key);
+      var hash = DynamicInvoke.GetDynamicInvoke<_ShortHash>("crypto_shorthash", SodiumCore.LibraryName());
+      hash(buffer, message, message.Length, key);
 
       return buffer;
     }
 
     //crypto_shorthash
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_shorthash", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _ShortHash64(byte[] buffer, byte[] message, long messageLength, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_shorthash", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _ShortHash86(byte[] buffer, byte[] message, long messageLength, byte[] key);
+    private delegate int _ShortHash(byte[] buffer, byte[] message, long messageLength, byte[] key);
   }
 }

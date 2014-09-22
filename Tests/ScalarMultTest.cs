@@ -18,7 +18,7 @@ namespace Tests
 			};
 
       var alicePk = new byte[32];
-      ScalarMult.Base(alicePk, aliceSk);
+      alicePk = ScalarMult.Base(aliceSk);
 
       var result = new byte[] {
 				0x85,0x20,0xf0,0x09,0x89,0x30,0xa7,0x54,
@@ -41,7 +41,7 @@ namespace Tests
 			};
 
       var bobPk = new byte[32];
-      ScalarMult.Base(bobPk, bobSk);
+      bobPk = ScalarMult.Base(bobSk);
 
       var result = new byte[] {
 				0xde,0x9e,0xdb,0x7d,0x7b,0x7d,0xc1,0xb4,
@@ -72,7 +72,7 @@ namespace Tests
 
       var k = new byte[32];
 
-      ScalarMult.Mult(k, aliceSk, bobPk);
+      k = ScalarMult.Mult(aliceSk, bobPk);
 
       var result = new byte[] {
 				0x4a,0x5d,0x9d,0x5b,0xa4,0xce,0x2d,0xe1,
@@ -103,7 +103,7 @@ namespace Tests
 
       var k = new byte[32];
 
-      ScalarMult.Mult(k, bobSk, alicePk);
+      k = ScalarMult.Mult(bobSk, alicePk);
 
       var result = new byte[] {
 				0x4a,0x5d,0x9d,0x5b,0xa4,0xce,0x2d,0xe1,

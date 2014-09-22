@@ -78,11 +78,8 @@ namespace Sodium
       }
 
       var buffer = new byte[bytes];
-      
-      if (SodiumCore.Is64)
-        _GenericHash64(buffer, buffer.Length, message, message.Length, key, keyLength);
-      else
-        _GenericHash86(buffer, buffer.Length, message, message.Length, key, keyLength);
+      var hash = DynamicInvoke.GetDynamicInvoke<_GenericHash>("crypto_generichash", SodiumCore.LibraryName());
+      hash(buffer, buffer.Length, message, message.Length, key, keyLength);
 
       return buffer;
     }
@@ -129,25 +126,15 @@ namespace Sodium
 
       var buffer = new byte[OUT_BYTES];
 
-      if (SodiumCore.Is64)
-        _GenericHashSaltPersonal64(buffer, buffer.Length, message, message.LongLength, key, key.Length, salt, personal);
-      else
-        _GenericHashSaltPersonal86(buffer, buffer.Length, message, message.LongLength, key, key.Length, salt, personal);
+      var hash = DynamicInvoke.GetDynamicInvoke<_GenericHashSaltPersonal>("crypto_generichash_blake2b_salt_personal", SodiumCore.LibraryName());
+      hash(buffer, buffer.Length, message, message.LongLength, key, key.Length, salt, personal);
 
       return buffer;
     }
 
     //crypto_generichash
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_generichash", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _GenericHash64(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_generichash", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _GenericHash86(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
-
+    private delegate int _GenericHash(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
     //crypto_generichash_blake2b_salt_personal
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_generichash_blake2b_salt_personal", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _GenericHashSaltPersonal64(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength, byte[] salt, byte[] personal);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_generichash_blake2b_salt_personal", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _GenericHashSaltPersonal86(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength, byte[] salt, byte[] personal);
-
+    private delegate int _GenericHashSaltPersonal(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength, byte[] salt, byte[] personal);
   }
 }

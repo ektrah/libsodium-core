@@ -80,8 +80,8 @@ namespace Sodium
       var buffer = new byte[SCRYPT_SALSA208_SHA256_BYTES];
       var pass = Encoding.UTF8.GetBytes(password);
 
-      var ret = SodiumCore.Is64 ? _HashString64(buffer, pass, pass.LongLength, opsLimit, memLimit) : 
-        _HashString86(buffer, pass, pass.LongLength, opsLimit, memLimit);
+      var hash = DynamicInvoke.GetDynamicInvoke<_HashString>("crypto_pwhash_scryptsalsa208sha256_str", SodiumCore.LibraryName());
+      var ret = hash(buffer, pass, pass.LongLength, opsLimit, memLimit);
 
       if (ret != 0)
       {
@@ -184,8 +184,8 @@ namespace Sodium
 
       var buffer = new byte[outputLength];
 
-      var ret = SodiumCore.Is64 ? _HashBinary64(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit) :
-        _HashBinary86(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit);
+      var hash = DynamicInvoke.GetDynamicInvoke<_HashBinary>("crypto_pwhash_scryptsalsa208sha256", SodiumCore.LibraryName());
+      var ret = hash(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit);
 
       if (ret != 0)
         throw new OutOfMemoryException("Internal error, hash failed");
@@ -213,28 +213,17 @@ namespace Sodium
       if (hash == null)
         throw new ArgumentNullException("hash", "Hash cannot be null");
 
-      var ret = SodiumCore.Is64 ? _HashVerify64(hash, password, password.LongLength) : 
-        _HashVerify86(hash, password, password.LongLength);
+      var verify = DynamicInvoke.GetDynamicInvoke<_HashVerify>("crypto_pwhash_scryptsalsa208sha256_str_verify", SodiumCore.LibraryName());
+      var ret = verify(hash, password, password.LongLength);
 
       return ret == 0;
     }
 
     //crypto_pwhash_scryptsalsa208sha256_str
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_pwhash_scryptsalsa208sha256_str", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _HashString64(byte[] buffer, byte[] password, long passwordLen, long opsLimit, int memLimit);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_pwhash_scryptsalsa208sha256_str", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _HashString86(byte[] buffer, byte[] password, long passwordLen, long opsLimit, int memLimit);
-
+    private delegate int _HashString(byte[] buffer, byte[] password, long passwordLen, long opsLimit, int memLimit);
     //crypto_pwhash_scryptsalsa208sha256
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_pwhash_scryptsalsa208sha256", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _HashBinary64(byte[] buffer, long bufferLen, byte[] password, long passwordLen, byte[] salt, long opsLimit, int memLimit);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_pwhash_scryptsalsa208sha256", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _HashBinary86(byte[] buffer, long bufferLen, byte[] password, long passwordLen, byte[] salt, long opsLimit, int memLimit);
-
+    private delegate int _HashBinary(byte[] buffer, long bufferLen, byte[] password, long passwordLen, byte[] salt, long opsLimit, int memLimit);
     //crypto_pwhash_scryptsalsa208sha256_str_verify
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_pwhash_scryptsalsa208sha256_str_verify", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _HashVerify86(byte[] buffer, byte[] password, long passLength);
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_pwhash_scryptsalsa208sha256_str_verify", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _HashVerify64(byte[] buffer, byte[] password, long passLength);
+    private delegate int _HashVerify(byte[] buffer, byte[] password, long passLength);
   }
 }
