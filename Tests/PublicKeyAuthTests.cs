@@ -51,6 +51,26 @@ namespace Tests
       CollectionAssert.AreEqual(expected, actual);
     }
 
+    /// <summary>Does PublicKeyAuth.SignDetached() return the expected value?</summary>
+    [Test]
+    public void SimpleAuthDetachedTest()
+    {
+      var expected = Utilities.HexToBinary("8d5436accbe258a6b252c1140f38d7b8dc6196619945818b72512b6a8019d86dfeeb56f40c4d4b983d97dfeed37948527256c3567d6b253757fcfb32bef56f0b");
+      var actual = PublicKeyAuth.SignDetached(Encoding.UTF8.GetBytes("Adam Caudill"),
+        Utilities.HexToBinary("89dff97c131434c11809c3341510ce63c85e851d3ba62e2f810016bbc67d35144ffda13c11d61d2b9568e54bec06ea59368e84874883087645e64e5e9653422e"));
+      CollectionAssert.AreEqual(expected, actual);
+    }
+
+    /// <summary>Does SecretKeyAuth.VerifyDetached() return the expected value?</summary>
+    [Test]
+    public void SimpleVerifyDetachedTest()
+    {
+        var expected = true;
+        var actual = PublicKeyAuth.VerifyDetached(Utilities.HexToBinary("8d5436accbe258a6b252c1140f38d7b8dc6196619945818b72512b6a8019d86dfeeb56f40c4d4b983d97dfeed37948527256c3567d6b253757fcfb32bef56f0b"),
+            Encoding.UTF8.GetBytes("Adam Caudill"), Utilities.HexToBinary("4ffda13c11d61d2b9568e54bec06ea59368e84874883087645e64e5e9653422e"));
+       Assert.AreEqual(expected, actual);
+    }
+
     [Test]
     public void PublicKeyAuthConvertToCurve25519()
     {
