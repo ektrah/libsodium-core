@@ -46,11 +46,8 @@ namespace Sodium
       }
 
       var buffer = new byte[BYTES];
-
-      if (SodiumCore.Is64)
-        _Sign64(buffer, message, message.Length, key);
-      else
-        _Sign86(buffer, message, message.Length, key);
+      var sign = DynamicInvoke.GetDynamicInvoke<_Sign>("crypto_auth", SodiumCore.LibraryName());
+      sign(buffer, message, message.Length, key);
 
       return buffer;
     }
@@ -85,10 +82,8 @@ namespace Sodium
         throw new ArgumentOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
           string.Format("signature must be {0} bytes in length.", BYTES));
       }
-
-      var ret = SodiumCore.Is64
-                  ? _Verify64(signature, message, message.Length, key)
-                  : _Verify86(signature, message, message.Length, key);
+      var verify = DynamicInvoke.GetDynamicInvoke<_Verify>("crypto_auth_verify", SodiumCore.LibraryName());
+      var ret = verify(signature, message, message.Length, key);
 
       return ret == 0;
     }
@@ -107,11 +102,8 @@ namespace Sodium
       }
 
       var buffer = new byte[CRYPTO_AUTH_HMACSHA256_BYTES];
-
-      if (SodiumCore.Is64)
-        _CRYPTO_AUTH_HMACSHA256_64(buffer, message, message.Length, key);
-      else
-        _CRYPTO_AUTH_HMACSHA256_86(buffer, message, message.Length, key);
+      var sign = DynamicInvoke.GetDynamicInvoke<_HmacSha256>("crypto_auth_hmacsha256", SodiumCore.LibraryName());
+      sign(buffer, message, message.Length, key);
 
       return buffer;
     }
@@ -139,11 +131,8 @@ namespace Sodium
       }
 
       var buffer = new byte[CRYPTO_AUTH_HMACSHA512_BYTES];
-
-      if (SodiumCore.Is64)
-        _HmacSha512x64(buffer, message, message.Length, key);
-      else
-        _HmacSha512x86(buffer, message, message.Length, key);
+      var sign = DynamicInvoke.GetDynamicInvoke<_HmacSha512>("crypto_auth_hmacsha512", SodiumCore.LibraryName());
+      sign(buffer, message, message.Length, key);
 
       return buffer;
     }
@@ -187,10 +176,8 @@ namespace Sodium
         throw new ArgumentOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
           string.Format("signature must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA256_BYTES));
       }
-
-      var ret = SodiumCore.Is64
-                  ? _HmacSha256Verify64(signature, message, message.Length, key)
-                  : _HmacSha256Verify86(signature, message, message.Length, key);
+      var verify = DynamicInvoke.GetDynamicInvoke<_HmacSha256Verify>("crypto_auth_hmacsha256_verify", SodiumCore.LibraryName());
+      var ret = verify(signature, message, message.Length, key);
 
       return ret == 0;
     }
@@ -225,48 +212,23 @@ namespace Sodium
         throw new ArgumentOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
           string.Format("signature must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA512_BYTES));
       }
-
-      var ret = SodiumCore.Is64
-                  ? _HmacSha512Verify64(signature, message, message.Length, key)
-                  : _HmacSha512Verify86(signature, message, message.Length, key);
+      var verify = DynamicInvoke.GetDynamicInvoke<_HmacSha512Verify>("crypto_auth_hmacsha512_verify", SodiumCore.LibraryName());
+      var ret = verify(signature, message, message.Length, key);
 
       return ret == 0;
     }
 
     //crypto_auth
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_auth", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Sign64(byte[] buffer, byte[] message, long messageLength, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_auth", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Sign86(byte[] buffer, byte[] message, long messageLength, byte[] key);
-
+    private delegate int _Sign(byte[] buffer, byte[] message, long messageLength, byte[] key);
     //crypto_auth_verify
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_auth_verify", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Verify64(byte[] signature, byte[] message, long messageLength, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_auth_verify", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Verify86(byte[] signature, byte[] message, long messageLength, byte[] key);
-
+    private delegate int _Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
     //crypto_auth_hmacsha256
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_auth_hmacsha256", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _CRYPTO_AUTH_HMACSHA256_86(byte[] buffer, byte[] message, long messageLength, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_auth_hmacsha256", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _CRYPTO_AUTH_HMACSHA256_64(byte[] buffer, byte[] message, long messageLength, byte[] key);
-
+    private delegate int _HmacSha256(byte[] buffer, byte[] message, long messageLength, byte[] key);
     //crypto_auth_hmacsha256_verify
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_auth_hmacsha256_verify", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _HmacSha256Verify86(byte[] signature, byte[] message, long messageLength, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_auth_hmacsha256_verify", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _HmacSha256Verify64(byte[] signature, byte[] message, long messageLength, byte[] key);
-
+    private delegate int _HmacSha256Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
     //crypto_auth_hmacsha512
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_auth_hmacsha512", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _HmacSha512x86(byte[] buffer, byte[] message, long messageLength, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_auth_hmacsha512", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _HmacSha512x64(byte[] buffer, byte[] message, long messageLength, byte[] key);
-
+    private delegate int _HmacSha512(byte[] signature, byte[] message, long messageLength, byte[] key);
     //crypto_auth_hmacsha512_verify
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_auth_hmacsha512_verify", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _HmacSha512Verify86(byte[] signature, byte[] message, long messageLength, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_auth_hmacsha512_verify", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _HmacSha512Verify64(byte[] signature, byte[] message, long messageLength, byte[] key);
+    private delegate int _HmacSha512Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
   }
 }
