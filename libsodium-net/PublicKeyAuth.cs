@@ -145,7 +145,6 @@ namespace Sodium
     /// <returns><c>true</c> on success; otherwise, <c>false</c>.</returns>
     public static bool VerifyDetached(byte[] signature, byte[] message, byte[] key)
     {
-        bool isVerified = false;
       //validate the length of the signature
       if (signature == null || signature.Length != SIGNATURE_BYTES)
       {
@@ -162,16 +161,7 @@ namespace Sodium
       var verified = DynamicInvoke.GetDynamicInvoke<_VerifyDetached>("crypto_sign_verify_detached", SodiumCore.LibraryName());
       var ret = verified(signature, message, message.Length, key);
 
-      if (ret == 0)
-      {
-          isVerified = true;
-      }
-      else
-      {
-          isVerified = false;
-      }
-
-      return isVerified;
+      return ret == 0;
     }
 
     /// <summary>Converts the ed25519 public key to curve25519 public key.</summary>
