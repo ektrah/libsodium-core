@@ -63,9 +63,8 @@ namespace Sodium
       Array.Copy(message, 0, paddedMessage, ZERO_BYTES, message.Length);
 
       var buffer = new byte[paddedMessage.Length];
-      var ret = SodiumCore.Is64
-          ? _Create64(buffer, paddedMessage, paddedMessage.Length, nonce, key)
-          : _Create86(buffer, paddedMessage, paddedMessage.Length, nonce, key);
+      var create = DynamicInvoke.GetDynamicInvoke<_Create>("crypto_secretbox", SodiumCore.LibraryName());
+      var ret = create(buffer, paddedMessage, paddedMessage.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to create SecretBox");
@@ -106,10 +105,8 @@ namespace Sodium
 
       var cipher = new byte[message.Length];
       var mac = new byte[MAC_BYTES];
-
-      var ret = SodiumCore.Is64
-          ? _CreateDetached64(cipher, mac, message, message.Length, nonce, key)
-          : _CreateDetached86(cipher, mac, message, message.Length, nonce, key);
+      var create = DynamicInvoke.GetDynamicInvoke<_CreateDetached>("crypto_secretbox_detached", SodiumCore.LibraryName());
+      var ret = create(cipher, mac, message, message.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to create detached SecretBox");
@@ -149,9 +146,8 @@ namespace Sodium
       }
 
       var buffer = new byte[cipherText.Length];
-      var ret = SodiumCore.Is64
-          ? _Open64(buffer, cipherText, cipherText.Length, nonce, key)
-          : _Open86(buffer, cipherText, cipherText.Length, nonce, key);
+      var open = DynamicInvoke.GetDynamicInvoke<_Open>("crypto_secretbox_open", SodiumCore.LibraryName());
+      var ret = open(buffer, cipherText, cipherText.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to open SecretBox");
@@ -213,9 +209,8 @@ namespace Sodium
       }
 
       var buffer = new byte[cipherText.Length];
-      var ret = SodiumCore.Is64
-          ? _OpenDetached64(buffer, cipherText, mac, cipherText.Length, nonce, key)
-          : _OpenDetached86(buffer, cipherText, mac, cipherText.Length, nonce, key);
+      var open = DynamicInvoke.GetDynamicInvoke<_OpenDetached>("crypto_secretbox_open_detached", SodiumCore.LibraryName());
+      var ret = open(buffer, cipherText, mac, cipherText.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to open detached SecretBox");
@@ -224,27 +219,12 @@ namespace Sodium
     }
 
     //crypto_secretbox
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_secretbox", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Create64(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_secretbox", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Create86(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
-
+    private delegate int _Create(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
     //crypto_secretbox_open
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_secretbox_open", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Open64(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_secretbox_open", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Open86(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] key);
-
+    private delegate int _Open(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] key);
     //crypto_secretbox_detached
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_secretbox_detached", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _CreateDetached64(byte[] cipher, byte[] mac, byte[] message, long messageLength, byte[] nonce, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_secretbox_detached", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _CreateDetached86(byte[] cipher, byte[] mac, byte[] message, long messageLength, byte[] nonce, byte[] key);
-
+    private delegate int _CreateDetached(byte[] cipher, byte[] mac, byte[] message, long messageLength, byte[] nonce, byte[] key);
     //crypto_secretbox_open_detached
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_secretbox_open_detached", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _OpenDetached64(byte[] buffer, byte[] cipherText, byte[] mac, long cipherTextLength, byte[] nonce, byte[] key);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_secretbox_open_detached", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _OpenDetached86(byte[] buffer, byte[] cipherText, byte[] mac, long cipherTextLength, byte[] nonce, byte[] key);
+    private delegate int _OpenDetached(byte[] buffer, byte[] cipherText, byte[] mac, long cipherTextLength, byte[] nonce, byte[] key);
   }
 }
