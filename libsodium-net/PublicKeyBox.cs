@@ -41,7 +41,7 @@ namespace Sodium
           string.Format("privateKey must be {0} bytes in length.", SecretKeyBytes));
       }
 
-      ScalarMult.Base(publicKey, privateKey);
+      publicKey = ScalarMult.Base(privateKey);
 
       return new KeyPair(publicKey, privateKey);
     }

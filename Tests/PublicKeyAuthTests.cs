@@ -102,7 +102,7 @@ namespace Tests
         ed25519SkPk = keys.PrivateKey;
         curve25519Pk = PublicKeyAuth.ConvertEd25519PublicKeyToCurve25519PublicKey(ed25519Pk);
         curve25519Sk = PublicKeyAuth.ConvertEd25519SecretKeyToCurve25519SecretKey(ed25519SkPk);
-        ScalarMult.Base(curve25519Pk2, curve25519Sk);
+        curve25519Pk2 = ScalarMult.Base(curve25519Sk);
         CollectionAssert.AreEqual(curve25519Pk, curve25519Pk2);
       }
     }

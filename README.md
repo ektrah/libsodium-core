@@ -53,6 +53,12 @@ The following methods have been implemented and have at least basic unit tests i
 #### crypto_sign_open
 `Sodium.PublicKeyAuth.Verify()` - Verifies the signature and returns the clear-text message using [Ed25519](http://ed25519.cr.yp.to/) and the supplied 32-byte public key. Throws a `CryptographicException` if verification fails.
 
+#### crypto_sign_detached
+`Sodium.PublicKeyAuth.SignDetached()` - Similar to `crypto_sign`, except returns a `Signature` without the message.
+
+#### crypto_sign_verify_detached
+`Sodium.PublicKeyAuth.VerifyDetached()` - Verifies the signature and returns `true` or `false`. Throws a `CryptographicException` if verification fails.
+
 #### crypto_sign_ed25519_pk_to_curve25519
 `Sodium.PublicKeyAuth.ConvertEd25519PublicKeyToCurve25519PublicKey()` - Converts a Ed25519 public key, to a Curve25519 public key.
 
@@ -172,7 +178,10 @@ Note: Only libsodium's simplified interface is currently supported; the streamin
 `Sodium.SodiumCore.GetRandomBytes()` - Gets a number of random bytes, suitable for use as a key or nonce. In classes where appropriate, there are `GenerateKey()` and/or `GenerateNonce()` functions that return a byte array of the correct size.
 
 #### crypto_scalarmult
-`Sodium.ScalarMult.Mult` (and related methods) - Provides an interface to perform scalar multiplication.
+`Sodium.ScalarMult.Mult()` - Diffie-Hellman (function computes a secret shared by the two keys)
+
+#### crypto_scalarmult_base
+`Sodium.ScalarMult.Base()` - Diffie-Hellman (computes the public key from the given secret key)
 
 ### Utilities and Helper
 

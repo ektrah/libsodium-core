@@ -34,10 +34,9 @@ namespace Sodium
     /// <summary>
     /// Diffie-Hellman (function computes the public key)
     /// </summary>
-    /// <param name="q"></param>
     /// <param name="secretKey">A secret key.</param>
-    /// <returns></returns>
-    public static int Base(byte[] q, byte[] secretKey)
+    /// <returns>A computed public key.</returns>
+    public static byte[] Base(byte[] secretKey)
     {
         //validate the length of the scalar
         if (secretKey == null || secretKey.Length != SCALAR_BYTES)
@@ -45,18 +44,19 @@ namespace Sodium
             throw new ArgumentOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
             string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
         }
+        var publicKey = new byte[SCALAR_BYTES];
         var b = DynamicInvoke.GetDynamicInvoke<_Base>("crypto_scalarmult_base", SodiumCore.LibraryName());
-        return b(q, secretKey);
+        b(publicKey, secretKey);
+        return publicKey;
     }
 
     /// <summary>
     /// Diffie-Hellman (function computes a secret shared by the two keys) 
     /// </summary>
-    /// <param name="secretShared"></param>
     /// <param name="secretKey">A secret key.</param>
     /// <param name="publicKey">A public key.</param>
-    /// <returns></returns>
-    public static int Mult(byte[] secretShared, byte[] secretKey, byte[] publicKey)
+    /// <returns>A computed secret shared.</returns>
+    public static byte[] Mult(byte[] secretKey, byte[] publicKey)
     {
       //validate the length of the scalar
       if (secretKey == null || secretKey.Length != SCALAR_BYTES)
@@ -71,9 +71,10 @@ namespace Sodium
           throw new ArgumentOutOfRangeException("publicKey", (publicKey == null) ? 0 : publicKey.Length,
           string.Format("publicKey must be {0} bytes in length.", BYTES));
       }
-
+      var secretShared = new byte[BYTES];
       var smult = DynamicInvoke.GetDynamicInvoke<_ScalarMult>("crypto_scalarmult", SodiumCore.LibraryName());
-      return smult(secretShared, secretKey, publicKey);
+      smult(secretShared, secretKey, publicKey);
+      return secretShared;
     }
 
     //crypto_scalarmult_bytes
