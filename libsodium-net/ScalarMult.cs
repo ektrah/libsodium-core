@@ -12,29 +12,44 @@ namespace Sodium
     //TODO: Add documentation header
     public static int Bytes()
     {
-      return SodiumCore.Is64 ? _Bytes64() : _Bytes86();
+        var b = DynamicInvoke.GetDynamicInvoke<_Bytes>("crypto_scalarmult_bytes", SodiumCore.LibraryName());
+        return b();
     }
 
     //TODO: Add documentation header
     public static int ScalarBytes()
     {
-      return SodiumCore.Is64 ? _ScalarBytes64() : _ScalarBytes86();
+        var sb = DynamicInvoke.GetDynamicInvoke<_ScalarBytes>("crypto_scalarmult_scalarbytes", SodiumCore.LibraryName());
+        return sb();
     }
 
     //TODO: Add documentation header
     //TODO: Unit test(s)
     static byte Primitive()
     {
-      return SodiumCore.Is64 ? _Primitive64() : _Primitive86();
+        var p = DynamicInvoke.GetDynamicInvoke<_Primitive>("crypto_scalarmult_primitive", SodiumCore.LibraryName());
+        return p();
     }
 
-    //TODO: Add documentation header
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="q"></param>
+    /// <param name="n"></param>
+    /// <returns></returns>
     public static int Base(byte[] q, byte[] n)
     {
-      return SodiumCore.Is64 ? _Base64(q, n) : _Base86(q, n);
+        var b = DynamicInvoke.GetDynamicInvoke<_Base>("crypto_scalarmult_base", SodiumCore.LibraryName());
+        return b(q, n);
     }
 
-    //TODO: Add documentation header
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="q"></param>
+    /// <param name="n"></param>
+    /// <param name="p"></param>
+    /// <returns></returns>
     public static int Mult(byte[] q, byte[] n, byte[] p)
     {
       //validate the length of the scalar
@@ -51,37 +66,19 @@ namespace Sodium
           string.Format("p must be {0} bytes in length.", BYTES));
       }
 
-      return SodiumCore.Is64 ? _ScalarMult64(q, n, p) : _ScalarMult86(q, n, p);
+      var smult = DynamicInvoke.GetDynamicInvoke<_ScalarMult>("crypto_scalarmult", SodiumCore.LibraryName());
+      return smult(q, n, p);
     }
 
     //crypto_scalarmult_bytes
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_scalarmult_bytes", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Bytes64();
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_scalarmult_bytes", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Bytes86();
-
+    private delegate int _Bytes();
     //crypto_scalarmult_scalarbytes
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_scalarmult_scalarbytes", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _ScalarBytes86();
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_scalarmult_scalarbytes", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _ScalarBytes64();
-
+    private delegate int _ScalarBytes();
     //crypto_scalarmult_primitive
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_scalarmult_primitive", CallingConvention = CallingConvention.Cdecl)]
-    private static extern byte _Primitive64();
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_scalarmult_primitive", CallingConvention = CallingConvention.Cdecl)]
-    private static extern byte _Primitive86();
-
+    private delegate byte _Primitive();
     //crypto_scalarmult_base
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_scalarmult_base", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Base64(byte[] q, byte[] n);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_scalarmult_base", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _Base86(byte[] q, byte[] n);
-
+    private delegate int _Base(byte[] q, byte[] n);
     //crypto_scalarmult
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "crypto_scalarmult", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _ScalarMult64(byte[] q, byte[] n, byte[] p);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "crypto_scalarmult", CallingConvention = CallingConvention.Cdecl)]
-    private static extern int _ScalarMult86(byte[] q, byte[] n, byte[] p);
+    private delegate int _ScalarMult(byte[] q, byte[] n, byte[] p);
   }
 }
