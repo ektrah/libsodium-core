@@ -128,9 +128,20 @@ For this to be secure, it's required that the signing key only be used once.
 `Sodium.SecretKeyAuth.VerifyHmacSha512()` - This verifies a signature generated via `crypto_auth_hmacsha512`. To do so, it requires the original message, the 64 byte signature, and the 32 byte key.
 
 #### crypto_stream_xor
+`Sodium.StreamEncryption.GenerateNonce()` - Returns a 24 random byte nonce.
+
 `Sodium.StreamEncryption.Encrypt()` - Encrypts a message via XSalsa20 using a 32 byte key and a 24 byte nonce. As always, it's critical that the nonce never be reused. This provides encryption only, not authentication.
 
 `Sodium.StreamEncryption.Decrypt()` - Decrypts messages via XSalsa20.
+
+#### crypto_stream_chacha20_xor
+`Sodium.StreamEncryption.GenerateNonceChaCha20()` - Returns a 64 random byte nonce.
+
+`Sodium.StreamEncryption.EncryptChaCha20()` - Encrypts a message via ChaCha20 using a 32 byte key and a 64 byte nonce. This provides encryption only, not authentication.
+
+`Sodium.StreamEncryption.DecryptChaCha20()` - Decrypts messages via ChaCha20.
+
+The nonce is 64 bits long. In order to **prevent** nonce reuse, if a key is being reused, it is recommended to **increment** the previous nonce instead of generating a random nonce every time a new stream is required.
 
 ### Hashing
 

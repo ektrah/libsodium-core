@@ -5,24 +5,33 @@ using System.Text;
 
 namespace Sodium
 {
-  /// <summary>Encrypt and decrypt messages via XSalsa20</summary>
+  /// <summary>Encrypt and decrypt messages via XSalsa20 or ChaCha20</summary>
   public static class StreamEncryption
   {
-    private const int KEY_BYTES = 32;
-    private const int NONCE_BYTES = 24;
+    private const int XSALSA20_KEY_BYTES = 32;
+    private const int XSALSA20_NONCE_BYTES = 24;
+    private const int CHACHA20_KEY_BYTES = 32;
+    private const int CHACHA20_NONCEBYTES = 64;
 
     /// <summary>Generates a random 32 byte key.</summary>
     /// <returns>Returns a byte array with 32 random bytes</returns>
     public static byte[] GenerateKey()
     {
-      return SodiumCore.GetRandomBytes(KEY_BYTES);
+      return SodiumCore.GetRandomBytes(XSALSA20_KEY_BYTES);
     }
 
     /// <summary>Generates a random 24 byte nonce.</summary>
     /// <returns>Returns a byte array with 24 random bytes</returns>
     public static byte[] GenerateNonce()
     {
-      return SodiumCore.GetRandomBytes(NONCE_BYTES);
+      return SodiumCore.GetRandomBytes(XSALSA20_NONCE_BYTES);
+    }
+
+    /// <summary>Generates a random 64 byte nonce.</summary>
+    /// <returns>Returns a byte array with 64 random bytes</returns>
+    public static byte[] GenerateNonceChaCha20()
+    {
+        return SodiumCore.GetRandomBytes(CHACHA20_NONCEBYTES);
     }
 
     /// <summary>Encryptes messages via XSalsa20</summary>
@@ -49,17 +58,17 @@ namespace Sodium
     public static byte[] Encrypt(byte[] message, byte[] nonce, byte[] key)
     {
       //validate the length of the key
-      if (key == null || key.Length != KEY_BYTES)
+      if (key == null || key.Length != XSALSA20_KEY_BYTES)
       {
         throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-          string.Format("key must be {0} bytes in length.", KEY_BYTES));
+          string.Format("key must be {0} bytes in length.", XSALSA20_KEY_BYTES));
       }
 
       //validate the length of the nonce
-      if (nonce == null || nonce.Length != NONCE_BYTES)
+      if (nonce == null || nonce.Length != XSALSA20_NONCE_BYTES)
       {
         throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-          string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
+          string.Format("nonce must be {0} bytes in length.", XSALSA20_NONCE_BYTES));
       }
 
       var buffer = new byte[message.Length];
@@ -70,6 +79,53 @@ namespace Sodium
         throw new CryptographicException("Error encrypting message.");
 
       return buffer;
+    }
+
+    /// <summary>Encryptes messages via ChaCha20</summary>
+    /// <param name="message">The message to be encrypted.</param>
+    /// <param name="nonce">The 64 byte nonce.</param>
+    /// <param name="key">The 32 byte key.</param>
+    /// <returns>The encrypted message.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
+    public static byte[] EncryptChaCha20(string message, byte[] nonce, byte[] key)
+    {
+        return EncryptChaCha20(Encoding.UTF8.GetBytes(message), nonce, key);
+    }
+
+    /// <summary>Encryptes messages via ChaCha20</summary>
+    /// <param name="message">The message to be encrypted.</param>
+    /// <param name="nonce">The 64 byte nonce.</param>
+    /// <param name="key">The 32 byte key.</param>
+    /// <returns>The encrypted message.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
+    public static byte[] EncryptChaCha20(byte[] message, byte[] nonce, byte[] key)
+    {
+        //validate the length of the key
+        if (key == null || key.Length != CHACHA20_KEY_BYTES)
+        {
+            throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
+              string.Format("key must be {0} bytes in length.", CHACHA20_KEY_BYTES));
+        }
+
+        //validate the length of the nonce
+        if (nonce == null || nonce.Length != CHACHA20_NONCEBYTES)
+        {
+            throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+              string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
+        }
+
+        var buffer = new byte[message.Length];
+        var encrypt = DynamicInvoke.GetDynamicInvoke<_EncryptChaCha20>("crypto_stream_chacha20_xor", SodiumCore.LibraryName());
+        var ret = encrypt(buffer, message, message.Length, nonce, key);
+
+        if (ret != 0)
+            throw new CryptographicException("Error encrypting message.");
+
+        return buffer;
     }
 
     /// <summary>Decryptes messages via XSalsa20</summary>
@@ -96,17 +152,17 @@ namespace Sodium
     public static byte[] Decrypt(byte[] cipherText, byte[] nonce, byte[] key)
     {
       //validate the length of the key
-      if (key == null || key.Length != KEY_BYTES)
+      if (key == null || key.Length != XSALSA20_KEY_BYTES)
       {
         throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-          string.Format("key must be {0} bytes in length.", KEY_BYTES));
+          string.Format("key must be {0} bytes in length.", XSALSA20_KEY_BYTES));
       }
 
       //validate the length of the nonce
-      if (nonce == null || nonce.Length != NONCE_BYTES)
+      if (nonce == null || nonce.Length != XSALSA20_NONCE_BYTES)
       {
         throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-          string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
+          string.Format("nonce must be {0} bytes in length.", XSALSA20_NONCE_BYTES));
       }
 
       var buffer = new byte[cipherText.Length];
@@ -119,7 +175,56 @@ namespace Sodium
       return buffer;
     }
 
+    /// <summary>Decryptes messages via ChaCha20</summary>
+    /// <param name="cipherText">The chipher as hex-encoded string.</param>
+    /// <param name="nonce">The 64 byte nonce.</param>
+    /// <param name="key">The 32 byte key.</param>
+    /// <returns>The decrypted message.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
+    public static byte[] DecryptChaCha20(string cipherText, byte[] nonce, byte[] key)
+    {
+        return DecryptChaCha20(Utilities.HexToBinary(cipherText), nonce, key);
+    }
+
+    /// <summary>Decryptes messages via ChaCha20</summary>
+    /// <param name="cipherText">The chipher text to be opened.</param>
+    /// <param name="nonce">The 64 byte nonce.</param>
+    /// <param name="key">The 32 byte key.</param>
+    /// <returns>The decrypted message.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
+    public static byte[] DecryptChaCha20(byte[] cipherText, byte[] nonce, byte[] key)
+    {
+        //validate the length of the key
+        if (key == null || key.Length != CHACHA20_KEY_BYTES)
+        {
+            throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
+              string.Format("key must be {0} bytes in length.", CHACHA20_KEY_BYTES));
+        }
+
+        //validate the length of the nonce
+        if (nonce == null || nonce.Length != CHACHA20_NONCEBYTES)
+        {
+            throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+              string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
+        }
+
+        var buffer = new byte[cipherText.Length];
+        var decrypt = DynamicInvoke.GetDynamicInvoke<_EncryptChaCha20>("crypto_stream_chacha20_xor", SodiumCore.LibraryName());
+        var ret = decrypt(buffer, cipherText, cipherText.Length, nonce, key);
+
+        if (ret != 0)
+            throw new CryptographicException("Error derypting message.");
+
+        return buffer;
+    }
+
     //crypto_stream_xor
     private delegate int _Encrypt(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
+    //crypto_stream_chacha20_xor
+    private delegate int _EncryptChaCha20(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
   }
 }

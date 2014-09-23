@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Sodium;
 using NUnit.Framework;
+using System.Diagnostics;
 
 namespace Tests
 {
@@ -20,6 +21,13 @@ namespace Tests
     public void TestGenerateNonce()
     {
       Assert.AreEqual(24, StreamEncryption.GenerateNonce().Length);
+    }
+
+    /// <summary>Verify that the length of the returned key is correct.</summary>
+    [Test]
+    public void TestGenerateNonceChaCha20()
+    {
+        Assert.AreEqual(64, StreamEncryption.GenerateNonceChaCha20().Length);
     }
 
     /// <summary>Does StreamEncryption.Encrypt() return the expected value?</summary>
@@ -44,6 +52,30 @@ namespace Tests
         Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
         Encoding.UTF8.GetBytes("12345678901234567890123456789012")));
       Assert.AreEqual(EXPECTED, actual);
+    }
+
+    /// <summary>Does StreamEncryption.EncryptChaCha20() return the expected value?</summary>
+    [Test]
+    public void CreateSecretBoxChaCha20()
+    {
+        var expected = Utilities.HexToBinary("a6ce598d8b865fb328581bcd");
+        var actual = StreamEncryption.EncryptChaCha20(
+          Encoding.UTF8.GetBytes("Adam Caudill"),
+          Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOP"),
+          Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
+        Assert.AreEqual(expected, actual);
+    }
+
+    /// <summary>Does StreamEncryption.DecryptChaCha20() return the expected value?</summary>
+    [Test]
+    public void OpenSecretBoxChaCha20()
+    {
+        const string EXPECTED = "Adam Caudill";
+        var actual = Encoding.UTF8.GetString(StreamEncryption.DecryptChaCha20(
+          Utilities.HexToBinary("a6ce598d8b865fb328581bcd"),
+          Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOP"),
+          Encoding.UTF8.GetBytes("12345678901234567890123456789012")));
+        Assert.AreEqual(EXPECTED, actual);
     }
   }
 }

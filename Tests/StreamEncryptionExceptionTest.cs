@@ -64,5 +64,61 @@ namespace Tests
           //TODO: implement
           throw new CryptographicException();
       }
+
+      [Test]
+      [ExpectedException(typeof(KeyOutOfRangeException))]
+      public void StreamEncryptionEncryptChaCha20BadKey()
+      {
+          StreamEncryption.EncryptChaCha20(
+          Encoding.UTF8.GetBytes("Adam Caudill"),
+          Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOP"),
+          Encoding.UTF8.GetBytes("123456789012345678901234567890"));
+      }
+
+      [Test]
+      [ExpectedException(typeof(NonceOutOfRangeException))]
+      public void StreamEncryptionEncryptChaCha20BadNonce()
+      {
+          StreamEncryption.EncryptChaCha20(
+          Encoding.UTF8.GetBytes("Adam Caudill"),
+          Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMN"),
+          Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
+      }
+
+      [Test]
+      [ExpectedException(typeof(KeyOutOfRangeException))]
+      public void StreamEncryptionDecryptChaCha20BadKey()
+      {
+          StreamEncryption.DecryptChaCha20(
+          Utilities.HexToBinary("a6ce598d8b865fb328581bcd"),
+          Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOP"),
+          Encoding.UTF8.GetBytes("123456789012345678901234567890"));
+      }
+
+      [Test]
+      [ExpectedException(typeof(NonceOutOfRangeException))]
+      public void StreamEncryptionDecryptChaCha20BadNonce()
+      {
+          StreamEncryption.DecryptChaCha20(
+          Utilities.HexToBinary("a6ce598d8b865fb328581bcd"),
+          Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNO"),
+          Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
+      }
+
+      [Test]
+      [ExpectedException(typeof(CryptographicException))]
+      public void StreamEncryptionEncryptChaCha20BadCrypto()
+      {
+          //TODO: implement
+          throw new CryptographicException();
+      }
+
+      [Test]
+      [ExpectedException(typeof(CryptographicException))]
+      public void StreamEncryptionDecryptChaCha20BadCrypto()
+      {
+          //TODO: implement
+          throw new CryptographicException();
+      }
   }
 }
