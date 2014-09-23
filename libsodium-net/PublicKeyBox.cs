@@ -55,11 +55,11 @@ namespace Sodium
     }
 
     /// <summary>Creates a Box</summary>
-    /// <param name="message"></param>
-    /// <param name="nonce"></param>
+    /// <param name="message">The message.</param>
+    /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="secretKey">The secret key to sign message with.</param>
     /// <param name="publicKey">The recipient's public key.</param>
-    /// <returns></returns>
+    /// <returns>The encrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="CryptographicException"></exception>
@@ -69,11 +69,11 @@ namespace Sodium
     }
 
     /// <summary>Creates a Box</summary>
-    /// <param name="message"></param>
-    /// <param name="nonce"></param>
+    /// <param name="message">The message.</param>
+    /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="secretKey">The secret key to sign message with.</param>
     /// <param name="publicKey">The recipient's public key.</param>
-    /// <returns></returns>
+    /// <returns>The encrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="CryptographicException"></exception>
@@ -172,10 +172,10 @@ namespace Sodium
 
     /// <summary>Opens a Box</summary>
     /// <param name="cipherText"></param>
-    /// <param name="nonce"></param>
+    /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="secretKey">The recipient's secret key.</param>
     /// <param name="publicKey">The sender's public key.</param>
-    /// <returns></returns>
+    /// <returns>The decrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="CryptographicException"></exception>
@@ -238,12 +238,12 @@ namespace Sodium
     }
 
     /// <summary>Opens a detached Box</summary>
-    /// <param name="cipherText">Hex-encoded string to be opened</param>
+    /// <param name="cipherText">Hex-encoded string to be opened.</param>
     /// <param name="mac">The 16 byte mac.</param>
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="secretKey">The recipient's secret key.</param>
     /// <param name="publicKey">The sender's public key.</param>
-    /// <returns></returns>
+    /// <returns>The decrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="MacOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
@@ -258,7 +258,7 @@ namespace Sodium
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="secretKey">The recipient's secret key.</param>
     /// <param name="publicKey">The sender's public key.</param>
-    /// <returns></returns>
+    /// <returns>The decrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="MacOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
@@ -274,7 +274,7 @@ namespace Sodium
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="secretKey">The recipient's secret key.</param>
     /// <param name="publicKey">The sender's public key.</param>
-    /// <returns></returns>
+    /// <returns>The decrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="MacOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
