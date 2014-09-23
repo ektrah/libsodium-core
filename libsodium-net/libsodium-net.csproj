@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CryptoHash.cs" />
     <Compile Include="DynamicInvoke.cs" />
+    <Compile Include="Exceptions\AdditionalDataOutOfRangeException.cs" />
     <Compile Include="Exceptions\KeyOutOfRangeException.cs" />
     <Compile Include="Exceptions\NonceOutOfRangeException.cs" />
     <Compile Include="Exceptions\PersonalOutOfRangeException.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="OneTimeAuth.cs" />
     <Compile Include="PublicKeyAuth.cs" />
     <Compile Include="PublicKeyBox.cs" />
+    <Compile Include="SecretAead.cs" />
     <Compile Include="SecretKeyAuth.cs" />
     <Compile Include="StreamEncryption.cs" />
     <Compile Include="Utilities.cs" />

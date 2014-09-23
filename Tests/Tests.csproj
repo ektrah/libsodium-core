@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CryptoHashTest.cs" />
+    <Compile Include="SecretAeadExceptionTest.cs" />
+    <Compile Include="SecretAeadTest.cs" />
     <Compile Include="SecretKeyAuthExceptionTest.cs" />
     <Compile Include="StreamEncryptionExceptionTest.cs" />
     <Compile Include="UtilitiesExceptionTest.cs" />
