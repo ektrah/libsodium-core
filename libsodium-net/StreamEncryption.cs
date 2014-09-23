@@ -45,14 +45,14 @@ namespace Sodium
       //validate the length of the key
       if (key == null || key.Length != KEY_BYTES)
       {
-        throw new ArgumentOutOfRangeException("key", (key == null) ? 0 : key.Length,
+        throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
       }
 
       //validate the length of the nonce
       if (nonce == null || nonce.Length != NONCE_BYTES)
       {
-        throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+        throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
       }
 
@@ -86,14 +86,14 @@ namespace Sodium
       //validate the length of the key
       if (key == null || key.Length != KEY_BYTES)
       {
-        throw new ArgumentOutOfRangeException("key", (key == null) ? 0 : key.Length,
+        throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
       }
 
       //validate the length of the nonce
       if (nonce == null || nonce.Length != NONCE_BYTES)
       {
-        throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+        throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
       }
 

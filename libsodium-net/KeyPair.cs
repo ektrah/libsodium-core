@@ -16,7 +16,7 @@ namespace Sodium
     {
       //verify that the private key length is a multiple of 16
       if (privateKey.Length % 16 != 0)
-        throw new ArgumentOutOfRangeException("privateKey", "Private Key length must be a multiple of 16 bytes.");
+        throw new KeyOutOfRangeException("Private Key length must be a multiple of 16 bytes.");
 
       _publicKey = publicKey;
 

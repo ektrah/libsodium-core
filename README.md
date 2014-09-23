@@ -51,7 +51,7 @@ The following methods have been implemented and have at least basic unit tests i
 `Sodium.PublicKeyAuth.Sign()` - Signs a message with [Ed25519](http://ed25519.cr.yp.to/), based on the supplied 64 byte private key.
 
 #### crypto_sign_open
-`Sodium.PublicKeyAuth.Verify()` - Verifies the signature and returns the clear-text message using [Ed25519](http://ed25519.cr.yp.to/) and the supplied 32-byte public key. Throws a `CryptographicException` if verification fails.
+`Sodium.PublicKeyAuth.Verify()` - Verifies the signature and returns the clear-text message using [Ed25519](http://ed25519.cr.yp.to/) and the supplied 32-byte public key.
 
 #### crypto_sign_detached
 `Sodium.PublicKeyAuth.SignDetached()` - Similar to `crypto_sign`, except returns a `Signature` without the message.

@@ -66,7 +66,7 @@ namespace Sodium
       //validate the length of the key
       if (key == null || key.Length != SECRET_KEY_BYTES)
       {
-        throw new ArgumentOutOfRangeException("key", (key == null) ? 0 : key.Length,
+        throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
       }
 
@@ -91,7 +91,7 @@ namespace Sodium
         //validate the length of the key
         if (key == null || key.Length != PUBLIC_KEY_BYTES)
         {
-            throw new ArgumentOutOfRangeException("key", (key == null) ? 0 : key.Length,
+            throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
               string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
         }
 
@@ -148,13 +148,13 @@ namespace Sodium
       //validate the length of the signature
       if (signature == null || signature.Length != SIGNATURE_BYTES)
       {
-        throw new ArgumentOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
+        throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
           string.Format("signature must be {0} bytes in length.", SIGNATURE_BYTES));
       }
       //validate the length of the key
       if (key == null || key.Length != PUBLIC_KEY_BYTES)
       {
-        throw new ArgumentOutOfRangeException("key", (key == null) ? 0 : key.Length,
+        throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
       }
 
@@ -172,7 +172,7 @@ namespace Sodium
       //validate the length of the key
       if (ed25519PublicKey == null || ed25519PublicKey.Length != PUBLIC_KEY_BYTES)
       {
-        throw new ArgumentOutOfRangeException("ed25519PublicKey", (ed25519PublicKey == null) ? 0 : ed25519PublicKey.Length,
+        throw new KeyOutOfRangeException("ed25519PublicKey", (ed25519PublicKey == null) ? 0 : ed25519PublicKey.Length,
           string.Format("ed25519PublicKey must be {0} bytes in length.", PUBLIC_KEY_BYTES));
       }
 
@@ -195,7 +195,7 @@ namespace Sodium
       //validate the length of the key, which can be appended with the public key or not (both are allowed)
       if (ed25519SecretKey == null || (ed25519SecretKey.Length != PUBLIC_KEY_BYTES && ed25519SecretKey.Length != SECRET_KEY_BYTES))
       {
-        throw new ArgumentOutOfRangeException("ed25519SecretKey", (ed25519SecretKey == null) ? 0 : ed25519SecretKey.Length,
+        throw new KeyOutOfRangeException("ed25519SecretKey", (ed25519SecretKey == null) ? 0 : ed25519SecretKey.Length,
           string.Format("ed25519SecretKey must be either {0} or {1} bytes in length.", PUBLIC_KEY_BYTES, SECRET_KEY_BYTES));
       }
 

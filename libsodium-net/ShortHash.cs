@@ -45,7 +45,7 @@ namespace Sodium
       //validate the length of the key
       if (key == null || key.Length != KEY_BYTES)
       {
-        throw new ArgumentOutOfRangeException("key", (key == null) ? 0 : key.Length,
+        throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
       }
 

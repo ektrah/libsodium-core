@@ -171,7 +171,7 @@ namespace Sodium
         throw new ArgumentNullException("salt", "Salt cannot be null");
 
       if (salt.Length != SCRYPT_SALSA208_SHA256_SALTBYTES)
-        throw new ArgumentOutOfRangeException("salt", "salt must be 32 bytes");
+        throw new SaltOutOfRangeException(string.Format("Salt must be {0} bytes in length.", SCRYPT_SALSA208_SHA256_SALTBYTES));
 
       if (opsLimit <= 0)
         throw new ArgumentOutOfRangeException("opsLimit", "opsLimit cannot be zero or negative");

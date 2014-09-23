@@ -41,7 +41,7 @@ namespace Sodium
         //validate the length of the scalar
         if (secretKey == null || secretKey.Length != SCALAR_BYTES)
         {
-            throw new ArgumentOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
+          throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
             string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
         }
         var publicKey = new byte[SCALAR_BYTES];
@@ -61,14 +61,14 @@ namespace Sodium
       //validate the length of the scalar
       if (secretKey == null || secretKey.Length != SCALAR_BYTES)
       {
-          throw new ArgumentOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
+          throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
           string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
       }
 
       //validate the length of the group element
       if (publicKey == null || publicKey.Length != BYTES)
       {
-          throw new ArgumentOutOfRangeException("publicKey", (publicKey == null) ? 0 : publicKey.Length,
+          throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : publicKey.Length,
           string.Format("publicKey must be {0} bytes in length.", BYTES));
       }
       var secretShared = new byte[BYTES];

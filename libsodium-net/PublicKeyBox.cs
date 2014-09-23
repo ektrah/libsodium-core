@@ -37,7 +37,7 @@ namespace Sodium
       //validate the length of the seed
       if (privateKey == null || privateKey.Length != SecretKeyBytes)
       {
-        throw new ArgumentOutOfRangeException("privateKey", (privateKey == null) ? 0 : privateKey.Length,
+        throw new KeyOutOfRangeException("privateKey", (privateKey == null) ? 0 : privateKey.Length,
           string.Format("privateKey must be {0} bytes in length.", SecretKeyBytes));
       }
 
@@ -75,21 +75,21 @@ namespace Sodium
       //validate the length of the secret key
       if (secretKey == null || secretKey.Length != SecretKeyBytes)
       {
-        throw new ArgumentOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
+        throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
           string.Format("key must be {0} bytes in length.", SecretKeyBytes));
       }
 
       //validate the length of the public key
       if (publicKey == null || publicKey.Length != PublicKeyBytes)
       {
-        throw new ArgumentOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
+          throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
           string.Format("key must be {0} bytes in length.", PublicKeyBytes));
       }
 
       //validate the length of the nonce
       if (nonce == null || nonce.Length != NONCE_BYTES)
       {
-        throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+          throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
       }
 
@@ -127,21 +127,21 @@ namespace Sodium
       //validate the length of the secret key
       if (secretKey == null || secretKey.Length != SecretKeyBytes)
       {
-        throw new ArgumentOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
+        throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
           string.Format("key must be {0} bytes in length.", SecretKeyBytes));
       }
 
       //validate the length of the public key
       if (publicKey == null || publicKey.Length != PublicKeyBytes)
       {
-        throw new ArgumentOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
+        throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
           string.Format("key must be {0} bytes in length.", PublicKeyBytes));
       }
 
       //validate the length of the nonce
       if (nonce == null || nonce.Length != NONCE_BYTES)
       {
-        throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+        throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
       }
 
@@ -168,21 +168,21 @@ namespace Sodium
       //validate the length of the secret key
       if (secretKey == null || secretKey.Length != SecretKeyBytes)
       {
-        throw new ArgumentOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
+        throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
           string.Format("key must be {0} bytes in length.", SecretKeyBytes));
       }
 
       //validate the length of the public key
       if (publicKey == null || publicKey.Length != PublicKeyBytes)
       {
-        throw new ArgumentOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
+        throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
           string.Format("key must be {0} bytes in length.", PublicKeyBytes));
       }
 
       //validate the length of the nonce
       if (nonce == null || nonce.Length != NONCE_BYTES)
       {
-        throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+        throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
       }
 
@@ -256,28 +256,28 @@ namespace Sodium
       //validate the length of the secret key
       if (secretKey == null || secretKey.Length != SecretKeyBytes)
       {
-        throw new ArgumentOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
+        throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
           string.Format("key must be {0} bytes in length.", SecretKeyBytes));
       }
 
       //validate the length of the public key
       if (publicKey == null || publicKey.Length != PublicKeyBytes)
       {
-        throw new ArgumentOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
+        throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
           string.Format("key must be {0} bytes in length.", PublicKeyBytes));
       }
 
       //validate the length of the mac
       if (mac == null || mac.Length != MAC_BYTES)
       {
-        throw new ArgumentOutOfRangeException("mac", (mac == null) ? 0 : mac.Length,
+        throw new MacOutOfRangeException("mac", (mac == null) ? 0 : mac.Length,
           string.Format("mac must be {0} bytes in length.", MAC_BYTES));
       }
 
       //validate the length of the nonce
       if (nonce == null || nonce.Length != NONCE_BYTES)
       {
-        throw new ArgumentOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+        throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
       }
 
