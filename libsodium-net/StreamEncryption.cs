@@ -26,10 +26,10 @@ namespace Sodium
     }
 
     /// <summary>Encryptes messages via XSalsa20</summary>
-    /// <param name="message"></param>
-    /// <param name="nonce"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="message">The message to be encrypted.</param>
+    /// <param name="nonce">The nonce.</param>
+    /// <param name="key">The key.</param>
+    /// <returns>The encrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="CryptographicException"></exception>
@@ -39,10 +39,10 @@ namespace Sodium
     }
 
     /// <summary>Encryptes messages via XSalsa20</summary>
-    /// <param name="message"></param>
-    /// <param name="nonce"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="message">The message to be encrypted.</param>
+    /// <param name="nonce">The nonce.</param>
+    /// <param name="key">The key.</param>
+    /// <returns>The encrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="CryptographicException"></exception>
@@ -73,10 +73,10 @@ namespace Sodium
     }
 
     /// <summary>Decryptes messages via XSalsa20</summary>
-    /// <param name="cipherText">Hex-encoded string to be opened</param>
-    /// <param name="nonce"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="cipherText">The chipher as hex-encoded string.</param>
+    /// <param name="nonce">The nonce.</param>
+    /// <param name="key">The key.</param>
+    /// <returns>The decrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="CryptographicException"></exception>
@@ -86,10 +86,10 @@ namespace Sodium
     }
 
     /// <summary>Decryptes messages via XSalsa20</summary>
-    /// <param name="cipherText"></param>
-    /// <param name="nonce"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="cipherText">The chipher text to be opened.</param>
+    /// <param name="nonce">The nonce.</param>
+    /// <param name="key">The key.</param>
+    /// <returns>The decrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="CryptographicException"></exception>
