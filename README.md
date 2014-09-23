@@ -127,6 +127,12 @@ For this to be secure, it's required that the signing key only be used once.
 #### crypto_auth_hmacsha512_verify
 `Sodium.SecretKeyAuth.VerifyHmacSha512()` - This verifies a signature generated via `crypto_auth_hmacsha512`. To do so, it requires the original message, the 64 byte signature, and the 32 byte key.
 
+#### crypto_aead_chacha20poly1305_encrypt
+`Sodium.SecretAead.Encrypt()` - Encrypts a message with an authentication tag and additional data.
+
+#### crypto_aead_chacha20poly1305_decrypt
+`Sodium.SecretAead.Decrypt()` - Decrypts a cipher with an authentication tag and additional data.
+
 #### crypto_stream_xor
 `Sodium.StreamEncryption.GenerateNonce()` - Returns a 24 random byte nonce.
 
