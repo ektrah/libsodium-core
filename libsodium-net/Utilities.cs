@@ -32,6 +32,7 @@ namespace Sodium
     /// <summary>Takes a byte array and returns a hex-encoded string.</summary>
     /// <param name="data">Data to be encoded.</param>
     /// <returns>Hex-encoded string, lodercase.</returns>
+    /// <exception cref="OverflowException"></exception>
     public static string BinaryToHex(byte[] data)
     {
       var hex = new byte[data.Length * 2 + 1];
@@ -108,6 +109,7 @@ namespace Sodium
     /// <summary>Converts a hex-encoded string to a byte array.</summary>
     /// <param name="hex">Hex-encoded data.</param>
     /// <returns>A byte array of the decoded string.</returns>
+    /// <exception cref="Exception"></exception>
     public static byte[] HexToBinary(string hex)
     {
       const string IGNORED_CHARS = ":- ";

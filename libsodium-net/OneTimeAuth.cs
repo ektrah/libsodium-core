@@ -21,6 +21,7 @@ namespace Sodium
     /// <param name="message">The message.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>16 byte authentication code.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
     public static byte[] Sign(string message, byte[] key)
     {
       return Sign(Encoding.UTF8.GetBytes(message), key);
@@ -30,12 +31,13 @@ namespace Sodium
     /// <param name="message">The message.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>16 byte authentication code.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
     public static byte[] Sign(byte[] message, byte[] key)
     {
       //validate the length of the key
       if (key == null || key.Length != KEY_BYTES)
       {
-        throw new ArgumentOutOfRangeException("key", (key == null) ? 0 : key.Length,
+        throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
       }
 
@@ -52,6 +54,8 @@ namespace Sodium
     /// <param name="signature">The 16 byte signature.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>True if verified.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="SignatureOutOfRangeException"></exception>
     public static bool Verify(string message, byte[] signature, byte[] key)
     {
       return Verify(Encoding.UTF8.GetBytes(message), signature, key);
@@ -62,19 +66,21 @@ namespace Sodium
     /// <param name="signature">The 16 byte signature.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>True if verified.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="SignatureOutOfRangeException"></exception>
     public static bool Verify(byte[] message, byte[] signature, byte[] key)
     {
       //validate the length of the key
       if (key == null || key.Length != KEY_BYTES)
       {
-        throw new ArgumentOutOfRangeException("key", (key == null) ? 0 : key.Length,
+        throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
       }
 
       //validate the length of the signature
       if (signature == null || signature.Length != BYTES)
       {
-        throw new ArgumentOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
+        throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
           string.Format("signature must be {0} bytes in length.", BYTES));
       }
 

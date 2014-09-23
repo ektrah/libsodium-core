@@ -30,6 +30,8 @@ namespace Sodium
     /// <param name="key">The key; may be null, otherwise between 16 and 64 bytes.</param>
     /// <param name="bytes">The size (in bytes) of the desired result.</param>
     /// <returns>Returns a byte array.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="BytesOutOfRangeException"></exception>
     public static byte[] Hash(string message, string key, int bytes)
     {
       return Hash(message, Encoding.UTF8.GetBytes(key), bytes);
@@ -40,6 +42,8 @@ namespace Sodium
     /// <param name="key">The key; may be null, otherwise between 16 and 64 bytes.</param>
     /// <param name="bytes">The size (in bytes) of the desired result.</param>
     /// <returns>Returns a byte array.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="BytesOutOfRangeException"></exception>
     public static byte[] Hash(string message, byte[] key, int bytes)
     {
       return Hash(Encoding.UTF8.GetBytes(message), key, bytes);
@@ -50,6 +54,8 @@ namespace Sodium
     /// <param name="key">The key; may be null, otherwise between 16 and 64 bytes.</param>
     /// <param name="bytes">The size (in bytes) of the desired result.</param>
     /// <returns>Returns a byte array.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="BytesOutOfRangeException"></exception>
     public static byte[] Hash(byte[] message, byte[] key, int bytes)
     {
       //validate the length of the key
@@ -58,10 +64,8 @@ namespace Sodium
       {
         if (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN)
         {
-          throw new ArgumentOutOfRangeException("key", key.Length, 
-            string.Format("key must be between {0} and {1} bytes in length.", KEY_BYTES_MIN, KEY_BYTES_MAX));
+            throw new KeyOutOfRangeException(string.Format("key must be between {0} and {1} bytes in length.", KEY_BYTES_MIN, KEY_BYTES_MAX));
         }
-
         keyLength = key.Length;
       }
       else
@@ -73,7 +77,7 @@ namespace Sodium
       //validate output length
       if (bytes > BYTES_MAX || bytes < BYTES_MIN)
       {
-        throw new ArgumentOutOfRangeException("bytes", bytes,
+        throw new BytesOutOfRangeException("bytes", bytes,
           string.Format("bytes must be between {0} and {1} bytes in length.", BYTES_MIN, BYTES_MAX));
       }
 
@@ -90,6 +94,10 @@ namespace Sodium
     /// <param name="key">Key.</param>
     /// <param name="salt">Salt.</param>
     /// <param name="personal">Personal.</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="SaltOutOfRangeException"></exception>
+    /// <exception cref="PersonalOutOfRangeException"></exception>
     public static byte[] HashSaltPersonal(string message, string key, string salt, string personal)
     {
       return HashSaltPersonal(Encoding.UTF8.GetBytes(message), Encoding.UTF8.GetBytes(key), Encoding.UTF8.GetBytes(salt), Encoding.UTF8.GetBytes(personal));
@@ -101,6 +109,10 @@ namespace Sodium
     /// <param name="key">Key.</param>
     /// <param name="salt">Salt.</param>
     /// <param name="personal">Personal string.</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="SaltOutOfRangeException"></exception>
+    /// <exception cref="PersonalOutOfRangeException"></exception>
     public static byte[] HashSaltPersonal(byte[] message, byte[] key, byte[] salt, byte[] personal)
     {
       if (message == null)
@@ -113,16 +125,16 @@ namespace Sodium
         throw new ArgumentNullException("personal", "Personal string cannot be null");
 
       if (key != null && (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN))
-        throw new ArgumentOutOfRangeException (string.Format ("key must be between {0} and {1} bytes in length.", KEY_BYTES_MIN, KEY_BYTES_MAX));
+        throw new KeyOutOfRangeException(string.Format("key must be between {0} and {1} bytes in length.", KEY_BYTES_MIN, KEY_BYTES_MAX));
 
       if (key == null)
         key = new byte[0];
 
       if (salt.Length != SALT_BYTES)
-        throw new ArgumentOutOfRangeException (string.Format ("Salt must be {0} bytes in length.", SALT_BYTES));
+        throw new SaltOutOfRangeException(string.Format("Salt must be {0} bytes in length.", SALT_BYTES));
 
       if (personal.Length != PERSONAL_BYTES)
-        throw new ArgumentOutOfRangeException (string.Format ("Personal bytes must be {0} bytes in length.", PERSONAL_BYTES));
+        throw new PersonalOutOfRangeException(string.Format("Personal bytes must be {0} bytes in length.", PERSONAL_BYTES));
 
       var buffer = new byte[OUT_BYTES];
 
