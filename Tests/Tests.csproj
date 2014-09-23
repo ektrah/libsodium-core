@@ -45,6 +45,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CryptoHashTest.cs" />
+    <Compile Include="SecretKeyAuthExceptionTest.cs" />
+    <Compile Include="StreamEncryptionExceptionTest.cs" />
+    <Compile Include="UtilitiesExceptionTest.cs" />
+    <Compile Include="SecretBoxExceptionTest.cs" />
+    <Compile Include="ScalarMultExceptionTest.cs" />
+    <Compile Include="PublicKeyBoxExceptionTest.cs" />
+    <Compile Include="PublicKeyAuthExceptionTest.cs" />
+    <Compile Include="PasswordHashExceptionTest.cs" />
+    <Compile Include="OneTimeAuthExceptionTest.cs" />
+    <Compile Include="KeyPairExceptionTest.cs" />
+    <Compile Include="GenericHashExceptionTest.cs" />
     <Compile Include="OneTimeAuthTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicKeyAuthTests.cs" />

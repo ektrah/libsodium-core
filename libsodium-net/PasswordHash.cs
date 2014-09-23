@@ -219,6 +219,7 @@ namespace Sodium
     /// <param name="hash">The hash.</param>
     /// <param name="password">The password.</param>
     /// <returns><c>true</c> on success; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public static bool ScryptHashStringVerify(string hash, string password)
     {
       return ScryptHashStringVerify(Encoding.UTF8.GetBytes(hash), Encoding.UTF8.GetBytes(password));
@@ -228,6 +229,7 @@ namespace Sodium
     /// <param name="hash">The hash.</param>
     /// <param name="password">The password.</param>
     /// <returns><c>true</c> on success; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public static bool ScryptHashStringVerify(byte[] hash, byte[] password)
     {
       if (password == null)
