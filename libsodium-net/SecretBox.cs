@@ -28,10 +28,10 @@ namespace Sodium
     }
 
     /// <summary>Creates a Secret Box</summary>
-    /// <param name="message"></param>
-    /// <param name="nonce"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="message">Hex-encoded string to be encrypted.</param>
+    /// <param name="nonce">The 24 byte nonce.</param>
+    /// <param name="key">The 32 byte key.</param>
+    /// <returns>The encrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="CryptographicException"></exception>
@@ -41,10 +41,10 @@ namespace Sodium
     }
 
     /// <summary>Creates a Secret Box</summary>
-    /// <param name="message"></param>
-    /// <param name="nonce"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="message">The message.</param>
+    /// <param name="nonce">The 24 byte nonce.</param>
+    /// <param name="key">The 32 byte key.</param>
+    /// <returns>The encrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="CryptographicException"></exception>
@@ -79,7 +79,7 @@ namespace Sodium
     }
 
     /// <summary>Creates detached a Secret Box</summary>
-    /// <param name="message">The message.</param>
+    /// <param name="message">Hex-encoded string to be encrypted.</param>
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>A detached object with a cipher and a mac.</returns>
@@ -127,10 +127,10 @@ namespace Sodium
     }
 
     /// <summary>Opens a Secret Box</summary>
-    /// <param name="cipherText">Hex-encoded string to be opened</param>
-    /// <param name="nonce"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="cipherText">Hex-encoded string to be opened.</param>
+    /// <param name="nonce">The 24 byte nonce.</param>
+    /// <param name="key">The 32 byte nonce.</param>
+    /// <returns>The decrypted text.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="CryptographicException"></exception>
@@ -140,10 +140,10 @@ namespace Sodium
     }
 
     /// <summary>Opens a Secret Box</summary>
-    /// <param name="cipherText"></param>
-    /// <param name="nonce"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="cipherText">The cipherText.</param>
+    /// <param name="nonce">The 24 byte nonce.</param>
+    /// <param name="key">The 32 byte nonce.</param>
+    /// <returns>The decrypted text.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="CryptographicException"></exception>
@@ -181,7 +181,7 @@ namespace Sodium
     /// <param name="mac">The 16 byte mac.</param>
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="key">The 32 byte nonce.</param>
-    /// <returns></returns>
+    /// <returns>The decrypted text.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="MacOutOfRangeException"></exception>
@@ -195,7 +195,7 @@ namespace Sodium
     /// <param name="detached">A detached object.</param>
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="key">The 32 byte nonce.</param>
-    /// <returns></returns>
+    /// <returns>The decrypted text.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="MacOutOfRangeException"></exception>
@@ -210,7 +210,7 @@ namespace Sodium
     /// <param name="mac">The 16 byte mac.</param>
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="key">The 32 byte nonce.</param>
-    /// <returns></returns>
+    /// <returns>The decrypted text.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     /// <exception cref="NonceOutOfRangeException"></exception>
     /// <exception cref="MacOutOfRangeException"></exception>
