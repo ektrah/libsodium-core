@@ -32,6 +32,9 @@ namespace Sodium
     /// <param name="nonce"></param>
     /// <param name="key"></param>
     /// <returns></returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static byte[] Create(string message, byte[] nonce, byte[] key)
     {
       return Create(Encoding.UTF8.GetBytes(message), nonce, key);
@@ -42,6 +45,9 @@ namespace Sodium
     /// <param name="nonce"></param>
     /// <param name="key"></param>
     /// <returns></returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static byte[] Create(byte[] message, byte[] nonce, byte[] key)
     {
       //validate the length of the key
@@ -77,6 +83,9 @@ namespace Sodium
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>A detached object with a cipher and a mac.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static DetachedBox CreateDetached(string message, byte[] nonce, byte[] key)
     {
       return CreateDetached(Encoding.UTF8.GetBytes(message), nonce, key);
@@ -87,6 +96,9 @@ namespace Sodium
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>A detached object with a cipher and a mac.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static DetachedBox CreateDetached(byte[] message, byte[] nonce, byte[] key)
     {
       //validate the length of the key
@@ -119,6 +131,9 @@ namespace Sodium
     /// <param name="nonce"></param>
     /// <param name="key"></param>
     /// <returns></returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static byte[] Open(string cipherText, byte[] nonce, byte[] key)
     {
       return Open(Utilities.HexToBinary(cipherText), nonce, key);
@@ -129,6 +144,9 @@ namespace Sodium
     /// <param name="nonce"></param>
     /// <param name="key"></param>
     /// <returns></returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static byte[] Open(byte[] cipherText, byte[] nonce, byte[] key)
     {
       //validate the length of the key
@@ -164,6 +182,10 @@ namespace Sodium
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="key">The 32 byte nonce.</param>
     /// <returns></returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="MacOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static byte[] OpenDetached(string cipherText, byte[] mac, byte[] nonce, byte[] key)
     {
       return OpenDetached(Utilities.HexToBinary(cipherText), mac, nonce, key);
@@ -174,6 +196,10 @@ namespace Sodium
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="key">The 32 byte nonce.</param>
     /// <returns></returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="MacOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static byte[] OpenDetached(DetachedBox detached, byte[] nonce, byte[] key)
     {
       return OpenDetached(detached.CipherText, detached.Mac, nonce, key);
@@ -185,6 +211,10 @@ namespace Sodium
     /// <param name="nonce">The 24 byte nonce.</param>
     /// <param name="key">The 32 byte nonce.</param>
     /// <returns></returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="MacOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static byte[] OpenDetached(byte[] cipherText, byte[] mac, byte[] nonce, byte[] key)
     {
       //validate the length of the key

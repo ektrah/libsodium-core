@@ -30,6 +30,9 @@ namespace Sodium
     /// <param name="nonce"></param>
     /// <param name="key"></param>
     /// <returns></returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static byte[] Encrypt(string message, byte[] nonce, byte[] key)
     {
       return Encrypt(Encoding.UTF8.GetBytes(message), nonce, key);
@@ -40,6 +43,9 @@ namespace Sodium
     /// <param name="nonce"></param>
     /// <param name="key"></param>
     /// <returns></returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static byte[] Encrypt(byte[] message, byte[] nonce, byte[] key)
     {
       //validate the length of the key
@@ -71,6 +77,9 @@ namespace Sodium
     /// <param name="nonce"></param>
     /// <param name="key"></param>
     /// <returns></returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static byte[] Decrypt(string cipherText, byte[] nonce, byte[] key)
     {
       return Decrypt(Utilities.HexToBinary(cipherText), nonce, key);
@@ -81,6 +90,9 @@ namespace Sodium
     /// <param name="nonce"></param>
     /// <param name="key"></param>
     /// <returns></returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="NonceOutOfRangeException"></exception>
+    /// <exception cref="CryptographicException"></exception>
     public static byte[] Decrypt(byte[] cipherText, byte[] nonce, byte[] key)
     {
       //validate the length of the key

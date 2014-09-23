@@ -47,6 +47,7 @@
     <Compile Include="Exceptions\NonceOutOfRangeException.cs" />
     <Compile Include="Exceptions\PersonalOutOfRangeException.cs" />
     <Compile Include="Exceptions\BytesOutOfRangeException.cs" />
+    <Compile Include="Exceptions\SeedOutOfRangeException.cs" />
     <Compile Include="Exceptions\SignatureOutOfRangeException .cs" />
     <Compile Include="Exceptions\SaltOutOfRangeException.cs" />
     <Compile Include="Exceptions\MacOutOfRangeException.cs" />

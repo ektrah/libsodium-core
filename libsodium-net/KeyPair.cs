@@ -12,6 +12,7 @@ namespace Sodium
     /// <summary>Initializes a new instance of the <see cref="KeyPair"/> class.</summary>
     /// <param name="publicKey">The public key.</param>
     /// <param name="privateKey">The private key.</param>
+    /// <exception cref="KeyOutOfRangeException"></exception>
     public KeyPair(byte[] publicKey, byte[] privateKey)
     {
       //verify that the private key length is a multiple of 16

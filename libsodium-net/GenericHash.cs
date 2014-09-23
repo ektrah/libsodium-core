@@ -30,6 +30,8 @@ namespace Sodium
     /// <param name="key">The key; may be null, otherwise between 16 and 64 bytes.</param>
     /// <param name="bytes">The size (in bytes) of the desired result.</param>
     /// <returns>Returns a byte array.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="BytesOutOfRangeException"></exception>
     public static byte[] Hash(string message, string key, int bytes)
     {
       return Hash(message, Encoding.UTF8.GetBytes(key), bytes);
@@ -40,6 +42,8 @@ namespace Sodium
     /// <param name="key">The key; may be null, otherwise between 16 and 64 bytes.</param>
     /// <param name="bytes">The size (in bytes) of the desired result.</param>
     /// <returns>Returns a byte array.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="BytesOutOfRangeException"></exception>
     public static byte[] Hash(string message, byte[] key, int bytes)
     {
       return Hash(Encoding.UTF8.GetBytes(message), key, bytes);
@@ -50,6 +54,8 @@ namespace Sodium
     /// <param name="key">The key; may be null, otherwise between 16 and 64 bytes.</param>
     /// <param name="bytes">The size (in bytes) of the desired result.</param>
     /// <returns>Returns a byte array.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="BytesOutOfRangeException"></exception>
     public static byte[] Hash(byte[] message, byte[] key, int bytes)
     {
       //validate the length of the key
@@ -88,6 +94,10 @@ namespace Sodium
     /// <param name="key">Key.</param>
     /// <param name="salt">Salt.</param>
     /// <param name="personal">Personal.</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="SaltOutOfRangeException"></exception>
+    /// <exception cref="PersonalOutOfRangeException"></exception>
     public static byte[] HashSaltPersonal(string message, string key, string salt, string personal)
     {
       return HashSaltPersonal(Encoding.UTF8.GetBytes(message), Encoding.UTF8.GetBytes(key), Encoding.UTF8.GetBytes(salt), Encoding.UTF8.GetBytes(personal));
@@ -99,6 +109,10 @@ namespace Sodium
     /// <param name="key">Key.</param>
     /// <param name="salt">Salt.</param>
     /// <param name="personal">Personal string.</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="SaltOutOfRangeException"></exception>
+    /// <exception cref="PersonalOutOfRangeException"></exception>
     public static byte[] HashSaltPersonal(byte[] message, byte[] key, byte[] salt, byte[] personal)
     {
       if (message == null)

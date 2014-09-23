@@ -31,6 +31,7 @@ namespace Sodium
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; must be 16 bytes.</param>
     /// <returns>Returns a hex-encoded string.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
     public static byte[] Hash(string message, byte[] key)
     {
       return Hash(Encoding.UTF8.GetBytes(message), key);
@@ -40,6 +41,7 @@ namespace Sodium
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; must be 16 bytes.</param>
     /// <returns>Returns a hex-encoded string.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
     public static byte[] Hash(byte[] message, byte[] key)
     {
       //validate the length of the key

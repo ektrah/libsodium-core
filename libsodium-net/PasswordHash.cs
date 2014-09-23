@@ -33,6 +33,9 @@ namespace Sodium
     /// <param name="password">The password.</param>
     /// <param name="limit">The limit for computation.</param>
     /// <returns>Returns an zero-terminated ASCII encoded string of the computed password and hash.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="OutOfMemoryException"></exception>
     public static string ScryptHashString(string password, Strength limit = Strength.Interactive)
     {
       int memLimit;
@@ -66,6 +69,9 @@ namespace Sodium
     /// <param name="opsLimit">Represents a maximum amount of computations to perform.</param>
     /// <param name="memLimit">Is the maximum amount of RAM that the function will use, in bytes.</param>
     /// <returns>Returns an zero-terminated ASCII encoded string of the computed password and hash.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="OutOfMemoryException"></exception>
     public static string ScryptHashString(string password, long opsLimit, int memLimit)
     {
       if (password == null)
@@ -97,6 +103,10 @@ namespace Sodium
     /// <param name="limit">The limit for computation.</param>
     /// <param name="outputLength">The length of the computed output array.</param>
     /// <returns>Returns a byte array of the given size.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="SaltOutOfRangeException"></exception>
+    /// <exception cref="OutOfMemoryException"></exception>
     public static byte[] ScryptHashBinary(string password, string salt, Strength limit = Strength.Interactive, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
     {
       return ScryptHashBinary(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(salt), limit, outputLength);
@@ -108,6 +118,10 @@ namespace Sodium
     /// <param name="limit">The limit for computation.</param>
     /// <param name="outputLength">The length of the computed output array.</param>
     /// <returns>Returns a byte array of the given size.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="SaltOutOfRangeException"></exception>
+    /// <exception cref="OutOfMemoryException"></exception>
     public static byte[] ScryptHashBinary(byte[] password, byte[] salt, Strength limit = Strength.Interactive, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
     {
       int memLimit;
@@ -145,6 +159,10 @@ namespace Sodium
     /// <param name="memLimit">Is the maximum amount of RAM that the function will use, in bytes.</param>
     /// <param name="outputLength">The length of the computed output array.</param>
     /// <returns>Returns a byte array of the given size.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="SaltOutOfRangeException"></exception>
+    /// <exception cref="OutOfMemoryException"></exception>
     public static byte[] ScryptHashBinary(string password, string salt, long opsLimit, int memLimit, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
     {
       var pass = Encoding.UTF8.GetBytes(password);
@@ -162,6 +180,10 @@ namespace Sodium
     /// <param name="memLimit">Is the maximum amount of RAM that the function will use, in bytes.</param>
     /// <param name="outputLength">The length of the computed output array.</param>
     /// <returns>Returns a byte array of the given size.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="SaltOutOfRangeException"></exception>
+    /// <exception cref="OutOfMemoryException"></exception>
     public static byte[] ScryptHashBinary(byte[] password, byte[] salt, long opsLimit, int memLimit, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
     {
       if (password == null)

@@ -21,6 +21,7 @@ namespace Sodium
     /// <param name="message">The message.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>16 byte authentication code.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
     public static byte[] Sign(string message, byte[] key)
     {
       return Sign(Encoding.UTF8.GetBytes(message), key);
@@ -30,6 +31,7 @@ namespace Sodium
     /// <param name="message">The message.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>16 byte authentication code.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
     public static byte[] Sign(byte[] message, byte[] key)
     {
       //validate the length of the key
@@ -52,6 +54,8 @@ namespace Sodium
     /// <param name="signature">The 16 byte signature.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>True if verified.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="SignatureOutOfRangeException"></exception>
     public static bool Verify(string message, byte[] signature, byte[] key)
     {
       return Verify(Encoding.UTF8.GetBytes(message), signature, key);
@@ -62,6 +66,8 @@ namespace Sodium
     /// <param name="signature">The 16 byte signature.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>True if verified.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="SignatureOutOfRangeException"></exception>
     public static bool Verify(byte[] message, byte[] signature, byte[] key)
     {
       //validate the length of the key

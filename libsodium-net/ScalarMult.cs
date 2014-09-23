@@ -36,6 +36,7 @@ namespace Sodium
     /// </summary>
     /// <param name="secretKey">A secret key.</param>
     /// <returns>A computed public key.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
     public static byte[] Base(byte[] secretKey)
     {
         //validate the length of the scalar
@@ -56,6 +57,7 @@ namespace Sodium
     /// <param name="secretKey">A secret key.</param>
     /// <param name="publicKey">A public key.</param>
     /// <returns>A computed secret shared.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
     public static byte[] Mult(byte[] secretKey, byte[] publicKey)
     {
       //validate the length of the scalar
