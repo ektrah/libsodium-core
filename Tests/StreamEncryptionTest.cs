@@ -27,7 +27,7 @@ namespace Tests
     [Test]
     public void TestGenerateNonceChaCha20()
     {
-        Assert.AreEqual(64, StreamEncryption.GenerateNonceChaCha20().Length);
+        Assert.AreEqual(8, StreamEncryption.GenerateNonceChaCha20().Length);
     }
 
     /// <summary>Does StreamEncryption.Encrypt() return the expected value?</summary>
@@ -61,7 +61,7 @@ namespace Tests
         var expected = Utilities.HexToBinary("a6ce598d8b865fb328581bcd");
         var actual = StreamEncryption.EncryptChaCha20(
           Encoding.UTF8.GetBytes("Adam Caudill"),
-          Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOP"),
+          Encoding.UTF8.GetBytes("ABCDEFGH"),
           Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
         Assert.AreEqual(expected, actual);
     }
@@ -73,7 +73,7 @@ namespace Tests
         const string EXPECTED = "Adam Caudill";
         var actual = Encoding.UTF8.GetString(StreamEncryption.DecryptChaCha20(
           Utilities.HexToBinary("a6ce598d8b865fb328581bcd"),
-          Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOP"),
+          Encoding.UTF8.GetBytes("ABCDEFGH"),
           Encoding.UTF8.GetBytes("12345678901234567890123456789012")));
         Assert.AreEqual(EXPECTED, actual);
     }

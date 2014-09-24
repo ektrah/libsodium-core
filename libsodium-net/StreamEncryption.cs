@@ -11,7 +11,7 @@ namespace Sodium
     private const int XSALSA20_KEY_BYTES = 32;
     private const int XSALSA20_NONCE_BYTES = 24;
     private const int CHACHA20_KEY_BYTES = 32;
-    private const int CHACHA20_NONCEBYTES = 64;
+    private const int CHACHA20_NONCEBYTES = 8;
 
     /// <summary>Generates a random 32 byte key.</summary>
     /// <returns>Returns a byte array with 32 random bytes</returns>
@@ -27,8 +27,8 @@ namespace Sodium
       return SodiumCore.GetRandomBytes(XSALSA20_NONCE_BYTES);
     }
 
-    /// <summary>Generates a random 64 byte nonce.</summary>
-    /// <returns>Returns a byte array with 64 random bytes</returns>
+    /// <summary>Generates a random 8 byte nonce.</summary>
+    /// <returns>Returns a byte array with 8 random bytes</returns>
     public static byte[] GenerateNonceChaCha20()
     {
         return SodiumCore.GetRandomBytes(CHACHA20_NONCEBYTES);
@@ -83,7 +83,7 @@ namespace Sodium
 
     /// <summary>Encryptes messages via ChaCha20</summary>
     /// <param name="message">The message to be encrypted.</param>
-    /// <param name="nonce">The 64 byte nonce.</param>
+    /// <param name="nonce">The 8 byte nonce.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>The encrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
@@ -96,7 +96,7 @@ namespace Sodium
 
     /// <summary>Encryptes messages via ChaCha20</summary>
     /// <param name="message">The message to be encrypted.</param>
-    /// <param name="nonce">The 64 byte nonce.</param>
+    /// <param name="nonce">The 8 byte nonce.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>The encrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
@@ -177,7 +177,7 @@ namespace Sodium
 
     /// <summary>Decryptes messages via ChaCha20</summary>
     /// <param name="cipherText">The chipher as hex-encoded string.</param>
-    /// <param name="nonce">The 64 byte nonce.</param>
+    /// <param name="nonce">The 8 byte nonce.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>The decrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
@@ -190,7 +190,7 @@ namespace Sodium
 
     /// <summary>Decryptes messages via ChaCha20</summary>
     /// <param name="cipherText">The chipher text to be opened.</param>
-    /// <param name="nonce">The 64 byte nonce.</param>
+    /// <param name="nonce">The 8 byte nonce.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <returns>The decrypted message.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>

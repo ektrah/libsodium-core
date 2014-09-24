@@ -71,7 +71,7 @@ namespace Tests
       {
           StreamEncryption.EncryptChaCha20(
           Encoding.UTF8.GetBytes("Adam Caudill"),
-          Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOP"),
+          Encoding.UTF8.GetBytes("ABCDEFGH"),
           Encoding.UTF8.GetBytes("123456789012345678901234567890"));
       }
 
@@ -81,7 +81,7 @@ namespace Tests
       {
           StreamEncryption.EncryptChaCha20(
           Encoding.UTF8.GetBytes("Adam Caudill"),
-          Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMN"),
+          Encoding.UTF8.GetBytes("ABC"),
           Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
       }
 
@@ -91,7 +91,7 @@ namespace Tests
       {
           StreamEncryption.DecryptChaCha20(
           Utilities.HexToBinary("a6ce598d8b865fb328581bcd"),
-          Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOP"),
+          Encoding.UTF8.GetBytes("ABCDEFGH"),
           Encoding.UTF8.GetBytes("123456789012345678901234567890"));
       }
 
@@ -101,7 +101,7 @@ namespace Tests
       {
           StreamEncryption.DecryptChaCha20(
           Utilities.HexToBinary("a6ce598d8b865fb328581bcd"),
-          Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNOPABCDEFGHIJKLMNO"),
+          Encoding.UTF8.GetBytes("ABC"),
           Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
       }
 
