@@ -141,9 +141,9 @@ For this to be secure, it's required that the signing key only be used once.
 `Sodium.StreamEncryption.Decrypt()` - Decrypts messages via XSalsa20.
 
 #### crypto_stream_chacha20_xor
-`Sodium.StreamEncryption.GenerateNonceChaCha20()` - Returns a 64 random byte nonce.
+`Sodium.StreamEncryption.GenerateNonceChaCha20()` - Returns a 8 random byte nonce.
 
-`Sodium.StreamEncryption.EncryptChaCha20()` - Encrypts a message via ChaCha20 using a 32 byte key and a 64 byte nonce. This provides encryption only, not authentication.
+`Sodium.StreamEncryption.EncryptChaCha20()` - Encrypts a message via ChaCha20 using a 32 byte key and a 8 byte nonce. This provides encryption only, not authentication.
 
 `Sodium.StreamEncryption.DecryptChaCha20()` - Decrypts messages via ChaCha20.
 
