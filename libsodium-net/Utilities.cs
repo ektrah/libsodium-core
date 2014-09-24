@@ -140,7 +140,7 @@ namespace Sodium
     }
 
     //sodium_bin2hex
-    private delegate IntPtr _Bin2Hex(byte[] hex, long hexMaxlen, byte[] bin, long binLen);
+    private delegate IntPtr _Bin2Hex(byte[] hex, int hexMaxlen, byte[] bin, int binLen);
 
     //sodium_hex2bin
     private delegate int _Hex2Bin(IntPtr bin, int binMaxlen, string hex, int hexLen, string ignore, out int binLen, string hexEnd);
