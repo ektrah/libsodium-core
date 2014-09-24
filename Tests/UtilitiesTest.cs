@@ -88,6 +88,33 @@ namespace Tests
       Assert.AreEqual(expected, binSodiumUpper);
     }
 
+    /// <summary>A simple test for validating the libsodium wrapper.</summary>
+    [Test]
+    public void BinaryToHexPatternsTest()
+    {
+      const string EXPECTED_NULLS = "0000000000000000";
+      const string EXPECTED_FFS = "ffffffffffffffff";
+      const string EXPECTED_FLIP = "0f0f0f0f0f0f0f0f";
+
+      var nulls = new byte[] {
+				0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
+      };
+      var ffs = new byte[] {
+				0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff
+      };
+      var flips = new byte[] {
+				0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f,0x0f
+      };
+
+      var encodedNulls = Utilities.BinaryToHex(nulls);
+      var encodedFfs = Utilities.BinaryToHex(ffs);
+      var encodedFlips = Utilities.BinaryToHex(flips);
+
+      Assert.AreEqual(EXPECTED_NULLS, encodedNulls);
+      Assert.AreEqual(EXPECTED_FFS, encodedFfs);
+      Assert.AreEqual(EXPECTED_FLIP, encodedFlips);
+    }
+
     /// <summary>A simple test for validating the two hex methods.</summary>
     [Test]
     public void BinaryToHexTest()

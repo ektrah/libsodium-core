@@ -36,10 +36,8 @@ namespace Sodium
     public static string BinaryToHex(byte[] data)
     {
       var hex = new byte[data.Length * 2 + 1];
-      var ret = SodiumCore.Is64 ? _Bin2Hex64(hex, hex.Length, data, data.Length) :
-              _Bin2Hex86(hex, hex.Length, data, data.Length);
-      //var b = DynamicInvoke.GetDynamicInvoke<_Bin2Hex>("sodium_bin2hex", SodiumCore.LibraryName());
-      //var ret = b(hex, hex.Length, data, data.Length);
+      var b = DynamicInvoke.GetDynamicInvoke<_Bin2Hex>("sodium_bin2hex", SodiumCore.LibraryName());
+      var ret = b(hex, hex.Length, data, data.Length);
 
       if (ret == IntPtr.Zero)
       {
@@ -56,7 +54,7 @@ namespace Sodium
     /// <returns>Hex-encoded string.</returns>
     /// <remarks>Bit fiddling by CodeInChaos.</remarks>
     /// <remarks>This method don`t use libsodium, but it can be useful for generating human readable fingerprints.</remarks>
-    public static string BinaryToHex(byte[] data, HexFormat format = HexFormat.None, HexCase hcase = HexCase.Lower)
+    public static string BinaryToHex(byte[] data, HexFormat format, HexCase hcase = HexCase.Lower)
     {
       var sb = new StringBuilder();
 
@@ -143,10 +141,7 @@ namespace Sodium
 
     //sodium_bin2hex
     private delegate IntPtr _Bin2Hex(byte[] hex, long hexMaxlen, byte[] bin, long binLen);
-    [DllImport(SodiumCore.LIBRARY_X64, EntryPoint = "sodium_bin2hex", CallingConvention = CallingConvention.Cdecl)]
-    private static extern IntPtr _Bin2Hex64(byte[] hex, long hexMaxlen, byte[] bin, long binLen);
-    [DllImport(SodiumCore.LIBRARY_X86, EntryPoint = "sodium_bin2hex", CallingConvention = CallingConvention.Cdecl)]
-    private static extern IntPtr _Bin2Hex86(byte[] hex, int hexMaxlen, byte[] bin, long binLen);
+
     //sodium_hex2bin
     private delegate int _Hex2Bin(IntPtr bin, int binMaxlen, string hex, int hexLen, string ignore, out int binLen, string hexEnd);
     
