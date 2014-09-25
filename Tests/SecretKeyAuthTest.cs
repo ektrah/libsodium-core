@@ -1,6 +1,6 @@
 ﻿using System.Text;
-using Sodium;
 using NUnit.Framework;
+using Sodium;
 
 namespace Tests
 {

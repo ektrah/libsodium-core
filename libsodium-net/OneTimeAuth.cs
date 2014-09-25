@@ -1,6 +1,5 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Text;
+using Sodium.Exceptions;
 
 namespace Sodium
 {
@@ -36,10 +35,8 @@ namespace Sodium
     {
       //validate the length of the key
       if (key == null || key.Length != KEY_BYTES)
-      {
         throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
-      }
 
       var buffer = new byte[BYTES];
 
@@ -72,17 +69,13 @@ namespace Sodium
     {
       //validate the length of the key
       if (key == null || key.Length != KEY_BYTES)
-      {
         throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
-      }
 
       //validate the length of the signature
       if (signature == null || signature.Length != BYTES)
-      {
         throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
           string.Format("signature must be {0} bytes in length.", BYTES));
-      }
 
       var verify = DynamicInvoke.GetDynamicInvoke<_Verify>("crypto_onetimeauth_verify", SodiumCore.LibraryName());
       var ret = verify(signature, message, message.Length, key);

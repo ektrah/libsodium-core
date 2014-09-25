@@ -1,6 +1,7 @@
 ﻿using System.Text;
-using Sodium;
 using NUnit.Framework;
+using Sodium;
+using Sodium.Exceptions;
 
 namespace Tests
 {
@@ -12,15 +13,15 @@ namespace Tests
     [ExpectedException(typeof(KeyOutOfRangeException))]
     public void OneTimeAuthSignNoKey()
     {
-        OneTimeAuth.Sign(Encoding.UTF8.GetBytes("Adam Caudill"), null);
+      OneTimeAuth.Sign(Encoding.UTF8.GetBytes("Adam Caudill"), null);
     }
 
     [Test]
     [ExpectedException(typeof(KeyOutOfRangeException))]
     public void OneTimeAuthSignKeyWrongSize()
     {
-        OneTimeAuth.Sign(Encoding.UTF8.GetBytes("Adam Caudill"),
-          Encoding.UTF8.GetBytes("01234567890123456789012345678"));
+      OneTimeAuth.Sign(Encoding.UTF8.GetBytes("Adam Caudill"),
+        Encoding.UTF8.GetBytes("01234567890123456789012345678"));
     }
   }
 }

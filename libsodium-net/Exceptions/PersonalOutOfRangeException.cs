@@ -1,23 +1,26 @@
 ﻿using System;
 
-public class PersonalOutOfRangeException : ArgumentOutOfRangeException
+namespace Sodium.Exceptions
 {
+  public class PersonalOutOfRangeException : ArgumentOutOfRangeException
+  {
     public PersonalOutOfRangeException()
     {
     }
 
     public PersonalOutOfRangeException(string message)
-        : base(message)
+      : base(message)
     {
     }
 
     public PersonalOutOfRangeException(string message, Exception inner)
-        : base(message, inner)
+      : base(message, inner)
     {
     }
 
     public PersonalOutOfRangeException(string paramName, object actualValue, string message)
-        : base(paramName, actualValue, message)
+      : base(paramName, actualValue, message)
     {
     }
+  }
 }

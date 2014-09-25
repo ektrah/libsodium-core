@@ -1,5 +1,4 @@
-using System.Runtime.InteropServices;
-using System;
+using Sodium.Exceptions;
 
 namespace Sodium
 {
@@ -12,23 +11,23 @@ namespace Sodium
     //TODO: Add documentation header
     public static int Bytes()
     {
-        var b = DynamicInvoke.GetDynamicInvoke<_Bytes>("crypto_scalarmult_bytes", SodiumCore.LibraryName());
-        return b();
+      var b = DynamicInvoke.GetDynamicInvoke<_Bytes>("crypto_scalarmult_bytes", SodiumCore.LibraryName());
+      return b();
     }
 
     //TODO: Add documentation header
     public static int ScalarBytes()
     {
-        var sb = DynamicInvoke.GetDynamicInvoke<_ScalarBytes>("crypto_scalarmult_scalarbytes", SodiumCore.LibraryName());
-        return sb();
+      var sb = DynamicInvoke.GetDynamicInvoke<_ScalarBytes>("crypto_scalarmult_scalarbytes", SodiumCore.LibraryName());
+      return sb();
     }
 
     //TODO: Add documentation header
     //TODO: Unit test(s)
     static byte Primitive()
     {
-        var p = DynamicInvoke.GetDynamicInvoke<_Primitive>("crypto_scalarmult_primitive", SodiumCore.LibraryName());
-        return p();
+      var p = DynamicInvoke.GetDynamicInvoke<_Primitive>("crypto_scalarmult_primitive", SodiumCore.LibraryName());
+      return p();
     }
 
     /// <summary>
@@ -39,16 +38,16 @@ namespace Sodium
     /// <exception cref="KeyOutOfRangeException"></exception>
     public static byte[] Base(byte[] secretKey)
     {
-        //validate the length of the scalar
-        if (secretKey == null || secretKey.Length != SCALAR_BYTES)
-        {
-          throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-            string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
-        }
-        var publicKey = new byte[SCALAR_BYTES];
-        var b = DynamicInvoke.GetDynamicInvoke<_Base>("crypto_scalarmult_base", SodiumCore.LibraryName());
-        b(publicKey, secretKey);
-        return publicKey;
+      //validate the length of the scalar
+      if (secretKey == null || secretKey.Length != SCALAR_BYTES)
+        throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
+          string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
+
+      var publicKey = new byte[SCALAR_BYTES];
+      var b = DynamicInvoke.GetDynamicInvoke<_Base>("crypto_scalarmult_base", SodiumCore.LibraryName());
+      b(publicKey, secretKey);
+
+      return publicKey;
     }
 
     /// <summary>
@@ -62,20 +61,18 @@ namespace Sodium
     {
       //validate the length of the scalar
       if (secretKey == null || secretKey.Length != SCALAR_BYTES)
-      {
-          throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
+        throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
           string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
-      }
 
       //validate the length of the group element
       if (publicKey == null || publicKey.Length != BYTES)
-      {
-          throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : publicKey.Length,
+        throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : publicKey.Length,
           string.Format("publicKey must be {0} bytes in length.", BYTES));
-      }
+
       var secretShared = new byte[BYTES];
       var smult = DynamicInvoke.GetDynamicInvoke<_ScalarMult>("crypto_scalarmult", SodiumCore.LibraryName());
       smult(secretShared, secretKey, publicKey);
+
       return secretShared;
     }
 

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Text;
+using Sodium.Exceptions;
 
 namespace Sodium
 {
@@ -64,8 +64,10 @@ namespace Sodium
       {
         if (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN)
         {
-            throw new KeyOutOfRangeException(string.Format("key must be between {0} and {1} bytes in length.", KEY_BYTES_MIN, KEY_BYTES_MAX));
+          throw new KeyOutOfRangeException(string.Format("key must be between {0} and {1} bytes in length.",
+            KEY_BYTES_MIN, KEY_BYTES_MAX));
         }
+
         keyLength = key.Length;
       }
       else
@@ -76,10 +78,8 @@ namespace Sodium
 
       //validate output length
       if (bytes > BYTES_MAX || bytes < BYTES_MIN)
-      {
         throw new BytesOutOfRangeException("bytes", bytes,
           string.Format("bytes must be between {0} and {1} bytes in length.", BYTES_MIN, BYTES_MAX));
-      }
 
       var buffer = new byte[bytes];
       var hash = DynamicInvoke.GetDynamicInvoke<_GenericHash>("crypto_generichash", SodiumCore.LibraryName());

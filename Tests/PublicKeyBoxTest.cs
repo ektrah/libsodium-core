@@ -1,6 +1,6 @@
 ﻿using System.Text;
-using Sodium;
 using NUnit.Framework;
+using Sodium;
 
 namespace Tests
 {
@@ -33,7 +33,7 @@ namespace Tests
     [Test]
     public void TestGenerateNonce()
     {
-        Assert.AreEqual(24, PublicKeyBox.GenerateNonce().Length);
+      Assert.AreEqual(24, PublicKeyBox.GenerateNonce().Length);
     }
 
     /// <summary>Does PublicKeyBox.GenerateKeyPair(privateKey) return the rigt public key</summary>

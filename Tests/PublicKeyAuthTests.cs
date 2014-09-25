@@ -65,10 +65,12 @@ namespace Tests
     [Test]
     public void SimpleVerifyDetachedTest()
     {
-        var expected = true;
-        var actual = PublicKeyAuth.VerifyDetached(Utilities.HexToBinary("8d5436accbe258a6b252c1140f38d7b8dc6196619945818b72512b6a8019d86dfeeb56f40c4d4b983d97dfeed37948527256c3567d6b253757fcfb32bef56f0b"),
-            Encoding.UTF8.GetBytes("Adam Caudill"), Utilities.HexToBinary("4ffda13c11d61d2b9568e54bec06ea59368e84874883087645e64e5e9653422e"));
-       Assert.AreEqual(expected, actual);
+      var actual = PublicKeyAuth.VerifyDetached(
+        Utilities.HexToBinary("8d5436accbe258a6b252c1140f38d7b8dc6196619945818b72512b6a8019d86dfeeb56f40c4d4b983d97dfeed37948527256c3567d6b253757fcfb32bef56f0b"),
+        Encoding.UTF8.GetBytes("Adam Caudill"), 
+        Utilities.HexToBinary("4ffda13c11d61d2b9568e54bec06ea59368e84874883087645e64e5e9653422e"));
+       
+      Assert.IsTrue(actual);
     }
 
     [Test]
@@ -85,7 +87,6 @@ namespace Tests
 
       var ed25519Pk = keys.PublicKey;
       var ed25519SkPk = keys.PrivateKey;
-      var curve25519Pk2 = new byte[32];
 
       var curve25519Pk = PublicKeyAuth.ConvertEd25519PublicKeyToCurve25519PublicKey(ed25519Pk);
       var curve25519Sk = PublicKeyAuth.ConvertEd25519SecretKeyToCurve25519SecretKey(ed25519SkPk);
@@ -102,7 +103,8 @@ namespace Tests
         ed25519SkPk = keys.PrivateKey;
         curve25519Pk = PublicKeyAuth.ConvertEd25519PublicKeyToCurve25519PublicKey(ed25519Pk);
         curve25519Sk = PublicKeyAuth.ConvertEd25519SecretKeyToCurve25519SecretKey(ed25519SkPk);
-        curve25519Pk2 = ScalarMult.Base(curve25519Sk);
+        var curve25519Pk2 = ScalarMult.Base(curve25519Sk);
+
         CollectionAssert.AreEqual(curve25519Pk, curve25519Pk2);
       }
     }

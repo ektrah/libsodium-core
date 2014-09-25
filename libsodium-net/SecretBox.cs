@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using Sodium.Exceptions;
 
 namespace Sodium
 {
@@ -52,17 +52,13 @@ namespace Sodium
     {
       //validate the length of the key
       if (key == null || key.Length != KEY_BYTES)
-      {
         throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
-      }
 
       //validate the length of the nonce
       if (nonce == null || nonce.Length != NONCE_BYTES)
-      {
         throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
-      }
 
       //pad the message, to start with ZERO_BYTES null bytes
       var paddedMessage = new byte[message.Length + ZERO_BYTES];
@@ -103,17 +99,13 @@ namespace Sodium
     {
       //validate the length of the key
       if (key == null || key.Length != KEY_BYTES)
-      {
         throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
-      }
 
       //validate the length of the nonce
       if (nonce == null || nonce.Length != NONCE_BYTES)
-      {
         throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
-      }
 
       var cipher = new byte[message.Length];
       var mac = new byte[MAC_BYTES];
@@ -151,17 +143,13 @@ namespace Sodium
     {
       //validate the length of the key
       if (key == null || key.Length != KEY_BYTES)
-      {
         throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
-      }
 
       //validate the length of the nonce
       if (nonce == null || nonce.Length != NONCE_BYTES)
-      {
         throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
-      }
 
       var buffer = new byte[cipherText.Length];
       var open = DynamicInvoke.GetDynamicInvoke<_Open>("crypto_secretbox_open", SodiumCore.LibraryName());
@@ -219,24 +207,18 @@ namespace Sodium
     {
       //validate the length of the key
       if (key == null || key.Length != KEY_BYTES)
-      {
         throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
-      }
 
       //validate the length of the nonce
       if (nonce == null || nonce.Length != NONCE_BYTES)
-      {
         throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
-      }
 
       //validate the length of the mac
       if (mac == null || mac.Length != MAC_BYTES)
-      {
         throw new MacOutOfRangeException("mac", (mac == null) ? 0 : mac.Length,
           string.Format("mac must be {0} bytes in length.", MAC_BYTES));
-      }
 
       var buffer = new byte[cipherText.Length];
       var open = DynamicInvoke.GetDynamicInvoke<_OpenDetached>("crypto_secretbox_open_detached", SodiumCore.LibraryName());

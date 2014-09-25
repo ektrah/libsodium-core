@@ -1,7 +1,6 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
+using Sodium.Exceptions;
 
 namespace Sodium
 {
@@ -31,7 +30,7 @@ namespace Sodium
     /// <returns>Returns a byte array with 8 random bytes</returns>
     public static byte[] GenerateNonceChaCha20()
     {
-        return SodiumCore.GetRandomBytes(CHACHA20_NONCEBYTES);
+      return SodiumCore.GetRandomBytes(CHACHA20_NONCEBYTES);
     }
 
     /// <summary>Encryptes messages via XSalsa20</summary>
@@ -59,17 +58,13 @@ namespace Sodium
     {
       //validate the length of the key
       if (key == null || key.Length != XSALSA20_KEY_BYTES)
-      {
         throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", XSALSA20_KEY_BYTES));
-      }
 
       //validate the length of the nonce
       if (nonce == null || nonce.Length != XSALSA20_NONCE_BYTES)
-      {
         throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", XSALSA20_NONCE_BYTES));
-      }
 
       var buffer = new byte[message.Length];
       var encrypt = DynamicInvoke.GetDynamicInvoke<_Encrypt>("crypto_stream_xor", SodiumCore.LibraryName());
@@ -104,28 +99,24 @@ namespace Sodium
     /// <exception cref="CryptographicException"></exception>
     public static byte[] EncryptChaCha20(byte[] message, byte[] nonce, byte[] key)
     {
-        //validate the length of the key
-        if (key == null || key.Length != CHACHA20_KEY_BYTES)
-        {
-            throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-              string.Format("key must be {0} bytes in length.", CHACHA20_KEY_BYTES));
-        }
+      //validate the length of the key
+      if (key == null || key.Length != CHACHA20_KEY_BYTES)
+        throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
+          string.Format("key must be {0} bytes in length.", CHACHA20_KEY_BYTES));
 
-        //validate the length of the nonce
-        if (nonce == null || nonce.Length != CHACHA20_NONCEBYTES)
-        {
-            throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-              string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
-        }
+      //validate the length of the nonce
+      if (nonce == null || nonce.Length != CHACHA20_NONCEBYTES)
+        throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+          string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
 
-        var buffer = new byte[message.Length];
-        var encrypt = DynamicInvoke.GetDynamicInvoke<_EncryptChaCha20>("crypto_stream_chacha20_xor", SodiumCore.LibraryName());
-        var ret = encrypt(buffer, message, message.Length, nonce, key);
+      var buffer = new byte[message.Length];
+      var encrypt = DynamicInvoke.GetDynamicInvoke<_EncryptChaCha20>("crypto_stream_chacha20_xor", SodiumCore.LibraryName());
+      var ret = encrypt(buffer, message, message.Length, nonce, key);
 
-        if (ret != 0)
-            throw new CryptographicException("Error encrypting message.");
+      if (ret != 0)
+        throw new CryptographicException("Error encrypting message.");
 
-        return buffer;
+      return buffer;
     }
 
     /// <summary>Decryptes messages via XSalsa20</summary>
@@ -153,17 +144,13 @@ namespace Sodium
     {
       //validate the length of the key
       if (key == null || key.Length != XSALSA20_KEY_BYTES)
-      {
         throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", XSALSA20_KEY_BYTES));
-      }
 
       //validate the length of the nonce
       if (nonce == null || nonce.Length != XSALSA20_NONCE_BYTES)
-      {
         throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", XSALSA20_NONCE_BYTES));
-      }
 
       var buffer = new byte[cipherText.Length];
       var decrypt = DynamicInvoke.GetDynamicInvoke<_Encrypt>("crypto_stream_xor", SodiumCore.LibraryName());
@@ -185,7 +172,7 @@ namespace Sodium
     /// <exception cref="CryptographicException"></exception>
     public static byte[] DecryptChaCha20(string cipherText, byte[] nonce, byte[] key)
     {
-        return DecryptChaCha20(Utilities.HexToBinary(cipherText), nonce, key);
+      return DecryptChaCha20(Utilities.HexToBinary(cipherText), nonce, key);
     }
 
     /// <summary>Decryptes messages via ChaCha20</summary>
@@ -198,28 +185,24 @@ namespace Sodium
     /// <exception cref="CryptographicException"></exception>
     public static byte[] DecryptChaCha20(byte[] cipherText, byte[] nonce, byte[] key)
     {
-        //validate the length of the key
-        if (key == null || key.Length != CHACHA20_KEY_BYTES)
-        {
-            throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-              string.Format("key must be {0} bytes in length.", CHACHA20_KEY_BYTES));
-        }
+      //validate the length of the key
+      if (key == null || key.Length != CHACHA20_KEY_BYTES)
+        throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
+          string.Format("key must be {0} bytes in length.", CHACHA20_KEY_BYTES));
 
-        //validate the length of the nonce
-        if (nonce == null || nonce.Length != CHACHA20_NONCEBYTES)
-        {
-            throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-              string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
-        }
+      //validate the length of the nonce
+      if (nonce == null || nonce.Length != CHACHA20_NONCEBYTES)
+        throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
+          string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
 
-        var buffer = new byte[cipherText.Length];
-        var decrypt = DynamicInvoke.GetDynamicInvoke<_EncryptChaCha20>("crypto_stream_chacha20_xor", SodiumCore.LibraryName());
-        var ret = decrypt(buffer, cipherText, cipherText.Length, nonce, key);
+      var buffer = new byte[cipherText.Length];
+      var decrypt = DynamicInvoke.GetDynamicInvoke<_EncryptChaCha20>("crypto_stream_chacha20_xor", SodiumCore.LibraryName());
+      var ret = decrypt(buffer, cipherText, cipherText.Length, nonce, key);
 
-        if (ret != 0)
-            throw new CryptographicException("Error derypting message.");
+      if (ret != 0)
+        throw new CryptographicException("Error derypting message.");
 
-        return buffer;
+      return buffer;
     }
 
     //crypto_stream_xor

@@ -144,6 +144,5 @@ namespace Sodium
 
     //sodium_hex2bin
     private delegate int _Hex2Bin(IntPtr bin, int binMaxlen, string hex, int hexLen, string ignore, out int binLen, string hexEnd);
-    
   }
 }

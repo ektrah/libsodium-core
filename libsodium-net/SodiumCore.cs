@@ -7,10 +7,6 @@ namespace Sodium
   /// </summary>
   public static class SodiumCore
   {
-    internal const string LIBRARY_X86 = "libsodium.dll";
-    internal const string LIBRARY_X64 = "libsodium-64.dll";
-    internal const string LIBRARY_MONO = "libsodium";
-
     internal static bool Is64 { get; private set; }
     
     static SodiumCore()
@@ -55,9 +51,11 @@ namespace Sodium
 
     internal static string LibraryName()
     {
-      string lib;
+      const string LIBRARY_X86 = "libsodium.dll";
+      const string LIBRARY_X64 = "libsodium-64.dll";
+      const string LIBRARY_MONO = "libsodium";
 
-      lib = Is64 ? LIBRARY_X64 : LIBRARY_X86;
+      var lib = Is64 ? LIBRARY_X64 : LIBRARY_X86;
 
       //if we're on mono, override
       if (IsRunningOnMono())
