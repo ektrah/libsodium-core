@@ -54,7 +54,7 @@ namespace Sodium
           CallingConventions.Standard,
           delegateMi.ReturnType,        /* the return type */
           delegateParams,               /* array of parameters from delegate T */
-          CallingConvention.Winapi,
+          CallingConvention.Cdecl,
           CharSet.Ansi);
 
       // needed according to MSDN
