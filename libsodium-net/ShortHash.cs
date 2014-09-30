@@ -20,7 +20,8 @@ namespace Sodium
     /// <summary>Hashes a message, with a key, using the SipHash-2-4 primitive.</summary>
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; must be 16 bytes.</param>
-    /// <returns>Returns a hex-encoded string.</returns>
+    /// <returns>Returns 8 byte array.</returns>
+    /// <exception cref="KeyOutOfRangeException"></exception>
     public static byte[] Hash(string message, string key)
     {
       return Hash(message, Encoding.UTF8.GetBytes(key));
@@ -29,7 +30,7 @@ namespace Sodium
     /// <summary>Hashes a message, with a key, using the SipHash-2-4 primitive.</summary>
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; must be 16 bytes.</param>
-    /// <returns>Returns a hex-encoded string.</returns>
+    /// <returns>Returns 8 byte array.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     public static byte[] Hash(string message, byte[] key)
     {
@@ -39,7 +40,7 @@ namespace Sodium
     /// <summary>Hashes a message, with a key, using the SipHash-2-4 primitive.</summary>
     /// <param name="message">The message to be hashed.</param>
     /// <param name="key">The key; must be 16 bytes.</param>
-    /// <returns>Returns a hex-encoded string.</returns>
+    /// <returns>Returns 8 byte array.</returns>
     /// <exception cref="KeyOutOfRangeException"></exception>
     public static byte[] Hash(byte[] message, byte[] key)
     {
