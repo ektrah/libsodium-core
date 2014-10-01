@@ -7,6 +7,13 @@ namespace Tests
   [TestFixture]
   public class PasswordHashTest
   {
+    /// <summary>Verify that the length of the returned salt is correct.</summary>
+    [Test]
+    public void TestGenerateSalt()
+    {
+        Assert.AreEqual(32, PasswordHash.GenerateSalt().Length);
+    }
+
     [Test]
     public void ScryptHashStringTest()
     {

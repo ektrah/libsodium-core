@@ -29,6 +29,13 @@ namespace Sodium
       Sensitive
     }
 
+    /// <summary>Generates a random 32 byte salt.</summary>
+    /// <returns>Returns a byte array with 32 random bytes</returns>
+    public static byte[] GenerateSalt()
+    {
+        return SodiumCore.GetRandomBytes((int)SCRYPT_SALSA208_SHA256_SALTBYTES);
+    }
+
     /// <summary>Returns the hash in a string format, which includes the generated salt.</summary>
     /// <param name="password">The password.</param>
     /// <param name="limit">The limit for computation.</param>
