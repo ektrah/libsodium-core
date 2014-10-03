@@ -30,12 +30,12 @@ namespace Sodium
     /// <summary>Creates a new key pair based on the provided private key.</summary>
     /// <param name="privateKey">The private key.</param>
     /// <returns>A KeyPair.</returns>
-    /// <exception cref="KeyOutOfRangeException"></exception>
+    /// <exception cref="SeedOutOfRangeException"></exception>
     public static KeyPair GenerateKeyPair(byte[] privateKey)
     {
       //validate the length of the seed
       if (privateKey == null || privateKey.Length != SecretKeyBytes)
-        throw new KeyOutOfRangeException("privateKey", (privateKey == null) ? 0 : privateKey.Length,
+        throw new SeedOutOfRangeException("privateKey", (privateKey == null) ? 0 : privateKey.Length,
           string.Format("privateKey must be {0} bytes in length.", SecretKeyBytes));
 
       var publicKey = ScalarMult.Base(privateKey);

@@ -5,7 +5,7 @@ using Sodium.Exceptions;
 
 namespace Sodium
 {
-  /// <summary>One Time Message Authentication</summary>
+  /// <summary>Public-key signatures</summary>
   public static class PublicKeyAuth
   {
     private const int SECRET_KEY_BYTES = 64;
