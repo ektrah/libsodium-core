@@ -10,7 +10,7 @@ namespace Tests
   public class PublicKeyBoxExceptionTest
   {
     [Test]
-    [ExpectedException(typeof(KeyOutOfRangeException))]
+    [ExpectedException(typeof(SeedOutOfRangeException))]
     public void GenerateKeyPairFromPrivateBadKeyTest()
     {
       //Don`t copy bobSk for other tests (bad key)!
