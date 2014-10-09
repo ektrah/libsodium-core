@@ -1,4 +1,5 @@
-# libsodium-net [![Build Status](https://travis-ci.org/adamcaudill/libsodium-net.svg?branch=master)](https://travis-ci.org/adamcaudill/libsodium-net)
+# libsodium-net [![Build Status](https://travis-ci.org/adamcaudill/libsodium-net.svg?branch=master)](https://travis-ci.org/adamcaudill/libsodium-net) [![NuGet Version](http://img.shields.io/nuget/v/libsodium-net.svg?style=flat)](https://www.nuget.org/packages/libsodium-net/) [![License](http://img.shields.io/badge/license-MIT-green.svg)](https://github.com/adamcaudill/libsodium-net/blob/master/LICENSE)
+
 libsodium-net, or better said, [libsodium](https://github.com/jedisct1/libsodium) for .NET, is a C# wrapper around libsodium. For those that don't know, libsodium is a portable implementation of [Daniel Bernstein's](http://cr.yp.to/djb.html) fantastic [NaCl](http://nacl.cr.yp.to/) library. If you aren't familiar with NaCl, I highly suggest that you look into libsodium and NaCl before using this library.
 
 Want to support development? Consider donating via Bitcoin to `14jumFDmuVkLiAt4TgyKt17SWHtPRbkcLr` - all donations, no matter how small are appreciated.
@@ -7,15 +8,7 @@ Want to support development? Consider donating via Bitcoin to `14jumFDmuVkLiAt4T
 
 NaCl is a great library in that its designed has made the right choices on what to implement and how - something most developers don't know how to do. So by using it (or a wrapper), many of those details are abstracted away where you don't need to worry about them. NaCl itself is less than portable C, only targeted for *nix systems; libsodium solves this by making it portable and making a few minor changes to better suite being distributed as a compiled binary.
 
-## No really, why?
-
-Crypto is hard - much harder than your average developer understands. There is much going on in the world today, privacy is at risk like never before - many complain, few act. To avoid falling into the complainers group, I've started this effort to make these tools readily available to the .NET community in hopes they will be used to further the goals of defending personal privacy and security.
-
-## Status
-
-TL;DR: Experimental. 
-
-This is still a work in progress, as such the API is subject to change and there may be bugs that have been missed. Currently, not all of libsodium is implemented; though the most used methods should be; if there's anything that you need that libsodium supports that this library doesn't, please open an issue - or better, open a pull request.
+Crypto is hard - much harder than your average developer understands. This effort was started to make these tools readily available to the .NET community in hopes they will be used to further the goals of defending personal privacy and security.
 
 ## Installation
 
