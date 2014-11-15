@@ -50,10 +50,18 @@ namespace Tests
     public void ScryptHashStringSensitiveTest()
     {
       const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
-      //Could cause OutOfMemoryException
-      var hash = PasswordHash.ScryptHashString(PASSWORD, PasswordHash.Strength.Sensitive);
 
-      Assert.IsTrue(PasswordHash.ScryptHashStringVerify(hash, PASSWORD));
+      try
+      {
+          //Could cause OutOfMemoryException
+          var hash = PasswordHash.ScryptHashString(PASSWORD, PasswordHash.Strength.Sensitive);
+
+          Assert.IsTrue(PasswordHash.ScryptHashStringVerify(hash, PASSWORD));
+      }
+      catch (System.OutOfMemoryException e)
+      {
+          Assert.Inconclusive(e.ToString());
+      }
     }
 
     /// <summary>
