@@ -49,6 +49,7 @@
     <Compile Include="SecretAeadTest.cs" />
     <Compile Include="SecretKeyAuthExceptionTest.cs" />
     <Compile Include="StreamEncryptionExceptionTest.cs" />
+    <Compile Include="ThreadSafetyTest.cs" />
     <Compile Include="UtilitiesExceptionTest.cs" />
     <Compile Include="SecretBoxExceptionTest.cs" />
     <Compile Include="ScalarMultExceptionTest.cs" />
