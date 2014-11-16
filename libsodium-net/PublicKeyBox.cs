@@ -21,8 +21,7 @@ namespace Sodium
       var publicKey = new byte[PublicKeyBytes];
       var privateKey = new byte[SecretKeyBytes];
 
-      var kp = DynamicInvoke.GetDynamicInvoke<_GenerateKeyPair>("crypto_box_keypair", SodiumCore.LibraryName());
-      kp(publicKey, privateKey);
+      SodiumLibrary.crypto_box_keypair(publicKey, privateKey);
 
       return new KeyPair(publicKey, privateKey);
     }
@@ -91,8 +90,7 @@ namespace Sodium
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
 
       var buffer = new byte[message.Length + MAC_BYTES];
-      var create = DynamicInvoke.GetDynamicInvoke<_Create>("crypto_box_easy", SodiumCore.LibraryName());
-      var ret = create(buffer, message, message.Length, nonce, publicKey, secretKey);
+      var ret = SodiumLibrary.crypto_box_easy(buffer, message, message.Length, nonce, publicKey, secretKey);
 
       if (ret != 0)
         throw new CryptographicException("Failed to create SecretBox");
@@ -143,8 +141,7 @@ namespace Sodium
       var cipher = new byte[message.Length];
       var mac = new byte[MAC_BYTES];
 
-      var create = DynamicInvoke.GetDynamicInvoke<_CreateDetached>("crypto_box_detached", SodiumCore.LibraryName());
-      var ret = create(cipher, mac, message, message.Length, nonce, secretKey, publicKey);
+      var ret = SodiumLibrary.crypto_box_detached(cipher, mac, message, message.Length, nonce, secretKey, publicKey);
 
       if (ret != 0)
         throw new CryptographicException("Failed to create detached Box");
@@ -204,8 +201,7 @@ namespace Sodium
       }
 
       var buffer = new byte[cipherText.Length - MAC_BYTES];
-      var open = DynamicInvoke.GetDynamicInvoke<_Open>("crypto_box_open_easy", SodiumCore.LibraryName());
-      var ret = open(buffer, cipherText, cipherText.Length, nonce, publicKey, secretKey);
+      var ret = SodiumLibrary.crypto_box_open_easy(buffer, cipherText, cipherText.Length, nonce, publicKey, secretKey);
 
       if (ret != 0)
         throw new CryptographicException("Failed to open SecretBox");
@@ -278,24 +274,12 @@ namespace Sodium
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
 
       var buffer = new byte[cipherText.Length];
-      var open = DynamicInvoke.GetDynamicInvoke<_OpenDetache>("crypto_box_open_detached", SodiumCore.LibraryName());
-      var ret = open(buffer, cipherText, mac, cipherText.Length, nonce, secretKey, publicKey);
+      var ret = SodiumLibrary.crypto_box_open_detached(buffer, cipherText, mac, cipherText.Length, nonce, secretKey, publicKey);
 
       if (ret != 0)
         throw new CryptographicException("Failed to open detached Box");
 
       return buffer;
     }
-
-    //crypto_box_keypair
-    private delegate int _GenerateKeyPair(byte[] publicKey, byte[] secretKey);
-    //crypto_box_easy
-    private delegate int _Create(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
-    //crypto_box_open_easy
-    private delegate int _Open(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
-    //crypto_box_detached
-    private delegate int _CreateDetached(byte[] cipher, byte[] mac, byte[] message, long messageLength, byte[] nonce, byte[] pk, byte[] sk);
-    //crypto_box_open_detached
-    private delegate int _OpenDetache(byte[] buffer, byte[] cipherText, byte[] mac, long cipherTextLength, byte[] nonce, byte[] pk, byte[] sk);
   }
 }

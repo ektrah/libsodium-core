@@ -55,11 +55,13 @@
     <Compile Include="GenericHash.cs" />
     <Compile Include="DetachedBox.cs" />
     <Compile Include="KeyPair.cs" />
+    <Compile Include="LazyInvoke.cs" />
     <Compile Include="OneTimeAuth.cs" />
     <Compile Include="PublicKeyAuth.cs" />
     <Compile Include="PublicKeyBox.cs" />
     <Compile Include="SecretAead.cs" />
     <Compile Include="SecretKeyAuth.cs" />
+    <Compile Include="SodiumLibrary.cs" />
     <Compile Include="StreamEncryption.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

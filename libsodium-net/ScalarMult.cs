@@ -11,23 +11,20 @@ namespace Sodium
     //TODO: Add documentation header
     public static int Bytes()
     {
-      var b = DynamicInvoke.GetDynamicInvoke<_Bytes>("crypto_scalarmult_bytes", SodiumCore.LibraryName());
-      return b();
+      return SodiumLibrary.crypto_scalarmult_bytes();
     }
 
     //TODO: Add documentation header
     public static int ScalarBytes()
     {
-      var sb = DynamicInvoke.GetDynamicInvoke<_ScalarBytes>("crypto_scalarmult_scalarbytes", SodiumCore.LibraryName());
-      return sb();
+      return SodiumLibrary.crypto_scalarmult_scalarbytes();
     }
 
     //TODO: Add documentation header
     //TODO: Unit test(s)
     static byte Primitive()
     {
-      var p = DynamicInvoke.GetDynamicInvoke<_Primitive>("crypto_scalarmult_primitive", SodiumCore.LibraryName());
-      return p();
+      return SodiumLibrary.crypto_scalarmult_primitive();
     }
 
     /// <summary>
@@ -44,8 +41,7 @@ namespace Sodium
           string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
 
       var publicKey = new byte[SCALAR_BYTES];
-      var b = DynamicInvoke.GetDynamicInvoke<_Base>("crypto_scalarmult_base", SodiumCore.LibraryName());
-      b(publicKey, secretKey);
+      SodiumLibrary.crypto_scalarmult_base(publicKey, secretKey);
 
       return publicKey;
     }
@@ -70,21 +66,9 @@ namespace Sodium
           string.Format("publicKey must be {0} bytes in length.", BYTES));
 
       var secretShared = new byte[BYTES];
-      var smult = DynamicInvoke.GetDynamicInvoke<_ScalarMult>("crypto_scalarmult", SodiumCore.LibraryName());
-      smult(secretShared, secretKey, publicKey);
+      SodiumLibrary.crypto_scalarmult(secretShared, secretKey, publicKey);
 
       return secretShared;
     }
-
-    //crypto_scalarmult_bytes
-    private delegate int _Bytes();
-    //crypto_scalarmult_scalarbytes
-    private delegate int _ScalarBytes();
-    //crypto_scalarmult_primitive
-    private delegate byte _Primitive();
-    //crypto_scalarmult_base
-    private delegate int _Base(byte[] q, byte[] n);
-    //crypto_scalarmult
-    private delegate int _ScalarMult(byte[] q, byte[] n, byte[] p);
   }
 }

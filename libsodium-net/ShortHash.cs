@@ -50,13 +50,9 @@ namespace Sodium
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
 
       var buffer = new byte[BYTES];
-      var hash = DynamicInvoke.GetDynamicInvoke<_ShortHash>("crypto_shorthash", SodiumCore.LibraryName());
-      hash(buffer, message, message.Length, key);
+      SodiumLibrary.crypto_shorthash(buffer, message, message.Length, key);
 
       return buffer;
     }
-
-    //crypto_shorthash
-    private delegate int _ShortHash(byte[] buffer, byte[] message, long messageLength, byte[] key);
   }
 }

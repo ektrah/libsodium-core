@@ -36,8 +36,7 @@ namespace Sodium
     public static string BinaryToHex(byte[] data)
     {
       var hex = new byte[data.Length * 2 + 1];
-      var b = DynamicInvoke.GetDynamicInvoke<_Bin2Hex>("sodium_bin2hex", SodiumCore.LibraryName());
-      var ret = b(hex, hex.Length, data, data.Length);
+      var ret = SodiumLibrary.sodium_bin2hex(hex, hex.Length, data, data.Length);
 
       if (ret == IntPtr.Zero)
       {
@@ -117,8 +116,7 @@ namespace Sodium
       int binLength;
 
       //we call sodium_hex2bin with some chars to be ignored
-      var h = DynamicInvoke.GetDynamicInvoke<_Hex2Bin>("sodium_hex2bin", SodiumCore.LibraryName());
-      var ret = h(bin, arr.Length, hex, hex.Length, IGNORED_CHARS, out binLength, null);
+      var ret = SodiumLibrary.sodium_hex2bin(bin, arr.Length, hex, hex.Length, IGNORED_CHARS, out binLength, null);
 
       Marshal.Copy(bin, arr, 0, binLength);
       Marshal.FreeHGlobal(bin);
@@ -138,11 +136,5 @@ namespace Sodium
 
       return arr;
     }
-
-    //sodium_bin2hex
-    private delegate IntPtr _Bin2Hex(byte[] hex, int hexMaxlen, byte[] bin, int binLen);
-
-    //sodium_hex2bin
-    private delegate int _Hex2Bin(IntPtr bin, int binMaxlen, string hex, int hexLen, string ignore, out int binLen, string hexEnd);
   }
 }

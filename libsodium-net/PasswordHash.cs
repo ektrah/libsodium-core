@@ -93,8 +93,7 @@ namespace Sodium
       var buffer = new byte[SCRYPT_SALSA208_SHA256_BYTES];
       var pass = Encoding.UTF8.GetBytes(password);
 
-      var hash = DynamicInvoke.GetDynamicInvoke<_HashString>("crypto_pwhash_scryptsalsa208sha256_str", SodiumCore.LibraryName());
-      var ret = hash(buffer, pass, pass.LongLength, opsLimit, memLimit);
+      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, pass.LongLength, opsLimit, memLimit);
 
       if (ret != 0)
       {
@@ -213,8 +212,7 @@ namespace Sodium
 
       var buffer = new byte[outputLength];
 
-      var hash = DynamicInvoke.GetDynamicInvoke<_HashBinary>("crypto_pwhash_scryptsalsa208sha256", SodiumCore.LibraryName());
-      var ret = hash(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit);
+      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit);
 
       if (ret != 0)
         throw new OutOfMemoryException("Internal error, hash failed");
@@ -244,17 +242,9 @@ namespace Sodium
       if (hash == null)
         throw new ArgumentNullException("hash", "Hash cannot be null");
 
-      var verify = DynamicInvoke.GetDynamicInvoke<_HashVerify>("crypto_pwhash_scryptsalsa208sha256_str_verify", SodiumCore.LibraryName());
-      var ret = verify(hash, password, password.LongLength);
+      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str_verify(hash, password, password.LongLength);
 
       return ret == 0;
     }
-
-    //crypto_pwhash_scryptsalsa208sha256_str
-    private delegate int _HashString(byte[] buffer, byte[] password, long passwordLen, long opsLimit, int memLimit);
-    //crypto_pwhash_scryptsalsa208sha256
-    private delegate int _HashBinary(byte[] buffer, long bufferLen, byte[] password, long passwordLen, byte[] salt, long opsLimit, int memLimit);
-    //crypto_pwhash_scryptsalsa208sha256_str_verify
-    private delegate int _HashVerify(byte[] buffer, byte[] password, long passLength);
   }
 }

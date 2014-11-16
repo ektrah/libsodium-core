@@ -39,9 +39,7 @@ namespace Sodium
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
 
       var buffer = new byte[BYTES];
-
-      var sign = DynamicInvoke.GetDynamicInvoke<_Sign>("crypto_onetimeauth", SodiumCore.LibraryName());
-      sign(buffer, message, message.Length, key);
+      SodiumLibrary.crypto_onetimeauth(buffer, message, message.Length, key);
 
       return buffer;
     }
@@ -77,15 +75,9 @@ namespace Sodium
         throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
           string.Format("signature must be {0} bytes in length.", BYTES));
 
-      var verify = DynamicInvoke.GetDynamicInvoke<_Verify>("crypto_onetimeauth_verify", SodiumCore.LibraryName());
-      var ret = verify(signature, message, message.Length, key);
+      var ret = SodiumLibrary.crypto_onetimeauth_verify(signature, message, message.Length, key);
 
       return ret == 0;
     }
-
-    //crypto_onetimeauth
-    private delegate int _Sign(byte[] buffer, byte[] message, long messageLength, byte[] key);
-    //crypto_onetimeauth_verify
-    private delegate int _Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
   }
 }

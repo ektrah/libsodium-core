@@ -21,8 +21,7 @@ namespace Sodium
       var publicKey = new byte[PUBLIC_KEY_BYTES];
       var privateKey = new byte[SECRET_KEY_BYTES];
 
-      var kp = DynamicInvoke.GetDynamicInvoke<_GenerateKeyPair>("crypto_sign_keypair", SodiumCore.LibraryName());
-      kp(publicKey, privateKey);
+      SodiumLibrary.crypto_sign_keypair(publicKey, privateKey);
 
       return new KeyPair(publicKey, privateKey);
     }
@@ -41,8 +40,7 @@ namespace Sodium
         throw new SeedOutOfRangeException("seed", (seed == null) ? 0 : seed.Length,
           string.Format("seed must be {0} bytes in length.", SEED_BYTES));
 
-      var kp = DynamicInvoke.GetDynamicInvoke<_GenerateKeyPairFromSeed>("crypto_sign_seed_keypair", SodiumCore.LibraryName());
-      kp(publicKey, privateKey, seed);
+      SodiumLibrary.crypto_sign_seed_keypair(publicKey, privateKey, seed);
 
       return new KeyPair(publicKey, privateKey);
     }
@@ -72,8 +70,7 @@ namespace Sodium
       var buffer = new byte[message.Length + BYTES];
       long bufferLength = 0;
 
-      var mes = DynamicInvoke.GetDynamicInvoke<_Sign>("crypto_sign", SodiumCore.LibraryName());
-      mes(buffer, ref bufferLength, message, message.Length, key);
+      SodiumLibrary.crypto_sign(buffer, ref bufferLength, message, message.Length, key);
 
       var final = new byte[bufferLength];
       Array.Copy(buffer, 0, final, 0, bufferLength);
@@ -97,8 +94,7 @@ namespace Sodium
       var buffer = new byte[signedMessage.Length];
       long bufferLength = 0;
 
-      var verified = DynamicInvoke.GetDynamicInvoke<_Verify>("crypto_sign_open", SodiumCore.LibraryName());
-      var ret = verified(buffer, ref bufferLength, signedMessage, signedMessage.Length, key);
+      var ret = SodiumLibrary.crypto_sign_open(buffer, ref bufferLength, signedMessage, signedMessage.Length, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to verify signature.");
@@ -134,8 +130,7 @@ namespace Sodium
       var signature = new byte[SIGNATURE_BYTES];
       long signatureLength = 0;
 
-      var sig = DynamicInvoke.GetDynamicInvoke<_SignDetached>("crypto_sign_detached", SodiumCore.LibraryName());
-      sig(signature, ref signatureLength, message, message.Length, key);
+      SodiumLibrary.crypto_sign_detached(signature, ref signatureLength, message, message.Length, key);
 
       return signature;
     }
@@ -159,8 +154,7 @@ namespace Sodium
         throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
           string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
 
-      var verified = DynamicInvoke.GetDynamicInvoke<_VerifyDetached>("crypto_sign_verify_detached", SodiumCore.LibraryName());
-      var ret = verified(signature, message, message.Length, key);
+      var ret = SodiumLibrary.crypto_sign_verify_detached(signature, message, message.Length, key);
 
       return ret == 0;
     }
@@ -179,8 +173,7 @@ namespace Sodium
 
       var buffer = new byte[PublicKeyBox.PublicKeyBytes];
 
-      var pk = DynamicInvoke.GetDynamicInvoke<_Ed25519PublicKeyToCurve25519PublicKey>("crypto_sign_ed25519_pk_to_curve25519", SodiumCore.LibraryName());
-      var ret = pk(buffer, ed25519PublicKey);
+      var ret = SodiumLibrary.crypto_sign_ed25519_pk_to_curve25519(buffer, ed25519PublicKey);
 
       if (ret != 0)
         throw new CryptographicException("Failed to convert public key.");
@@ -203,30 +196,12 @@ namespace Sodium
 
       var buffer = new byte[PublicKeyBox.SecretKeyBytes];
 
-      var sk = DynamicInvoke.GetDynamicInvoke<_Ed25519SecretKeyToCurve25519SecretKey>("crypto_sign_ed25519_sk_to_curve25519", SodiumCore.LibraryName());
-      var ret = sk(buffer, ed25519SecretKey);
+      var ret = SodiumLibrary.crypto_sign_ed25519_sk_to_curve25519(buffer, ed25519SecretKey);
 
       if (ret != 0)
         throw new CryptographicException("Failed to convert secret key.");
 
       return buffer;
     }
-
-    //crypto_sign_keypair
-    private delegate int _GenerateKeyPair(byte[] publicKey, byte[] secretKey);
-    //crypto_sign_seed_keypair
-    private delegate int _GenerateKeyPairFromSeed(byte[] publicKey, byte[] secretKey, byte[] seed);
-    //crypto_sign
-    private delegate int _Sign(byte[] buffer, ref long bufferLength, byte[] message, long messageLength, byte[] key);
-    //crypto_sign_open
-    private delegate int _Verify(byte[] buffer, ref long bufferLength, byte[] signedMessage, long signedMessageLength, byte[] key);
-    //crypto_sign_detached
-    private delegate int _SignDetached(byte[] signature, ref long signatureLength, byte[] message, long messageLength, byte[] key);
-    //crypto_sign_verify_detached
-    private delegate int _VerifyDetached(byte[] signature, byte[] message, long messageLength, byte[] key);
-    // crypto_sign_ed25519_pk_to_curve25519
-    private delegate int _Ed25519PublicKeyToCurve25519PublicKey(byte[] curve25519Pk, byte[] ed25519Pk);
-    // crypto_sign_ed25519_sk_to_curve25519
-    private delegate int _Ed25519SecretKeyToCurve25519SecretKey(byte[] curve25519Sk, byte[] ed25519Sk);
   }
 }

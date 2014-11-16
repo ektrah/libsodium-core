@@ -1,0 +1,289 @@
+﻿using System;
+namespace Sodium
+{
+    /// <summary>
+    /// libsodium library binding.
+    /// </summary>
+    public static class SodiumLibrary
+    {
+        internal static bool isRunningOnMono
+        {
+            get
+            {
+                return Type.GetType("Mono.Runtime") != null;
+            }
+        }
+
+        internal static bool is64
+        {
+            get
+            {
+                return IntPtr.Size == 8;
+            }
+        }
+
+        internal static string name
+        {
+            get
+            {
+                const string LIBRARY_X86 = "libsodium.dll";
+                const string LIBRARY_X64 = "libsodium-64.dll";
+                const string LIBRARY_MONO = "libsodium";
+
+                var lib = is64 ? LIBRARY_X64 : LIBRARY_X86;
+
+                //if we're on mono, override
+                if (isRunningOnMono)
+                {
+                    lib = LIBRARY_MONO;
+                }
+
+                return lib;
+            }
+        }
+
+        //init
+        internal delegate void _Init();
+        internal static LazyInvoke<_Init> _init = new LazyInvoke<_Init>("sodium_init", SodiumLibrary.name);
+        internal static _Init init { get { return _init.method; } }
+
+        //randombytes_buff
+        internal delegate void _GetRandomBytes(byte[] buffer, int size);
+        internal static LazyInvoke<_GetRandomBytes> _randombytes_buff = new LazyInvoke<_GetRandomBytes>("randombytes_buf", SodiumLibrary.name);
+        internal static _GetRandomBytes randombytes_buff { get { return _randombytes_buff.method; } }
+
+        //sodium_version_string
+        internal delegate IntPtr _SodiumVersionString();
+        internal static LazyInvoke<_SodiumVersionString> _sodium_version_string = new LazyInvoke<_SodiumVersionString>("sodium_version_string", SodiumLibrary.name);
+        internal static _SodiumVersionString sodium_version_string { get { return _sodium_version_string.method; } }
+
+        //crypto_hash
+        internal delegate int _CryptoHash(byte[] buffer, byte[] message, long length);
+        internal static LazyInvoke<_CryptoHash> _crypto_hash = new LazyInvoke<_CryptoHash>("crypto_hash", SodiumLibrary.name);
+        internal static _CryptoHash crypto_hash { get { return _crypto_hash.method; } }
+
+        //crypto_hash_sha512
+        internal delegate int _Sha512(byte[] buffer, byte[] message, long length);
+        internal static LazyInvoke<_Sha512> _crypto_hash_sha512 = new LazyInvoke<_Sha512>("crypto_hash_sha512", SodiumLibrary.name);
+        internal static _Sha512 crypto_hash_sha512 { get { return _crypto_hash_sha512.method; } }
+
+        //crypto_hash_sha256
+        internal delegate int _Sha256(byte[] buffer, byte[] message, long length);
+        internal static LazyInvoke<_Sha256> _crypto_hash_sha256 = new LazyInvoke<_Sha256>("crypto_hash_sha256", SodiumLibrary.name);
+        internal static _Sha256 crypto_hash_sha256 { get { return _crypto_hash_sha256.method; } }
+
+        //crypto_generichash
+        internal delegate int _GenericHash(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
+        internal static LazyInvoke<_GenericHash> _crypto_generichash = new LazyInvoke<_GenericHash>("crypto_generichash", SodiumLibrary.name);
+        internal static _GenericHash crypto_generichash { get { return _crypto_generichash.method; } }
+
+        //crypto_generichash_blake2b_salt_personal
+        internal delegate int _GenericHashSaltPersonal(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength, byte[] salt, byte[] personal);
+        internal static LazyInvoke<_GenericHashSaltPersonal> _crypto_generichash_blake2b_salt_personal = new LazyInvoke<_GenericHashSaltPersonal>("crypto_generichash_blake2b_salt_personal", SodiumLibrary.name);
+        internal static _GenericHashSaltPersonal crypto_generichash_blake2b_salt_personal { get { return _crypto_generichash_blake2b_salt_personal.method; } }
+
+        //crypto_onetimeauth
+        internal delegate int _OneTimeSign(byte[] buffer, byte[] message, long messageLength, byte[] key);
+        internal static LazyInvoke<_OneTimeSign> _crypto_onetimeauth = new LazyInvoke<_OneTimeSign>("crypto_onetimeauth", SodiumLibrary.name);
+        internal static _OneTimeSign crypto_onetimeauth { get { return _crypto_onetimeauth.method; } }
+
+        //crypto_onetimeauth_verify
+        internal delegate int _OneTimeVerify(byte[] signature, byte[] message, long messageLength, byte[] key);
+        internal static LazyInvoke<_OneTimeVerify> _crypto_onetimeauth_verify = new LazyInvoke<_OneTimeVerify>("crypto_onetimeauth_verify", SodiumLibrary.name);
+        internal static _OneTimeVerify crypto_onetimeauth_verify { get { return _crypto_onetimeauth_verify.method; } }
+
+        //crypto_pwhash_scryptsalsa208sha256_str
+        internal delegate int _HashString(byte[] buffer, byte[] password, long passwordLen, long opsLimit, int memLimit);
+        internal static LazyInvoke<_HashString> _crypto_pwhash_scryptsalsa208sha256_str = new LazyInvoke<_HashString>("crypto_pwhash_scryptsalsa208sha256_str", SodiumLibrary.name);
+        internal static _HashString crypto_pwhash_scryptsalsa208sha256_str { get { return _crypto_pwhash_scryptsalsa208sha256_str.method; } }
+
+        //crypto_pwhash_scryptsalsa208sha256
+        internal delegate int _HashBinary(byte[] buffer, long bufferLen, byte[] password, long passwordLen, byte[] salt, long opsLimit, int memLimit);
+        internal static LazyInvoke<_HashBinary> _crypto_pwhash_scryptsalsa208sha256 = new LazyInvoke<_HashBinary>("crypto_pwhash_scryptsalsa208sha256", SodiumLibrary.name);
+        internal static _HashBinary crypto_pwhash_scryptsalsa208sha256 { get { return _crypto_pwhash_scryptsalsa208sha256.method; } }
+
+        //crypto_pwhash_scryptsalsa208sha256_str_verify
+        internal delegate int _HashVerify(byte[] buffer, byte[] password, long passLength);
+        internal static LazyInvoke<_HashVerify> _crypto_pwhash_scryptsalsa208sha256_str_verify = new LazyInvoke<_HashVerify>("crypto_pwhash_scryptsalsa208sha256_str_verify", SodiumLibrary.name);
+        internal static _HashVerify crypto_pwhash_scryptsalsa208sha256_str_verify { get { return _crypto_pwhash_scryptsalsa208sha256_str_verify.method; } }
+
+        //crypto_sign_keypair
+        internal delegate int _GenerateKeyPair(byte[] publicKey, byte[] secretKey);
+        internal static LazyInvoke<_GenerateKeyPair> _crypto_sign_keypair = new LazyInvoke<_GenerateKeyPair>("crypto_sign_keypair", SodiumLibrary.name);
+        internal static _GenerateKeyPair crypto_sign_keypair { get { return _crypto_sign_keypair.method; } }
+
+        //crypto_sign_seed_keypair
+        internal delegate int _GenerateKeyPairFromSeed(byte[] publicKey, byte[] secretKey, byte[] seed);
+        internal static LazyInvoke<_GenerateKeyPairFromSeed> _crypto_sign_seed_keypair = new LazyInvoke<_GenerateKeyPairFromSeed>("crypto_sign_seed_keypair", SodiumLibrary.name);
+        internal static _GenerateKeyPairFromSeed crypto_sign_seed_keypair { get { return _crypto_sign_seed_keypair.method; } }
+
+        //crypto_sign
+        internal delegate int _Sign(byte[] buffer, ref long bufferLength, byte[] message, long messageLength, byte[] key);
+        internal static LazyInvoke<_Sign> _crypto_sign = new LazyInvoke<_Sign>("crypto_sign", SodiumLibrary.name);
+        internal static _Sign crypto_sign { get { return _crypto_sign.method; } }
+
+        //crypto_sign_open
+        internal delegate int _Verify(byte[] buffer, ref long bufferLength, byte[] signedMessage, long signedMessageLength, byte[] key);
+        internal static LazyInvoke<_Verify> _crypto_sign_open = new LazyInvoke<_Verify>("crypto_sign_open", SodiumLibrary.name);
+        internal static _Verify crypto_sign_open { get { return _crypto_sign_open.method; } }
+
+        //crypto_sign_detached
+        internal delegate int _SignDetached(byte[] signature, ref long signatureLength, byte[] message, long messageLength, byte[] key);
+        internal static LazyInvoke<_SignDetached> _crypto_sign_detached = new LazyInvoke<_SignDetached>("crypto_sign_detached", SodiumLibrary.name);
+        internal static _SignDetached crypto_sign_detached { get { return _crypto_sign_detached.method; } }
+
+        //crypto_sign_verify_detached
+        internal delegate int _VerifyDetached(byte[] signature, byte[] message, long messageLength, byte[] key);
+        internal static LazyInvoke<_VerifyDetached> _crypto_sign_verify_detached = new LazyInvoke<_VerifyDetached>("crypto_sign_verify_detached", SodiumLibrary.name);
+        internal static _VerifyDetached crypto_sign_verify_detached { get { return _crypto_sign_verify_detached.method; } }
+
+        //crypto_sign_ed25519_pk_to_curve25519
+        internal delegate int _Ed25519PublicKeyToCurve25519PublicKey(byte[] curve25519Pk, byte[] ed25519Pk);
+        internal static LazyInvoke<_Ed25519PublicKeyToCurve25519PublicKey> _crypto_sign_ed25519_pk_to_curve25519 = new LazyInvoke<_Ed25519PublicKeyToCurve25519PublicKey>("crypto_sign_ed25519_pk_to_curve25519", SodiumLibrary.name);
+        internal static _Ed25519PublicKeyToCurve25519PublicKey crypto_sign_ed25519_pk_to_curve25519 { get { return _crypto_sign_ed25519_pk_to_curve25519.method; } }
+
+        //crypto_sign_ed25519_sk_to_curve25519
+        internal delegate int _Ed25519SecretKeyToCurve25519SecretKey(byte[] curve25519Sk, byte[] ed25519Sk);
+        internal static LazyInvoke<_Ed25519SecretKeyToCurve25519SecretKey> _crypto_sign_ed25519_sk_to_curve25519 = new LazyInvoke<_Ed25519SecretKeyToCurve25519SecretKey>("crypto_sign_ed25519_sk_to_curve25519", SodiumLibrary.name);
+        internal static _Ed25519SecretKeyToCurve25519SecretKey crypto_sign_ed25519_sk_to_curve25519 { get { return _crypto_sign_ed25519_sk_to_curve25519.method; } }
+
+        //crypto_box_keypair
+        internal delegate int _GenerateBoxKeyPair(byte[] publicKey, byte[] secretKey);
+        internal static LazyInvoke<_GenerateBoxKeyPair> _crypto_box_keypair = new LazyInvoke<_GenerateBoxKeyPair>("crypto_box_keypair", SodiumLibrary.name);
+        internal static _GenerateBoxKeyPair crypto_box_keypair { get { return _crypto_box_keypair.method; } }
+
+        //crypto_box_easy
+        internal delegate int _Create(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
+        internal static LazyInvoke<_Create> _crypto_box_easy = new LazyInvoke<_Create>("crypto_box_easy", SodiumLibrary.name);
+        internal static _Create crypto_box_easy { get { return _crypto_box_easy.method; } }
+
+        //crypto_box_open_easy
+        internal delegate int _Open(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
+        internal static LazyInvoke<_CreateDetached> _crypto_box_detached = new LazyInvoke<_CreateDetached>("crypto_box_detached", SodiumLibrary.name);
+        internal static _CreateDetached crypto_box_detached { get { return _crypto_box_detached.method; } }
+
+        //crypto_box_detached
+        internal delegate int _CreateDetached(byte[] cipher, byte[] mac, byte[] message, long messageLength, byte[] nonce, byte[] pk, byte[] sk);
+        internal static LazyInvoke<_Open> _crypto_box_open_easy = new LazyInvoke<_Open>("crypto_box_open_easy", SodiumLibrary.name);
+        internal static _Open crypto_box_open_easy { get { return _crypto_box_open_easy.method; } }
+
+        //crypto_box_open_detached
+        internal delegate int _OpenDetached(byte[] buffer, byte[] cipherText, byte[] mac, long cipherTextLength, byte[] nonce, byte[] pk, byte[] sk);
+        internal static LazyInvoke<_OpenDetached> _crypto_box_open_detached = new LazyInvoke<_OpenDetached>("crypto_box_open_detached", SodiumLibrary.name);
+        internal static _OpenDetached crypto_box_open_detached { get { return _crypto_box_open_detached.method; } }
+
+        //crypto_scalarmult_bytes
+        internal delegate int _Bytes();
+        internal static LazyInvoke<_Bytes> _crypto_scalarmult_bytes = new LazyInvoke<_Bytes>("crypto_scalarmult_bytes", SodiumLibrary.name);
+        internal static _Bytes crypto_scalarmult_bytes { get { return _crypto_scalarmult_bytes.method; } }
+
+        //crypto_scalarmult_scalarbytes
+        internal delegate int _ScalarBytes();
+        internal static LazyInvoke<_ScalarBytes> _crypto_scalarmult_scalarbytes = new LazyInvoke<_ScalarBytes>("crypto_scalarmult_scalarbytes", SodiumLibrary.name);
+        internal static _ScalarBytes crypto_scalarmult_scalarbytes { get { return _crypto_scalarmult_scalarbytes.method; } }
+
+        //crypto_scalarmult_primitive
+        internal delegate byte _Primitive();
+        internal static LazyInvoke<_Primitive> _crypto_scalarmult_primitive = new LazyInvoke<_Primitive>("crypto_scalarmult_primitive", SodiumLibrary.name);
+        internal static _Primitive crypto_scalarmult_primitive { get { return _crypto_scalarmult_primitive.method; } }
+
+        //crypto_scalarmult_base
+        internal delegate int _Base(byte[] q, byte[] n);
+        internal static LazyInvoke<_Base> _crypto_scalarmult_base = new LazyInvoke<_Base>("crypto_scalarmult_base", SodiumLibrary.name);
+        internal static _Base crypto_scalarmult_base { get { return _crypto_scalarmult_base.method; } }
+
+        //crypto_scalarmult
+        internal delegate int _ScalarMult(byte[] q, byte[] n, byte[] p);
+        internal static LazyInvoke<_ScalarMult> _crypto_scalarmult = new LazyInvoke<_ScalarMult>("crypto_scalarmult", SodiumLibrary.name);
+        internal static _ScalarMult crypto_scalarmult { get { return _crypto_scalarmult.method; } }
+
+        //crypto_secretbox
+        internal delegate int _CreateSecret(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
+        internal static LazyInvoke<_CreateSecret> _crypto_secretbox = new LazyInvoke<_CreateSecret>("crypto_secretbox", SodiumLibrary.name);
+        internal static _CreateSecret crypto_secretbox { get { return _crypto_secretbox.method; } }
+
+        //crypto_secretbox_open
+        internal delegate int _OpenSecret(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] key);
+        internal static LazyInvoke<_OpenSecret> _crypto_secretbox_open = new LazyInvoke<_OpenSecret>("crypto_secretbox_open", SodiumLibrary.name);
+        internal static _OpenSecret crypto_secretbox_open { get { return _crypto_secretbox_open.method; } }
+
+        //crypto_secretbox_detached
+        internal delegate int _CreateSecretDetached(byte[] cipher, byte[] mac, byte[] message, long messageLength, byte[] nonce, byte[] key);
+        internal static LazyInvoke<_CreateSecretDetached> _crypto_secretbox_detached = new LazyInvoke<_CreateSecretDetached>("crypto_secretbox_detached", SodiumLibrary.name);
+        internal static _CreateSecretDetached crypto_secretbox_detached { get { return _crypto_secretbox_detached.method; } }
+
+        //crypto_secretbox_open_detached
+        internal delegate int _OpenSecretDetached(byte[] buffer, byte[] cipherText, byte[] mac, long cipherTextLength, byte[] nonce, byte[] key);
+        internal static LazyInvoke<_OpenSecretDetached> _crypto_secretbox_open_detached = new LazyInvoke<_OpenSecretDetached>("crypto_secretbox_open_detached", SodiumLibrary.name);
+        internal static _OpenSecretDetached crypto_secretbox_open_detached { get { return _crypto_secretbox_open_detached.method; } }
+
+        //crypto_auth
+        internal delegate int _Auth(byte[] buffer, byte[] message, long messageLength, byte[] key);
+        internal static LazyInvoke<_Auth> _crypto_auth = new LazyInvoke<_Auth>("crypto_auth", SodiumLibrary.name);
+        internal static _Auth crypto_auth { get { return _crypto_auth.method; } }
+
+        //crypto_auth_verify
+        internal delegate int _VerifyAuth(byte[] signature, byte[] message, long messageLength, byte[] key);
+        internal static LazyInvoke<_VerifyAuth> _crypto_auth_verify = new LazyInvoke<_VerifyAuth>("crypto_auth_verify", SodiumLibrary.name);
+        internal static _VerifyAuth crypto_auth_verify { get { return _crypto_auth_verify.method; } }
+
+        //crypto_auth_hmacsha256
+        internal delegate int _HmacSha256(byte[] buffer, byte[] message, long messageLength, byte[] key);
+        internal static LazyInvoke<_HmacSha256> _crypto_auth_hmacsha256 = new LazyInvoke<_HmacSha256>("crypto_auth_hmacsha256", SodiumLibrary.name);
+        internal static _HmacSha256 crypto_auth_hmacsha256 { get { return _crypto_auth_hmacsha256.method; } }
+
+        //crypto_auth_hmacsha256_verify
+        internal delegate int _HmacSha256Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
+        internal static LazyInvoke<_HmacSha256Verify> _crypto_auth_hmacsha256_verify = new LazyInvoke<_HmacSha256Verify>("crypto_auth_hmacsha256_verify", SodiumLibrary.name);
+        internal static _HmacSha256Verify crypto_auth_hmacsha256_verify { get { return _crypto_auth_hmacsha256_verify.method; } }
+
+        //crypto_auth_hmacsha512
+        internal delegate int _HmacSha512(byte[] signature, byte[] message, long messageLength, byte[] key);
+        internal static LazyInvoke<_HmacSha512> _crypto_auth_hmacsha512 = new LazyInvoke<_HmacSha512>("crypto_auth_hmacsha512", SodiumLibrary.name);
+        internal static _HmacSha512 crypto_auth_hmacsha512 { get { return _crypto_auth_hmacsha512.method; } }
+
+        //crypto_auth_hmacsha512_verify
+        internal delegate int _HmacSha512Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
+        internal static LazyInvoke<_HmacSha512Verify> _crypto_auth_hmacsha512_verify = new LazyInvoke<_HmacSha512Verify>("crypto_auth_hmacsha512_verify", SodiumLibrary.name);
+        internal static _HmacSha512Verify crypto_auth_hmacsha512_verify { get { return _crypto_auth_hmacsha512_verify.method; } }
+
+        //crypto_shorthash
+        internal delegate int _ShortHash(byte[] buffer, byte[] message, long messageLength, byte[] key);
+        internal static LazyInvoke<_ShortHash> _crypto_shorthash = new LazyInvoke<_ShortHash>("crypto_shorthash", SodiumLibrary.name);
+        internal static _ShortHash crypto_shorthash { get { return _crypto_shorthash.method; } }
+
+        //crypto_stream_xor
+        internal delegate int _Encrypt(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
+        internal static LazyInvoke<_Encrypt> _crypto_stream_xor = new LazyInvoke<_Encrypt>("crypto_stream_xor", SodiumLibrary.name);
+        internal static _Encrypt crypto_stream_xor { get { return _crypto_stream_xor.method; } }
+
+        //crypto_stream_chacha20_xor
+        internal delegate int _EncryptChaCha20(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
+        internal static LazyInvoke<_EncryptChaCha20> _crypto_stream_chacha20_xor = new LazyInvoke<_EncryptChaCha20>("crypto_stream_chacha20_xor", SodiumLibrary.name);
+        internal static _EncryptChaCha20 crypto_stream_chacha20_xor { get { return _crypto_stream_chacha20_xor.method; } }
+
+        //sodium_bin2hex
+        internal delegate IntPtr _Bin2Hex(byte[] hex, int hexMaxlen, byte[] bin, int binLen);
+        internal static LazyInvoke<_Bin2Hex> _sodium_bin2hex = new LazyInvoke<_Bin2Hex>("sodium_bin2hex", SodiumLibrary.name);
+        internal static _Bin2Hex sodium_bin2hex { get { return _sodium_bin2hex.method; } }
+
+        //sodium_hex2bin
+        internal delegate int _Hex2Bin(IntPtr bin, int binMaxlen, string hex, int hexLen, string ignore, out int binLen, string hexEnd);
+        internal static LazyInvoke<_Hex2Bin> _sodium_hex2bin = new LazyInvoke<_Hex2Bin>("sodium_hex2bin", SodiumLibrary.name);
+        internal static _Hex2Bin sodium_hex2bin { get { return _sodium_hex2bin.method; } }
+
+        //crypto_aead_chacha20poly1305_encrypt
+        internal delegate int _EncryptAead(
+          IntPtr cipher, out long cipherLength, byte[] message, long messageLength, byte[] additionalData,
+          long additionalDataLength, byte[] nsec, byte[] nonce, byte[] key);
+        internal static LazyInvoke<_EncryptAead> _crypto_aead_chacha20poly1305_encrypt = new LazyInvoke<_EncryptAead>("crypto_aead_chacha20poly1305_encrypt", SodiumLibrary.name);
+        internal static _EncryptAead crypto_aead_chacha20poly1305_encrypt { get { return _crypto_aead_chacha20poly1305_encrypt.method; } }
+
+        //crypto_aead_chacha20poly1305_decrypt
+        internal delegate int _DecryptAead(
+          IntPtr message, out long messageLength, byte[] nsec, byte[] cipher, long cipherLength, byte[] additionalData,
+          long additionalDataLength, byte[] nonce, byte[] key);
+        internal static LazyInvoke<_DecryptAead> _crypto_aead_chacha20poly1305_decrypt = new LazyInvoke<_DecryptAead>("crypto_aead_chacha20poly1305_decrypt", SodiumLibrary.name);
+        internal static _DecryptAead crypto_aead_chacha20poly1305_decrypt { get { return _crypto_aead_chacha20poly1305_decrypt.method; } }
+    }
+}
