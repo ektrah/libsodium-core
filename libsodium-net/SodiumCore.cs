@@ -35,5 +35,26 @@ namespace Sodium
 
       return Marshal.PtrToStringAnsi(ptr);
     }
+
+    [Obsolete("Use SodiumLibrary.is64")]
+    internal static bool Is64
+    {
+      get
+      {
+        return SodiumLibrary.is64;
+      }
+    }
+
+    [Obsolete("Use SodiumLibrary.isRunningOnMono")]
+    internal static bool IsRunningOnMono()
+    {
+      return SodiumLibrary.isRunningOnMono;
+    }
+
+    [Obsolete("Use SodiumLibrary.name")]
+    internal static string LibraryName()
+    {
+      return SodiumLibrary.name;
+    }
   }
 }
