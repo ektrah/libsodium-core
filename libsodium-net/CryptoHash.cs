@@ -23,9 +23,7 @@ namespace Sodium
     public static byte[] Hash(byte[] message)
     {
       var buffer = new byte[SHA512_BYTES];
-
-      var hash = DynamicInvoke.GetDynamicInvoke<_CryptoHash>("crypto_hash", SodiumCore.LibraryName());
-      hash(buffer, message, message.Length);
+      SodiumLibrary.crypto_hash(buffer, message, message.Length);
 
       return buffer;
     }
@@ -44,9 +42,7 @@ namespace Sodium
     public static byte[] Sha512(byte[] message)
     {
       var buffer = new byte[SHA512_BYTES];
-
-      var hash = DynamicInvoke.GetDynamicInvoke<_Sha512>("crypto_hash_sha512", SodiumCore.LibraryName());
-      hash(buffer, message, message.Length);
+      SodiumLibrary.crypto_hash_sha512(buffer, message, message.Length);
 
       return buffer;
     }
@@ -65,18 +61,9 @@ namespace Sodium
     public static byte[] Sha256(byte[] message)
     {
       var buffer = new byte[SHA256_BYTES];
-
-      var hash = DynamicInvoke.GetDynamicInvoke<_Sha256>("crypto_hash_sha256", SodiumCore.LibraryName());
-      hash(buffer, message, message.Length);
+      SodiumLibrary.crypto_hash_sha256(buffer, message, message.Length);
 
       return buffer;
     }
-
-    //crypto_hash
-    private delegate int _CryptoHash(byte[] buffer, byte[] message, long length);
-    //crypto_hash_sha512
-    private delegate int _Sha512(byte[] buffer, byte[] message, long length);
-    //crypto_hash_sha256
-    private delegate int _Sha256(byte[] buffer, byte[] message, long length);
   }
 }

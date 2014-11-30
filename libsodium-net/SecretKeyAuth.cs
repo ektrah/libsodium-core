@@ -44,8 +44,7 @@ namespace Sodium
           string.Format("key must be {0} bytes in length.", KEY_BYTES));
 
       var buffer = new byte[BYTES];
-      var sign = DynamicInvoke.GetDynamicInvoke<_Sign>("crypto_auth", SodiumCore.LibraryName());
-      sign(buffer, message, message.Length, key);
+      SodiumLibrary.crypto_auth(buffer, message, message.Length, key);
 
       return buffer;
     }
@@ -81,8 +80,7 @@ namespace Sodium
         throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
           string.Format("signature must be {0} bytes in length.", BYTES));
 
-      var verify = DynamicInvoke.GetDynamicInvoke<_Verify>("crypto_auth_verify", SodiumCore.LibraryName());
-      var ret = verify(signature, message, message.Length, key);
+      var ret = SodiumLibrary.crypto_auth_verify(signature, message, message.Length, key);
 
       return ret == 0;
     }
@@ -100,8 +98,7 @@ namespace Sodium
           string.Format("key must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA256_KEY_BYTES));
 
       var buffer = new byte[CRYPTO_AUTH_HMACSHA256_BYTES];
-      var sign = DynamicInvoke.GetDynamicInvoke<_HmacSha256>("crypto_auth_hmacsha256", SodiumCore.LibraryName());
-      sign(buffer, message, message.Length, key);
+      SodiumLibrary.crypto_auth_hmacsha256(buffer, message, message.Length, key);
 
       return buffer;
     }
@@ -129,8 +126,7 @@ namespace Sodium
           string.Format("key must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA512_KEY_BYTES));
 
       var buffer = new byte[CRYPTO_AUTH_HMACSHA512_BYTES];
-      var sign = DynamicInvoke.GetDynamicInvoke<_HmacSha512>("crypto_auth_hmacsha512", SodiumCore.LibraryName());
-      sign(buffer, message, message.Length, key);
+      SodiumLibrary.crypto_auth_hmacsha512(buffer, message, message.Length, key);
 
       return buffer;
     }
@@ -176,8 +172,7 @@ namespace Sodium
         throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
           string.Format("signature must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA256_BYTES));
 
-      var verify = DynamicInvoke.GetDynamicInvoke<_HmacSha256Verify>("crypto_auth_hmacsha256_verify", SodiumCore.LibraryName());
-      var ret = verify(signature, message, message.Length, key);
+      var ret = SodiumLibrary.crypto_auth_hmacsha256_verify(signature, message, message.Length, key);
 
       return ret == 0;
     }
@@ -213,23 +208,9 @@ namespace Sodium
         throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
           string.Format("signature must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA512_BYTES));
 
-      var verify = DynamicInvoke.GetDynamicInvoke<_HmacSha512Verify>("crypto_auth_hmacsha512_verify", SodiumCore.LibraryName());
-      var ret = verify(signature, message, message.Length, key);
+      var ret = SodiumLibrary.crypto_auth_hmacsha512_verify(signature, message, message.Length, key);
 
       return ret == 0;
     }
-
-    //crypto_auth
-    private delegate int _Sign(byte[] buffer, byte[] message, long messageLength, byte[] key);
-    //crypto_auth_verify
-    private delegate int _Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
-    //crypto_auth_hmacsha256
-    private delegate int _HmacSha256(byte[] buffer, byte[] message, long messageLength, byte[] key);
-    //crypto_auth_hmacsha256_verify
-    private delegate int _HmacSha256Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
-    //crypto_auth_hmacsha512
-    private delegate int _HmacSha512(byte[] signature, byte[] message, long messageLength, byte[] key);
-    //crypto_auth_hmacsha512_verify
-    private delegate int _HmacSha512Verify(byte[] signature, byte[] message, long messageLength, byte[] key);
   }
 }

@@ -67,8 +67,7 @@ namespace Sodium
           string.Format("nonce must be {0} bytes in length.", XSALSA20_NONCE_BYTES));
 
       var buffer = new byte[message.Length];
-      var encrypt = DynamicInvoke.GetDynamicInvoke<_Encrypt>("crypto_stream_xor", SodiumCore.LibraryName());
-      var ret = encrypt(buffer, message, message.Length, nonce, key);
+      var ret = SodiumLibrary.crypto_stream_xor(buffer, message, message.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Error encrypting message.");
@@ -110,8 +109,7 @@ namespace Sodium
           string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
 
       var buffer = new byte[message.Length];
-      var encrypt = DynamicInvoke.GetDynamicInvoke<_EncryptChaCha20>("crypto_stream_chacha20_xor", SodiumCore.LibraryName());
-      var ret = encrypt(buffer, message, message.Length, nonce, key);
+      var ret = SodiumLibrary.crypto_stream_chacha20_xor(buffer, message, message.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Error encrypting message.");
@@ -153,8 +151,7 @@ namespace Sodium
           string.Format("nonce must be {0} bytes in length.", XSALSA20_NONCE_BYTES));
 
       var buffer = new byte[cipherText.Length];
-      var decrypt = DynamicInvoke.GetDynamicInvoke<_Encrypt>("crypto_stream_xor", SodiumCore.LibraryName());
-      var ret = decrypt(buffer, cipherText, cipherText.Length, nonce, key);
+      var ret = SodiumLibrary.crypto_stream_xor(buffer, cipherText, cipherText.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Error derypting message.");
@@ -196,18 +193,12 @@ namespace Sodium
           string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
 
       var buffer = new byte[cipherText.Length];
-      var decrypt = DynamicInvoke.GetDynamicInvoke<_EncryptChaCha20>("crypto_stream_chacha20_xor", SodiumCore.LibraryName());
-      var ret = decrypt(buffer, cipherText, cipherText.Length, nonce, key);
+      var ret = SodiumLibrary.crypto_stream_chacha20_xor(buffer, cipherText, cipherText.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Error derypting message.");
 
       return buffer;
     }
-
-    //crypto_stream_xor
-    private delegate int _Encrypt(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
-    //crypto_stream_chacha20_xor
-    private delegate int _EncryptChaCha20(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
   }
 }

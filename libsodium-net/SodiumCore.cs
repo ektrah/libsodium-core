@@ -7,14 +7,9 @@ namespace Sodium
   /// </summary>
   public static class SodiumCore
   {
-    internal static bool Is64 { get; private set; }
-    
     static SodiumCore()
     {
-      Is64 = (IntPtr.Size == 8);
-
-      var init = DynamicInvoke.GetDynamicInvoke<_Init>("sodium_init", LibraryName());
-      init();
+      SodiumLibrary.init();
     }
 
     /// <summary>Gets random bytes</summary>
@@ -23,9 +18,7 @@ namespace Sodium
     public static byte[] GetRandomBytes(int count)
     {
       var buffer = new byte[count];
-
-      var rnd = DynamicInvoke.GetDynamicInvoke<_GetRandomBytes>("randombytes_buf", LibraryName());
-      rnd(buffer, count);
+      SodiumLibrary.randombytes_buff(buffer, count);
 
       return buffer;
     }
@@ -38,36 +31,30 @@ namespace Sodium
     /// </returns>
     public static string SodiumVersionString()
     {
-      var ver = DynamicInvoke.GetDynamicInvoke<_SodiumVersionString>("sodium_version_string", LibraryName());
-      var ptr = ver();
+      var ptr = SodiumLibrary.sodium_version_string();
 
       return Marshal.PtrToStringAnsi(ptr);
     }
 
+    [Obsolete("Use SodiumLibrary.is64")]
+    internal static bool Is64
+    {
+      get
+      {
+        return SodiumLibrary.is64;
+      }
+    }
+
+    [Obsolete("Use SodiumLibrary.isRunningOnMono")]
     internal static bool IsRunningOnMono()
     {
-      return Type.GetType("Mono.Runtime") != null;
+      return SodiumLibrary.isRunningOnMono;
     }
 
+    [Obsolete("Use SodiumLibrary.name")]
     internal static string LibraryName()
     {
-      const string LIBRARY_X86 = "libsodium.dll";
-      const string LIBRARY_X64 = "libsodium-64.dll";
-      const string LIBRARY_MONO = "libsodium";
-
-      var lib = Is64 ? LIBRARY_X64 : LIBRARY_X86;
-
-      //if we're on mono, override
-      if (IsRunningOnMono())
-      {
-        lib = LIBRARY_MONO;
-      }
-
-      return lib;
+      return SodiumLibrary.name;
     }
-
-    private delegate IntPtr _SodiumVersionString();
-    private delegate void _Init();
-    private delegate void _GetRandomBytes(byte[] buffer, int size);
   }
 }

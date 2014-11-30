@@ -60,9 +60,7 @@ namespace Sodium
       var bin = Marshal.AllocHGlobal(cipher.Length);
       long cipherLength;
 
-      var encrypt = DynamicInvoke.GetDynamicInvoke<_Encrypt>("crypto_aead_chacha20poly1305_encrypt",
-        SodiumCore.LibraryName());
-      var ret = encrypt(bin, out cipherLength, message, message.Length, additionalData, additionalData.Length, null,
+      var ret = SodiumLibrary.crypto_aead_chacha20poly1305_encrypt(bin, out cipherLength, message, message.Length, additionalData, additionalData.Length, null,
         nonce, key);
 
       Marshal.Copy(bin, cipher, 0, (int) cipherLength);
@@ -118,10 +116,8 @@ namespace Sodium
       var bin = Marshal.AllocHGlobal(message.Length);
       long messageLength;
 
-      var decrypt = DynamicInvoke.GetDynamicInvoke<_Decrypt>("crypto_aead_chacha20poly1305_decrypt",
-        SodiumCore.LibraryName());
-      var ret = decrypt(bin, out messageLength, null, cipher, cipher.Length, additionalData, additionalData.Length,
-        nonce, key);
+      var ret = SodiumLibrary.crypto_aead_chacha20poly1305_decrypt(bin, out messageLength, null, cipher, cipher.Length,
+        additionalData, additionalData.Length, nonce, key);
 
       Marshal.Copy(bin, message, 0, (int)messageLength);
       Marshal.FreeHGlobal(bin);
@@ -138,15 +134,5 @@ namespace Sodium
 
       return tmp;
     }
-
-    //crypto_aead_chacha20poly1305_encrypt
-    private delegate int _Encrypt(
-      IntPtr cipher, out long cipherLength, byte[] message, long messageLength, byte[] additionalData,
-      long additionalDataLength, byte[] nsec, byte[] nonce, byte[] key);
-
-    //crypto_aead_chacha20poly1305_decrypt
-    private delegate int _Decrypt(
-      IntPtr message, out long messageLength, byte[] nsec, byte[] cipher, long cipherLength, byte[] additionalData,
-      long additionalDataLength, byte[] nonce, byte[] key);
   }
 }

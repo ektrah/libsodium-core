@@ -65,8 +65,7 @@ namespace Sodium
       Array.Copy(message, 0, paddedMessage, ZERO_BYTES, message.Length);
 
       var buffer = new byte[paddedMessage.Length];
-      var create = DynamicInvoke.GetDynamicInvoke<_Create>("crypto_secretbox", SodiumCore.LibraryName());
-      var ret = create(buffer, paddedMessage, paddedMessage.Length, nonce, key);
+      var ret = SodiumLibrary.crypto_secretbox(buffer, paddedMessage, paddedMessage.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to create SecretBox");
@@ -109,8 +108,7 @@ namespace Sodium
 
       var cipher = new byte[message.Length];
       var mac = new byte[MAC_BYTES];
-      var create = DynamicInvoke.GetDynamicInvoke<_CreateDetached>("crypto_secretbox_detached", SodiumCore.LibraryName());
-      var ret = create(cipher, mac, message, message.Length, nonce, key);
+      var ret = SodiumLibrary.crypto_secretbox_detached(cipher, mac, message, message.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to create detached SecretBox");
@@ -152,8 +150,7 @@ namespace Sodium
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
 
       var buffer = new byte[cipherText.Length];
-      var open = DynamicInvoke.GetDynamicInvoke<_Open>("crypto_secretbox_open", SodiumCore.LibraryName());
-      var ret = open(buffer, cipherText, cipherText.Length, nonce, key);
+      var ret = SodiumLibrary.crypto_secretbox_open(buffer, cipherText, cipherText.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to open SecretBox");
@@ -221,22 +218,12 @@ namespace Sodium
           string.Format("mac must be {0} bytes in length.", MAC_BYTES));
 
       var buffer = new byte[cipherText.Length];
-      var open = DynamicInvoke.GetDynamicInvoke<_OpenDetached>("crypto_secretbox_open_detached", SodiumCore.LibraryName());
-      var ret = open(buffer, cipherText, mac, cipherText.Length, nonce, key);
+      var ret = SodiumLibrary.crypto_secretbox_open_detached(buffer, cipherText, mac, cipherText.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to open detached SecretBox");
 
       return buffer;
     }
-
-    //crypto_secretbox
-    private delegate int _Create(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
-    //crypto_secretbox_open
-    private delegate int _Open(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] nonce, byte[] key);
-    //crypto_secretbox_detached
-    private delegate int _CreateDetached(byte[] cipher, byte[] mac, byte[] message, long messageLength, byte[] nonce, byte[] key);
-    //crypto_secretbox_open_detached
-    private delegate int _OpenDetached(byte[] buffer, byte[] cipherText, byte[] mac, long cipherTextLength, byte[] nonce, byte[] key);
   }
 }

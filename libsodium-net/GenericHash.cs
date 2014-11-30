@@ -82,8 +82,7 @@ namespace Sodium
           string.Format("bytes must be between {0} and {1} bytes in length.", BYTES_MIN, BYTES_MAX));
 
       var buffer = new byte[bytes];
-      var hash = DynamicInvoke.GetDynamicInvoke<_GenericHash>("crypto_generichash", SodiumCore.LibraryName());
-      hash(buffer, buffer.Length, message, message.Length, key, keyLength);
+      SodiumLibrary.crypto_generichash(buffer, buffer.Length, message, message.Length, key, keyLength);
 
       return buffer;
     }
@@ -137,16 +136,9 @@ namespace Sodium
         throw new PersonalOutOfRangeException(string.Format("Personal bytes must be {0} bytes in length.", PERSONAL_BYTES));
 
       var buffer = new byte[OUT_BYTES];
-
-      var hash = DynamicInvoke.GetDynamicInvoke<_GenericHashSaltPersonal>("crypto_generichash_blake2b_salt_personal", SodiumCore.LibraryName());
-      hash(buffer, buffer.Length, message, message.LongLength, key, key.Length, salt, personal);
+      SodiumLibrary.crypto_generichash_blake2b_salt_personal(buffer, buffer.Length, message, message.LongLength, key, key.Length, salt, personal);
 
       return buffer;
     }
-
-    //crypto_generichash
-    private delegate int _GenericHash(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
-    //crypto_generichash_blake2b_salt_personal
-    private delegate int _GenericHashSaltPersonal(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength, byte[] salt, byte[] personal);
   }
 }
