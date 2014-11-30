@@ -41,20 +41,20 @@ namespace Sodium
     {
       get
       {
-        return SodiumLibrary.is64;
+        return SodiumLibrary.Is64;
       }
     }
 
     [Obsolete("Use SodiumLibrary.isRunningOnMono")]
     internal static bool IsRunningOnMono()
     {
-      return SodiumLibrary.isRunningOnMono;
+      return SodiumLibrary.IsRunningOnMono;
     }
 
     [Obsolete("Use SodiumLibrary.name")]
     internal static string LibraryName()
     {
-      return SodiumLibrary.name;
+      return SodiumLibrary.Name;
     }
   }
 }

@@ -1,56 +1,59 @@
-﻿using System.Text;
-using Sodium;
-using NUnit.Framework;
+﻿using System;
+using System.Linq;
 using System.Threading;
+using NUnit.Framework;
 
 namespace Tests
 {
-    class TestWorker
+  class TestWorker
+  {
+    public Exception Exception;
+
+    public void Random()
     {
-        public System.Exception exception;
+      try
+      {
+        var bytes = Sodium.SodiumCore.GetRandomBytes(32);
 
-        public void random()
-        {
-            try
-            {
-                byte[] bytes;
-                bytes = Sodium.SodiumCore.GetRandomBytes(32);
-            }
-            catch(System.Exception e)
-            {
-                exception = e;
-            }
-        }
+        //this is mostly to make the compiler happier, as otherwise, bytes is never used
+        if (bytes.Count() != 32)
+          throw new Exception("GetRandomCountMismatch");
+      }
+      catch (Exception ex)
+      {
+        Exception = ex;
+      }
     }
+  }
 
-    /// <summary>Tests the thread safety</summary>
-    [TestFixture]
-    class ThreadSafetyTest
+  /// <summary>Tests the thread safety</summary>
+  [TestFixture]
+  class ThreadSafetyTest
+  {
+    /// <summary>Does CryptoHash.Hash(string) return the expected value?</summary>
+    [Test]
+    public void ThreadSafetyRandomTest()
     {
-        /// <summary>Does CryptoHash.Hash(string) return the expected value?</summary>
-        [Test]
-        public void ThreadSafetyRandomTest()
-        {
-            const int concurrency = 2;
-            TestWorker[] workers = new TestWorker[concurrency];
-            Thread[] threads = new Thread[concurrency];
+      const int CONCURRENCY = 2;
+      var workers = new TestWorker[CONCURRENCY];
+      var threads = new Thread[CONCURRENCY];
 
-            for (int i = 0; i < concurrency; i++)
-            {
-                workers[i] = new TestWorker();
-                threads[i] = new Thread(workers[i].random);
-                threads[i].Start();
-            }
+      for (var i = 0; i < CONCURRENCY; i++)
+      {
+        workers[i] = new TestWorker();
+        threads[i] = new Thread(workers[i].Random);
+        threads[i].Start();
+      }
 
-            for (int i = 0; i < concurrency; i++)
-            {
-                threads[i].Join();
-            }
+      for (var i = 0; i < CONCURRENCY; i++)
+      {
+        threads[i].Join();
+      }
 
-            for (int i = 0; i < concurrency; i++)
-            {
-                Assert.IsNull(workers[i].exception);
-            }
-        }
+      for (var i = 0; i < CONCURRENCY; i++)
+      {
+        Assert.IsNull(workers[i].Exception);
+      }
     }
+  }
 }
