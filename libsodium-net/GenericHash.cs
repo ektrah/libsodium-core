@@ -7,7 +7,7 @@ namespace Sodium
   /// <summary>
   /// Multipurpose hash function.
   /// </summary>
-  public static class GenericHash
+  public partial class GenericHash
   {
     //this was pulled from the headers; should be more dynamic
     private const int BYTES_MIN = 16;

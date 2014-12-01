@@ -54,6 +54,7 @@
     <Compile Include="Exceptions\MacOutOfRangeException.cs" />
     <Compile Include="GenericHash.cs" />
     <Compile Include="DetachedBox.cs" />
+    <Compile Include="GenericHashAlgorithm.cs" />
     <Compile Include="KeyPair.cs" />
     <Compile Include="LazyInvoke.cs" />
     <Compile Include="OneTimeAuth.cs" />
