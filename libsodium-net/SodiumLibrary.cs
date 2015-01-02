@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Sodium
 {
@@ -284,5 +285,41 @@ namespace Sodium
       long additionalDataLength, byte[] nonce, byte[] key);
     internal static LazyInvoke<_DecryptAead> _crypto_aead_chacha20poly1305_decrypt = new LazyInvoke<_DecryptAead>("crypto_aead_chacha20poly1305_decrypt", SodiumLibrary.Name);
     internal static _DecryptAead crypto_aead_chacha20poly1305_decrypt { get { return _crypto_aead_chacha20poly1305_decrypt.Method; } }
+
+    //crypto_generichash_state
+    [StructLayout(LayoutKind.Sequential, Size = 384)]
+    internal struct _HashState
+    {
+      [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+      public ulong[] h;
+
+      [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+      public ulong[] t;
+
+      [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+      public ulong[] f;
+
+      [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
+      public byte[] buf;
+
+      public uint buflen;
+
+      public byte last_node;
+    }
+
+    //crypto_generichash_init
+    internal delegate int _HashInit(IntPtr state, byte[] key, int keySize, int hashSize);
+    internal static LazyInvoke<_HashInit> _hash_init = new LazyInvoke<_HashInit>("crypto_generichash_init", SodiumLibrary.Name);
+    internal static _HashInit hash_init { get { return _hash_init.Method; } }
+
+    //crypto_generichash_update
+    internal delegate int _HashUpdate(IntPtr state, byte[] message, long messageLength);
+    internal static LazyInvoke<_HashUpdate> _hash_update = new LazyInvoke<_HashUpdate>("crypto_generichash_update", SodiumLibrary.Name);
+    internal static _HashUpdate hash_update { get { return _hash_update.Method; } }
+
+    //crypto_generichash_final
+    internal delegate int _HashFinal(IntPtr state, byte[] buffer, int bufferLength);
+    internal static LazyInvoke<_HashFinal> _hash_final = new LazyInvoke<_HashFinal>("crypto_generichash_final", SodiumLibrary.Name);
+    internal static _HashFinal hash_final { get { return _hash_final.Method; } }
   }
 }
