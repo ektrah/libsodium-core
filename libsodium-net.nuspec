@@ -9,7 +9,7 @@
         <projectUrl>https://github.com/adamcaudill/libsodium-net</projectUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>A secure cryptographic library</description>
-        <copyright>Copyright (c) 2013 - 2014 Adam Caudill &amp; Contributors</copyright>
+        <copyright>Copyright (c) 2013 - 2015 Adam Caudill &amp; Contributors</copyright>
         <language>en-US</language>
         <references>
             <reference file="Sodium.dll" />
