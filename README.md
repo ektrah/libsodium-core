@@ -28,6 +28,10 @@ For `libsodium`, many package managers provide older versions, so it's recommend
 
 Note: For all platforms, it's critical that `libsodium` be compiled for the architecture that the process is running under. If they don't match, you can expect to see errors. If your process is x86/i386, you can't use a copy of `libsodium` compiled for x64.
 
+## Documentation
+
+[gitbook.io](http://bitbeans.gitbooks.io/libsodium-net/content/) this documentation is an adapted copy of the [original](http://doc.libsodium.org/) written by Frank Denis (@jedisct1).
+
 ## Methods Supported
 
 The following methods have been implemented and have at least basic unit tests in place to ensure they are producing the expected output. *(Listed in no particular order)*
@@ -169,6 +173,9 @@ Note: Only libsodium's simplified interface is currently supported; the streamin
 
 #### crypto_generichash_blake2b_salt_personal
 `Sodium.GenericHash.HashSaltPersonal()` - Hash with salt, personal and optional key.
+
+ * Variable output from 16 to 64 bytes.
+ * Optional keyed mode, accepting a key from 16 to 64 bytes.
 
 #### crypto_pwhash_scryptsalsa208sha256_str
 `Sodium.PasswordHash.ScryptHashString()` - Returns the hash is a string format, which includes the generated salt.

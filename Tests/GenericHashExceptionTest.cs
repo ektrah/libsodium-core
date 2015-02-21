@@ -131,5 +131,25 @@ namespace Tests
       const string KEY = "1234567891123456";
       Utilities.BinaryToHex(GenericHash.HashSaltPersonal("message", KEY, SALT, PERSONAL));
     }
+
+    [Test]
+    [ExpectedException(typeof(BytesOutOfRangeException))]
+    public void GenericHashSaltPersonalBytesTooShort()
+    {
+      const string SALT = "5b6b41ed9b343fe0";
+      const string PERSONAL = "5126fb2a37400d2a";
+      const string KEY = "1234567891123456";
+      Utilities.BinaryToHex(GenericHash.HashSaltPersonal("message", KEY, SALT, PERSONAL, 5));
+    }
+
+    [Test]
+    [ExpectedException(typeof(BytesOutOfRangeException))]
+    public void GenericHashSaltPersonalBytesTooLong()
+    {
+      const string SALT = "5b6b41ed9b343fe0";
+      const string PERSONAL = "5126fb2a37400d2a";
+      const string KEY = "1234567891123456";
+      Utilities.BinaryToHex(GenericHash.HashSaltPersonal("message", KEY, SALT, PERSONAL, 128));
+    }
   }
 }
