@@ -46,5 +46,19 @@ namespace Tests
 
       Assert.AreEqual(EXPECTED, actual);
     }
+
+    /// <summary>Generics the hash salt personal, 32 bytes.</summary>
+    [Test]
+    public void GenericHashSaltPersonalBytes()
+    {
+      const string SALT = "5b6b41ed9b343fe0";
+      const string PERSONAL = "5126fb2a37400d2a";
+      const string KEY = "1234567891123456";
+
+      const string EXPECTED = "5bdaa4980b3d07a3fdde996b967d46f85df0f8eeb27cc823ef835a976af77b27";
+      var actual = Utilities.BinaryToHex(GenericHash.HashSaltPersonal("message", KEY, SALT, PERSONAL, 32));
+
+      Assert.AreEqual(EXPECTED, actual);
+    }
   }
 }
