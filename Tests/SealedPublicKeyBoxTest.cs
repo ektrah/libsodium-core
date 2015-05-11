@@ -5,7 +5,7 @@ using Sodium;
 namespace Tests
 {
     [TestFixture]
-    public class SealedBoxTest
+    public class SealedPublicKeyBoxTest
     {
         [Test]
         public void CreateAndOpenSealedBoxTest()
@@ -13,9 +13,9 @@ namespace Tests
             const string message = "Adam Caudill";
             var recipientKeypair = PublicKeyBox.GenerateKeyPair();
 
-            var encrypted = SealedBox.Create(
+            var encrypted = SealedPublicKeyBox.Create(
               Encoding.UTF8.GetBytes(message), recipientKeypair.PublicKey);
-            var decrypted = SealedBox.Open(encrypted, recipientKeypair.PrivateKey, recipientKeypair.PublicKey);
+            var decrypted = SealedPublicKeyBox.Open(encrypted, recipientKeypair.PrivateKey, recipientKeypair.PublicKey);
 
             Assert.AreEqual(message, Encoding.UTF8.GetString(decrypted));
         }
@@ -26,8 +26,8 @@ namespace Tests
             const string message = "Adam Caudill";
             var recipientKeypair = PublicKeyBox.GenerateKeyPair();
 
-            var encrypted = SealedBox.Create(message, recipientKeypair);
-            var decrypted = SealedBox.Open(encrypted, recipientKeypair);
+            var encrypted = SealedPublicKeyBox.Create(message, recipientKeypair);
+            var decrypted = SealedPublicKeyBox.Open(encrypted, recipientKeypair);
 
             Assert.AreEqual(message, Encoding.UTF8.GetString(decrypted));
         }
