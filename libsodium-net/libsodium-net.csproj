@@ -60,6 +60,7 @@
     <Compile Include="OneTimeAuth.cs" />
     <Compile Include="PublicKeyAuth.cs" />
     <Compile Include="PublicKeyBox.cs" />
+    <Compile Include="SealedBox.cs" />
     <Compile Include="SecretAead.cs" />
     <Compile Include="SecretKeyAuth.cs" />
     <Compile Include="SodiumLibrary.cs" />

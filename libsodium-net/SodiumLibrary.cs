@@ -197,6 +197,16 @@ namespace Sodium
     internal static LazyInvoke<_ScalarMult> _crypto_scalarmult = new LazyInvoke<_ScalarMult>("crypto_scalarmult", SodiumLibrary.Name);
     internal static _ScalarMult crypto_scalarmult { get { return _crypto_scalarmult.Method; } }
 
+    //crypto_box_seal
+    internal delegate int _CreateSeal(byte[] buffer, byte[] message, long messageLength, byte[] pk);
+    internal static LazyInvoke<_CreateSeal> _crypto_box_seal = new LazyInvoke<_CreateSeal>("crypto_box_seal", SodiumLibrary.Name);
+    internal static _CreateSeal crypto_box_seal { get { return _crypto_box_seal.Method; } }
+
+    //crypto_box_seal_open
+    internal delegate int _OpenSeal(byte[] buffer, byte[] cipherText, long cipherTextLength, byte[] pk, byte[] sk);
+    internal static LazyInvoke<_OpenSeal> _crypto_box_seal_open = new LazyInvoke<_OpenSeal>("crypto_box_seal_open", SodiumLibrary.Name);
+    internal static _OpenSeal crypto_box_seal_open { get { return _crypto_box_seal_open.Method; } }
+
     //crypto_secretbox
     internal delegate int _CreateSecret(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
     internal static LazyInvoke<_CreateSecret> _crypto_secretbox = new LazyInvoke<_CreateSecret>("crypto_secretbox", SodiumLibrary.Name);
