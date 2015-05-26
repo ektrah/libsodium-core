@@ -24,6 +24,18 @@ namespace Sodium
     }
 
     /// <summary>
+    /// Gets a random number.
+    /// </summary>
+    /// <param name="upperBound">Integer between 0 and 2147483647.</param>
+    /// <returns>An unpredictable value between 0 and upperBound (excluded).</returns>
+    public static int GetRandomNumber(int upperBound)
+    {
+      var randomNumber = SodiumLibrary.randombytes_uniform(upperBound);
+    
+      return randomNumber;
+    }
+
+    /// <summary>
     /// Returns the version of libsodium in use.
     /// </summary>
     /// <returns>
