@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="CryptoHashTest.cs" />
     <Compile Include="GenericHashAlgorithmTest.cs" />
+    <Compile Include="RandomNumbersTest.cs" />
     <Compile Include="SealedPublicKeyBoxTest.cs" />
     <Compile Include="SecretAeadExceptionTest.cs" />
     <Compile Include="SecretAeadTest.cs" />

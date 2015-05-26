@@ -52,6 +52,11 @@ namespace Sodium
     internal static LazyInvoke<_GetRandomBytes> _randombytes_buff = new LazyInvoke<_GetRandomBytes>("randombytes_buf", SodiumLibrary.Name);
     internal static _GetRandomBytes randombytes_buff { get { return _randombytes_buff.Method; } }
 
+    //randombytes_uniform
+    internal delegate int _GetRandomNumber(int upperBound);
+    internal static LazyInvoke<_GetRandomNumber> _randombytes_uniform = new LazyInvoke<_GetRandomNumber>("randombytes_uniform", SodiumLibrary.Name);
+    internal static _GetRandomNumber randombytes_uniform { get { return _randombytes_uniform.Method; } }
+
     //sodium_version_string
     internal delegate IntPtr _SodiumVersionString();
     internal static LazyInvoke<_SodiumVersionString> _sodium_version_string = new LazyInvoke<_SodiumVersionString>("sodium_version_string", SodiumLibrary.Name);
