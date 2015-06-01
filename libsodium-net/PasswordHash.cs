@@ -11,12 +11,14 @@ namespace Sodium
     private const uint SCRYPT_SALSA208_SHA256_SALTBYTES = 32U;
 
     private const long OPSLIMIT_INTERACTIVE = 524288;
-    private const long OPSLIMIT_MODERATE = 8388608;
+    private const long OPSLIMIT_MODERATE =   8388608; 
+    private const long OPSLIMIT_MEDIUM =     8388608;
     private const long OPSLIMIT_SENSITIVE = 33554432;
 
-    private const int MEMLIMIT_INTERACTIVE = 16777216;
-    private const int MEMLIMIT_MODERATE = 100000000;
-    private const int MEMLIMIT_SENSITIVE = 1073741824;
+    private const int MEMLIMIT_INTERACTIVE =  16777216;
+    private const int MEMLIMIT_MODERATE =    100000000;
+    private const int MEMLIMIT_MEDIUM =      134217728;
+    private const int MEMLIMIT_SENSITIVE =  1073741824;
 
     /// <summary>Represents predefined and useful limits for ScryptHashBinary() and ScryptHashString().</summary>
     public enum Strength
@@ -24,7 +26,10 @@ namespace Sodium
       /// <summary>For interactive sessions (fast: uses 16MB of RAM).</summary>
       Interactive,
       /// <summary>For normal use (moderate: uses 100MB of RAM).</summary>
+      [Obsolete("Use Strength.Medium instead.")]
       Moderate,
+      /// <summary>For normal use (moderate: uses 128MB of RAM).</summary>
+      Medium,
       /// <summary>For highly sensitive data (slow: uses more than 1GB of RAM).</summary>
       Sensitive
     }
@@ -57,6 +62,10 @@ namespace Sodium
         case Strength.Moderate:
           opsLimit = OPSLIMIT_MODERATE;
           memLimit = MEMLIMIT_MODERATE;
+          break;
+        case Strength.Medium:
+          opsLimit = OPSLIMIT_MEDIUM;
+          memLimit = MEMLIMIT_MEDIUM;
           break;
         case Strength.Sensitive:
           opsLimit = OPSLIMIT_SENSITIVE;
