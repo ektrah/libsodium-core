@@ -56,6 +56,15 @@ namespace Tests
     }
 
     [Test]
+    public void ScryptHashStringMediumSlowTest()
+    {
+      const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
+      var hash = PasswordHash.ScryptHashString(PASSWORD, PasswordHash.Strength.MediumSlow);
+
+      Assert.IsTrue(PasswordHash.ScryptHashStringVerify(hash, PASSWORD));
+    }
+
+    [Test]
     public void ScryptHashStringSensitiveTest()
     {
       const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";

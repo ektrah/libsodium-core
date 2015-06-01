@@ -30,6 +30,8 @@ namespace Sodium
       Moderate,
       /// <summary>For normal use (moderate: uses 128MB of RAM).</summary>
       Medium,
+      /// <summary>For more sensitive use (moderate: uses 128MB of RAM).</summary>
+      MediumSlow,
       /// <summary>For highly sensitive data (slow: uses more than 1GB of RAM).</summary>
       Sensitive
     }
@@ -65,6 +67,11 @@ namespace Sodium
           break;
         case Strength.Medium:
           opsLimit = OPSLIMIT_MEDIUM;
+          memLimit = MEMLIMIT_MEDIUM;
+          break;
+        case Strength.MediumSlow:
+          //to slow the process down, use the sensitive ops limit
+          opsLimit = OPSLIMIT_SENSITIVE;
           memLimit = MEMLIMIT_MEDIUM;
           break;
         case Strength.Sensitive:
