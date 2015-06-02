@@ -159,6 +159,15 @@ namespace Sodium
           opsLimit = OPSLIMIT_MODERATE;
           memLimit = MEMLIMIT_MODERATE;
           break;
+        case Strength.Medium:
+          opsLimit = OPSLIMIT_MEDIUM;
+          memLimit = MEMLIMIT_MEDIUM;
+          break;
+        case Strength.MediumSlow:
+          //to slow the process down, use the sensitive ops limit
+          opsLimit = OPSLIMIT_SENSITIVE;
+          memLimit = MEMLIMIT_MEDIUM;
+          break;
         case Strength.Sensitive:
           opsLimit = OPSLIMIT_SENSITIVE;
           memLimit = MEMLIMIT_SENSITIVE;
