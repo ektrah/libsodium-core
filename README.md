@@ -30,7 +30,7 @@ Note: For all platforms, it's critical that `libsodium` be compiled for the arch
 
 ## Documentation
 
-[libsodium-net](http://bitbeans.gitbooks.io/libsodium-net/content/) documentation is available (an adapted copy of the [original](http://doc.libsodium.org/) written by Frank Denis (@jedisct1)).
+[libsodium-net](http://bitbeans.gitbooks.io/libsodium-net/content/) documentation is available (an adapted copy of the [original](http://doc.libsodium.org/) written by Frank Denis ([@jedisct1](https://github.com/jedisct1))).
 
 ## Requirements & Versions
 
