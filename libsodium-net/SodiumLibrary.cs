@@ -142,6 +142,16 @@ namespace Sodium
     internal static LazyInvoke<_VerifyDetached> _crypto_sign_verify_detached = new LazyInvoke<_VerifyDetached>("crypto_sign_verify_detached", SodiumLibrary.Name);
     internal static _VerifyDetached crypto_sign_verify_detached { get { return _crypto_sign_verify_detached.Method; } }
 
+    //crypto_sign_ed25519_sk_to_seed
+    internal delegate int _Ed25519SecretKeyToEd25519Seed(byte[] seed, byte[] secretKey);
+    internal static LazyInvoke<_Ed25519SecretKeyToEd25519Seed> _crypto_sign_ed25519_sk_to_seed = new LazyInvoke<_Ed25519SecretKeyToEd25519Seed>("crypto_sign_ed25519_sk_to_seed", SodiumLibrary.Name);
+    internal static _Ed25519SecretKeyToEd25519Seed crypto_sign_ed25519_sk_to_seed { get { return _crypto_sign_ed25519_sk_to_seed.Method; } }
+
+    //crypto_sign_ed25519_sk_to_pk
+    internal delegate int _Ed25519SecretKeyToEd25519PublicKey(byte[] publicKey, byte[] secretKey);
+    internal static LazyInvoke<_Ed25519SecretKeyToEd25519PublicKey> _crypto_sign_ed25519_sk_to_pk = new LazyInvoke<_Ed25519SecretKeyToEd25519PublicKey>("crypto_sign_ed25519_sk_to_pk", SodiumLibrary.Name);
+    internal static _Ed25519SecretKeyToEd25519PublicKey crypto_sign_ed25519_sk_to_pk { get { return _crypto_sign_ed25519_sk_to_pk.Method; } }
+
     //crypto_sign_ed25519_pk_to_curve25519
     internal delegate int _Ed25519PublicKeyToCurve25519PublicKey(byte[] curve25519Pk, byte[] ed25519Pk);
     internal static LazyInvoke<_Ed25519PublicKeyToCurve25519PublicKey> _crypto_sign_ed25519_pk_to_curve25519 = new LazyInvoke<_Ed25519PublicKeyToCurve25519PublicKey>("crypto_sign_ed25519_pk_to_curve25519", SodiumLibrary.Name);

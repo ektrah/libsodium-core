@@ -203,5 +203,49 @@ namespace Sodium
 
       return buffer;
     }
+
+    /// <summary>
+    /// Extracts the seed from the Ed25519 secret key.
+    /// </summary>
+    /// <param name="ed25519SecretKey">The 64 byte Ed25519 secret key.</param>
+    /// <returns>The associated seed.</returns>
+    public static byte[] ExtractEd25519SeedFromEd25519SecretKey(byte[] ed25519SecretKey)
+    {
+      //validate the length of the key
+      if (ed25519SecretKey == null || ed25519SecretKey.Length != SECRET_KEY_BYTES)
+        throw new KeyOutOfRangeException("ed25519SecretKey", (ed25519SecretKey == null) ? 0 : ed25519SecretKey.Length,
+            string.Format("ed25519SecretKey must be {0} bytes in length.", SECRET_KEY_BYTES));
+
+      var buffer = new byte[SEED_BYTES];
+
+      var ret = SodiumLibrary.crypto_sign_ed25519_sk_to_seed(buffer, ed25519SecretKey);
+
+      if (ret != 0)
+        throw new CryptographicException("Failed to extract seed from secret key.");
+
+      return buffer;
+    }
+
+    /// <summary>
+    /// Extracts the Ed25519 public key from the Ed25519 secret key.
+    /// </summary>
+    /// <param name="ed25519SecretKey">The 64 byte Ed25519 secret key.</param>
+    /// <returns>The associated ed25519PublicKey.</returns>
+    public static byte[] ExtractEd25519PublicKeyFromEd25519SecretKey(byte[] ed25519SecretKey)
+    {
+      //validate the length of the key
+      if (ed25519SecretKey == null || ed25519SecretKey.Length != SECRET_KEY_BYTES)
+        throw new KeyOutOfRangeException("ed25519SecretKey", (ed25519SecretKey == null) ? 0 : ed25519SecretKey.Length,
+          string.Format("ed25519SecretKey must be {0} bytes in length.", SECRET_KEY_BYTES));
+
+      var buffer = new byte[PUBLIC_KEY_BYTES];
+
+      var ret = SodiumLibrary.crypto_sign_ed25519_sk_to_pk(buffer, ed25519SecretKey);
+
+      if (ret != 0)
+        throw new CryptographicException("Failed to extract public key from secret key.");
+
+      return buffer;
+    }
   }
 }
