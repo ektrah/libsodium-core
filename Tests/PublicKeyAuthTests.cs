@@ -96,7 +96,7 @@ namespace Tests
       CollectionAssert.AreEqual(keypair.PublicKey, publicKey);
     }
 
-        [Test]
+    [Test]
     public void PublicKeyAuthConvertToCurve25519()
     {
       var keypairSeed = new byte[]{
