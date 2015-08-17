@@ -74,6 +74,29 @@ namespace Tests
     }
 
     [Test]
+    public void ExtractEd25519SeedFromEd25519SecretKeyTest()
+    {
+      // generate an Ed25519 keypair
+      var firstKeypair = PublicKeyAuth.GenerateKeyPair();
+      // extract the seed from the generated keypair
+      var seed = PublicKeyAuth.ExtractEd25519SeedFromEd25519SecretKey(firstKeypair.PrivateKey);
+      // generate a second keypair from the seed
+      var secondKeyPair = PublicKeyAuth.GenerateKeyPair(seed);
+      CollectionAssert.AreEqual(firstKeypair.PublicKey, secondKeyPair.PublicKey);
+      CollectionAssert.AreEqual(firstKeypair.PrivateKey, secondKeyPair.PrivateKey);
+    }
+
+    [Test]
+    public void ExtractEd25519PublicKeyFromEd25519SecretKey()
+    {
+      // generate an Ed25519 keypair
+      var keypair = PublicKeyAuth.GenerateKeyPair();
+      // extract the seed from the generated keypair
+      var publicKey = PublicKeyAuth.ExtractEd25519PublicKeyFromEd25519SecretKey(keypair.PrivateKey);
+      CollectionAssert.AreEqual(keypair.PublicKey, publicKey);
+    }
+
+    [Test]
     public void PublicKeyAuthConvertToCurve25519()
     {
       var keypairSeed = new byte[]{
