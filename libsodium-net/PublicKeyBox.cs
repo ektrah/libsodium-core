@@ -93,7 +93,7 @@ namespace Sodium
       var ret = SodiumLibrary.crypto_box_easy(buffer, message, message.Length, nonce, publicKey, secretKey);
 
       if (ret != 0)
-        throw new CryptographicException("Failed to create SecretBox");
+        throw new CryptographicException("Failed to create PublicKeyBox");
 
       return buffer;
     }
@@ -144,7 +144,7 @@ namespace Sodium
       var ret = SodiumLibrary.crypto_box_detached(cipher, mac, message, message.Length, nonce, secretKey, publicKey);
 
       if (ret != 0)
-        throw new CryptographicException("Failed to create detached Box");
+        throw new CryptographicException("Failed to create public detached Box");
 
       return new DetachedBox(cipher, mac);
     }
@@ -204,7 +204,7 @@ namespace Sodium
       var ret = SodiumLibrary.crypto_box_open_easy(buffer, cipherText, cipherText.Length, nonce, publicKey, secretKey);
 
       if (ret != 0)
-        throw new CryptographicException("Failed to open SecretBox");
+        throw new CryptographicException("Failed to open PublicKeyBox");
 
       return buffer;
     }
@@ -277,7 +277,7 @@ namespace Sodium
       var ret = SodiumLibrary.crypto_box_open_detached(buffer, cipherText, mac, cipherText.Length, nonce, secretKey, publicKey);
 
       if (ret != 0)
-        throw new CryptographicException("Failed to open detached Box");
+        throw new CryptographicException("Failed to open public detached Box");
 
       return buffer;
     }

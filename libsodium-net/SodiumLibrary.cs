@@ -57,6 +57,16 @@ namespace Sodium
     internal static LazyInvoke<_GetRandomNumber> _randombytes_uniform = new LazyInvoke<_GetRandomNumber>("randombytes_uniform", SodiumLibrary.Name);
     internal static _GetRandomNumber randombytes_uniform { get { return _randombytes_uniform.Method; } }
 
+    //sodium_increment
+    internal delegate void _SodiumIncrement(byte[] buffer, long length);
+    internal static LazyInvoke<_SodiumIncrement> _sodium_increment = new LazyInvoke<_SodiumIncrement>("sodium_increment", SodiumLibrary.Name);
+    internal static _SodiumIncrement sodium_increment { get { return _sodium_increment.Method; } }
+
+    //sodium_compare
+    internal delegate int _SodiumCompare(byte[] a, byte[] b, long length);
+    internal static LazyInvoke<_SodiumCompare> _sodium_compare = new LazyInvoke<_SodiumCompare>("sodium_compare", SodiumLibrary.Name);
+    internal static _SodiumCompare sodium_compare { get { return _sodium_compare.Method; } }
+
     //sodium_version_string
     internal delegate IntPtr _SodiumVersionString();
     internal static LazyInvoke<_SodiumVersionString> _sodium_version_string = new LazyInvoke<_SodiumVersionString>("sodium_version_string", SodiumLibrary.Name);
@@ -310,6 +320,20 @@ namespace Sodium
       long additionalDataLength, byte[] nonce, byte[] key);
     internal static LazyInvoke<_DecryptAead> _crypto_aead_chacha20poly1305_decrypt = new LazyInvoke<_DecryptAead>("crypto_aead_chacha20poly1305_decrypt", SodiumLibrary.Name);
     internal static _DecryptAead crypto_aead_chacha20poly1305_decrypt { get { return _crypto_aead_chacha20poly1305_decrypt.Method; } }
+
+    //crypto_aead_aes256gcm_encrypt
+    internal delegate int _AesEncrypt(
+        IntPtr cipher, out long cipherLength, byte[] message, long messageLength, byte[] additionalData,
+        long additionalDataLength, byte[] nsec, byte[] nonce, byte[] key);
+    internal static LazyInvoke<_AesEncrypt> _crypto_aead_aes256gcm_encrypt = new LazyInvoke<_AesEncrypt>("crypto_aead_aes256gcm_encrypt", SodiumLibrary.Name);
+    internal static _AesEncrypt crypto_aead_aes256gcm_encrypt { get { return _crypto_aead_aes256gcm_encrypt.Method; } }
+
+    //crypto_aead_aes256gcm_decrypt
+    internal delegate int _DecryptAes(
+        IntPtr message, out long messageLength, byte[] nsec, byte[] cipher, long cipherLength, byte[] additionalData,
+        long additionalDataLength, byte[] nonce, byte[] key);
+    internal static LazyInvoke<_DecryptAes> _crypto_aead_aes256gcm_decrypt = new LazyInvoke<_DecryptAes>("crypto_aead_aes256gcm_decrypt", SodiumLibrary.Name);
+    internal static _DecryptAes crypto_aead_aes256gcm_decrypt { get { return _crypto_aead_aes256gcm_decrypt.Method; } }
 
     //crypto_generichash_state
     [StructLayout(LayoutKind.Sequential, Size = 384)]
