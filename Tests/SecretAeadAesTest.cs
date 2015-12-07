@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Sodium;
 
 namespace Tests
@@ -38,6 +39,10 @@ namespace Tests
       {
         CollectionAssert.AreEqual(m, decrypted);
       }
+      else
+      {
+        Console.WriteLine("Missing AES support");
+      }
     }
 
     [Test]
@@ -66,6 +71,10 @@ namespace Tests
       if (SecretAeadAes.IsAesAvailable())
       {
         CollectionAssert.AreEqual(m, decrypted);
+      }
+      else
+      {
+        Console.WriteLine("Missing AES support");
       }
     }
   }
