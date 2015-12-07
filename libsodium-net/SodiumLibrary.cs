@@ -321,6 +321,11 @@ namespace Sodium
     internal static LazyInvoke<_DecryptAead> _crypto_aead_chacha20poly1305_decrypt = new LazyInvoke<_DecryptAead>("crypto_aead_chacha20poly1305_decrypt", SodiumLibrary.Name);
     internal static _DecryptAead crypto_aead_chacha20poly1305_decrypt { get { return _crypto_aead_chacha20poly1305_decrypt.Method; } }
 
+    //crypto_aead_aes256gcm_is_available
+    internal delegate int _AesAvailable();
+    internal static LazyInvoke<_AesAvailable> _crypto_aead_aes256gcm_is_available = new LazyInvoke<_AesAvailable>("crypto_aead_aes256gcm_is_available", SodiumLibrary.Name);
+    internal static _AesAvailable crypto_aead_aes256gcm_is_available { get { return _crypto_aead_aes256gcm_is_available.Method; } }
+
     //crypto_aead_aes256gcm_encrypt
     internal delegate int _AesEncrypt(
         IntPtr cipher, out long cipherLength, byte[] message, long messageLength, byte[] additionalData,

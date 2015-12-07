@@ -34,7 +34,10 @@ namespace Tests
       var encrypted = SecretAeadAes.Encrypt(m, nonce, key, ad);
       var decrypted = SecretAeadAes.Decrypt(encrypted, nonce, key, ad);
 
-      CollectionAssert.AreEqual(m, decrypted);
+      if (SecretAeadAes.IsAesAvailable())
+      {
+        CollectionAssert.AreEqual(m, decrypted);
+      }
     }
 
     [Test]
@@ -60,7 +63,10 @@ namespace Tests
       var encrypted = SecretAeadAes.Encrypt(m, nonce, key);
       var decrypted = SecretAeadAes.Decrypt(encrypted, nonce, key);
 
-      CollectionAssert.AreEqual(m, decrypted);
+      if (SecretAeadAes.IsAesAvailable())
+      {
+        CollectionAssert.AreEqual(m, decrypted);
+      }
     }
   }
 }

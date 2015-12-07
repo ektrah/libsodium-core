@@ -30,7 +30,14 @@ namespace Tests
         0x86, 0xd0, 0x99, 0x74, 0x84, 0x0b, 0xde, 0xd2, 0xa5, 0xca
       };
 
-      SecretAeadAes.Encrypt(m, nonce, key, ad);
+      if (SecretAeadAes.IsAesAvailable())
+      {
+        SecretAeadAes.Encrypt(m, nonce, key, ad);
+      }
+      else
+      {
+        throw new KeyOutOfRangeException("AES is not supported");
+      }
     }
 
     [Test]
@@ -55,7 +62,14 @@ namespace Tests
         0x86, 0xd0, 0x99, 0x74, 0x84, 0x0b, 0xde, 0xd2, 0xa5, 0xca
       };
 
-      SecretAeadAes.Encrypt(m, nonce, key, ad);
+      if (SecretAeadAes.IsAesAvailable())
+      {
+        SecretAeadAes.Encrypt(m, nonce, key, ad);
+      }
+      else
+      {
+        throw new NonceOutOfRangeException("AES is not supported");
+      }
     }
 
     [Test]
@@ -81,8 +95,14 @@ namespace Tests
       var m = new byte[] {
         0x86, 0xd0, 0x99, 0x74, 0x84, 0x0b, 0xde, 0xd2, 0xa5, 0xca
       };
-
-      SecretAeadAes.Encrypt(m, nonce, key, ad);
+      if (SecretAeadAes.IsAesAvailable())
+      {
+        SecretAeadAes.Encrypt(m, nonce, key, ad);
+      }
+      else
+      {
+        throw new AdditionalDataOutOfRangeException("AES is not supported");
+      }
     }
 
     [Test]
@@ -106,8 +126,14 @@ namespace Tests
       var m = new byte[] {
         0x86, 0xd0, 0x99, 0x74, 0x84, 0x0b, 0xde, 0xd2, 0xa5, 0xca
       };
-
-      SecretAeadAes.Decrypt(m, nonce, key, ad);
+      if (SecretAeadAes.IsAesAvailable())
+      {
+        SecretAeadAes.Decrypt(m, nonce, key, ad);
+      }
+      else
+      {
+        throw new KeyOutOfRangeException("AES is not supported");
+      }
     }
 
     [Test]
@@ -132,7 +158,14 @@ namespace Tests
         0x86, 0xd0, 0x99, 0x74, 0x84, 0x0b, 0xde, 0xd2, 0xa5, 0xca
       };
 
-      SecretAeadAes.Decrypt(m, nonce, key, ad);
+      if (SecretAeadAes.IsAesAvailable())
+      {
+        SecretAeadAes.Decrypt(m, nonce, key, ad);
+      }
+      else
+      {
+        throw new NonceOutOfRangeException("AES is not supported");
+      }
     }
 
     [Test]
@@ -158,8 +191,14 @@ namespace Tests
       var m = new byte[] {
         0x86, 0xd0, 0x99, 0x74, 0x84, 0x0b, 0xde, 0xd2, 0xa5, 0xca
       };
-
-      SecretAeadAes.Decrypt(m, nonce, key, ad);
+      if (SecretAeadAes.IsAesAvailable())
+      {
+        SecretAeadAes.Decrypt(m, nonce, key, ad);
+      }
+      else
+      {
+        throw new AdditionalDataOutOfRangeException("AES is not supported");
+      }
     }
   }
 }

@@ -12,6 +12,11 @@ namespace Sodium
     private const int NPUBBYTES = 12;
     private const int ABYTES = 16;
 
+    public static bool IsAesAvailable()
+    {
+      return SodiumLibrary.crypto_aead_aes256gcm_is_available() != 0;
+    }
+
     /// <summary>Generates a random 12 byte nonce.</summary>
     /// <returns>Returns a byte array with 12 random bytes.</returns>
     public static byte[] GenerateNonce()
