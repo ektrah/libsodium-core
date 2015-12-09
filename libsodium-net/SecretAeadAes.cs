@@ -12,8 +12,11 @@ namespace Sodium
     private const int NPUBBYTES = 12;
     private const int ABYTES = 16;
 
+    /// <summary>Detect if the current CPU supports the AES256-GCM implementation.</summary>
+    /// <returns><c>true</c> on available AES256-GCM support, otherwise <c>false</c></returns>
     public static bool IsAesAvailable()
     {
+      SodiumLibrary.init();
       return SodiumLibrary.crypto_aead_aes256gcm_is_available() != 0;
     }
 
