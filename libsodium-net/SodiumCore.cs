@@ -7,9 +7,11 @@ namespace Sodium
   /// </summary>
   public static class SodiumCore
   {
+    private static bool _isInit;
+
     static SodiumCore()
     {
-      SodiumLibrary.init();
+      Init();
     }
 
     /// <summary>Gets random bytes</summary>
@@ -46,6 +48,17 @@ namespace Sodium
       var ptr = SodiumLibrary.sodium_version_string();
 
       return Marshal.PtrToStringAnsi(ptr);
+    }
+
+    /// <summary>Initialize libsodium.</summary>
+    /// <remarks>This only needs to be done once, so this prevents repeated calls.</remarks>
+    internal static void Init()
+    {
+      if (!_isInit)
+      {
+        SodiumLibrary.init();
+        _isInit = true;
+      }
     }
   }
 }
