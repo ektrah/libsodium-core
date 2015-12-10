@@ -44,6 +44,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SecretAeadAesExceptionTest.cs" />
+    <Compile Include="SecretAeadAesTest.cs" />
     <Compile Include="CryptoHashTest.cs" />
     <Compile Include="GenericHashAlgorithmTest.cs" />
     <Compile Include="RandomNumbersTest.cs" />

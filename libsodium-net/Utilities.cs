@@ -136,5 +136,31 @@ namespace Sodium
 
       return arr;
     }
+
+    /// <summary>
+    /// Takes a unsigned number, and increments it.
+    /// </summary>
+    /// <param name="value">The value to increment.</param>
+    /// <returns>The incremented value.</returns>
+    public static byte[] Increment(byte[] value)
+    {
+      var buffer = value;
+      SodiumLibrary.sodium_increment(buffer, buffer.Length);
+
+      return buffer;
+    }
+
+    /// <summary>
+    /// Compares two values in constant time.
+    /// </summary>
+    /// <param name="a">The first value.</param>
+    /// <param name="b">The second value.</param>
+    /// <returns><c>true</c> if the values are equal, otherwise <c>false</c></returns>
+    public static bool Compare(byte[] a, byte[] b)
+    {
+      var ret = SodiumLibrary.sodium_compare(a, b, a.Length);
+
+      return ret == 0;
+    }
   }
 }
