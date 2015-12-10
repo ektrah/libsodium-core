@@ -16,7 +16,8 @@ namespace Sodium
     /// <returns><c>true</c> on available AES256-GCM support, otherwise <c>false</c></returns>
     public static bool IsAesAvailable()
     {
-      SodiumLibrary.init();
+      SodiumCore.Init();
+
       return SodiumLibrary.crypto_aead_aes256gcm_is_available() != 0;
     }
 
