@@ -15,6 +15,7 @@ namespace Sodium
     /// <summary>Detect if the current CPU supports the AES256-GCM implementation.</summary>
     /// <returns><c>true</c> on available AES256-GCM support, otherwise <c>false</c></returns>
     public static bool IsAesAvailable()
+    public static bool IsAvailable()
     {
       SodiumCore.Init();
 
