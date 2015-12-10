@@ -5,16 +5,18 @@ using Sodium.Exceptions;
 
 namespace Sodium
 {
-  /// <summary>Authenticated Encryption with Additional Data using AES-GCM.</summary>
+  /// <summary>Authenticated Encryption with Additional Data using AES-GCM.
+  /// Only supported on modern x86/x64 processors.</summary>
+  /// <remarks>See here for more information: https://download.libsodium.org/doc/advanced/aes-256-gcm.html </remarks>
   public static class SecretAeadAes
   {
     private const int KEYBYTES = 32;
     private const int NPUBBYTES = 12;
     private const int ABYTES = 16;
 
-    /// <summary>Detect if the current CPU supports the AES256-GCM implementation.</summary>
-    /// <returns><c>true</c> on available AES256-GCM support, otherwise <c>false</c></returns>
-    public static bool IsAesAvailable()
+    /// <summary>Detect if the current CPU supports the required instructions (SSSE3, aesni, pcmul).</summary>
+    /// <returns><c>true</c> if the CPU supports the necessary instructions, otherwise <c>false</c></returns>
+    /// <remarks>Use <see cref="SecretAead"/> if portability is required.</remarks>
     public static bool IsAvailable()
     {
       SodiumCore.Init();
