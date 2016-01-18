@@ -23,6 +23,6 @@
         <file src="_signing\bin\libsodium-64.dll" target="output\libsodium-64.dll" />
         <file src="_signing\bin\libsodium.dll" target="output\libsodium.dll" />
         <file src="_signing\bin\Sodium.dll" target="lib\Net40\Sodium.dll" />
-        <file src="libsodium-net\bin\Release\sodium.dll.config" target="output\sodium.dll.config" />
+        <file src="_signing\bin\sodium.dll.config" target="output\sodium.dll.config" />
     </files>
 </package>
