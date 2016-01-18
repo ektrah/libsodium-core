@@ -9,7 +9,7 @@
         <projectUrl>https://github.com/adamcaudill/libsodium-net</projectUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>A secure cryptographic library</description>
-        <copyright>Copyright (c) 2013 - 2015 Adam Caudill &amp; Contributors</copyright>
+        <copyright>Copyright (c) 2013 - 2016 Adam Caudill &amp; Contributors</copyright>
         <language>en-US</language>
         <tags>encryption libsodium XSalsa20 Curve25519 Ed25519 Poly1305 NaCl AES GCM scrypt</tags>
         <references>
