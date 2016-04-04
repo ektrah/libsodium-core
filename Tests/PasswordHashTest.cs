@@ -233,14 +233,6 @@ namespace Tests
           },
           new HashTestObject
           {
-            Password = "b540beb016a5366524d4605156493f9874514a5aa58818cd0c6dfffaa9e90205f1",
-            Salt = "44071f6d181561670bda728d43fb79b4",
-            OpsLimit = 1,
-            MemLimit = 1631659,
-            OutputLength = 34
-          },
-          new HashTestObject
-          {
             Password =
               "a14975c26c088755a8b715ff2528d647cd343987fcf4aa25e7194a8417fb2b4b3f7268da9f3182b4cfb22d138b2749d673a47ecc7525dd15a0a3c66046971784bb63d7eae24cc84f2631712075a10e10a96b0e0ee67c43e01c423cb9c44e5371017e9c496956b632158da3fe12addecb88912e6759bc37f9af2f45af72c5cae3b179ffb676a697de6ebe45cd4c16d4a9d642d29ddc0186a0a48cb6cd62bfc3dd229d313b301560971e740e2cf1f99a9a090a5b283f35475057e96d7064e2e0fc81984591068d55a3b4169f22cccb0745a2689407ea1901a0a766eb99",
             Salt = "3d968b2752b8838431165059319f3ff8",
