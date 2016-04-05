@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Adam Caudill")]
 [assembly: AssemblyProduct("libsodium-net")]
-[assembly: AssemblyCopyright("Copyright © Adam Caudill 2013 - 2015")]
+[assembly: AssemblyCopyright("Copyright © Adam Caudill 2013 - 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

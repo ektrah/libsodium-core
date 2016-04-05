@@ -107,6 +107,21 @@ namespace Sodium
     internal static LazyInvoke<_OneTimeVerify> _crypto_onetimeauth_verify = new LazyInvoke<_OneTimeVerify>("crypto_onetimeauth_verify", SodiumLibrary.Name);
     internal static _OneTimeVerify crypto_onetimeauth_verify { get { return _crypto_onetimeauth_verify.Method; } }
 
+    //crypto_pwhash_str
+    internal delegate int _ArgonHashString(byte[] buffer, byte[] password, long passwordLen, long opsLimit, int memLimit);
+    internal static LazyInvoke<_ArgonHashString> _crypto_pwhash_str = new LazyInvoke<_ArgonHashString>("crypto_pwhash_argon2i_str", SodiumLibrary.Name);
+    internal static _ArgonHashString crypto_pwhash_str { get { return _crypto_pwhash_str.Method; } }
+
+    //crypto_pwhash_str_verify
+    internal delegate int _ArgonHashVerify(byte[] buffer, byte[] password, long passLength);
+    internal static LazyInvoke<_ArgonHashVerify> _crypto_pwhash_str_verify = new LazyInvoke<_ArgonHashVerify>("crypto_pwhash_argon2i_str_verify", SodiumLibrary.Name);
+    internal static _ArgonHashVerify crypto_pwhash_str_verify { get { return _crypto_pwhash_str_verify.Method; } }
+
+    //crypto_pwhash
+    internal delegate int _ArgonHashBinary(byte[] buffer, long bufferLen, byte[] password, long passwordLen, byte[] salt, long opsLimit, int memLimit, int alg);
+    internal static LazyInvoke<_ArgonHashBinary> _crypto_pwhash = new LazyInvoke<_ArgonHashBinary>("crypto_pwhash_argon2i", SodiumLibrary.Name);
+    internal static _ArgonHashBinary crypto_pwhash { get { return _crypto_pwhash.Method; } }
+
     //crypto_pwhash_scryptsalsa208sha256_str
     internal delegate int _HashString(byte[] buffer, byte[] password, long passwordLen, long opsLimit, int memLimit);
     internal static LazyInvoke<_HashString> _crypto_pwhash_scryptsalsa208sha256_str = new LazyInvoke<_HashString>("crypto_pwhash_scryptsalsa208sha256_str", SodiumLibrary.Name);
