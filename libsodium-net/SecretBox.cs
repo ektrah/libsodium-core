@@ -10,7 +10,6 @@ namespace Sodium
   {
     private const int KEY_BYTES = 32;
     private const int NONCE_BYTES = 24;
-    private const int ZERO_BYTES = 32;
     private const int MAC_BYTES = 16;
 
     /// <summary>Generates a random 32 byte key.</summary>
@@ -60,12 +59,8 @@ namespace Sodium
         throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
 
-      //pad the message, to start with ZERO_BYTES null bytes
-      var paddedMessage = new byte[message.Length + ZERO_BYTES];
-      Array.Copy(message, 0, paddedMessage, ZERO_BYTES, message.Length);
-
-      var buffer = new byte[paddedMessage.Length];
-      var ret = SodiumLibrary.crypto_secretbox(buffer, paddedMessage, paddedMessage.Length, nonce, key);
+      var buffer = new byte[MAC_BYTES + message.Length];
+      var ret = SodiumLibrary.crypto_secretbox_easy(buffer, message, message.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to create SecretBox");
@@ -149,16 +144,38 @@ namespace Sodium
         throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
           string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
 
-      var buffer = new byte[cipherText.Length];
-      var ret = SodiumLibrary.crypto_secretbox_open(buffer, cipherText, cipherText.Length, nonce, key);
+      //check to see if there are MAC_BYTES of leading nulls, if so, trim.
+      //this is required due to an error in older versions.
+      if (cipherText[0] == 0)
+      {
+        //check to see if trim is needed
+        var trim = true;
+        for (var i = 0; i < MAC_BYTES - 1; i++)
+        {
+          if (cipherText[i] != 0)
+          {
+            trim = false;
+            break;
+          }
+        }
+
+        //if the leading MAC_BYTES are null, trim it off before going on.
+        if (trim)
+        {
+          var temp = new byte[cipherText.Length - MAC_BYTES];
+          Array.Copy(cipherText, MAC_BYTES, temp, 0, cipherText.Length - MAC_BYTES);
+
+          cipherText = temp;
+        }
+      }
+
+      var buffer = new byte[cipherText.Length - MAC_BYTES];
+      var ret = SodiumLibrary.crypto_secretbox_open_easy(buffer, cipherText, cipherText.Length, nonce, key);
 
       if (ret != 0)
         throw new CryptographicException("Failed to open SecretBox");
 
-      var final = new byte[buffer.Length - ZERO_BYTES];
-      Array.Copy(buffer, ZERO_BYTES, final, 0, buffer.Length - ZERO_BYTES);
-
-      return final;
+      return buffer;
     }
 
     /// <summary>Opens a detached Secret Box</summary>

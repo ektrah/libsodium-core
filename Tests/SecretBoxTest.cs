@@ -26,7 +26,7 @@ namespace Tests
     [Test]
     public void CreateSecretBox()
     {
-      var expected = Utilities.HexToBinary("00000000000000000000000000000000b58d3c3e5ae78770b7db54e29e3885138a2f1ddb738f2309d9b38164");
+      var expected = Utilities.HexToBinary("b58d3c3e5ae78770b7db54e29e3885138a2f1ddb738f2309d9b38164");
       var actual = SecretBox.Create(
         Encoding.UTF8.GetBytes("Adam Caudill"),
         Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
@@ -38,6 +38,19 @@ namespace Tests
     /// <summary>Does SecretBox.open() return the expected value?</summary>
     [Test]
     public void OpenSecretBox()
+    {
+      const string EXPECTED = "Adam Caudill";
+      var actual = Encoding.UTF8.GetString(SecretBox.Open(
+        Utilities.HexToBinary("b58d3c3e5ae78770b7db54e29e3885138a2f1ddb738f2309d9b38164"),
+        Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
+        Encoding.UTF8.GetBytes("12345678901234567890123456789012")));
+
+      Assert.AreEqual(EXPECTED, actual);
+    }
+
+    /// <summary>Does SecretBox.open() return the expected value?</summary>
+    [Test]
+    public void OpenSecretBoxWithPadding()
     {
       const string EXPECTED = "Adam Caudill";
       var actual = Encoding.UTF8.GetString(SecretBox.Open(
