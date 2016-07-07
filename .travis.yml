@@ -1,4 +1,7 @@
-language: c
+language: csharp
+
+mono:
+ - 4.2.1
 
 os:
  - osx
@@ -7,13 +10,15 @@ os:
 env:
  - TRAVIS_OS_UNAME=$(uname -s)
 
+solution: libsodium-net.sln
+
 install:
- - if [[ $TRAVIS_OS_UNAME = 'Linux' ]]; then bash travis-linux-deps.sh; fi
- - if [[ $TRAVIS_OS_UNAME = 'Darwin' ]]; then bash travis-osx-deps.sh; fi
+ - nuget restore libsodium-net.sln
+ - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 
 before_script:
  - bash travis-build-libsodium.sh
 
 script:
  - xbuild libsodium-net.sln
- - bash nunit-console.sh ./Tests/bin/Debug/Tests.dll
+ - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Tests/bin/Debug/Tests.dll
