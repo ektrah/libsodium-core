@@ -71,13 +71,6 @@ namespace Sodium
       Scrypt
     }
 
-    /*/// <summary>Generates a random 32 byte salt.</summary>
-    /// <returns>Returns a byte array with 32 random bytes</returns>
-    public static byte[] GenerateSalt()
-    {
-        return SodiumCore.GetRandomBytes((int)SCRYPT_SALSA208_SHA256_SALTBYTES);
-    }*/
-
     /// <summary>Generates a random byte salt.</summary>
     /// <param name="hashType"></param>
     /// <returns>Returns a byte array with 16 or 32 random bytes</returns>
@@ -137,6 +130,7 @@ namespace Sodium
 
       var buffer = new byte[outputLength];
 
+      SodiumCore.Init();
       var ret = SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit, ARGON_ALGORITHM_DEFAULT);
 
       if (ret != 0)
@@ -276,6 +270,7 @@ namespace Sodium
       var buffer = new byte[ARGON_STRBYTES];
       var pass = Encoding.UTF8.GetBytes(password);
 
+      SodiumCore.Init();
       var ret = SodiumLibrary.crypto_pwhash_str(buffer, pass, pass.LongLength, opsLimit, memLimit);
 
       if (ret != 0)
@@ -379,6 +374,7 @@ namespace Sodium
       var buffer = new byte[SCRYPT_SALSA208_SHA256_STRBYTES];
       var pass = Encoding.UTF8.GetBytes(password);
 
+      SodiumCore.Init();
       var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, pass.LongLength, opsLimit, memLimit);
 
       if (ret != 0)
@@ -507,6 +503,7 @@ namespace Sodium
 
       var buffer = new byte[outputLength];
 
+      SodiumCore.Init();
       var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit);
 
       if (ret != 0)

@@ -52,7 +52,7 @@ namespace Sodium
 
     /// <summary>Initialize libsodium.</summary>
     /// <remarks>This only needs to be done once, so this prevents repeated calls.</remarks>
-    internal static void Init()
+    public static void Init()
     {
       if (!_isInit)
       {
