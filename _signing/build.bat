@@ -16,7 +16,7 @@ wget --no-check-certificate https://dist.nuget.org/win-x86-commandline/latest/nu
 
 REM build and upload the nuget Package
 nuget pack ..\libsodium-net.nuspec
-nuget push *.nupkg
+nuget push *.nupkg -Source https://www.nuget.org/api/v2/package
 
 REM cleanup
 rm *.nupkg
