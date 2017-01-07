@@ -113,3 +113,5 @@ UpgradeLog*.XML
 
 #NuGet Packages
 *.nupkg
+
+.idea/*
