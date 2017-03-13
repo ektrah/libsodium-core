@@ -498,8 +498,8 @@ namespace Sodium
       if (memLimit <= 0)
         throw new ArgumentOutOfRangeException("memLimit", "memLimit cannot be zero or negative");
 
-      if (outputLength <= 0)
-        throw new ArgumentOutOfRangeException("outputLength", "OutputLength cannot be zero or negative");
+      if (outputLength < 16)
+        throw new ArgumentOutOfRangeException("outputLength", "OutputLength cannot be less than 16 bytes");
 
       var buffer = new byte[outputLength];
 

@@ -412,15 +412,6 @@ namespace Tests
         new HashTestObject
         {
           Password =
-            "4a857e2ee8aa9b6056f2424e84d24a72473378906ee04a46cb05311502d5250b82ad86b83c8f20a23dbb74f6da60b0b6ecffd67134d45946ac8ebfb3064294bc097d43ced68642bfb8bbbdd0f50b30118f5e",
-          Salt = "39d82eef32010b8b79cc5ba88ed539fbaba741100f2edbeca7cc171ffeabf258",
-          OpsLimit = 643464,
-          MemLimit = 1397645,
-          OutputLength = 5
-        },
-        new HashTestObject
-        {
-          Password =
             "1845e375479537e9dd4f4486d5c91ac72775d66605eeb11a787b78a7745f1fd0052d526c67235dbae1b2a4d575a74cb551c8e9096c593a497aee74ba3047d911358ede57bc27c9ea1829824348daaab606217cc931dcb6627787bd6e4e5854f0e8",
           Salt = "3ee91a805aa62cfbe8dce29a2d9a44373a5006f4a4ce24022aca9cecb29d1473",
           OpsLimit = 758010,
@@ -471,6 +462,19 @@ namespace Tests
             Utilities.HexToBinary(testObject.Salt), testObject.OpsLimit, testObject.MemLimit, testObject.OutputLength)
             .Length);
       }
+    }
+
+    /// <summary>
+    ///   Tests if a output size that's too small will trigger an exception.
+    /// </summary>
+    [Test]
+    [ExpectedException(typeof (ArgumentOutOfRangeException))]
+    public void HashSalsa208Sha256TooShort()
+    {
+      Assert.AreEqual(5,
+        PasswordHash.ScryptHashBinary(Utilities.HexToBinary("4a857e2ee8aa9b6056f2424e84d24a72473378906ee04a46cb05311502d5250b82ad86b83c8f20a23dbb74f6da60b0b6ecffd67134d45946ac8ebfb3064294bc097d43ced68642bfb8bbbdd0f50b30118f5e"),
+          Utilities.HexToBinary("39d82eef32010b8b79cc5ba88ed539fbaba741100f2edbeca7cc171ffeabf258"),
+          643464, 1397645, 5).Length);
     }
 
     /// <summary>
