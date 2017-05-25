@@ -14,11 +14,11 @@ solution: libsodium-net.sln
 
 install:
  - nuget restore libsodium-net.sln
- - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+ - nuget install NUnit.ConsoleRunner -Version 3.6.1 -OutputDirectory testrunner
 
 before_script:
  - bash travis-build-libsodium.sh
 
 script:
  - xbuild libsodium-net.sln
- - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Tests/bin/Debug/Tests.dll
+ - mono ./testrunner/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe ./Tests/bin/Debug/Tests.dll

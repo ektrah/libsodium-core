@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using Sodium;
 using Sodium.Exceptions;
 
@@ -9,7 +9,6 @@ namespace Tests
   public class SecretAeadAesExceptionTest
   {
     [Test]
-    [ExpectedException(typeof(KeyOutOfRangeException))]
     public void SecretAeadEncryptWithBadKey()
     {
       var key = new byte[] {
@@ -32,16 +31,16 @@ namespace Tests
 
       if (SecretAeadAes.IsAvailable())
       {
-        SecretAeadAes.Encrypt(m, nonce, key, ad);
+        Assert.Throws<KeyOutOfRangeException>(
+          () => SecretAeadAes.Encrypt(m, nonce, key, ad));
       }
       else
       {
-        throw new KeyOutOfRangeException("AES is not supported");
+        Assert.Warn("AES is not supported");
       }
     }
 
     [Test]
-    [ExpectedException(typeof(NonceOutOfRangeException))]
     public void SecretAeadEncryptWithBadNonce()
     {
       var key = new byte[] {
@@ -64,16 +63,16 @@ namespace Tests
 
       if (SecretAeadAes.IsAvailable())
       {
-        SecretAeadAes.Encrypt(m, nonce, key, ad);
+        Assert.Throws<NonceOutOfRangeException>(
+          () => SecretAeadAes.Encrypt(m, nonce, key, ad));
       }
       else
       {
-        throw new NonceOutOfRangeException("AES is not supported");
+        Assert.Warn("AES is not supported");
       }
     }
 
     [Test]
-    [ExpectedException(typeof(AdditionalDataOutOfRangeException))]
     public void SecretAeadEncryptWithBadAdditionalData()
     {
       var key = new byte[] {
@@ -97,16 +96,16 @@ namespace Tests
       };
       if (SecretAeadAes.IsAvailable())
       {
-        SecretAeadAes.Encrypt(m, nonce, key, ad);
+        Assert.Throws<AdditionalDataOutOfRangeException>(
+          () => SecretAeadAes.Encrypt(m, nonce, key, ad));
       }
       else
       {
-        throw new AdditionalDataOutOfRangeException("AES is not supported");
+        Assert.Warn("AES is not supported");
       }
     }
 
     [Test]
-    [ExpectedException(typeof(KeyOutOfRangeException))]
     public void SecretAeadDecryptWithBadKey()
     {
       var key = new byte[] {
@@ -128,16 +127,16 @@ namespace Tests
       };
       if (SecretAeadAes.IsAvailable())
       {
-        SecretAeadAes.Decrypt(m, nonce, key, ad);
+        Assert.Throws<KeyOutOfRangeException>(
+          () => SecretAeadAes.Decrypt(m, nonce, key, ad));
       }
       else
       {
-        throw new KeyOutOfRangeException("AES is not supported");
+        Assert.Warn("AES is not supported");
       }
     }
 
     [Test]
-    [ExpectedException(typeof(NonceOutOfRangeException))]
     public void SecretAeadDecryptWithBadNonce()
     {
       var key = new byte[] {
@@ -160,16 +159,16 @@ namespace Tests
 
       if (SecretAeadAes.IsAvailable())
       {
-        SecretAeadAes.Decrypt(m, nonce, key, ad);
+        Assert.Throws<NonceOutOfRangeException>(
+          () => SecretAeadAes.Decrypt(m, nonce, key, ad));
       }
       else
       {
-        throw new NonceOutOfRangeException("AES is not supported");
+        Assert.Warn("AES is not supported");
       }
     }
 
     [Test]
-    [ExpectedException(typeof(AdditionalDataOutOfRangeException))]
     public void SecretAeadDecryptWithBadAdditionalData()
     {
       var key = new byte[] {
@@ -193,11 +192,12 @@ namespace Tests
       };
       if (SecretAeadAes.IsAvailable())
       {
-        SecretAeadAes.Decrypt(m, nonce, key, ad);
+        Assert.Throws<AdditionalDataOutOfRangeException>(
+          () => SecretAeadAes.Decrypt(m, nonce, key, ad));
       }
       else
       {
-        throw new AdditionalDataOutOfRangeException("AES is not supported");
+        Assert.Warn("AES is not supported");
       }
     }
   }

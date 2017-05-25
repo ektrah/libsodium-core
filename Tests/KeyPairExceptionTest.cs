@@ -1,4 +1,4 @@
-﻿using Sodium;
+using Sodium;
 using NUnit.Framework;
 using Sodium.Exceptions;
 
@@ -9,7 +9,6 @@ namespace Tests
   public class KeyPairExceptionTest
   {
     [Test]
-    [ExpectedException(typeof(KeyOutOfRangeException))]
     public void KeyPairModuloTest()
     {
       //Don`t copy bobSk for other tests (bad key)!
@@ -29,10 +28,7 @@ namespace Tests
 				0xad,0xfc,0x7e,0x14,0x6f,0x88,0x2b,0x4f
 			};
 
-      var kp = new KeyPair(bobPk, bobSk);
-
-      //we should never get here
-      Assert.IsNull(kp);
+      Assert.Throws<KeyOutOfRangeException>(() => new KeyPair(bobPk, bobSk));
     }
   }
 }

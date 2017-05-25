@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Sodium;
@@ -468,13 +468,15 @@ namespace Tests
     ///   Tests if a output size that's too small will trigger an exception.
     /// </summary>
     [Test]
-    [ExpectedException(typeof (ArgumentOutOfRangeException))]
     public void HashSalsa208Sha256TooShort()
     {
-      Assert.AreEqual(5,
-        PasswordHash.ScryptHashBinary(Utilities.HexToBinary("4a857e2ee8aa9b6056f2424e84d24a72473378906ee04a46cb05311502d5250b82ad86b83c8f20a23dbb74f6da60b0b6ecffd67134d45946ac8ebfb3064294bc097d43ced68642bfb8bbbdd0f50b30118f5e"),
-          Utilities.HexToBinary("39d82eef32010b8b79cc5ba88ed539fbaba741100f2edbeca7cc171ffeabf258"),
-          643464, 1397645, 5).Length);
+      const string PASSWORD =
+        "4a857e2ee8aa9b6056f2424e84d24a72473378906ee04a46cb05311502d5250b82ad86b83c8f20a23dbb74f6da60b0b6ecffd67134d45946ac8ebfb3064294bc097d43ced68642bfb8bbbdd0f50b30118f5e";
+      const string SALT = "39d82eef32010b8b79cc5ba88ed539fbaba741100f2edbeca7cc171ffeabf258";
+      var password = Utilities.HexToBinary(PASSWORD);
+      var salt = Utilities.HexToBinary(SALT);
+      Assert.Throws<ArgumentOutOfRangeException>(
+        () => PasswordHash.ScryptHashBinary(password, salt, 643464, 1397645, 5));
     }
 
     /// <summary>
