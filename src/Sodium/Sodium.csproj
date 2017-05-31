@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <RuntimeIdentifiers>win7-x64;ubuntu-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="*.Windows.cs" />
+    <Compile Remove="*.Unix.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(OS)' != 'Unix' ">
+    <Compile Include="*.Windows.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(OS)' == 'Unix' ">
+    <Compile Include="*.Unix.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="runtimes\**\*" Pack="true" CopyToOutputDirectory="PreserveNewest" Link="%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>

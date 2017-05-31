@@ -143,7 +143,7 @@ namespace Sodium
             string.Format("bytes must be between {0} and {1} bytes in length.", BYTES_MIN, BYTES_MAX));
 
       var buffer = new byte[bytes];
-      SodiumLibrary.crypto_generichash_blake2b_salt_personal(buffer, buffer.Length, message, message.LongLength, key, key.Length, salt, personal);
+      SodiumLibrary.crypto_generichash_blake2b_salt_personal(buffer, buffer.Length, message, message.Length, key, key.Length, salt, personal);
 
       return buffer;
     }

@@ -20,7 +20,7 @@ namespace Sodium
     public static byte[] GetRandomBytes(int count)
     {
       var buffer = new byte[count];
-      SodiumLibrary.randombytes_buff(buffer, count);
+      SodiumLibrary.randombytes_buf(buffer, count);
 
       return buffer;
     }
@@ -56,7 +56,7 @@ namespace Sodium
     {
       if (!_isInit)
       {
-        SodiumLibrary.init();
+        SodiumLibrary.sodium_init();
         _isInit = true;
       }
     }

@@ -85,7 +85,7 @@ namespace Sodium
 
       //remove the trailing nulls from the array
       var tmp = new byte[cipherLength];
-      Array.Copy(cipher, 0, tmp, 0, cipherLength);
+      Array.Copy(cipher, 0, tmp, 0, (int)cipherLength);
 
       return tmp;
     }
@@ -141,7 +141,7 @@ namespace Sodium
 
       //remove the trailing nulls from the array
       var tmp = new byte[messageLength];
-      Array.Copy(message, 0, tmp, 0, messageLength);
+      Array.Copy(message, 0, tmp, 0, (int)messageLength);
 
       return tmp;
     }

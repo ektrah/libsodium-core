@@ -131,7 +131,7 @@ namespace Sodium
       var buffer = new byte[outputLength];
 
       SodiumCore.Init();
-      var ret = SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit, ARGON_ALGORITHM_DEFAULT);
+      var ret = SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit, ARGON_ALGORITHM_DEFAULT);
 
       if (ret != 0)
         throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
@@ -271,7 +271,7 @@ namespace Sodium
       var pass = Encoding.UTF8.GetBytes(password);
 
       SodiumCore.Init();
-      var ret = SodiumLibrary.crypto_pwhash_str(buffer, pass, pass.LongLength, opsLimit, memLimit);
+      var ret = SodiumLibrary.crypto_pwhash_str(buffer, pass, pass.Length, opsLimit, memLimit);
 
       if (ret != 0)
       {
@@ -303,7 +303,7 @@ namespace Sodium
       if (hash == null)
         throw new ArgumentNullException("hash", "Hash cannot be null");
 
-      var ret = SodiumLibrary.crypto_pwhash_str_verify(hash, password, password.LongLength);
+      var ret = SodiumLibrary.crypto_pwhash_str_verify(hash, password, password.Length);
 
       return ret == 0;
     }
@@ -375,7 +375,7 @@ namespace Sodium
       var pass = Encoding.UTF8.GetBytes(password);
 
       SodiumCore.Init();
-      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, pass.LongLength, opsLimit, memLimit);
+      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, pass.Length, opsLimit, memLimit);
 
       if (ret != 0)
       {
@@ -504,7 +504,7 @@ namespace Sodium
       var buffer = new byte[outputLength];
 
       SodiumCore.Init();
-      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit);
+      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit);
 
       if (ret != 0)
         throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
@@ -534,7 +534,7 @@ namespace Sodium
       if (hash == null)
         throw new ArgumentNullException("hash", "Hash cannot be null");
 
-      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str_verify(hash, password, password.LongLength);
+      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str_verify(hash, password, password.Length);
 
       return ret == 0;
     }

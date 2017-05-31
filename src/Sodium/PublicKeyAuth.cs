@@ -73,7 +73,7 @@ namespace Sodium
       SodiumLibrary.crypto_sign(buffer, ref bufferLength, message, message.Length, key);
 
       var final = new byte[bufferLength];
-      Array.Copy(buffer, 0, final, 0, bufferLength);
+      Array.Copy(buffer, 0, final, 0, (int)bufferLength);
 
       return final;
     }
@@ -100,7 +100,7 @@ namespace Sodium
         throw new CryptographicException("Failed to verify signature.");
 
       var final = new byte[bufferLength];
-      Array.Copy(buffer, 0, final, 0, bufferLength);
+      Array.Copy(buffer, 0, final, 0, (int)bufferLength);
 
       return final;
     }

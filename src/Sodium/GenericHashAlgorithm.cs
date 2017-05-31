@@ -35,7 +35,7 @@ namespace Sodium
       /// <exception cref="BytesOutOfRangeException"></exception>
       public GenericHashAlgorithm(byte[] key, int bytes)
       {
-        this.hashStatePtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(SodiumLibrary._HashState)));
+        this.hashStatePtr = Marshal.AllocHGlobal(Marshal.SizeOf<SodiumLibrary.HashState>());
 
         //validate the length of the key
         int keyLength;
@@ -74,20 +74,20 @@ namespace Sodium
 
       override public void Initialize()
       {
-        SodiumLibrary.hash_init(hashStatePtr, key, key.Length, bytes);
+        SodiumLibrary.crypto_generichash_init(hashStatePtr, key, key.Length, bytes);
       }
 
       override protected void HashCore(byte[] array, int ibStart, int cbSize)
       {
         byte[] subArray = new byte[cbSize];
         Array.Copy(array, ibStart, subArray, 0, cbSize);
-        SodiumLibrary.hash_update(hashStatePtr, subArray, cbSize);
+        SodiumLibrary.crypto_generichash_update(hashStatePtr, subArray, cbSize);
       }
 
       override protected byte[] HashFinal()
       {
         byte[] buffer = new byte[bytes];
-        SodiumLibrary.hash_final(hashStatePtr, buffer, bytes);
+        SodiumLibrary.crypto_generichash_final(hashStatePtr, buffer, bytes);
         return buffer;
       }
     }
