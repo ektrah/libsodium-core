@@ -1,0 +1,110 @@
+environment:
+  PKG_VERSION: 0.1.0
+  VERSION_SUFFIX: ""
+version: ${PKG_VERSION}-{build}
+configuration: Release
+platform: x64
+
+skip_commits:
+  message: /travis/
+  files:
+    - '**\*.md'
+    - LICENSE
+
+skip_branch_with_pr: true
+
+matrix:
+  fast_finish: true
+
+init:
+  - git config --global core.autocrlf input
+  - ps: $env:BUILD_VERSION = "$env:PKG_VERSION-$env:APPVEYOR_BUILD_NUMBER"
+  - ps: |
+      if ($env:APPVEYOR_REPO_BRANCH -eq "master")
+      {
+        $env:VERSION_SUFFIX = ""
+        $env:NUGET_VERSION = "$env:PKG_VERSION"
+      }
+      else
+      {
+        $env:VERSION_SUFFIX = "beta$env:APPVEYOR_BUILD_NUMBER"
+        $env:NUGET_VERSION = "$env:PKG_VERSION-$env:VERSION_SUFFIX"
+      }
+  - ps: Update-AppveyorBuild -Version $env:BUILD_VERSION
+  - ps: Write-Host "Build version $env:BUILD_VERSION, NuGet version $env:NUGET_VERSION, Version suffix $env:VERSION_SUFFIX"
+
+before_build:
+  - appveyor-retry dotnet restore -v Minimal
+
+build_script:
+  - ps: |
+      if ($env:APPVEYOR_REPO_BRANCH -eq "master")
+      {
+        dotnet build "src\Sodium.Core" -c $env:CONFIGURATION
+      }
+      else
+      {
+        dotnet build "src\Sodium.Core" -c $env:CONFIGURATION --version-suffix $env:VERSION_SUFFIX
+      }
+
+after_build:
+  - ps: |
+      if ($env:APPVEYOR_REPO_BRANCH -eq "master")
+      {
+        dotnet pack "src\Sodium.Core" -c $env:CONFIGURATION --no-build -o $env:APPVEYOR_BUILD_FOLDER\artifacts
+      }
+      else
+      {
+        dotnet pack "src\Sodium.Core" -c $env:CONFIGURATION --no-build --version-suffix $env:VERSION_SUFFIX -o $env:APPVEYOR_BUILD_FOLDER\artifacts
+      }
+
+test: off
+
+before_test:
+  - nuget install OpenCover -Version 4.6.519 -OutputDirectory .\tools
+
+test_script:
+  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test %APPVEYOR_BUILD_FOLDER%\test\Sodium.Tests\Sodium.Tests.csproj -c Debug -f netcoreapp1.1 -l trx;logfilename=TestResult.xml /p:Platform=AnyCPU" -excludebyattribute:*.ExcludeFromCodeCoverage* -filter:"+[Sodium]* -[Sodium.Tests]*" -hideskipped:All -output:"%APPVEYOR_BUILD_FOLDER%\coverage.xml" -oldStyle
+
+after_test:
+  - ps: |
+        $wc = New-Object 'System.Net.WebClient'
+        $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test\Sodium.Tests\TestResults\TestResult.xml))
+
+on_success:
+  - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+  - pip install codecov
+  - codecov -f "%APPVEYOR_BUILD_FOLDER%\coverage.xml" -X gcov
+
+artifacts:
+  - path: artifacts\**\*.*
+
+cache:
+  - '%USERPROFILE%\.local'
+  - '%USERPROFILE%\.nuget\packages -> **\project.json'
+  - '%LocalAppData%\NuGet\Cache'
+  - '%LocalAppData%\Python'
+  - '.\packages -> **\project.json'
+  - '.\tools'
+  - '\Python34'
+
+nuget:
+  account_feed: true
+
+deploy:
+  - provider: NuGet
+    api_key:
+      secure: WcDqU36pLPvA+s5D4N0VEsi7AZGewvf4croE/D3rh3F+iqiztq9w5gHbrhgoTNS9
+    on:
+      branch: master
+      appveyor_repo_tag: true
+  - provider: GitHub
+    description: 'Release description'
+    auth_token:
+      secure: nsZHZ5nFBFP4fZoVUEeWeZKx7LUASVqCZ+JblTox+02RfTAOlANdFWeCqOwhu7pk
+    artifact: /.*\.nupkg/            # upload all NuGet packages to release assets
+    draft: false
+    prerelease: false
+    on:
+      branch: master                 # release from master branch only
+      appveyor_repo_tag: true

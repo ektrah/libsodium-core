@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sodium.Tests", "test\Sodium
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C436A2F7-76A5-4F7F-B71B-E6A72766FC5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sodium", "src\Sodium\Sodium.csproj", "{82926129-541C-424B-A2EB-49EA383CADDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sodium.Core", "src\Sodium.Core\Sodium.Core.csproj", "{82926129-541C-424B-A2EB-49EA383CADDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
