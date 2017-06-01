@@ -64,7 +64,7 @@ before_test:
   - nuget install OpenCover -Version 4.6.519 -OutputDirectory .\tools
 
 test_script:
-  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test %APPVEYOR_BUILD_FOLDER%\test\Sodium.Tests\Sodium.Tests.csproj -c Debug -f netcoreapp1.1 -l trx;logfilename=TestResult.xml /p:Platform=AnyCPU" -excludebyattribute:*.ExcludeFromCodeCoverage* -filter:"+[Sodium]* -[Sodium.Tests]*" -hideskipped:All -output:"%APPVEYOR_BUILD_FOLDER%\coverage.xml" -oldStyle
+  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test %APPVEYOR_BUILD_FOLDER%\test\Sodium.Tests\Sodium.Tests.csproj -c Debug -f netcoreapp1.1 -l trx;logfilename=TestResult.xml /p:Platform=AnyCPU" -excludebyattribute:*.ExcludeFromCodeCoverage* -filter:"+[Sodium.Core]* -[Sodium.Tests]*" -hideskipped:All -output:"%APPVEYOR_BUILD_FOLDER%\coverage.xml" -oldStyle
 
 after_test:
   - ps: |
