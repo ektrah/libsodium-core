@@ -1,9 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
     <RuntimeIdentifiers>win7-x64;ubuntu-x64</RuntimeIdentifiers>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <Reference Include="System.Security" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="*.Windows.cs" />

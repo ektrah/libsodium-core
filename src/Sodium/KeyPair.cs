@@ -61,14 +61,14 @@ namespace Sodium
     private void _ProtectKey()
     {
 #if !NETSTANDARD1_6
-      ProtectedMemory.Protect(_privateKey, MemoryProtectionScope.CurrentProcess);
+      ProtectedMemory.Protect(_privateKey, MemoryProtectionScope.SameProcess);
 #endif
     }
 
     private void _UnprotectKey()
     {
 #if !NETSTANDARD1_6
-      ProtectedMemory.Unprotect(_privateKey, MemoryProtectionScope.CurrentProcess);
+      ProtectedMemory.Unprotect(_privateKey, MemoryProtectionScope.SameProcess);
 #endif
     }
   }
