@@ -1,0 +1,27 @@
+language: csharp
+mono: none
+dotnet: 1.0.1
+sudo: required
+dist: trusty
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+
+branches:
+  only:
+    - master
+
+cache:
+  directories:
+  - $HOME/.nuget/packages
+
+before_install:
+  - git config --global core.autocrlf input
+
+install:
+  - dotnet restore -r ubuntu-x64
+
+script:
+  - dotnet test test/Sodium.Tests/Sodium.Tests.csproj -f netcoreapp1.1
