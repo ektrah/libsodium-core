@@ -40,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="runtimes\**\*" Pack="true" CopyToOutputDirectory="PreserveNewest" Link="%(Filename)%(Extension)" />
+    <None Include="runtimes\**\*" Pack="true" CopyToOutputDirectory="PreserveNewest" PackagePath="%(Identity)" />
   </ItemGroup>
 
 </Project>
