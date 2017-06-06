@@ -40,19 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="*.Windows.cs" />
-    <Compile Remove="*.Unix.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(OS)' != 'Unix' ">
-    <Compile Include="*.Windows.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(OS)' == 'Unix' ">
-    <Compile Include="*.Unix.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="runtimes\**\*" Pack="true" CopyToOutputDirectory="PreserveNewest" Link="%(Filename)%(Extension)" />
   </ItemGroup>
 
