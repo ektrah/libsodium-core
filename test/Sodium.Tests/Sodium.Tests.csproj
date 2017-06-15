@@ -25,6 +25,9 @@
     <PackageReference Include="nunit.console" Version="3.6.1" />
     <PackageReference Include="nunit3testadapter" Version="3.8.0-alpha1" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="nunit.consolerunner" Version="3.6.1" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Sodium.Core\Sodium.Core.csproj" />
   </ItemGroup>
