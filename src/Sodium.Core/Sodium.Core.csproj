@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
-    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
     <Description>libsodium for .net core</Description>
     <Copyright>Copyright © tabrath 2017</Copyright>
     <AssemblyTitle>Sodium.Core</AssemblyTitle>
@@ -15,36 +14,17 @@
     <PackageLicenseUrl>https://github.com/tabrath/libsodium-core/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/tabrath/libsodium-core/</RepositoryUrl>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'net461' ">$(PackageTargetFallback);netstandard1.6;portable-net461+win8</PackageTargetFallback>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputType>Library</OutputType>
     <PackageProjectUrl>https://github.com/tabrath/libsodium-core/</PackageProjectUrl>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>$(DefineConstants)</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="System.Security" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <None Include="runtimes\**\*" Pack="true" CopyToOutputDirectory="PreserveNewest" PackagePath="%(Identity)" Link="%(Filename)%(Extension)" />
+  <ItemGroup>
+    <PackageReference Include="libsodium" Version="1.0.12-preview-01" />
   </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <Content Include="runtimes\**\*" Pack="true" CopyToOutputDirectory="PreserveNewest" PackagePath="%(Identity)" Link="%(Filename)%(Extension)" />
-  </ItemGroup>
-
+  
 </Project>
