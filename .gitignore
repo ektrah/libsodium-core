@@ -115,3 +115,5 @@ UpgradeLog*.XML
 *.nupkg
 
 .idea/*
+.vs/
+.vscode/
