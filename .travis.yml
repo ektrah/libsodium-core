@@ -34,9 +34,10 @@ cache:
 
 before_install:
   - git config --global core.autocrlf input
+  - ulimit -n 1024
 
 install:
-  - dotnet restore -r $TRAVIS_OS_NAME-x64
+  - dotnet restore --disable-parallel -r $TRAVIS_OS_NAME-x64
 
 script:
   - dotnet test test/Sodium.Tests/Sodium.Tests.csproj -f netcoreapp1.1
