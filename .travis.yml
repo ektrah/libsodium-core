@@ -1,8 +1,23 @@
 language: csharp
+solution: libsodium-core.sln
+
 mono: none
-dotnet: 1.0.1
-sudo: required
-dist: trusty
+
+env:
+  global:
+    - DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    - DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+
+matrix:
+  fast_finish: true
+  include:
+    - os: linux
+      dist: trusty
+      sudo: false
+      dotnet: 1.0.1
+    - os: osx
+      osx_image: xcode9
+      dotnet: 1.0.1
 
 notifications:
   email:
@@ -21,7 +36,7 @@ before_install:
   - git config --global core.autocrlf input
 
 install:
-  - dotnet restore -r ubuntu-x64
+  - dotnet restore -r $TRAVIS_OS_NAME-x64
 
 script:
   - dotnet test test/Sodium.Tests/Sodium.Tests.csproj -f netcoreapp1.1
