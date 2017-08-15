@@ -5,7 +5,7 @@
     <Description>libsodium for .net core</Description>
     <Copyright>Copyright © tabrath 2017</Copyright>
     <AssemblyTitle>Sodium.Core</AssemblyTitle>
-    <VersionPrefix>1.0.4</VersionPrefix>
+    <VersionPrefix>1.0.5</VersionPrefix>
     <Authors>tabrath</Authors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>Sodium.Core</AssemblyName>
@@ -26,5 +26,5 @@
   <ItemGroup>
     <PackageReference Include="libsodium" Version="1.0.12-preview-01" />
   </ItemGroup>
-  
+
 </Project>
