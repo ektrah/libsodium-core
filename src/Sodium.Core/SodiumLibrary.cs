@@ -128,10 +128,6 @@ namespace Sodium
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
     internal static extern int crypto_box_keypair(byte[] publicKey, byte[] secretKey);
 
-    //crypto_box_seed_keypair
-    [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_box_seed_keypair(byte[] publicKey, byte[] secretKey, byte[] seed);
-
     //crypto_box_easy
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
     internal static extern int crypto_box_easy(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] publicKey, byte[] secretKey);
@@ -147,10 +143,6 @@ namespace Sodium
     //crypto_box_open_detached
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
     internal static extern int crypto_box_open_detached(byte[] buffer, byte[] cipherText, byte[] mac, long cipherTextLength, byte[] nonce, byte[] pk, byte[] sk);
-
-    //crypto_box_seedbytes
-    [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_box_seedbytes();
 
     //crypto_scalarmult_bytes
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
