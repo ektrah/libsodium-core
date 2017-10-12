@@ -42,6 +42,26 @@ namespace Sodium
       return new KeyPair(publicKey, privateKey);
     }
 
+    /// <summary>Creates a new key pair based on the provided seed.</summary>
+    /// <param name="seed">Seed data.</param>
+    /// <returns>A KeyPair.</returns>
+    /// <exception cref="SeedOutOfRangeException"></exception>
+    public static KeyPair GenerateSeededKeyPair(byte[] seed)
+    {
+      var publicKey = new byte[PublicKeyBytes];
+      var privateKey = new byte[SecretKeyBytes];
+      // Expected length of the keypair seed
+      int seedBytes = SodiumLibrary.crypto_box_seedbytes();
+      //validate the length of the seed
+      if (seed == null || seed.Length != seedBytes)
+        throw new SeedOutOfRangeException("seed", (seed == null) ? 0 : seed.Length,
+          string.Format("Key seed must be {0} bytes in length.", SecretKeyBytes));
+      
+      SodiumLibrary.crypto_box_seed_keypair(publicKey, privateKey, seed);
+
+      return new KeyPair(publicKey, privateKey);
+    }
+
     /// <summary>Generates a random 24 byte nonce.</summary>
     /// <returns>Returns a byte array with 24 random bytes</returns>
     public static byte[] GenerateNonce()
