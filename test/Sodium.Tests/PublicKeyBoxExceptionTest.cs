@@ -25,6 +25,20 @@ namespace Tests
     }
 
     [Test]
+    public void GenerateKeyPairFromPrivateBadSeedTest()
+    {
+      //30 byte
+      var invalidSeed = new byte[] {
+        0x5d,0xab,0x08,0x7e,0x62,0x4a,0x8a,0x4b,
+        0x79,0xe1,0x7f,0x8b,0x83,0x80,0x0e,0xe6,
+        0x6f,0x3b,0xb1,0x29,0x26,0x18,0xb6,0xfd,
+        0x1c,0x2f,0x8b,0x27,0xff,0x88
+      };
+      Assert.Throws<SeedOutOfRangeException>(
+        () => PublicKeyBox.GenerateSeededKeyPair(invalidSeed));
+    }
+
+    [Test]
     public void PublicKeyBoxCreateWithBadPrivateKey()
     {
       var bobSk = new byte[] {
