@@ -45,6 +45,24 @@ namespace Tests
       CollectionAssert.AreEqual(Utilities.HexToBinary("753cb95919b15b76654b1969c554a4aaf8334402ef1468cb40a602b9c9fd2c13"), actual.PublicKey);
     }
 
+    /// <summary>Does PublicKeyBox.GenerateSeededKeyPair(seed) return the rigt deterministic public key</summary>
+    [Test]
+    public void GenerateDeterministicPublicKeyFromSeedTest()
+    {
+      var actual = PublicKeyBox.GenerateSeededKeyPair(Utilities.HexToBinary("0b93e7914224f0e7de0984ce6480020e7f11c37c35e967399625b6186202275c"));
+      
+      CollectionAssert.AreEqual( Utilities.HexToBinary("309db6bd8e8fc75d0beda31c8273d572541784f1d566f877aeedda5c4cb87514"), actual.PublicKey);
+    }
+
+    /// <summary>Does PublicKeyBox.GenerateSeededKeyPair(seed) return the rigt deterministic private key</summary>
+    [Test]
+    public void GenerateDeterministicPrivateKeyFromSeedTest()
+    {
+      var actual = PublicKeyBox.GenerateSeededKeyPair(Utilities.HexToBinary("0b93e7914224f0e7de0984ce6480020e7f11c37c35e967399625b6186202275c"));
+
+      CollectionAssert.AreEqual(Utilities.HexToBinary("082f8b811ca316a1fa22d40a19c7cba91a814d73a333c752d508efd3be2d58db"), actual.PrivateKey);
+    }
+
     /// <summary>Does PublicKeyBox.Create creates the right data?</summary>
     [Test]
     public void SimpleCreateTest()
