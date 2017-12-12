@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
-    <!--<PackageReference Include="Mono.Cecil" Version="0.9.6" />-->
+    <PackageReference Include="Mono.Cecil" Version="0.10.0-beta7" />
     <PackageReference Include="nunit" Version="3.9.0" />
     <PackageReference Include="nunit3testadapter" Version="3.9.0" />
     <PackageReference Include="NUnitLite" Version="3.9.0" />
