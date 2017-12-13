@@ -260,6 +260,14 @@ namespace Sodium
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
     internal static extern int crypto_aead_chacha20poly1305_decrypt(IntPtr message, out long messageLength, byte[] nsec, byte[] cipher, long cipherLength, byte[] additionalData, long additionalDataLength, byte[] nonce, byte[] key);
 
+    //crypto_aead_xchacha20poly1305_ietf_encrypt
+    [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int crypto_aead_xchacha20poly1305_ietf_encrypt(IntPtr cipher, out long cipherLength, byte[] message, long messageLength, byte[] additionalData, long additionalDataLength, byte[] nsec, byte[] nonce, byte[] key);
+
+    //crypto_aead_xchacha20poly1305_ietf_decrypt
+    [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int crypto_aead_xchacha20poly1305_ietf_decrypt(IntPtr message, out long messageLength, byte[] nsec, byte[] cipher, long cipherLength, byte[] additionalData, long additionalDataLength, byte[] nonce, byte[] key);
+
     //crypto_aead_aes256gcm_is_available
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
     internal static extern int crypto_aead_aes256gcm_is_available();
