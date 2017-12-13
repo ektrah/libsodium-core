@@ -292,5 +292,11 @@ namespace Sodium
 
       public byte last_node;
     }
+
+    [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int crypto_stream_xchacha20(byte[] buffer, int bufferLength, byte[] nonce, byte[] key);
+
+    [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int crypto_stream_xchacha20_xor(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
   }
 }
