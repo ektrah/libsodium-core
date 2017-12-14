@@ -6,9 +6,9 @@ using Sodium.Exceptions;
 
 namespace Tests
 {
-  ///<summary>Exception tests for the SecretAead class</summary>
+  ///<summary>Exception tests for the SecretAeadChaCha20Poly1305 class</summary>
   [TestFixture]
-  public class SecretAeadExceptionTest
+  public class SecretAeadChaCha20Poly1305ExceptionTest
   {
     [Test]
     public void SecretAeadChaCha20Poly1305EncryptWithBadKey()
@@ -32,7 +32,7 @@ namespace Tests
       };
 
       Assert.Throws<KeyOutOfRangeException>(
-        () => SecretAead.Encrypt(m, nonce, key, ad));
+        () => SecretAeadChaCha20Poly1305.Encrypt(m, nonce, key, ad));
     }
 
     [Test]
@@ -57,7 +57,7 @@ namespace Tests
       };
 
       Assert.Throws<NonceOutOfRangeException>(
-        () => SecretAead.Encrypt(m, nonce, key, ad));
+        () => SecretAeadChaCha20Poly1305.Encrypt(m, nonce, key, ad));
     }
 
     [Test]
@@ -84,7 +84,7 @@ namespace Tests
       };
 
       Assert.Throws<AdditionalDataOutOfRangeException>(
-        () => SecretAead.Encrypt(m, nonce, key, ad));
+        () => SecretAeadChaCha20Poly1305.Encrypt(m, nonce, key, ad));
     }
 
     [Test]
@@ -109,7 +109,7 @@ namespace Tests
       };
 
       Assert.Throws<KeyOutOfRangeException>(
-        () => SecretAead.Decrypt(m, nonce, key, ad));
+        () => SecretAeadChaCha20Poly1305.Decrypt(m, nonce, key, ad));
     }
 
     [Test]
@@ -134,7 +134,7 @@ namespace Tests
       };
 
       Assert.Throws<NonceOutOfRangeException>(
-        () => SecretAead.Decrypt(m, nonce, key, ad));
+        () => SecretAeadChaCha20Poly1305.Decrypt(m, nonce, key, ad));
     }
 
     [Test]
@@ -161,7 +161,7 @@ namespace Tests
       };
 
       Assert.Throws<AdditionalDataOutOfRangeException>(
-        () => SecretAead.Decrypt(m, nonce, key, ad));
+        () => SecretAeadChaCha20Poly1305.Decrypt(m, nonce, key, ad));
     }
   }
 }

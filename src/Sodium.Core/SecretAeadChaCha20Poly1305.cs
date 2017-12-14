@@ -6,7 +6,7 @@ using Sodium.Exceptions;
 namespace Sodium
 {
   /// <summary>Authenticated Encryption with Additional Data.</summary>
-  public static class SecretAead
+  public static class SecretAeadChaCha20Poly1305
   {
     private const int KEYBYTES = 32;
     private const int NPUBBYTES = 8;
