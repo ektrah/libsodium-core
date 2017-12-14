@@ -8,10 +8,10 @@ namespace Tests
 {
   ///<summary>Exception tests for the SecretAeadChaCha20Poly1305 class</summary>
   [TestFixture]
-  public class SecretAeadChaCha20Poly1305ExceptionTest
+  public class SecretAeadChaCha20Poly1305IETFExceptionTest
   {
     [Test]
-    public void SecretAeadChaCha20Poly1305EncryptWithBadKey()
+    public void SecretAeadChaCha20Poly1305IETFEncryptWithBadKey()
     {
       var key = new byte[] {
         0x42, 0x90, 0xbc, 0xb1, 0x54, 0x17, 0x35, 0x31, 0xf3, 0x14, 0xaf,
@@ -32,11 +32,11 @@ namespace Tests
       };
 
       Assert.Throws<KeyOutOfRangeException>(
-        () => SecretAeadChaCha20Poly1305.Encrypt(m, nonce, key, ad));
+        () => SecretAeadChaCha20Poly1305IETF.Encrypt(m, nonce, key, ad));
     }
 
     [Test]
-    public void SecretAeadChaCha20Poly1305EncryptWithBadNonce()
+    public void SecretAeadChaCha20Poly1305IETFEncryptWithBadNonce()
     {
       var key = new byte[] {
         0x42, 0x90, 0xbc, 0xb1, 0x54, 0x17, 0x35, 0x31, 0xf3, 0x14, 0xaf,
@@ -57,11 +57,11 @@ namespace Tests
       };
 
       Assert.Throws<NonceOutOfRangeException>(
-        () => SecretAeadChaCha20Poly1305.Encrypt(m, nonce, key, ad));
+        () => SecretAeadChaCha20Poly1305IETF.Encrypt(m, nonce, key, ad));
     }
 
     [Test]
-    public void SecretAeadChaCha20Poly1305EncryptWithBadAdditionalData()
+    public void SecretAeadChaCha20Poly1305IETFEncryptWithBadAdditionalData()
     {
       var key = new byte[] {
         0x42, 0x90, 0xbc, 0xb1, 0x54, 0x17, 0x35, 0x31, 0xf3, 0x14, 0xaf,
@@ -84,11 +84,11 @@ namespace Tests
       };
 
       Assert.Throws<AdditionalDataOutOfRangeException>(
-        () => SecretAeadChaCha20Poly1305.Encrypt(m, nonce, key, ad));
+        () => SecretAeadChaCha20Poly1305IETF.Encrypt(m, nonce, key, ad));
     }
 
     [Test]
-    public void SecretAeadChaCha20Poly1305DecryptWithBadKey()
+    public void SecretAeadChaCha20Poly1305IETFDecryptWithBadKey()
     {
       var key = new byte[] {
         0x42, 0x90, 0xbc, 0xb1, 0x54, 0x17, 0x35, 0x31, 0xf3, 0x14, 0xaf,
@@ -109,11 +109,11 @@ namespace Tests
       };
 
       Assert.Throws<KeyOutOfRangeException>(
-        () => SecretAeadChaCha20Poly1305.Decrypt(m, nonce, key, ad));
+        () => SecretAeadChaCha20Poly1305IETF.Decrypt(m, nonce, key, ad));
     }
 
     [Test]
-    public void SecretAeadChaCha20Poly1305DecryptWithBadNonce()
+    public void SecretAeadChaCha20Poly1305IETFDecryptWithBadNonce()
     {
       var key = new byte[] {
         0x42, 0x90, 0xbc, 0xb1, 0x54, 0x17, 0x35, 0x31, 0xf3, 0x14, 0xaf,
@@ -134,11 +134,11 @@ namespace Tests
       };
 
       Assert.Throws<NonceOutOfRangeException>(
-        () => SecretAeadChaCha20Poly1305.Decrypt(m, nonce, key, ad));
+        () => SecretAeadChaCha20Poly1305IETF.Decrypt(m, nonce, key, ad));
     }
 
     [Test]
-    public void SecretAeadChaCha20Poly1305DecryptWithBadAdditionalData()
+    public void SecretAeadChaCha20Poly1305IETFDecryptWithBadAdditionalData()
     {
       var key = new byte[] {
         0x42, 0x90, 0xbc, 0xb1, 0x54, 0x17, 0x35, 0x31, 0xf3, 0x14, 0xaf,
@@ -161,7 +161,7 @@ namespace Tests
       };
 
       Assert.Throws<AdditionalDataOutOfRangeException>(
-        () => SecretAeadChaCha20Poly1305.Decrypt(m, nonce, key, ad));
+        () => SecretAeadChaCha20Poly1305IETF.Decrypt(m, nonce, key, ad));
     }
   }
 }
