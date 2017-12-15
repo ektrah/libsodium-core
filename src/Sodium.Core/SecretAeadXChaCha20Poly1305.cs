@@ -15,10 +15,7 @@ namespace Sodium
 
         /// <summary>Generates a random 24 byte nonce.</summary>
         /// <returns>Returns a byte array with 24 random bytes.</returns>
-        public static byte[] GenerateNonce()
-        {
-            return SodiumCore.GetRandomBytes(NPUBBYTES);
-        }
+        public static byte[] GenerateNonce() => SodiumCore.GetRandomBytes(NPUBBYTES);
 
         /// <summary>
         /// Encrypts a message with an authentication tag and additional data using XChaCha20-Poly1305.
@@ -42,25 +39,21 @@ namespace Sodium
 
             //validate the length of the key
             if (key == null || key.Length != KEYBYTES)
-                throw new KeyOutOfRangeException("key", key?.Length ?? 0,
-                  string.Format("key must be {0} bytes in length.", KEYBYTES));
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEYBYTES} bytes in length.");
 
             //validate the length of the nonce
             if (nonce == null || nonce.Length != NPUBBYTES)
-                throw new NonceOutOfRangeException("nonce", nonce?.Length ?? 0,
-                  string.Format("nonce must be {0} bytes in length.", NPUBBYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NPUBBYTES} bytes in length.");
 
             //validate the length of the additionalData
             if (additionalData.Length > ABYTES || additionalData.Length < 0)
-                throw new AdditionalDataOutOfRangeException(
-                  string.Format("additionalData must be between {0} and {1} bytes in length.", 0, ABYTES));
+                throw new AdditionalDataOutOfRangeException($"additionalData must be between {0} and {ABYTES} bytes in length.");
 
             var cipher = new byte[message.Length + ABYTES];
             var bin = Marshal.AllocHGlobal(cipher.Length);
 
-            var ret = SodiumLibrary.crypto_aead_xchacha20poly1305_ietf_encrypt(bin, out var cipherLength, message, message.Length,
-              additionalData, additionalData.Length, null,
-              nonce, key);
+            var ret = SodiumLibrary.crypto_aead_xchacha20poly1305_ietf_encrypt(bin, out var cipherLength, message,
+                message.Length, additionalData, additionalData.Length, null, nonce, key);
 
             Marshal.Copy(bin, cipher, 0, (int)cipherLength);
             Marshal.FreeHGlobal(bin);
@@ -98,24 +91,21 @@ namespace Sodium
 
             //validate the length of the key
             if (key == null || key.Length != KEYBYTES)
-                throw new KeyOutOfRangeException("key", key?.Length ?? 0,
-                  string.Format("key must be {0} bytes in length.", KEYBYTES));
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEYBYTES} bytes in length.");
 
             //validate the length of the nonce
             if (nonce == null || nonce.Length != NPUBBYTES)
-                throw new NonceOutOfRangeException("nonce", nonce?.Length ?? 0,
-                  string.Format("nonce must be {0} bytes in length.", NPUBBYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NPUBBYTES} bytes in length.");
 
             //validate the length of the additionalData
             if (additionalData.Length > ABYTES || additionalData.Length < 0)
-                throw new AdditionalDataOutOfRangeException(
-                  string.Format("additionalData must be between {0} and {1} bytes in length.", 0, ABYTES));
+                throw new AdditionalDataOutOfRangeException($"additionalData must be between {0} and {ABYTES} bytes in length.");
 
             var message = new byte[cipher.Length - ABYTES];
             var bin = Marshal.AllocHGlobal(message.Length);
 
             var ret = SodiumLibrary.crypto_aead_xchacha20poly1305_ietf_decrypt(bin, out var messageLength, null, cipher, cipher.Length,
-              additionalData, additionalData.Length, nonce, key);
+                additionalData, additionalData.Length, nonce, key);
 
             Marshal.Copy(bin, message, 0, (int)messageLength);
             Marshal.FreeHGlobal(bin);

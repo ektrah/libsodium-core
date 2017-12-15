@@ -30,10 +30,7 @@ namespace Sodium
         /// </summary>
         /// <param name="upperBound">Integer between 0 and 2147483647.</param>
         /// <returns>An unpredictable value between 0 and upperBound (excluded).</returns>
-        public static int GetRandomNumber(int upperBound)
-        {
-            return SodiumLibrary.randombytes_uniform(upperBound);
-        }
+        public static int GetRandomNumber(int upperBound) => SodiumLibrary.randombytes_uniform(upperBound);
 
         /// <summary>
         /// Returns the version of libsodium in use.
@@ -41,12 +38,7 @@ namespace Sodium
         /// <returns>
         /// The sodium version string.
         /// </returns>
-        public static string SodiumVersionString()
-        {
-            var ptr = SodiumLibrary.sodium_version_string();
-
-            return Marshal.PtrToStringAnsi(ptr);
-        }
+        public static string SodiumVersionString() => Marshal.PtrToStringAnsi(SodiumLibrary.sodium_version_string());
 
         /// <summary>Initialize libsodium.</summary>
         /// <remarks>This only needs to be done once, so this prevents repeated calls.</remarks>

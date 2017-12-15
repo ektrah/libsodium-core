@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text;
 using Sodium.Exceptions;
 
@@ -11,20 +12,14 @@ namespace Sodium
 
         /// <summary>Generates a random 32 byte key.</summary>
         /// <returns>Returns a byte array with 32 random bytes</returns>
-        public static byte[] GenerateKey()
-        {
-            return SodiumCore.GetRandomBytes(KEY_BYTES);
-        }
+        public static byte[] GenerateKey() => SodiumCore.GetRandomBytes(KEY_BYTES);
 
         /// <summary>Signs a message using Poly1305</summary>
         /// <param name="message">The message.</param>
         /// <param name="key">The 32 byte key.</param>
         /// <returns>16 byte authentication code.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
-        public static byte[] Sign(string message, byte[] key)
-        {
-            return Sign(Encoding.UTF8.GetBytes(message), key);
-        }
+        public static byte[] Sign(string message, byte[] key) => Sign(Encoding.UTF8.GetBytes(message), key);
 
         /// <summary>Signs a message using Poly1305</summary>
         /// <param name="message">The message.</param>
@@ -35,11 +30,12 @@ namespace Sodium
         {
             //validate the length of the key
             if (key == null || key.Length != KEY_BYTES)
-                throw new KeyOutOfRangeException("key", key?.Length ?? 0,
-                  string.Format("key must be {0} bytes in length.", KEY_BYTES));
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEY_BYTES} bytes in length.");
 
             var buffer = new byte[BYTES];
-            SodiumLibrary.crypto_onetimeauth(buffer, message, message.Length, key);
+
+            if (SodiumLibrary.crypto_onetimeauth(buffer, message, message.Length, key) != 0)
+                throw new CryptographicException("Could not sign message");
 
             return buffer;
         }
@@ -51,10 +47,7 @@ namespace Sodium
         /// <returns>True if verified.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="SignatureOutOfRangeException"></exception>
-        public static bool Verify(string message, byte[] signature, byte[] key)
-        {
-            return Verify(Encoding.UTF8.GetBytes(message), signature, key);
-        }
+        public static bool Verify(string message, byte[] signature, byte[] key) => Verify(Encoding.UTF8.GetBytes(message), signature, key);
 
         /// <summary>Verifies a message signed with the Sign method.</summary>
         /// <param name="message">The message.</param>
@@ -67,17 +60,13 @@ namespace Sodium
         {
             //validate the length of the key
             if (key == null || key.Length != KEY_BYTES)
-                throw new KeyOutOfRangeException("key", key?.Length ?? 0,
-                  string.Format("key must be {0} bytes in length.", KEY_BYTES));
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEY_BYTES} bytes in length.");
 
             //validate the length of the signature
             if (signature == null || signature.Length != BYTES)
-                throw new SignatureOutOfRangeException("signature", signature?.Length ?? 0,
-                  string.Format("signature must be {0} bytes in length.", BYTES));
+                throw new SignatureOutOfRangeException(nameof(signature), signature?.Length ?? 0, $"signature must be {BYTES} bytes in length.");
 
-            var ret = SodiumLibrary.crypto_onetimeauth_verify(signature, message, message.Length, key);
-
-            return ret == 0;
+            return SodiumLibrary.crypto_onetimeauth_verify(signature, message, message.Length, key) == 0;
         }
     }
 }

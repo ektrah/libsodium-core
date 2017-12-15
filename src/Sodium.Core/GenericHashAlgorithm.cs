@@ -43,10 +43,7 @@ namespace Sodium
                 if (key != null)
                 {
                     if (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN)
-                    {
-                        throw new KeyOutOfRangeException(string.Format("key must be between {0} and {1} bytes in length.",
-                          KEY_BYTES_MIN, KEY_BYTES_MAX));
-                    }
+                        throw new KeyOutOfRangeException($"key must be between {KEY_BYTES_MIN} and {KEY_BYTES_MAX} bytes in length.");
 
                     keyLength = key.Length;
                 }
@@ -60,8 +57,7 @@ namespace Sodium
 
                 //validate output length
                 if (bytes > BYTES_MAX || bytes < BYTES_MIN)
-                    throw new BytesOutOfRangeException("bytes", bytes,
-                      string.Format("bytes must be between {0} and {1} bytes in length.", BYTES_MIN, BYTES_MAX));
+                    throw new BytesOutOfRangeException(nameof(bytes), bytes, $"bytes must be between {BYTES_MIN} and {BYTES_MAX} bytes in length.");
 
                 _bytes = bytes;
 

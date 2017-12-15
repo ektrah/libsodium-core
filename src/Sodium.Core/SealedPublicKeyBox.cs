@@ -17,10 +17,7 @@ namespace Sodium
         /// <returns>The anonymously encrypted message.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="CryptographicException"></exception>
-        public static byte[] Create(string message, KeyPair recipientKeyPair)
-        {
-            return Create(Encoding.UTF8.GetBytes(message), recipientKeyPair.PublicKey);
-        }
+        public static byte[] Create(string message, KeyPair recipientKeyPair) => Create(Encoding.UTF8.GetBytes(message), recipientKeyPair.PublicKey);
 
         /// <summary> Creates a SealedPublicKeyBox</summary>
         /// <param name="message">The message.</param>
@@ -28,10 +25,7 @@ namespace Sodium
         /// <returns>The anonymously encrypted message.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="CryptographicException"></exception>
-        public static byte[] Create(byte[] message, KeyPair recipientKeyPair)
-        {
-            return Create(message, recipientKeyPair.PublicKey);
-        }
+        public static byte[] Create(byte[] message, KeyPair recipientKeyPair) => Create(message, recipientKeyPair.PublicKey);
 
         /// <summary> Creates a SealedPublicKeyBox</summary>
         /// <param name="message">The message.</param>
@@ -39,10 +33,7 @@ namespace Sodium
         /// <returns>The anonymously encrypted message.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="CryptographicException"></exception>
-        public static byte[] Create(string message, byte[] recipientPublicKey)
-        {
-            return Create(Encoding.UTF8.GetBytes(message), recipientPublicKey);
-        }
+        public static byte[] Create(string message, byte[] recipientPublicKey) => Create(Encoding.UTF8.GetBytes(message), recipientPublicKey);
 
         /// <summary> Creates a SealedPublicKeyBox</summary>
         /// <param name="message">The message.</param>
@@ -54,14 +45,11 @@ namespace Sodium
         {
             //validate the length of the recipient public key
             if (recipientPublicKey == null || recipientPublicKey.Length != RecipientPublicKeyBytes)
-                throw new KeyOutOfRangeException("recipientPublicKey",
-                    recipientPublicKey?.Length ?? 0,
-                    string.Format("recipientPublicKey must be {0} bytes in length.", RecipientPublicKeyBytes));
+                throw new KeyOutOfRangeException(nameof(recipientPublicKey), recipientPublicKey?.Length ?? 0, $"recipientPublicKey must be {RecipientPublicKeyBytes} bytes in length.");
 
             var buffer = new byte[message.Length + CryptoBoxSealbytes];
-            var ret = SodiumLibrary.crypto_box_seal(buffer, message, message.Length, recipientPublicKey);
 
-            if (ret != 0)
+            if (SodiumLibrary.crypto_box_seal(buffer, message, message.Length, recipientPublicKey) != 0)
                 throw new CryptographicException("Failed to create SealedBox");
 
             return buffer;
@@ -73,10 +61,7 @@ namespace Sodium
         /// <returns>The decrypted message.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="CryptographicException"></exception>
-        public static byte[] Open(string cipherText, KeyPair recipientKeyPair)
-        {
-            return Open(Utilities.HexToBinary(cipherText), recipientKeyPair.PrivateKey, recipientKeyPair.PublicKey);
-        }
+        public static byte[] Open(string cipherText, KeyPair recipientKeyPair) => Open(Utilities.HexToBinary(cipherText), recipientKeyPair.PrivateKey, recipientKeyPair.PublicKey);
 
         /// <summary>Opens a SealedPublicKeyBox</summary>
         /// <param name="cipherText">The cipherText to be opened.</param>
@@ -84,10 +69,7 @@ namespace Sodium
         /// <returns>The decrypted message.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="CryptographicException"></exception>
-        public static byte[] Open(byte[] cipherText, KeyPair recipientKeyPair)
-        {
-            return Open(cipherText, recipientKeyPair.PrivateKey, recipientKeyPair.PublicKey);
-        }
+        public static byte[] Open(byte[] cipherText, KeyPair recipientKeyPair) => Open(cipherText, recipientKeyPair.PrivateKey, recipientKeyPair.PublicKey);
 
         /// <summary>Opens a SealedPublicKeyBox</summary>
         /// <param name="cipherText">Hex-encoded cipherText to be opened.</param>
@@ -96,10 +78,7 @@ namespace Sodium
         /// <returns>The decrypted message.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="CryptographicException"></exception>
-        public static byte[] Open(string cipherText, byte[] recipientSecretKey, byte[] recipientPublicKey)
-        {
-            return Open(Utilities.HexToBinary(cipherText), recipientSecretKey, recipientPublicKey);
-        }
+        public static byte[] Open(string cipherText, byte[] recipientSecretKey, byte[] recipientPublicKey) => Open(Utilities.HexToBinary(cipherText), recipientSecretKey, recipientPublicKey);
 
         /// <summary>Opens a SealedPublicKeyBox</summary>
         /// <param name="cipherText">The cipherText to be opened.</param>
@@ -112,22 +91,15 @@ namespace Sodium
         {
             //validate the length of the recipient secret key
             if (recipientSecretKey == null || recipientSecretKey.Length != RecipientSecretKeyBytes)
-                throw new KeyOutOfRangeException("recipientPublicKey",
-                    recipientSecretKey?.Length ?? 0,
-                    string.Format("recipientSecretKey must be {0} bytes in length.", RecipientSecretKeyBytes));
+                throw new KeyOutOfRangeException(nameof(recipientPublicKey), recipientSecretKey?.Length ?? 0, $"recipientSecretKey must be {RecipientSecretKeyBytes} bytes in length.");
 
             //validate the length of the recipient public key
             if (recipientPublicKey == null || recipientPublicKey.Length != RecipientPublicKeyBytes)
-                throw new KeyOutOfRangeException("recipientPublicKey",
-                    recipientPublicKey?.Length ?? 0,
-                    string.Format("recipientPublicKey must be {0} bytes in length.", RecipientPublicKeyBytes));
-
+                throw new KeyOutOfRangeException(nameof(recipientPublicKey), recipientPublicKey?.Length ?? 0, $"recipientPublicKey must be {RecipientPublicKeyBytes} bytes in length.");
 
             var buffer = new byte[cipherText.Length - CryptoBoxSealbytes];
-            var ret = SodiumLibrary.crypto_box_seal_open(buffer, cipherText, cipherText.Length, recipientPublicKey,
-                recipientSecretKey);
 
-            if (ret != 0)
+            if (SodiumLibrary.crypto_box_seal_open(buffer, cipherText, cipherText.Length, recipientPublicKey, recipientSecretKey) != 0)
                 throw new CryptographicException("Failed to open SealedBox");
 
             return buffer;

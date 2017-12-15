@@ -9,23 +9,14 @@ namespace Sodium
         private const int SCALAR_BYTES = 32;
 
         //TODO: Add documentation header
-        public static int Bytes()
-        {
-            return SodiumLibrary.crypto_scalarmult_bytes();
-        }
+        public static int Bytes() => SodiumLibrary.crypto_scalarmult_bytes();
 
         //TODO: Add documentation header
-        public static int ScalarBytes()
-        {
-            return SodiumLibrary.crypto_scalarmult_scalarbytes();
-        }
+        public static int ScalarBytes() => SodiumLibrary.crypto_scalarmult_scalarbytes();
 
         //TODO: Add documentation header
         //TODO: Unit test(s)
-        static byte Primitive()
-        {
-            return SodiumLibrary.crypto_scalarmult_primitive();
-        }
+        static byte Primitive() => SodiumLibrary.crypto_scalarmult_primitive();
 
         /// <summary>
         /// Diffie-Hellman (function computes the public key)
@@ -37,10 +28,10 @@ namespace Sodium
         {
             //validate the length of the scalar
             if (secretKey == null || secretKey.Length != SCALAR_BYTES)
-                throw new KeyOutOfRangeException("secretKey", secretKey?.Length ?? 0,
-                  string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
+                throw new KeyOutOfRangeException(nameof(secretKey), secretKey?.Length ?? 0, $"secretKey must be {SCALAR_BYTES} bytes in length.");
 
             var publicKey = new byte[SCALAR_BYTES];
+
             SodiumLibrary.crypto_scalarmult_base(publicKey, secretKey);
 
             return publicKey;
@@ -57,15 +48,14 @@ namespace Sodium
         {
             //validate the length of the scalar
             if (secretKey == null || secretKey.Length != SCALAR_BYTES)
-                throw new KeyOutOfRangeException("secretKey", secretKey?.Length ?? 0,
-                  string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
+                throw new KeyOutOfRangeException(nameof(secretKey), secretKey?.Length ?? 0, $"secretKey must be {SCALAR_BYTES} bytes in length.");
 
             //validate the length of the group element
             if (publicKey == null || publicKey.Length != BYTES)
-                throw new KeyOutOfRangeException("publicKey", publicKey?.Length ?? 0,
-                  string.Format("publicKey must be {0} bytes in length.", BYTES));
+                throw new KeyOutOfRangeException(nameof(publicKey), publicKey?.Length ?? 0, $"publicKey must be {BYTES} bytes in length.");
 
             var secretShared = new byte[BYTES];
+
             SodiumLibrary.crypto_scalarmult(secretShared, secretKey, publicKey);
 
             return secretShared;

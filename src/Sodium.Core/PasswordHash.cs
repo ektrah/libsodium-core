@@ -83,17 +83,11 @@ namespace Sodium
 
         /// <summary>Generates a random 32 byte salt for the Scrypt algorithm.</summary>
         /// <returns>Returns a byte array with 32 random bytes</returns>
-        public static byte[] ScryptGenerateSalt()
-        {
-            return SodiumCore.GetRandomBytes((int)SCRYPT_SALSA208_SHA256_SALTBYTES);
-        }
+        public static byte[] ScryptGenerateSalt() => SodiumCore.GetRandomBytes((int)SCRYPT_SALSA208_SHA256_SALTBYTES);
 
         /// <summary>Generates a random 16 byte salt for the Argon2i algorithm.</summary>
         /// <returns>Returns a byte array with 16 random bytes</returns>
-        public static byte[] ArgonGenerateSalt()
-        {
-            return SodiumCore.GetRandomBytes((int)ARGON_SALTBYTES);
-        }
+        public static byte[] ArgonGenerateSalt() => SodiumCore.GetRandomBytes((int)ARGON_SALTBYTES);
 
         /// <summary>
         /// Derives a secret key of any size from a password and a salt.
@@ -111,29 +105,28 @@ namespace Sodium
         public static byte[] ArgonHashBinary(byte[] password, byte[] salt, long opsLimit, int memLimit, long outputLength = ARGON_SALTBYTES)
         {
             if (password == null)
-                throw new ArgumentNullException("password", "Password cannot be null");
+                throw new ArgumentNullException(nameof(password), "Password cannot be null");
 
             if (salt == null)
-                throw new ArgumentNullException("salt", "Salt cannot be null");
+                throw new ArgumentNullException(nameof(salt), "Salt cannot be null");
 
             if (salt.Length != ARGON_SALTBYTES)
-                throw new SaltOutOfRangeException(string.Format("Salt must be {0} bytes in length.", ARGON_SALTBYTES));
+                throw new SaltOutOfRangeException($"Salt must be {ARGON_SALTBYTES} bytes in length.");
 
             if (opsLimit < 3)
-                throw new ArgumentOutOfRangeException("opsLimit", "opsLimit the number of passes, has to be at least 3");
+                throw new ArgumentOutOfRangeException(nameof(opsLimit), "opsLimit the number of passes, has to be at least 3");
 
             if (memLimit <= 0)
-                throw new ArgumentOutOfRangeException("memLimit", "memLimit cannot be zero or negative");
+                throw new ArgumentOutOfRangeException(nameof(memLimit), "memLimit cannot be zero or negative");
 
             if (outputLength <= 0)
-                throw new ArgumentOutOfRangeException("outputLength", "OutputLength cannot be zero or negative");
+                throw new ArgumentOutOfRangeException(nameof(outputLength), "OutputLength cannot be zero or negative");
+
+            SodiumCore.Init();
 
             var buffer = new byte[outputLength];
 
-            SodiumCore.Init();
-            var ret = SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit, ARGON_ALGORITHM_DEFAULT);
-
-            if (ret != 0)
+            if (SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit, ARGON_ALGORITHM_DEFAULT) != 0)
                 throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
 
             return buffer;
@@ -149,10 +142,8 @@ namespace Sodium
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         /// <exception cref="SaltOutOfRangeException"></exception>
         /// <exception cref="OutOfMemoryException"></exception>
-        public static byte[] ArgonHashBinary(string password, string salt, StrengthArgon limit = StrengthArgon.Interactive, long outputLength = ARGON_SALTBYTES)
-        {
-            return ArgonHashBinary(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(salt), limit, outputLength);
-        }
+        public static byte[] ArgonHashBinary(string password, string salt, StrengthArgon limit = StrengthArgon.Interactive, long outputLength = ARGON_SALTBYTES) =>
+            ArgonHashBinary(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(salt), limit, outputLength);
 
         /// <summary>Derives a secret key of any size from a password and a salt.</summary>
         /// <param name="password">The password.</param>
@@ -259,21 +250,20 @@ namespace Sodium
         public static string ArgonHashString(string password, long opsLimit, int memLimit)
         {
             if (password == null)
-                throw new ArgumentNullException("password", "Password cannot be null");
+                throw new ArgumentNullException(nameof(password), "Password cannot be null");
 
             if (opsLimit < 3)
-                throw new ArgumentOutOfRangeException("opsLimit", "opsLimit the number of passes, has to be at least 3");
+                throw new ArgumentOutOfRangeException(nameof(opsLimit), "opsLimit the number of passes, has to be at least 3");
 
             if (memLimit <= 0)
-                throw new ArgumentOutOfRangeException("memLimit", "memLimit cannot be zero or negative");
+                throw new ArgumentOutOfRangeException(nameof(memLimit), "memLimit cannot be zero or negative");
+
+            SodiumCore.Init();
 
             var buffer = new byte[ARGON_STRBYTES];
             var pass = Encoding.UTF8.GetBytes(password);
 
-            SodiumCore.Init();
-            var ret = SodiumLibrary.crypto_pwhash_str(buffer, pass, pass.Length, opsLimit, memLimit);
-
-            if (ret != 0)
+            if (SodiumLibrary.crypto_pwhash_str(buffer, pass, pass.Length, opsLimit, memLimit) != 0)
                 throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
 
             return Encoding.UTF8.GetString(buffer);
@@ -284,10 +274,7 @@ namespace Sodium
         /// <param name="password">The password.</param>
         /// <returns><c>true</c> on success; otherwise, <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static bool ArgonHashStringVerify(string hash, string password)
-        {
-            return ArgonHashStringVerify(Encoding.UTF8.GetBytes(hash), Encoding.UTF8.GetBytes(password));
-        }
+        public static bool ArgonHashStringVerify(string hash, string password) => ArgonHashStringVerify(Encoding.UTF8.GetBytes(hash), Encoding.UTF8.GetBytes(password));
 
         /// <summary>Verifies that a hash generated with ArgonHashString matches the supplied password.</summary>
         /// <param name="hash">The hash.</param>
@@ -297,13 +284,12 @@ namespace Sodium
         public static bool ArgonHashStringVerify(byte[] hash, byte[] password)
         {
             if (password == null)
-                throw new ArgumentNullException("password", "Password cannot be null");
+                throw new ArgumentNullException(nameof(password), "Password cannot be null");
+
             if (hash == null)
-                throw new ArgumentNullException("hash", "Hash cannot be null");
+                throw new ArgumentNullException(nameof(hash), "Hash cannot be null");
 
-            var ret = SodiumLibrary.crypto_pwhash_str_verify(hash, password, password.Length);
-
-            return ret == 0;
+            return SodiumLibrary.crypto_pwhash_str_verify(hash, password, password.Length) == 0;
         }
 
         /// <summary>Returns the hash in a string format, which includes the generated salt.</summary>
@@ -361,21 +347,20 @@ namespace Sodium
         public static string ScryptHashString(string password, long opsLimit, int memLimit)
         {
             if (password == null)
-                throw new ArgumentNullException("password", "Password cannot be null");
+                throw new ArgumentNullException(nameof(password), "Password cannot be null");
 
             if (opsLimit <= 0)
-                throw new ArgumentOutOfRangeException("opsLimit", "opsLimit cannot be zero or negative");
+                throw new ArgumentOutOfRangeException(nameof(opsLimit), "opsLimit cannot be zero or negative");
 
             if (memLimit <= 0)
-                throw new ArgumentOutOfRangeException("memLimit", "memLimit cannot be zero or negative");
+                throw new ArgumentOutOfRangeException(nameof(memLimit), "memLimit cannot be zero or negative");
+
+            SodiumCore.Init();
 
             var buffer = new byte[SCRYPT_SALSA208_SHA256_STRBYTES];
             var pass = Encoding.UTF8.GetBytes(password);
 
-            SodiumCore.Init();
-            var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, pass.Length, opsLimit, memLimit);
-
-            if (ret != 0)
+            if (SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, pass.Length, opsLimit, memLimit) != 0)
                 throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
 
             return Encoding.UTF8.GetString(buffer);
@@ -391,10 +376,8 @@ namespace Sodium
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         /// <exception cref="SaltOutOfRangeException"></exception>
         /// <exception cref="OutOfMemoryException"></exception>
-        public static byte[] ScryptHashBinary(string password, string salt, Strength limit = Strength.Interactive, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
-        {
-            return ScryptHashBinary(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(salt), limit, outputLength);
-        }
+        public static byte[] ScryptHashBinary(string password, string salt, Strength limit = Strength.Interactive, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES) =>
+            ScryptHashBinary(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(salt), limit, outputLength);
 
         /// <summary>Derives a secret key of any size from a password and a salt.</summary>
         /// <param name="password">The password.</param>
@@ -480,29 +463,28 @@ namespace Sodium
         public static byte[] ScryptHashBinary(byte[] password, byte[] salt, long opsLimit, int memLimit, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
         {
             if (password == null)
-                throw new ArgumentNullException("password", "Password cannot be null");
+                throw new ArgumentNullException(nameof(password), "Password cannot be null");
 
             if (salt == null)
-                throw new ArgumentNullException("salt", "Salt cannot be null");
+                throw new ArgumentNullException(nameof(salt), "Salt cannot be null");
 
             if (salt.Length != SCRYPT_SALSA208_SHA256_SALTBYTES)
-                throw new SaltOutOfRangeException(string.Format("Salt must be {0} bytes in length.", SCRYPT_SALSA208_SHA256_SALTBYTES));
+                throw new SaltOutOfRangeException($"Salt must be {SCRYPT_SALSA208_SHA256_SALTBYTES} bytes in length.");
 
             if (opsLimit <= 0)
-                throw new ArgumentOutOfRangeException("opsLimit", "opsLimit cannot be zero or negative");
+                throw new ArgumentOutOfRangeException(nameof(opsLimit), "opsLimit cannot be zero or negative");
 
             if (memLimit <= 0)
-                throw new ArgumentOutOfRangeException("memLimit", "memLimit cannot be zero or negative");
+                throw new ArgumentOutOfRangeException(nameof(memLimit), "memLimit cannot be zero or negative");
 
             if (outputLength < 16)
-                throw new ArgumentOutOfRangeException("outputLength", "OutputLength cannot be less than 16 bytes");
+                throw new ArgumentOutOfRangeException(nameof(outputLength), "OutputLength cannot be less than 16 bytes");
+
+            SodiumCore.Init();
 
             var buffer = new byte[outputLength];
 
-            SodiumCore.Init();
-            var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit);
-
-            if (ret != 0)
+            if (SodiumLibrary.crypto_pwhash_scryptsalsa208sha256(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit) != 0)
                 throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
 
             return buffer;
@@ -513,10 +495,8 @@ namespace Sodium
         /// <param name="password">The password.</param>
         /// <returns><c>true</c> on success; otherwise, <c>false</c>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static bool ScryptHashStringVerify(string hash, string password)
-        {
-            return ScryptHashStringVerify(Encoding.UTF8.GetBytes(hash), Encoding.UTF8.GetBytes(password));
-        }
+        public static bool ScryptHashStringVerify(string hash, string password) =>
+            ScryptHashStringVerify(Encoding.UTF8.GetBytes(hash), Encoding.UTF8.GetBytes(password));
 
         /// <summary>Verifies that a hash generated with ScryptHashString matches the supplied password.</summary>
         /// <param name="hash">The hash.</param>
@@ -526,13 +506,12 @@ namespace Sodium
         public static bool ScryptHashStringVerify(byte[] hash, byte[] password)
         {
             if (password == null)
-                throw new ArgumentNullException("password", "Password cannot be null");
+                throw new ArgumentNullException(nameof(password), "Password cannot be null");
+
             if (hash == null)
-                throw new ArgumentNullException("hash", "Hash cannot be null");
+                throw new ArgumentNullException(nameof(hash), "Hash cannot be null");
 
-            var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str_verify(hash, password, password.Length);
-
-            return ret == 0;
+            return SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str_verify(hash, password, password.Length) == 0;
         }
     }
 }

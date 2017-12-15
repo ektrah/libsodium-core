@@ -151,9 +151,6 @@ namespace Sodium
         /// <param name="a">The first value.</param>
         /// <param name="b">The second value.</param>
         /// <returns><c>true</c> if the values are equal, otherwise <c>false</c></returns>
-        public static bool Compare(byte[] a, byte[] b)
-        {
-            return SodiumLibrary.sodium_compare(a, b, a.Length) == 0;
-        }
+        public static bool Compare(byte[] a, byte[] b) => SodiumLibrary.sodium_compare(a, b, a.Length) == 0;
     }
 }

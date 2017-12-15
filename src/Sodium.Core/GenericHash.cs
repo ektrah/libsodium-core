@@ -20,10 +20,7 @@ namespace Sodium
 
         /// <summary>Generates a random 64 byte key.</summary>
         /// <returns>Returns a byte array with 64 random bytes</returns>
-        public static byte[] GenerateKey()
-        {
-            return SodiumCore.GetRandomBytes(KEY_BYTES_MAX);
-        }
+        public static byte[] GenerateKey() => SodiumCore.GetRandomBytes(KEY_BYTES_MAX);
 
         /// <summary>Hashes a message, with an optional key, using the BLAKE2b primitive.</summary>
         /// <param name="message">The message to be hashed.</param>
@@ -32,10 +29,7 @@ namespace Sodium
         /// <returns>Returns a byte array.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="BytesOutOfRangeException"></exception>
-        public static byte[] Hash(string message, string key, int bytes)
-        {
-            return Hash(message, Encoding.UTF8.GetBytes(key), bytes);
-        }
+        public static byte[] Hash(string message, string key, int bytes) => Hash(message, Encoding.UTF8.GetBytes(key), bytes);
 
         /// <summary>Hashes a message, with an optional key, using the BLAKE2b primitive.</summary>
         /// <param name="message">The message to be hashed.</param>
@@ -44,10 +38,7 @@ namespace Sodium
         /// <returns>Returns a byte array.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="BytesOutOfRangeException"></exception>
-        public static byte[] Hash(string message, byte[] key, int bytes)
-        {
-            return Hash(Encoding.UTF8.GetBytes(message), key, bytes);
-        }
+        public static byte[] Hash(string message, byte[] key, int bytes) => Hash(Encoding.UTF8.GetBytes(message), key, bytes);
 
         /// <summary>Hashes a message, with an optional key, using the BLAKE2b primitive.</summary>
         /// <param name="message">The message to be hashed.</param>
@@ -63,10 +54,7 @@ namespace Sodium
             if (key != null)
             {
                 if (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN)
-                {
-                    throw new KeyOutOfRangeException(string.Format("key must be between {0} and {1} bytes in length.",
-                      KEY_BYTES_MIN, KEY_BYTES_MAX));
-                }
+                    throw new KeyOutOfRangeException($"key must be between {KEY_BYTES_MIN} and {KEY_BYTES_MAX} bytes in length.");
 
                 keyLength = key.Length;
             }
@@ -78,8 +66,7 @@ namespace Sodium
 
             //validate output length
             if (bytes > BYTES_MAX || bytes < BYTES_MIN)
-                throw new BytesOutOfRangeException("bytes", bytes,
-                  string.Format("bytes must be between {0} and {1} bytes in length.", BYTES_MIN, BYTES_MAX));
+                throw new BytesOutOfRangeException(nameof(bytes), bytes, $"bytes must be between {BYTES_MIN} and {BYTES_MAX} bytes in length.");
 
             var buffer = new byte[bytes];
             SodiumLibrary.crypto_generichash(buffer, buffer.Length, message, message.Length, key, keyLength);
@@ -98,10 +85,8 @@ namespace Sodium
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="SaltOutOfRangeException"></exception>
         /// <exception cref="PersonalOutOfRangeException"></exception>
-        public static byte[] HashSaltPersonal(string message, string key, string salt, string personal, int bytes = OUT_BYTES)
-        {
-            return HashSaltPersonal(Encoding.UTF8.GetBytes(message), Encoding.UTF8.GetBytes(key), Encoding.UTF8.GetBytes(salt), Encoding.UTF8.GetBytes(personal), bytes);
-        }
+        public static byte[] HashSaltPersonal(string message, string key, string salt, string personal, int bytes = OUT_BYTES) =>
+            HashSaltPersonal(Encoding.UTF8.GetBytes(message), Encoding.UTF8.GetBytes(key), Encoding.UTF8.GetBytes(salt), Encoding.UTF8.GetBytes(personal), bytes);
 
         /// <summary>Generates a hash based on a key, salt and personal bytes</summary>
         /// <returns><c>byte</c> hashed message</returns>
@@ -117,30 +102,29 @@ namespace Sodium
         public static byte[] HashSaltPersonal(byte[] message, byte[] key, byte[] salt, byte[] personal, int bytes = OUT_BYTES)
         {
             if (message == null)
-                throw new ArgumentNullException("message", "Message cannot be null");
+                throw new ArgumentNullException(nameof(message), "Message cannot be null");
 
             if (salt == null)
-                throw new ArgumentNullException("salt", "Salt cannot be null");
+                throw new ArgumentNullException(nameof(salt), "Salt cannot be null");
 
             if (personal == null)
-                throw new ArgumentNullException("personal", "Personal string cannot be null");
+                throw new ArgumentNullException(nameof(personal), "Personal string cannot be null");
 
             if (key != null && (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN))
-                throw new KeyOutOfRangeException(string.Format("key must be between {0} and {1} bytes in length.", KEY_BYTES_MIN, KEY_BYTES_MAX));
+                throw new KeyOutOfRangeException($"key must be between {KEY_BYTES_MIN} and {KEY_BYTES_MAX} bytes in length.");
 
             if (key == null)
                 key = new byte[0];
 
             if (salt.Length != SALT_BYTES)
-                throw new SaltOutOfRangeException(string.Format("Salt must be {0} bytes in length.", SALT_BYTES));
+                throw new SaltOutOfRangeException($"Salt must be {SALT_BYTES} bytes in length.");
 
             if (personal.Length != PERSONAL_BYTES)
-                throw new PersonalOutOfRangeException(string.Format("Personal bytes must be {0} bytes in length.", PERSONAL_BYTES));
+                throw new PersonalOutOfRangeException($"Personal bytes must be {PERSONAL_BYTES} bytes in length.");
 
             //validate output length
             if (bytes > BYTES_MAX || bytes < BYTES_MIN)
-                throw new BytesOutOfRangeException("bytes", bytes,
-                  string.Format("bytes must be between {0} and {1} bytes in length.", BYTES_MIN, BYTES_MAX));
+                throw new BytesOutOfRangeException(nameof(bytes), bytes, $"bytes must be between {BYTES_MIN} and {BYTES_MAX} bytes in length.");
 
             var buffer = new byte[bytes];
             SodiumLibrary.crypto_generichash_blake2b_salt_personal(buffer, buffer.Length, message, message.Length, key, key.Length, salt, personal);
