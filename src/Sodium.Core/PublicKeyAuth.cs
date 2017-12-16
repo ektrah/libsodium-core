@@ -18,8 +18,8 @@ namespace Sodium
         /// <returns>A KeyPair.</returns>
         public static KeyPair GenerateKeyPair()
         {
-            var publicKey = new byte[PUBLIC_KEY_BYTES];
-            var privateKey = new byte[SECRET_KEY_BYTES];
+            var publicKey = ByteBuffer.Create(PUBLIC_KEY_BYTES);
+            var privateKey = ByteBuffer.Create(SECRET_KEY_BYTES);
 
             if (SodiumLibrary.crypto_sign_keypair(publicKey, privateKey) != 0)
                 throw new CryptographicException("Failed to generate keypair.");
@@ -33,8 +33,8 @@ namespace Sodium
         /// <exception cref="SeedOutOfRangeException"></exception>
         public static KeyPair GenerateKeyPair(byte[] seed)
         {
-            var publicKey = new byte[PUBLIC_KEY_BYTES];
-            var privateKey = new byte[SECRET_KEY_BYTES];
+            var publicKey = ByteBuffer.Create(PUBLIC_KEY_BYTES);
+            var privateKey = ByteBuffer.Create(SECRET_KEY_BYTES);
 
             //validate the length of the seed
             if (seed == null || seed.Length != SEED_BYTES)
@@ -64,16 +64,10 @@ namespace Sodium
             if (key == null || key.Length != SECRET_KEY_BYTES)
                 throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {SECRET_KEY_BYTES} bytes in length.");
 
-            var buffer = new byte[message.Length + BYTES];
             long bufferLength = 0;
+            var buffer = ByteBuffer.Use(message.Length + BYTES, buffer2 => SodiumLibrary.crypto_sign(buffer2, ref bufferLength, message, message.Length, key), "Failed to sign message.");
 
-            if (SodiumLibrary.crypto_sign(buffer, ref bufferLength, message, message.Length, key) != 0)
-                throw new CryptographicException("Failed to sign message.");
-
-            var final = new byte[bufferLength];
-            Array.Copy(buffer, 0, final, 0, (int)bufferLength);
-
-            return final;
+            return ByteBuffer.Slice(buffer, 0, bufferLength);
         }
 
         /// <summary>Verifies a message signed with the Sign method.</summary>
@@ -88,16 +82,10 @@ namespace Sodium
             if (key == null || key.Length != PUBLIC_KEY_BYTES)
                 throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {PUBLIC_KEY_BYTES} bytes in length.");
 
-            var buffer = new byte[signedMessage.Length];
             long bufferLength = 0;
+            var buffer = ByteBuffer.Use(signedMessage.Length, buffer2 => SodiumLibrary.crypto_sign_open(buffer2, ref bufferLength, signedMessage, signedMessage.Length, key), "Failed to verify signature.");
 
-            if (SodiumLibrary.crypto_sign_open(buffer, ref bufferLength, signedMessage, signedMessage.Length, key) != 0)
-                throw new CryptographicException("Failed to verify signature.");
-
-            var final = new byte[bufferLength];
-            Array.Copy(buffer, 0, final, 0, (int)bufferLength);
-
-            return final;
+            return ByteBuffer.Slice(buffer, 0, bufferLength);
         }
 
         /// <summary>Signs a message with Ed25519.</summary>
@@ -118,12 +106,10 @@ namespace Sodium
             if (key == null || key.Length != SECRET_KEY_BYTES)
                 throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {SECRET_KEY_BYTES} bytes in length.");
 
-            var signature = new byte[SIGNATURE_BYTES];
             long signatureLength = 0;
 
-            SodiumLibrary.crypto_sign_detached(signature, ref signatureLength, message, message.Length, key);
-
-            return signature;
+            return ByteBuffer.Use(SIGNATURE_BYTES, signature =>
+                SodiumLibrary.crypto_sign_detached(signature, ref signatureLength, message, message.Length, key));
         }
 
         /// <summary>Verifies a message signed with the SignDetached method.</summary>
@@ -157,12 +143,7 @@ namespace Sodium
             if (ed25519PublicKey == null || ed25519PublicKey.Length != PUBLIC_KEY_BYTES)
                 throw new KeyOutOfRangeException(nameof(ed25519PublicKey), ed25519PublicKey?.Length ?? 0, $"ed25519PublicKey must be {PUBLIC_KEY_BYTES} bytes in length.");
 
-            var buffer = new byte[PublicKeyBox.PublicKeyBytes];
-
-            if (SodiumLibrary.crypto_sign_ed25519_pk_to_curve25519(buffer, ed25519PublicKey) != 0)
-                throw new CryptographicException("Failed to convert public key.");
-
-            return buffer;
+            return ByteBuffer.Use(PublicKeyBox.PublicKeyBytes, buffer => SodiumLibrary.crypto_sign_ed25519_pk_to_curve25519(buffer, ed25519PublicKey), "Failed to convert public key.");
         }
 
         /// <summary>Converts the ed25519 secret key to curve25519 secret key.</summary>
@@ -176,12 +157,7 @@ namespace Sodium
             if (ed25519SecretKey == null || (ed25519SecretKey.Length != PUBLIC_KEY_BYTES && ed25519SecretKey.Length != SECRET_KEY_BYTES))
                 throw new KeyOutOfRangeException(nameof(ed25519SecretKey), ed25519SecretKey?.Length ?? 0, $"ed25519SecretKey must be either {PUBLIC_KEY_BYTES} or {SECRET_KEY_BYTES} bytes in length.");
 
-            var buffer = new byte[PublicKeyBox.SecretKeyBytes];
-
-            if (SodiumLibrary.crypto_sign_ed25519_sk_to_curve25519(buffer, ed25519SecretKey) != 0)
-                throw new CryptographicException("Failed to convert secret key.");
-
-            return buffer;
+            return ByteBuffer.Use(PublicKeyBox.SecretKeyBytes, buffer => SodiumLibrary.crypto_sign_ed25519_sk_to_curve25519(buffer, ed25519SecretKey), "Failed to convert secret key.");
         }
 
         /// <summary>
@@ -195,12 +171,7 @@ namespace Sodium
             if (ed25519SecretKey == null || ed25519SecretKey.Length != SECRET_KEY_BYTES)
                 throw new KeyOutOfRangeException(nameof(ed25519SecretKey), ed25519SecretKey?.Length ?? 0, $"ed25519SecretKey must be {SECRET_KEY_BYTES} bytes in length.");
 
-            var buffer = new byte[SEED_BYTES];
-
-            if (SodiumLibrary.crypto_sign_ed25519_sk_to_seed(buffer, ed25519SecretKey) != 0)
-                throw new CryptographicException("Failed to extract seed from secret key.");
-
-            return buffer;
+            return ByteBuffer.Use(SEED_BYTES, buffer => SodiumLibrary.crypto_sign_ed25519_sk_to_seed(buffer, ed25519SecretKey), "Failed to extract seed from secret key.");
         }
 
         /// <summary>
@@ -214,12 +185,7 @@ namespace Sodium
             if (ed25519SecretKey == null || ed25519SecretKey.Length != SECRET_KEY_BYTES)
                 throw new KeyOutOfRangeException(nameof(ed25519SecretKey), ed25519SecretKey?.Length ?? 0, $"ed25519SecretKey must be {SECRET_KEY_BYTES} bytes in length.");
 
-            var buffer = new byte[PUBLIC_KEY_BYTES];
-
-            if (SodiumLibrary.crypto_sign_ed25519_sk_to_pk(buffer, ed25519SecretKey) != 0)
-                throw new CryptographicException("Failed to extract public key from secret key.");
-
-            return buffer;
+            return ByteBuffer.Use(PUBLIC_KEY_BYTES, buffer => SodiumLibrary.crypto_sign_ed25519_sk_to_pk(buffer, ed25519SecretKey), "Failed to extract public key from secret key.");
         }
     }
 }

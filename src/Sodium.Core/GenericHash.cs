@@ -68,10 +68,8 @@ namespace Sodium
             if (bytes > BYTES_MAX || bytes < BYTES_MIN)
                 throw new BytesOutOfRangeException(nameof(bytes), bytes, $"bytes must be between {BYTES_MIN} and {BYTES_MAX} bytes in length.");
 
-            var buffer = new byte[bytes];
-            SodiumLibrary.crypto_generichash(buffer, buffer.Length, message, message.Length, key, keyLength);
-
-            return buffer;
+            return ByteBuffer.Use(bytes, buffer =>
+                SodiumLibrary.crypto_generichash(buffer, buffer.Length, message, message.Length, key, keyLength));
         }
 
         /// <summary>Generates a hash based on a key, salt and personal strings</summary>
@@ -126,10 +124,8 @@ namespace Sodium
             if (bytes > BYTES_MAX || bytes < BYTES_MIN)
                 throw new BytesOutOfRangeException(nameof(bytes), bytes, $"bytes must be between {BYTES_MIN} and {BYTES_MAX} bytes in length.");
 
-            var buffer = new byte[bytes];
-            SodiumLibrary.crypto_generichash_blake2b_salt_personal(buffer, buffer.Length, message, message.Length, key, key.Length, salt, personal);
-
-            return buffer;
+            return ByteBuffer.Use(bytes, buffer =>
+                SodiumLibrary.crypto_generichash_blake2b_salt_personal(buffer, buffer.Length, message, message.Length, key, key.Length, salt, personal));
         }
     }
 }

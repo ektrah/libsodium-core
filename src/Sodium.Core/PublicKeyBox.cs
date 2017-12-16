@@ -18,8 +18,8 @@ namespace Sodium
         /// <returns>A KeyPair.</returns>
         public static KeyPair GenerateKeyPair()
         {
-            var publicKey = new byte[PublicKeyBytes];
-            var privateKey = new byte[SecretKeyBytes];
+            var publicKey = ByteBuffer.Create(PublicKeyBytes);
+            var privateKey = ByteBuffer.Create(SecretKeyBytes);
 
             SodiumLibrary.crypto_box_keypair(publicKey, privateKey);
 
@@ -47,8 +47,8 @@ namespace Sodium
         /// <exception cref="SeedOutOfRangeException"></exception>
         public static KeyPair GenerateSeededKeyPair(byte[] seed)
         {
-            var publicKey = new byte[PublicKeyBytes];
-            var privateKey = new byte[SecretKeyBytes];
+            var publicKey = ByteBuffer.Create(PublicKeyBytes);
+            var privateKey = ByteBuffer.Create(SecretKeyBytes);
             // Expected length of the keypair seed
             var seedBytes = SodiumLibrary.crypto_box_seedbytes();
             //validate the length of the seed
@@ -99,12 +99,7 @@ namespace Sodium
             if (nonce == null || nonce.Length != NONCE_BYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NONCE_BYTES} bytes in length.");
 
-            var buffer = new byte[message.Length + MAC_BYTES];
-
-            if (SodiumLibrary.crypto_box_easy(buffer, message, message.Length, nonce, publicKey, secretKey) != 0)
-                throw new CryptographicException("Failed to create PublicKeyBox");
-
-            return buffer;
+            return ByteBuffer.Use(message.Length + MAC_BYTES, buffer => SodiumLibrary.crypto_box_easy(buffer, message, message.Length, nonce, publicKey, secretKey), "Failed to create PublicKeyBox");
         }
 
         /// <summary>Creates detached a Box</summary>
@@ -142,8 +137,9 @@ namespace Sodium
             if (nonce == null || nonce.Length != NONCE_BYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NONCE_BYTES} bytes in length.");
 
-            var cipher = new byte[message.Length];
-            var mac = new byte[MAC_BYTES];
+            // @todo: support multiple buffers!
+            var cipher = ByteBuffer.Create(message.Length);
+            var mac = ByteBuffer.Create(MAC_BYTES);
 
             if (SodiumLibrary.crypto_box_detached(cipher, mac, message, message.Length, nonce, secretKey, publicKey) != 0)
                 throw new CryptographicException("Failed to create public detached Box");
@@ -191,20 +187,10 @@ namespace Sodium
 
                 //if the leading MAC_BYTES are null, trim it off before going on.
                 if (trim)
-                {
-                    var temp = new byte[cipherText.Length - MAC_BYTES];
-                    Array.Copy(cipherText, MAC_BYTES, temp, 0, cipherText.Length - MAC_BYTES);
-
-                    cipherText = temp;
-                }
+                    cipherText = ByteBuffer.Slice(cipherText, MAC_BYTES, cipherText.Length - MAC_BYTES);
             }
 
-            var buffer = new byte[cipherText.Length - MAC_BYTES];
-
-            if (SodiumLibrary.crypto_box_open_easy(buffer, cipherText, cipherText.Length, nonce, publicKey, secretKey) != 0)
-                throw new CryptographicException("Failed to open PublicKeyBox");
-
-            return buffer;
+            return ByteBuffer.Use(cipherText.Length - MAC_BYTES, buffer => SodiumLibrary.crypto_box_open_easy(buffer, cipherText, cipherText.Length, nonce, publicKey, secretKey), "Failed to open PublicKeyBox");
         }
 
         /// <summary>Opens a detached Box</summary>
@@ -263,12 +249,7 @@ namespace Sodium
             if (nonce == null || nonce.Length != NONCE_BYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NONCE_BYTES} bytes in length.");
 
-            var buffer = new byte[cipherText.Length];
-
-            if (SodiumLibrary.crypto_box_open_detached(buffer, cipherText, mac, cipherText.Length, nonce, secretKey, publicKey) != 0)
-                throw new CryptographicException("Failed to open public detached Box");
-
-            return buffer;
+            return ByteBuffer.Use(cipherText.Length, buffer => SodiumLibrary.crypto_box_open_detached(buffer, cipherText, mac, cipherText.Length, nonce, secretKey, publicKey), "Failed to open public detached Box");
         }
     }
 }

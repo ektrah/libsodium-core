@@ -30,15 +30,12 @@ namespace Sodium
             if (secretKey == null || secretKey.Length != SCALAR_BYTES)
                 throw new KeyOutOfRangeException(nameof(secretKey), secretKey?.Length ?? 0, $"secretKey must be {SCALAR_BYTES} bytes in length.");
 
-            var publicKey = new byte[SCALAR_BYTES];
-
-            SodiumLibrary.crypto_scalarmult_base(publicKey, secretKey);
-
-            return publicKey;
+            return ByteBuffer.Use(SCALAR_BYTES, publicKey =>
+                SodiumLibrary.crypto_scalarmult_base(publicKey, secretKey));
         }
 
         /// <summary>
-        /// Diffie-Hellman (function computes a secret shared by the two keys) 
+        /// Diffie-Hellman (function computes a secret shared by the two keys)
         /// </summary>
         /// <param name="secretKey">A secret key.</param>
         /// <param name="publicKey">A public key.</param>
@@ -54,11 +51,8 @@ namespace Sodium
             if (publicKey == null || publicKey.Length != BYTES)
                 throw new KeyOutOfRangeException(nameof(publicKey), publicKey?.Length ?? 0, $"publicKey must be {BYTES} bytes in length.");
 
-            var secretShared = new byte[BYTES];
-
-            SodiumLibrary.crypto_scalarmult(secretShared, secretKey, publicKey);
-
-            return secretShared;
+            return ByteBuffer.Use(BYTES, secretShared =>
+                SodiumLibrary.crypto_scalarmult(secretShared, secretKey, publicKey));
         }
     }
 }

@@ -76,16 +76,14 @@ namespace Sodium
 
             protected override void HashCore(byte[] array, int ibStart, int cbSize)
             {
-                var subArray = new byte[cbSize];
-                Array.Copy(array, ibStart, subArray, 0, cbSize);
-                SodiumLibrary.crypto_generichash_update(_hashStatePtr, subArray, cbSize);
+                ByteBuffer.Slice(array, ibStart, cbSize, buffer =>
+                     SodiumLibrary.crypto_generichash_update(_hashStatePtr, buffer, cbSize));
             }
 
             protected override byte[] HashFinal()
             {
-                var buffer = new byte[_bytes];
-                SodiumLibrary.crypto_generichash_final(_hashStatePtr, buffer, _bytes);
-                return buffer;
+                return ByteBuffer.Use(_bytes, buffer =>
+                    SodiumLibrary.crypto_generichash_final(_hashStatePtr, buffer, _bytes));
             }
         }
     }

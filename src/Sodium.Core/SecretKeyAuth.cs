@@ -36,10 +36,8 @@ namespace Sodium
             if (key == null || key.Length != KEY_BYTES)
                 throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEY_BYTES} bytes in length.");
 
-            var buffer = new byte[BYTES];
-            SodiumLibrary.crypto_auth(buffer, message, message.Length, key);
-
-            return buffer;
+            return ByteBuffer.Use(BYTES, buffer =>
+                SodiumLibrary.crypto_auth(buffer, message, message.Length, key));
         }
 
         /// <summary>Verifies a message signed with the Sign method.</summary>
@@ -82,11 +80,8 @@ namespace Sodium
             if (key == null || key.Length != CRYPTO_AUTH_HMACSHA256_KEY_BYTES)
                 throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {CRYPTO_AUTH_HMACSHA256_KEY_BYTES} bytes in length.");
 
-            var buffer = new byte[CRYPTO_AUTH_HMACSHA256_BYTES];
-
-            SodiumLibrary.crypto_auth_hmacsha256(buffer, message, message.Length, key);
-
-            return buffer;
+            return ByteBuffer.Use(CRYPTO_AUTH_HMACSHA256_BYTES, buffer =>
+                SodiumLibrary.crypto_auth_hmacsha256(buffer, message, message.Length, key));
         }
 
         /// <summary>Signs a message with HMAC-SHA-256.</summary>
@@ -107,11 +102,8 @@ namespace Sodium
             if (key == null || key.Length != CRYPTO_AUTH_HMACSHA512_KEY_BYTES)
                 throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {CRYPTO_AUTH_HMACSHA512_KEY_BYTES} bytes in length.");
 
-            var buffer = new byte[CRYPTO_AUTH_HMACSHA512_BYTES];
-
-            SodiumLibrary.crypto_auth_hmacsha512(buffer, message, message.Length, key);
-
-            return buffer;
+            return ByteBuffer.Use(CRYPTO_AUTH_HMACSHA512_BYTES, buffer =>
+                SodiumLibrary.crypto_auth_hmacsha512(buffer, message, message.Length, key));
         }
 
         /// <summary>Signs a message with HMAC-SHA-512.</summary>

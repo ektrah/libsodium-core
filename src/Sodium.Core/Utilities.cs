@@ -35,7 +35,7 @@ namespace Sodium
         /// <exception cref="OverflowException"></exception>
         public static string BinaryToHex(byte[] data)
         {
-            var hex = new byte[data.Length * 2 + 1];
+            var hex = ByteBuffer.Create(data.Length * 2 + 1);
             var ret = SodiumLibrary.sodium_bin2hex(hex, hex.Length, data, data.Length);
 
             if (ret == IntPtr.Zero)
@@ -84,7 +84,7 @@ namespace Sodium
                 }
                 else
                 {
-                    sb.Append((char)(55 + byteValue + (((byteValue - 10) >> 31) & -7))); //upper 
+                    sb.Append((char)(55 + byteValue + (((byteValue - 10) >> 31) & -7))); //upper
                 }
                 byteValue = data[i] & 0xF;
 
@@ -94,7 +94,7 @@ namespace Sodium
                 }
                 else
                 {
-                    sb.Append((char)(55 + byteValue + (((byteValue - 10) >> 31) & -7))); //upper 
+                    sb.Append((char)(55 + byteValue + (((byteValue - 10) >> 31) & -7))); //upper
                 }
             }
 
@@ -109,7 +109,7 @@ namespace Sodium
         {
             const string IGNORED_CHARS = ":- ";
 
-            var arr = new byte[hex.Length >> 1];
+            var arr = ByteBuffer.Create(hex.Length >> 1);
             var bin = Marshal.AllocHGlobal(arr.Length);
 
             //we call sodium_hex2bin with some chars to be ignored
@@ -122,14 +122,7 @@ namespace Sodium
                 throw new Exception("Internal error, decoding failed.");
 
             //remove the trailing nulls from the array, if there were some format characters in the hex string before
-            if (arr.Length != binLength)
-            {
-                var tmp = new byte[binLength];
-                Array.Copy(arr, 0, tmp, 0, binLength);
-                return tmp;
-            }
-
-            return arr;
+            return arr.Length != binLength ? ByteBuffer.Slice(arr, 0, binLength) : arr;
         }
 
         /// <summary>
@@ -137,13 +130,7 @@ namespace Sodium
         /// </summary>
         /// <param name="value">The value to increment.</param>
         /// <returns>The incremented value.</returns>
-        public static byte[] Increment(byte[] value)
-        {
-            var buffer = value;
-            SodiumLibrary.sodium_increment(buffer, buffer.Length);
-
-            return buffer;
-        }
+        public static byte[] Increment(byte[] value) => ByteBuffer.Slice(value, 0, value.Length, buffer => SodiumLibrary.sodium_increment(buffer, buffer.Length));
 
         /// <summary>
         /// Compares two values in constant time.

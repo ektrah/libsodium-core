@@ -8,7 +8,7 @@ namespace Sodium
     public class PasswordHash
     {
         /// <summary>
-        /// Is an identifier for the algorithm to use and should 
+        /// Is an identifier for the algorithm to use and should
         /// be currently set to crypto_pwhash_ALG_DEFAULT.
         /// </summary>
         private const int ARGON_ALGORITHM_DEFAULT = 1;
@@ -124,12 +124,7 @@ namespace Sodium
 
             SodiumCore.Init();
 
-            var buffer = new byte[outputLength];
-
-            if (SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit, ARGON_ALGORITHM_DEFAULT) != 0)
-                throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
-
-            return buffer;
+            return ByteBuffer.Use(outputLength, buffer => SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit, ARGON_ALGORITHM_DEFAULT), "Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
         }
 
         /// <summary>Derives a secret key of any size from a password and a salt.</summary>
@@ -260,13 +255,9 @@ namespace Sodium
 
             SodiumCore.Init();
 
-            var buffer = new byte[ARGON_STRBYTES];
             var pass = Encoding.UTF8.GetBytes(password);
 
-            if (SodiumLibrary.crypto_pwhash_str(buffer, pass, pass.Length, opsLimit, memLimit) != 0)
-                throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
-
-            return Encoding.UTF8.GetString(buffer);
+            return Encoding.UTF8.GetString(ByteBuffer.Use(ARGON_STRBYTES, buffer => SodiumLibrary.crypto_pwhash_str(buffer, pass, pass.Length, opsLimit, memLimit), "Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory)."));
         }
 
         /// <summary>Verifies that a hash generated with ArgonHashString matches the supplied password.</summary>
@@ -357,13 +348,9 @@ namespace Sodium
 
             SodiumCore.Init();
 
-            var buffer = new byte[SCRYPT_SALSA208_SHA256_STRBYTES];
             var pass = Encoding.UTF8.GetBytes(password);
 
-            if (SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, pass.Length, opsLimit, memLimit) != 0)
-                throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
-
-            return Encoding.UTF8.GetString(buffer);
+            return Encoding.UTF8.GetString(ByteBuffer.Use(SCRYPT_SALSA208_SHA256_STRBYTES, buffer => SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, pass.Length, opsLimit, memLimit),  "Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory)."));
         }
 
         /// <summary>Derives a secret key of any size from a password and a salt.</summary>
@@ -482,12 +469,7 @@ namespace Sodium
 
             SodiumCore.Init();
 
-            var buffer = new byte[outputLength];
-
-            if (SodiumLibrary.crypto_pwhash_scryptsalsa208sha256(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit) != 0)
-                throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
-
-            return buffer;
+            return ByteBuffer.Use(outputLength, buffer => SodiumLibrary.crypto_pwhash_scryptsalsa208sha256(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit), "Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
         }
 
         /// <summary>Verifies that a hash generated with ScryptHashString matches the supplied password.</summary>

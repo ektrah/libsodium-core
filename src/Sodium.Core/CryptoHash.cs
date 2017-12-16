@@ -17,13 +17,8 @@ namespace Sodium
         /// <summary>Hashes a byte array using the default algorithm (This is what you want to use)</summary>
         /// <param name="message">The message.</param>
         /// <returns></returns>
-        public static byte[] Hash(byte[] message)
-        {
-            var buffer = new byte[SHA512_BYTES];
-            SodiumLibrary.crypto_hash(buffer, message, message.Length);
-
-            return buffer;
-        }
+        public static byte[] Hash(byte[] message) =>
+            ByteBuffer.Use(SHA512_BYTES, buffer => SodiumLibrary.crypto_hash(buffer, message, message.Length));
 
         /// <summary>Hashes a string using the SHA512 algorithm</summary>
         /// <param name="message">The message.</param>
@@ -33,13 +28,8 @@ namespace Sodium
         /// <summary>Hashes a byte array using the SHA512 algorithm</summary>
         /// <param name="message">The message.</param>
         /// <returns></returns>
-        public static byte[] Sha512(byte[] message)
-        {
-            var buffer = new byte[SHA512_BYTES];
-            SodiumLibrary.crypto_hash_sha512(buffer, message, message.Length);
-
-            return buffer;
-        }
+        public static byte[] Sha512(byte[] message) =>
+            ByteBuffer.Use(SHA512_BYTES, buffer => SodiumLibrary.crypto_hash_sha512(buffer, message, message.Length));
 
         /// <summary>Hashes a string using the SHA256 algorithm</summary>
         /// <param name="message">The message.</param>
@@ -49,12 +39,7 @@ namespace Sodium
         /// <summary>Hashes a byte array using the SHA256 algorithm</summary>
         /// <param name="message">The message.</param>
         /// <returns></returns>
-        public static byte[] Sha256(byte[] message)
-        {
-            var buffer = new byte[SHA256_BYTES];
-            SodiumLibrary.crypto_hash_sha256(buffer, message, message.Length);
-
-            return buffer;
-        }
+        public static byte[] Sha256(byte[] message) =>
+            ByteBuffer.Use(SHA256_BYTES, buffer => SodiumLibrary.crypto_hash_sha256(buffer, message, message.Length));
     }
 }

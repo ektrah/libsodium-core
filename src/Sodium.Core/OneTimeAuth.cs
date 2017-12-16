@@ -32,12 +32,7 @@ namespace Sodium
             if (key == null || key.Length != KEY_BYTES)
                 throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEY_BYTES} bytes in length.");
 
-            var buffer = new byte[BYTES];
-
-            if (SodiumLibrary.crypto_onetimeauth(buffer, message, message.Length, key) != 0)
-                throw new CryptographicException("Could not sign message");
-
-            return buffer;
+            return ByteBuffer.Use(BYTES, buffer => SodiumLibrary.crypto_onetimeauth(buffer, message, message.Length, key), "Could not sign message");
         }
 
         /// <summary>Verifies a message signed with the Sign method.</summary>

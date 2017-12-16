@@ -17,13 +17,7 @@ namespace Sodium
         /// <summary>Gets random bytes</summary>
         /// <param name="count">The count of bytes to return.</param>
         /// <returns>An array of random bytes.</returns>
-        public static byte[] GetRandomBytes(int count)
-        {
-            var buffer = new byte[count];
-            SodiumLibrary.randombytes_buf(buffer, count);
-
-            return buffer;
-        }
+        public static byte[] GetRandomBytes(int count) => ByteBuffer.Use(count, buffer => SodiumLibrary.randombytes_buf(buffer, count));
 
         /// <summary>
         /// Gets a random number.

@@ -47,12 +47,7 @@ namespace Sodium
             if (recipientPublicKey == null || recipientPublicKey.Length != RecipientPublicKeyBytes)
                 throw new KeyOutOfRangeException(nameof(recipientPublicKey), recipientPublicKey?.Length ?? 0, $"recipientPublicKey must be {RecipientPublicKeyBytes} bytes in length.");
 
-            var buffer = new byte[message.Length + CryptoBoxSealbytes];
-
-            if (SodiumLibrary.crypto_box_seal(buffer, message, message.Length, recipientPublicKey) != 0)
-                throw new CryptographicException("Failed to create SealedBox");
-
-            return buffer;
+            return ByteBuffer.Use(message.Length + CryptoBoxSealbytes, buffer => SodiumLibrary.crypto_box_seal(buffer, message, message.Length, recipientPublicKey), "Failed to create SealedBox");
         }
 
         /// <summary>Opens a SealedPublicKeyBox</summary>
@@ -97,12 +92,7 @@ namespace Sodium
             if (recipientPublicKey == null || recipientPublicKey.Length != RecipientPublicKeyBytes)
                 throw new KeyOutOfRangeException(nameof(recipientPublicKey), recipientPublicKey?.Length ?? 0, $"recipientPublicKey must be {RecipientPublicKeyBytes} bytes in length.");
 
-            var buffer = new byte[cipherText.Length - CryptoBoxSealbytes];
-
-            if (SodiumLibrary.crypto_box_seal_open(buffer, cipherText, cipherText.Length, recipientPublicKey, recipientSecretKey) != 0)
-                throw new CryptographicException("Failed to open SealedBox");
-
-            return buffer;
+            return ByteBuffer.Use(cipherText.Length - CryptoBoxSealbytes, buffer => SodiumLibrary.crypto_box_seal_open(buffer, cipherText, cipherText.Length, recipientPublicKey, recipientSecretKey), "Failed to open SealedBox");
         }
     }
 }

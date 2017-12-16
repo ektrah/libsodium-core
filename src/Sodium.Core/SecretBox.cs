@@ -48,12 +48,7 @@ namespace Sodium
             if (nonce == null || nonce.Length != NONCE_BYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NONCE_BYTES} bytes in length.");
 
-            var buffer = new byte[MAC_BYTES + message.Length];
-
-            if (SodiumLibrary.crypto_secretbox_easy(buffer, message, message.Length, nonce, key) != 0)
-                throw new CryptographicException("Failed to create SecretBox");
-
-            return buffer;
+            return ByteBuffer.Use(MAC_BYTES + message.Length, buffer => SodiumLibrary.crypto_secretbox_easy(buffer, message, message.Length, nonce, key), "Failed to create SecretBox");
         }
 
         /// <summary>Creates detached a Secret Box</summary>
@@ -84,8 +79,8 @@ namespace Sodium
             if (nonce == null || nonce.Length != NONCE_BYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NONCE_BYTES} bytes in length.");
 
-            var cipher = new byte[message.Length];
-            var mac = new byte[MAC_BYTES];
+            var cipher = ByteBuffer.Create(message.Length);
+            var mac = ByteBuffer.Create(MAC_BYTES);
 
             if (SodiumLibrary.crypto_secretbox_detached(cipher, mac, message, message.Length, nonce, key) != 0)
                 throw new CryptographicException("Failed to create detached SecretBox");
@@ -138,20 +133,10 @@ namespace Sodium
 
                 //if the leading MAC_BYTES are null, trim it off before going on.
                 if (trim)
-                {
-                    var temp = new byte[cipherText.Length - MAC_BYTES];
-                    Array.Copy(cipherText, MAC_BYTES, temp, 0, cipherText.Length - MAC_BYTES);
-
-                    cipherText = temp;
-                }
+                    cipherText = ByteBuffer.Slice(cipherText, MAC_BYTES, cipherText.Length - MAC_BYTES);
             }
 
-            var buffer = new byte[cipherText.Length - MAC_BYTES];
-
-            if (SodiumLibrary.crypto_secretbox_open_easy(buffer, cipherText, cipherText.Length, nonce, key) != 0)
-                throw new CryptographicException("Failed to open SecretBox");
-
-            return buffer;
+            return ByteBuffer.Use(cipherText.Length - MAC_BYTES, buffer => SodiumLibrary.crypto_secretbox_open_easy(buffer, cipherText, cipherText.Length, nonce, key), "Failed to open SecretBox");
         }
 
         /// <summary>Opens a detached Secret Box</summary>
@@ -201,12 +186,7 @@ namespace Sodium
             if (mac == null || mac.Length != MAC_BYTES)
                 throw new MacOutOfRangeException(nameof(mac), mac?.Length ?? 0, $"mac must be {MAC_BYTES} bytes in length.");
 
-            var buffer = new byte[cipherText.Length];
-
-            if (SodiumLibrary.crypto_secretbox_open_detached(buffer, cipherText, mac, cipherText.Length, nonce, key) != 0)
-                throw new CryptographicException("Failed to open detached SecretBox");
-
-            return buffer;
+            return ByteBuffer.Use(cipherText.Length, buffer => SodiumLibrary.crypto_secretbox_open_detached(buffer, cipherText, mac, cipherText.Length, nonce, key), "Failed to open detached SecretBox");
         }
     }
 }

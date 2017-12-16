@@ -60,7 +60,7 @@ namespace Sodium
             if (additionalData.Length > ABYTES || additionalData.Length < 0)
                 throw new AdditionalDataOutOfRangeException($"additionalData must be between {0} and {ABYTES} bytes in length.");
 
-            var cipher = new byte[message.Length + ABYTES];
+            var cipher = ByteBuffer.Create(message.Length + ABYTES);
             var bin = Marshal.AllocHGlobal(cipher.Length);
 
             var ret = SodiumLibrary.crypto_aead_aes256gcm_encrypt(bin, out var cipherLength, message, message.Length, additionalData, additionalData.Length, null, nonce, key);
@@ -71,14 +71,7 @@ namespace Sodium
             if (ret != 0)
                 throw new CryptographicException("Error encrypting message.");
 
-            if (cipher.Length == cipherLength)
-                return cipher;
-
-            //remove the trailing nulls from the array
-            var tmp = new byte[cipherLength];
-            Array.Copy(cipher, 0, tmp, 0, (int)cipherLength);
-
-            return tmp;
+            return cipher.Length == cipherLength ? cipher : ByteBuffer.Slice(cipher, 0, cipherLength);
         }
 
         /// <summary>
@@ -111,7 +104,7 @@ namespace Sodium
             if (additionalData.Length > ABYTES || additionalData.Length < 0)
                 throw new AdditionalDataOutOfRangeException($"additionalData must be between {0} and {ABYTES} bytes in length.");
 
-            var message = new byte[cipher.Length - ABYTES];
+            var message = ByteBuffer.Create(cipher.Length - ABYTES);
             var bin = Marshal.AllocHGlobal(message.Length);
 
             var ret = SodiumLibrary.crypto_aead_aes256gcm_decrypt(bin, out var messageLength, null, cipher, cipher.Length, additionalData, additionalData.Length, nonce, key);
@@ -122,14 +115,7 @@ namespace Sodium
             if (ret != 0)
                 throw new CryptographicException("Error decrypting message.");
 
-            if (message.Length == messageLength)
-                return message;
-
-            //remove the trailing nulls from the array
-            var tmp = new byte[messageLength];
-            Array.Copy(message, 0, tmp, 0, (int)messageLength);
-
-            return tmp;
+            return message.Length == messageLength ? message : ByteBuffer.Slice(message, 0, messageLength);
         }
     }
 }

@@ -58,12 +58,7 @@ namespace Sodium
             if (nonce == null || nonce.Length != XSALSA20_NONCE_BYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {XSALSA20_NONCE_BYTES} bytes in length.");
 
-            var buffer = new byte[message.Length];
-
-            if (SodiumLibrary.crypto_stream_xor(buffer, message, message.Length, nonce, key) != 0)
-                throw new CryptographicException("Error encrypting message.");
-
-            return buffer;
+            return ByteBuffer.Use(message.Length, buffer => SodiumLibrary.crypto_stream_xor(buffer, message, message.Length, nonce, key), "Error encrypting message.");
         }
 
         /// <summary>Encryptes messages via ChaCha20</summary>
@@ -94,12 +89,7 @@ namespace Sodium
             if (nonce == null || nonce.Length != CHACHA20_NONCEBYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {CHACHA20_NONCEBYTES} bytes in length.");
 
-            var buffer = new byte[message.Length];
-
-            if (SodiumLibrary.crypto_stream_chacha20_xor(buffer, message, message.Length, nonce, key) != 0)
-                throw new CryptographicException("Error encrypting message.");
-
-            return buffer;
+            return ByteBuffer.Use(message.Length, buffer => SodiumLibrary.crypto_stream_chacha20_xor(buffer, message, message.Length, nonce, key), "Error encrypting message.");
         }
 
         /// <summary>Encryptes messages via XChaCha20</summary>
@@ -130,12 +120,7 @@ namespace Sodium
             if (nonce == null || nonce.Length != XCHACHA20_NONCEBYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {XCHACHA20_NONCEBYTES} bytes in length.");
 
-            var buffer = new byte[message.Length];
-
-            if (SodiumLibrary.crypto_stream_xchacha20_xor(buffer, message, message.Length, nonce, key) != 0)
-                throw new CryptographicException("Error encrypting message.");
-
-            return buffer;
+            return ByteBuffer.Use(message.Length, buffer =>  SodiumLibrary.crypto_stream_xchacha20_xor(buffer, message, message.Length, nonce, key), "Error encrypting message.");
         }
 
         /// <summary>Decryptes messages via XSalsa20</summary>
@@ -166,12 +151,7 @@ namespace Sodium
             if (nonce == null || nonce.Length != XSALSA20_NONCE_BYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {XSALSA20_NONCE_BYTES} bytes in length.");
 
-            var buffer = new byte[cipherText.Length];
-
-            if (SodiumLibrary.crypto_stream_xor(buffer, cipherText, cipherText.Length, nonce, key) != 0)
-                throw new CryptographicException("Error derypting message.");
-
-            return buffer;
+            return ByteBuffer.Use(cipherText.Length, buffer => SodiumLibrary.crypto_stream_xor(buffer, cipherText, cipherText.Length, nonce, key), "Error derypting message.");
         }
 
         /// <summary>Decryptes messages via ChaCha20</summary>
@@ -202,12 +182,7 @@ namespace Sodium
             if (nonce == null || nonce.Length != CHACHA20_NONCEBYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {CHACHA20_NONCEBYTES} bytes in length.");
 
-            var buffer = new byte[cipherText.Length];
-
-            if (SodiumLibrary.crypto_stream_chacha20_xor(buffer, cipherText, cipherText.Length, nonce, key) != 0)
-                throw new CryptographicException("Error derypting message.");
-
-            return buffer;
+            return ByteBuffer.Use(cipherText.Length, buffer => SodiumLibrary.crypto_stream_chacha20_xor(buffer, cipherText, cipherText.Length, nonce, key), "Error derypting message.");
         }
 
         /// <summary>Decryptes messages via XChaCha20</summary>
@@ -238,12 +213,7 @@ namespace Sodium
             if (nonce == null || nonce.Length != XCHACHA20_NONCEBYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {XCHACHA20_NONCEBYTES} bytes in length.");
 
-            var buffer = new byte[cipherText.Length];
-
-            if (SodiumLibrary.crypto_stream_xchacha20_xor(buffer, cipherText, cipherText.Length, nonce, key) != 0)
-                throw new CryptographicException("Error derypting message.");
-
-            return buffer;
+            return ByteBuffer.Use(cipherText.Length, buffer => SodiumLibrary.crypto_stream_xchacha20_xor(buffer, cipherText, cipherText.Length, nonce, key), "Error derypting message.");
         }
     }
 }
