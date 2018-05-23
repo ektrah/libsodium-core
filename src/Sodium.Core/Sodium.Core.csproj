@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard1.6</TargetFrameworks>
     <Description>libsodium for .net core</Description>
     <Copyright>Copyright © tabrath 2017</Copyright>
     <AssemblyTitle>Sodium.Core</AssemblyTitle>
-    <VersionPrefix>1.1.0</VersionPrefix>
+    <VersionPrefix>1.2.0</VersionPrefix>
     <Authors>tabrath</Authors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>Sodium.Core</AssemblyName>
@@ -36,7 +36,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="libsodium" Version="1.0.15" />
+    <PackageReference Include="libsodium" Version="1.0.16" />
   </ItemGroup>
 
 </Project>

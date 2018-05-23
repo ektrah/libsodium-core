@@ -1,12 +1,13 @@
 environment:
-  PKG_VERSION: 1.1.0
+  PKG_VERSION: 1.2.0
   VERSION_SUFFIX: ""
 version: ${PKG_VERSION}-{build}
 configuration: Release
 platform: x64
+image: Visual Studio 2017
 
 skip_commits:
-  message: /travis/
+  message: /chore/
   files:
     - '**\*.md'
     - LICENSE
@@ -60,11 +61,8 @@ after_build:
 
 test: off
 
-before_test:
-  - nuget install OpenCover -Version 4.6.519 -OutputDirectory .\tools
-
 test_script:
-  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test %APPVEYOR_BUILD_FOLDER%\test\Sodium.Tests\Sodium.Tests.csproj -c Debug -f netcoreapp2.0 -l trx;logfilename=TestResult.xml /p:Platform=AnyCPU" -excludebyattribute:*.ExcludeFromCodeCoverage* -filter:"+[Sodium.Core]* -[Sodium.Tests]*" -hideskipped:All -output:"%APPVEYOR_BUILD_FOLDER%\coverage.xml" -oldStyle
+  - dotnet test --configuration Debug --framework netcoreapp2.0 --logger trx;logfilename=TestResult.xml --results-directory "%APPVEYOR_BUILD_FOLDER%\test\Sodium.Tests\TestResults" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover %APPVEYOR_BUILD_FOLDER%\test\Sodium.Tests\Sodium.Tests.csproj
 
 after_test:
   - ps: |
@@ -72,19 +70,18 @@ after_test:
         $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test\Sodium.Tests\TestResults\TestResult.xml))
 
 on_success:
-  - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-  - pip install codecov
-  - codecov -f "%APPVEYOR_BUILD_FOLDER%\coverage.xml" -X gcov
+  - choco install codecov
+  - codecov -f "%APPVEYOR_BUILD_FOLDER%\test\Sodium.Tests\coverage.xml"
 
 artifacts:
   - path: artifacts\**\*.*
 
 cache:
   - '%USERPROFILE%\.local'
-  - '%USERPROFILE%\.nuget\packages -> **\project.json'
+  - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
   - '%LocalAppData%\NuGet\Cache'
   - '%LocalAppData%\Python'
-  - '.\packages -> **\project.json'
+  - '.\packages -> **\*.csproj'
   - '.\tools'
   - '\Python34'
 
