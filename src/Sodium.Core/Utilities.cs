@@ -5,12 +5,12 @@ using System.Text;
 namespace Sodium
 {
   /// <summary>Various utility methods.</summary>
-  public static class Utilities
+  public static partial class Utilities
   { 
     /// <summary>Represents HEX formats.</summary>
     public enum HexFormat
     {
-      /// <summary>a hex string without seperators.</summary>
+      /// <summary>a hex string without separators.</summary>
       None,
       /// <summary>a hex string with colons (dd:33:dd).</summary>
       Colon,
@@ -31,7 +31,7 @@ namespace Sodium
 
     /// <summary>Takes a byte array and returns a hex-encoded string.</summary>
     /// <param name="data">Data to be encoded.</param>
-    /// <returns>Hex-encoded string, lodercase.</returns>
+    /// <returns>Hex-encoded string, lowercase.</returns>
     /// <exception cref="OverflowException"></exception>
     public static string BinaryToHex(byte[] data)
     {
