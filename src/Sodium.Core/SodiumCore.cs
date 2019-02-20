@@ -5,7 +5,7 @@ namespace Sodium
   /// <summary>
   /// libsodium core information.
   /// </summary>
-  public static class SodiumCore
+  public static partial class SodiumCore
   {
     private static bool _isInit;
 

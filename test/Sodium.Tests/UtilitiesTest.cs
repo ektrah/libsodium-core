@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Sodium;
 
 namespace Tests
@@ -127,7 +128,7 @@ namespace Tests
       Assert.AreEqual(EXPECTED_FFS, encodedFfs);
       Assert.AreEqual(EXPECTED_FLIP, encodedFlips);
     }
-
+    
     /// <summary>A simple test for validating the two hex methods.</summary>
     [Test]
     public void BinaryToHexTest()
@@ -145,10 +146,12 @@ namespace Tests
       var hexSharpLower = Utilities.BinaryToHex(aliceSk, Utilities.HexFormat.None);
       var hexSharpUpper = Utilities.BinaryToHex(aliceSk, Utilities.HexFormat.None, Utilities.HexCase.Upper);
       var hexSodium = Utilities.BinaryToHex(aliceSk);
+      var hexSodiumUnsafe = Utilities.BinaryToHex(new ReadOnlySpan<byte>(aliceSk, 0, aliceSk.Length));
 
       Assert.AreEqual(EXPECTED, hexSharpLower);
       Assert.AreEqual(EXPECTED_UPPER, hexSharpUpper);
       Assert.AreEqual(EXPECTED, hexSodium);
+      Assert.AreEqual(EXPECTED, hexSodiumUnsafe);
     }
 
     /// <summary>Test the hex encoding with some colons.</summary>
