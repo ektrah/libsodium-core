@@ -16,6 +16,10 @@ namespace Sodium
     //sodium_bin2hex
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
     internal static extern unsafe IntPtr sodium_bin2hex(byte* hex, int hexMaxlen, byte* bin, int binLen);
+
+    //sodium_compare
+    [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
+    internal static extern unsafe int sodium_compare(byte* a, byte* b, int length);
   }
 
   public static partial class SodiumCore
@@ -44,7 +48,7 @@ namespace Sodium
 
   public static partial class Utilities
   {
-    private static readonly ArrayPool<byte> pool = ArrayPool<byte>.Create();
+    private static readonly ArrayPool<byte> Pool = ArrayPool<byte>.Create();
 
     /// <summary>Takes a byte array and returns a hex-encoded string.</summary>
     /// <param name="data">The memory to read from.</param>
@@ -52,18 +56,18 @@ namespace Sodium
     /// <exception cref="OverflowException"></exception>
     public static string BinaryToHex(ReadOnlySpan<byte> data)
     {
-      var target = pool.Rent(data.Length * 2 + 1);
+      var target = Pool.Rent(data.Length * 2 + 1);
       try
       {
         return BinaryToHex(data, target);
       }
       finally
       {
-        pool.Return(target);
+        Pool.Return(target);
       }
     }
 
-    private static string BinaryToHex(ReadOnlySpan<byte> data, Span<byte> target)
+    public static string BinaryToHex(ReadOnlySpan<byte> data, Span<byte> target)
     {
       var ret = BinaryToHexImpl(data, target);
 
@@ -86,6 +90,22 @@ namespace Sodium
             }
 
             return ret;
+          }
+        }
+      }
+    }
+
+    public static bool Compare(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b, int length = 0)
+    {
+      unsafe
+      {
+        fixed (byte* ptrA = a)
+        {
+          fixed (byte* ptrB = b)
+          {
+            var ret = SodiumLibrary.sodium_compare(ptrA, ptrB, length == 0 ? a.Length : length);
+
+            return ret == 0;
           }
         }
       }
