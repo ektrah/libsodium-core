@@ -4,7 +4,7 @@ using Sodium;
 
 namespace Tests
 {
-  /// <summary>Tests for the Utitlities class</summary>
+  /// <summary>Tests for the Utilities class</summary>
   [TestFixture]
   public class UtilitiesTest
   {

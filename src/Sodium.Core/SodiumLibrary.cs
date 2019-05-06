@@ -6,7 +6,7 @@ namespace Sodium
   /// <summary>
   /// libsodium library binding.
   /// </summary>
-  public static partial class SodiumLibrary
+  public static class SodiumLibrary
   {
     //sodium_init
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
@@ -14,7 +14,11 @@ namespace Sodium
 
     //randombytes_buf
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void randombytes_buf(byte[] buffer, int size);
+    internal static extern unsafe void randombytes_buf(void* buffer, int size);
+
+    //sodium_compare
+    [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
+    internal static extern unsafe int sodium_compare(byte* a, byte* b, int length);
 
     //randombytes_uniform
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
@@ -22,11 +26,7 @@ namespace Sodium
 
     //sodium_increment
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern void sodium_increment(byte[] buffer, long length);
-
-    //sodium_compare
-    [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int sodium_compare(byte[] a, byte[] b, long length);
+    internal static extern unsafe void sodium_increment(byte* buffer, long length);
 
     //sodium_version_string
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
@@ -34,15 +34,15 @@ namespace Sodium
 
     //crypto_hash
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_hash(byte[] buffer, byte[] message, long length);
+    internal static extern unsafe int crypto_hash(byte* buffer, byte* message, long length);
 
     //crypto_hash_sha512
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_hash_sha512(byte[] buffer, byte[] message, long length);
+    internal static extern unsafe int crypto_hash_sha512(byte* buffer, byte* message, long length);
 
     //crypto_hash_sha256
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_hash_sha256(byte[] buffer, byte[] message, long length);
+    internal static extern unsafe int crypto_hash_sha256(byte* buffer, byte* message, long length);
 
     //crypto_generichash
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
@@ -234,11 +234,11 @@ namespace Sodium
 
     //sodium_bin2hex
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern IntPtr sodium_bin2hex(byte[] hex, int hexMaxlen, byte[] bin, int binLen);
+    internal static extern unsafe IntPtr sodium_bin2hex(byte* hex, int hexMaxlen, byte* bin, int binLen);
 
     //sodium_hex2bin
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int sodium_hex2bin(IntPtr bin, int binMaxlen, string hex, int hexLen, string ignore, out int binLen, string hexEnd);
+    internal static unsafe extern int sodium_hex2bin(byte* bin, int binMaxlen, string hex, int hexLen, string ignore, out int binLen, string hexEnd);
 
     //crypto_aead_chacha20poly1305_encrypt
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]

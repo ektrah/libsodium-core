@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.ObjectPool;
+using System;
+using System.Buffers;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -28,23 +30,17 @@ namespace Sodium
       /// <summary>upper-case hex-encoded</summary>
       Upper
     }
-
+    
     /// <summary>Takes a byte array and returns a hex-encoded string.</summary>
     /// <param name="data">Data to be encoded.</param>
     /// <returns>Hex-encoded string, lowercase.</returns>
     /// <exception cref="OverflowException"></exception>
     public static string BinaryToHex(byte[] data)
     {
-      var hex = new byte[data.Length * 2 + 1];
-      var ret = SodiumLibrary.sodium_bin2hex(hex, hex.Length, data, data.Length);
-
-      if (ret == IntPtr.Zero)
-      {
-        throw new OverflowException("Internal error, encoding failed.");
-      }
-
-      return Marshal.PtrToStringAnsi(ret);
+      return BinaryToHex(data.AsSpan(), new byte[data.Length * 2 + 1]);
     }
+
+    internal static ObjectPool<StringBuilder> StringBuilderPool = new DefaultObjectPool<StringBuilder>(new StringBuilderPooledObjectPolicy());
 
     /// <summary>Takes a byte array and returns a hex-encoded string.</summary>
     /// <param name="data">Data to be encoded.</param>
@@ -52,55 +48,107 @@ namespace Sodium
     /// <param name="hcase">Lowercase or uppercase.</param>
     /// <returns>Hex-encoded string.</returns>
     /// <remarks>Bit fiddling by CodeInChaos.</remarks>
-    /// <remarks>This method don`t use libsodium, but it can be useful for generating human readable fingerprints.</remarks>
+    /// <remarks>This method doesn't use libsodium, but it can be useful for generating human readable fingerprints.</remarks>
     public static string BinaryToHex(byte[] data, HexFormat format, HexCase hcase = HexCase.Lower)
     {
-      var sb = new StringBuilder();
+      var sb = StringBuilderPool.Get();
 
-      for (var i = 0; i < data.Length; i++)
+      try
       {
-        if ((i != 0) && (format != HexFormat.None))
+        for (var i = 0; i < data.Length; i++)
         {
-          switch (format)
+          if ((i != 0) && (format != HexFormat.None))
           {
-            case HexFormat.Colon:
-              sb.Append((char)58);
-              break;
-            case HexFormat.Hyphen:
-              sb.Append((char)45);
-              break;
-            case HexFormat.Space:
-              sb.Append((char)32);
-              break;
-            default:
-              //no formatting
-              break;
+            switch (format)
+            {
+              case HexFormat.Colon:
+                sb.Append((char)58);
+                break;
+              case HexFormat.Hyphen:
+                sb.Append((char)45);
+                break;
+              case HexFormat.Space:
+                sb.Append((char)32);
+                break;
+              default:
+                //no formatting
+                break;
+            }
+          }
+
+          var byteValue = data[i] >> 4;
+
+          if (hcase == HexCase.Lower)
+          {
+            sb.Append((char)(87 + byteValue + (((byteValue - 10) >> 31) & -39))); //lower
+          }
+          else
+          {
+            sb.Append((char)(55 + byteValue + (((byteValue - 10) >> 31) & -7))); //upper 
+          }
+          byteValue = data[i] & 0xF;
+
+          if (hcase == HexCase.Lower)
+          {
+            sb.Append((char)(87 + byteValue + (((byteValue - 10) >> 31) & -39))); //lower
+          }
+          else
+          {
+            sb.Append((char)(55 + byteValue + (((byteValue - 10) >> 31) & -7))); //upper 
           }
         }
 
-        var byteValue = data[i] >> 4;
+        return sb.ToString();
+      }
+      finally
+      {
+        StringBuilderPool.Return(sb);
+      }
+    }
 
-        if (hcase == HexCase.Lower)
-        {
-          sb.Append((char)(87 + byteValue + (((byteValue - 10) >> 31) & -39))); //lower
-        }
-        else
-        {
-          sb.Append((char)(55 + byteValue + (((byteValue - 10) >> 31) & -7))); //upper 
-        }
-        byteValue = data[i] & 0xF;
+    internal static readonly ArrayPool<byte> Pool = ArrayPool<byte>.Create();
 
-        if (hcase == HexCase.Lower)
+    /// <summary>Takes a byte array and returns a hex-encoded string.</summary>
+    /// <param name="data">The memory to read from.</param>
+    /// <returns>Hex-encoded string, lowercase.</returns>
+    /// <exception cref="OverflowException"></exception>
+    public static string BinaryToHex(ReadOnlySpan<byte> data)
+    {
+      var target = Pool.Rent(data.Length * 2 + 1);
+      try
+      {
+        return BinaryToHex(data, target);
+      }
+      finally
+      {
+        Pool.Return(target);
+      }
+    }
+
+    public static string BinaryToHex(ReadOnlySpan<byte> data, Span<byte> target)
+    {
+      return Marshal.PtrToStringAnsi(BinaryToHexImpl(data, target));
+    }
+
+    private static IntPtr BinaryToHexImpl(ReadOnlySpan<byte> data, Span<byte> target)
+    {
+      unsafe
+      {
+        fixed (byte* bin = &data.GetPinnableReference())
         {
-          sb.Append((char)(87 + byteValue + (((byteValue - 10) >> 31) & -39))); //lower
-        }
-        else
-        {
-          sb.Append((char)(55 + byteValue + (((byteValue - 10) >> 31) & -7))); //upper 
+          fixed (byte* str = &target.GetPinnableReference())
+          {
+            var ret = SodiumLibrary.sodium_bin2hex(str, target.Length, bin, data.Length);
+
+            if (ret == IntPtr.Zero)
+            {
+              throw new OverflowException("Internal error, encoding failed.");
+            }
+
+            return ret;
+          }
         }
       }
-
-      return sb.ToString();
     }
 
     /// <summary>Converts a hex-encoded string to a byte array.</summary>
@@ -109,45 +157,74 @@ namespace Sodium
     /// <exception cref="Exception"></exception>
     public static byte[] HexToBinary(string hex)
     {
+      var span = new Span<byte>(new byte[hex.Length >> 1]);
+
+      HexToBinary(ref span, hex);
+
+      return span.ToArray();
+    }
+
+    /// <summary>Converts a hex-encoded string to a byte array.</summary>
+    /// <param name="target">The buffer to write decoded data to.</param>
+    /// <param name="hex">Hex-encoded data.</param>
+    /// <returns>The length of the encoded-string.</returns>
+    /// <exception cref="Exception"></exception>
+    public static int HexToBinary(ref Span<byte> target, string hex)
+    {
+      return HexToBinaryImpl(ref target, hex);
+    }
+
+    private static unsafe int HexToBinaryImpl(ref Span<byte> target, string hex)
+    {
       const string IGNORED_CHARS = ":- ";
 
-      var arr = new byte[hex.Length >> 1];
-      var bin = Marshal.AllocHGlobal(arr.Length);
-      int binLength;
-
-      //we call sodium_hex2bin with some chars to be ignored
-      var ret = SodiumLibrary.sodium_hex2bin(bin, arr.Length, hex, hex.Length, IGNORED_CHARS, out binLength, null);
-
-      Marshal.Copy(bin, arr, 0, binLength);
-      Marshal.FreeHGlobal(bin);
-
-      if (ret != 0)
+      fixed (byte* bin = &target.GetPinnableReference())
       {
-        throw new Exception("Internal error, decoding failed.");
-      }
+        //we call sodium_hex2bin with some chars to be ignored
+        var ret = SodiumLibrary.sodium_hex2bin(bin, target.Length, hex, hex.Length, IGNORED_CHARS,
+          out var binLength, null);
+        if (ret != 0)
+        {
+          throw new Exception("Internal error, decoding failed.");
+        }
 
-      //remove the trailing nulls from the array, if there were some format characters in the hex string before
-      if (arr.Length != binLength)
-      {
-        var tmp = new byte[binLength];
-        Array.Copy(arr, 0, tmp, 0, binLength);
-        return tmp;
-      }
+        //remove the trailing nulls from the array, if there were some format characters in the hex string before
+        if (binLength != target.Length)
+        {
+          target = target.Slice(0, binLength);
+        }
 
-      return arr;
+        return binLength;
+      }
     }
 
     /// <summary>
-    /// Takes a unsigned number, and increments it.
+    /// Takes an unsigned number, and increments it.
     /// </summary>
     /// <param name="value">The value to increment.</param>
     /// <returns>The incremented value.</returns>
     public static byte[] Increment(byte[] value)
     {
-      var buffer = value;
-      SodiumLibrary.sodium_increment(buffer, buffer.Length);
+      var span = value.AsSpan();
+      Increment(span);
+      return span.ToArray();
+    }
 
-      return buffer;
+    /// <summary>
+    /// Takes an unsigned number, and increments it.
+    /// </summary>
+    /// <param name="value">The value to increment.</param>
+    /// <returns>The incremented value.</returns>
+    public static void Increment(Span<byte> value)
+    {
+      unsafe
+      {
+        fixed (byte* buffer = &value.GetPinnableReference())
+        {
+          SodiumLibrary.sodium_increment(buffer, value.Length);
+        }
+      }
+    
     }
 
     /// <summary>
@@ -158,9 +235,29 @@ namespace Sodium
     /// <returns><c>true</c> if the values are equal, otherwise <c>false</c></returns>
     public static bool Compare(byte[] a, byte[] b)
     {
-      var ret = SodiumLibrary.sodium_compare(a, b, a.Length);
+      return Compare(a.AsSpan(), b.AsSpan());
+    }
 
-      return ret == 0;
+    /// <summary>
+    /// Compares two values in constant time.
+    /// </summary>
+    /// <param name="a">The first value.</param>
+    /// <param name="b">The second value.</param>
+    /// <returns><c>true</c> if the values are equal, otherwise <c>false</c></returns>
+    public static bool Compare(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b)
+    {
+      unsafe
+      {
+        fixed (byte* ptrA = &a.GetPinnableReference())
+        {
+          fixed (byte* ptrB = &b.GetPinnableReference())
+          {
+            var ret = SodiumLibrary.sodium_compare(ptrA, ptrB, a.Length);
+
+            return ret == 0;
+          }
+        }
+      }
     }
   }
 }
