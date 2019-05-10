@@ -46,11 +46,11 @@ namespace Sodium
 
     //crypto_generichash
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_generichash(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
+    internal static extern unsafe int crypto_generichash(byte* buffer, int bufferLength, byte* message, long messageLength, byte* key, int keyLength);
 
     //crypto_generichash_blake2b_salt_personal
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_generichash_blake2b_salt_personal(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength, byte[] salt, byte[] personal);
+    internal static extern unsafe int crypto_generichash_blake2b_salt_personal(byte* buffer, int bufferLength, byte* message, long messageLength, byte* key, int keyLength, byte* salt, byte* personal);
 
     //crypto_onetimeauth
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
