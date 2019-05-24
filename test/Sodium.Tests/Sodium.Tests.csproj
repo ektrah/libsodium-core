@@ -27,9 +27,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
     <PackageReference Include="Mono.Cecil" Version="0.10.3" />
-    <PackageReference Include="nunit" Version="3.11.0" />
+    <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="nunit3testadapter" Version="3.13.0" />
-    <PackageReference Include="NUnitLite" Version="3.11.0" />
+    <PackageReference Include="NUnitLite" Version="3.12.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Sodium.Core\Sodium.Core.csproj" />
