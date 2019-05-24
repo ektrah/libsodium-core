@@ -66,8 +66,8 @@ test_script:
 
 after_test:
   - ps: |
-        $wc = New-Object 'System.Net.WebClient'
-        $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test\Sodium.Tests\TestResults\TestResult.xml))
+      $wc = New-Object 'System.Net.WebClient'
+      $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test\Sodium.Tests\TestResults\TestResult*.xml))
 
 on_success:
   - choco install codecov
@@ -96,12 +96,12 @@ deploy:
       branch: master
       appveyor_repo_tag: true
   - provider: GitHub
-    description: 'Release description'
+    description: "Release description"
     auth_token:
       secure: nsZHZ5nFBFP4fZoVUEeWeZKx7LUASVqCZ+JblTox+02RfTAOlANdFWeCqOwhu7pk
-    artifact: /.*\.nupkg/            # upload all NuGet packages to release assets
+    artifact: /.*\.nupkg/ # upload all NuGet packages to release assets
     draft: false
     prerelease: false
     on:
-      branch: master                 # release from master branch only
+      branch: master # release from master branch only
       appveyor_repo_tag: true
