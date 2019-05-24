@@ -27,14 +27,13 @@ jobs:
     inputs:
       command: test
       projects: 'test/**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-build --logger trx --collect "Code coverage"'
+      arguments: '--configuration $(buildConfiguration) --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/coverage'
 
-  - task: PublishTestResults@2
-    displayName: Publish test results
-    condition: succeededOrFailed()
+  - task: PublishCodeCoverageResults@1
+    displayName: Publish coverage results
     inputs:
-      testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      codeCoverageTool: 'cobertura'
+      summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/coverage.xml'
 
 - job: Linux
   pool:
@@ -58,14 +57,13 @@ jobs:
     inputs:
       command: test
       projects: 'test/**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-build --logger trx'
+      arguments: '--configuration $(buildConfiguration) --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/coverage'
 
-  - task: PublishTestResults@2
-    displayName: Publish test results
-    condition: succeededOrFailed()
+  - task: PublishCodeCoverageResults@1
+    displayName: Publish coverage results
     inputs:
-      testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      codeCoverageTool: 'cobertura'
+      summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/coverage.xml'
 
 - job: macOS
   pool:
@@ -89,11 +87,10 @@ jobs:
     inputs:
       command: test
       projects: 'test/**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-build --logger trx'
+      arguments: '--configuration $(buildConfiguration) --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/coverage'
 
-  - task: PublishTestResults@2
-    displayName: Publish test results
-    condition: succeededOrFailed()
+  - task: PublishCodeCoverageResults@1
+    displayName: Publish coverage results
     inputs:
-      testRunner: VSTest
-      testResultsFiles: '**/*.trx'
+      codeCoverageTool: 'cobertura'
+      summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/coverage.xml'
