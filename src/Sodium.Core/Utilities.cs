@@ -7,7 +7,7 @@ using System.Text;
 namespace Sodium
 {
   /// <summary>Various utility methods.</summary>
-  public static partial class Utilities
+  public static class Utilities
   { 
     /// <summary>Represents HEX formats.</summary>
     public enum HexFormat
@@ -255,6 +255,92 @@ namespace Sodium
             var ret = SodiumLibrary.sodium_compare(ptrA, ptrB, a.Length);
 
             return ret == 0;
+          }
+        }
+      }
+    }
+
+    internal struct MessageRef
+    {
+      public readonly unsafe byte* Ptr;
+      public readonly long Length;
+      public readonly Encoding Encoding;
+      public readonly unsafe byte* Ref1;
+      public readonly unsafe byte* Ref2;
+
+      public unsafe MessageRef(byte* ptr, long length, Encoding encoding, byte* ref1 = null, byte* ref2 = null)
+      {
+        Ptr = ptr;
+        Length = length;
+        Encoding = encoding;
+        Ref1 = ref1;
+        Ref2 = ref2;
+        Ptr = ptr;
+      }
+    }
+
+    internal static void WithMessageSpan(this ReadOnlySpan<char> message, Encoding encoding, ReadOnlySpan<byte> ref1, ReadOnlySpan<byte> ref2, Action<MessageRef> action)
+    {
+      unsafe
+      {
+        fixed (char* c = &message.GetPinnableReference())
+        {
+          var minLength = encoding.GetByteCount(c, message.Length);
+
+          var temp = Pool.Rent(minLength);
+
+          var sized = temp.AsSpan().Slice(0, minLength);
+
+          fixed (byte* b = &sized.GetPinnableReference())
+          {
+            try
+            {
+              encoding.GetBytes(c, message.Length, b, minLength);
+
+              fixed (byte* r1 = ref1)
+              {
+                fixed (byte* r2 = ref2)
+                {
+                  action(new MessageRef(b, message.Length, encoding, r1, r2));
+                }
+              }
+            }
+            finally
+            {
+              Pool.Return(temp);
+            }
+          }
+        }
+      }
+    }
+
+    internal static void WithMessageSpan(this ReadOnlySpan<char> message, Encoding encoding, ReadOnlySpan<byte> ref1, Action<MessageRef> action)
+    {
+      unsafe
+      {
+        fixed (char* c = &message.GetPinnableReference())
+        {
+          var minLength = encoding.GetByteCount(c, message.Length);
+
+          var temp = Pool.Rent(minLength);
+
+          var sized = temp.AsSpan().Slice(0, minLength);
+
+          fixed (byte* b = &sized.GetPinnableReference())
+          {
+            try
+            {
+              encoding.GetBytes(c, message.Length, b, minLength);
+
+              fixed (byte* r1 = ref1)
+              {
+                action(new MessageRef(b, message.Length, encoding, r1));
+              }
+            }
+            finally
+            {
+              Pool.Return(temp);
+            }
           }
         }
       }

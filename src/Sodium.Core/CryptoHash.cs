@@ -133,40 +133,20 @@ namespace Sodium
     /// <returns></returns>
     public static void Sha512(ReadOnlySpan<char> message, Span<byte> target)
     {
-      var encoding = Encoding.UTF8;
-
-      unsafe
+      message.WithMessageSpan(Encoding.UTF8, target, m =>
       {
-        fixed (char* c = &message.GetPinnableReference())
+        unsafe
         {
-          var minLength = encoding.GetByteCount(c, message.Length);
-
-          var temp = Utilities.Pool.Rent(minLength);
-
-          var sized = temp.AsSpan().Slice(0, minLength);
-
-          fixed (byte* b = &sized.GetPinnableReference())
-          {
-            try
-            {
-              encoding.GetBytes(c, message.Length, b, minLength);
-
-              Sha512(sized, target);
-            }
-            finally
-            {
-              Utilities.Pool.Return(temp);
-            }
-          }
+          SodiumLibrary.crypto_hash_sha512(m.Ref1, m.Ptr, m.Length);
         }
-      }
+      });
     }
 
     /// <summary>Hashes a byte span using the SHA512 algorithm</summary>
     /// <param name="message">The message.</param>
     /// <param name="target">The byte span to write the resulting hash to.</param>
     /// <returns></returns>
-    public static void Sha512(Span<byte> message, Span<byte> target)
+    public static void Sha512(ReadOnlySpan<byte> message, Span<byte> target)
     {
       unsafe
       {
@@ -219,40 +199,20 @@ namespace Sodium
     /// <returns></returns>
     public static void Sha256(ReadOnlySpan<char> message, Span<byte> target)
     {
-      var encoding = Encoding.UTF8;
-
-      unsafe
+      message.WithMessageSpan(Encoding.UTF8, target, m =>
       {
-        fixed (char* c = &message.GetPinnableReference())
+        unsafe
         {
-          var minLength = encoding.GetByteCount(c, message.Length);
-
-          var temp = Utilities.Pool.Rent(minLength);
-
-          var sized = temp.AsSpan().Slice(0, minLength);
-
-          fixed (byte* b = &sized.GetPinnableReference())
-          {
-            try
-            {
-              encoding.GetBytes(c, message.Length, b, minLength);
-
-              Sha256(sized, target);
-            }
-            finally
-            {
-              Utilities.Pool.Return(temp);
-            }
-          }
+          SodiumLibrary.crypto_hash_sha256(m.Ref1, m.Ptr, m.Length);
         }
-      }
+      });
     }
 
     /// <summary>Hashes a byte span using the SHA256 algorithm</summary>
     /// <param name="message">The message.</param>
     /// <param name="target">The byte span to write the resulting hash to.</param>
     /// <returns></returns>
-    public static void Sha256(Span<byte> message, Span<byte> target)
+    public static void Sha256(ReadOnlySpan<byte> message, Span<byte> target)
     {
       unsafe
       {

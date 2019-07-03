@@ -54,11 +54,11 @@ namespace Sodium
 
     //crypto_onetimeauth
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_onetimeauth(byte[] buffer, byte[] message, long messageLength, byte[] key);
+    internal static extern unsafe int crypto_onetimeauth(byte* buffer, byte* message, long messageLength, byte* key);
 
     //crypto_onetimeauth_verify
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_onetimeauth_verify(byte[] signature, byte[] message, long messageLength, byte[] key);
+    internal static extern unsafe int crypto_onetimeauth_verify(byte* signature, byte* message, long messageLength, byte* key);
 
     //crypto_pwhash_str
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
