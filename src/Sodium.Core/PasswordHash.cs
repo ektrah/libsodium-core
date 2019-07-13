@@ -326,10 +326,9 @@ namespace Sodium
           opsLimit = SCRYPT_OPSLIMIT_INTERACTIVE;
           memLimit = SCRYPT_MEMLIMIT_INTERACTIVE;
           break;
+#pragma warning disable 618
         case Strength.Moderate:
-          opsLimit = SCRYPT_OPSLIMIT_MODERATE;
-          memLimit = SCRYPT_MEMLIMIT_MODERATE;
-          break;
+#pragma warning restore 618
         case Strength.Medium:
           opsLimit = SCRYPT_OPSLIMIT_MEDIUM;
           memLimit = SCRYPT_MEMLIMIT_MEDIUM;
@@ -421,7 +420,9 @@ namespace Sodium
           opsLimit = SCRYPT_OPSLIMIT_INTERACTIVE;
           memLimit = SCRYPT_MEMLIMIT_INTERACTIVE;
           break;
+#pragma warning disable 618
         case Strength.Moderate:
+#pragma warning restore 618
           opsLimit = SCRYPT_OPSLIMIT_MODERATE;
           memLimit = SCRYPT_MEMLIMIT_MODERATE;
           break;
