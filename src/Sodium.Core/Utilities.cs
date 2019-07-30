@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -27,6 +28,14 @@ namespace Sodium
       Lower,
       /// <summary>upper-case hex-encoded</summary>
       Upper
+    }
+
+    public enum Base64Variant
+    {
+      Original = 1,
+      OriginalNoPadding = 3,
+      UrlSafe = 5,
+      UrlSafeNoPadding = 7
     }
 
     /// <summary>Takes a byte array and returns a hex-encoded string.</summary>
@@ -127,6 +136,48 @@ namespace Sodium
       }
 
       //remove the trailing nulls from the array, if there were some format characters in the hex string before
+      if (arr.Length != binLength)
+      {
+        var tmp = new byte[binLength];
+        Array.Copy(arr, 0, tmp, 0, binLength);
+        return tmp;
+      }
+
+      return arr;
+    }
+
+    public static string BinaryToBase64(byte[] data, Base64Variant variant = Base64Variant.Original)
+    {
+      int base64MaxLen = SodiumLibrary.sodium_base64_encoded_len(data.Length, (int)variant);
+      var b64 = new byte[base64MaxLen - 1];
+      var base64 = SodiumLibrary.sodium_bin2base64(b64, base64MaxLen, data, data.Length, (int)variant);
+      if (base64 == IntPtr.Zero)
+      {
+        throw new OverflowException("Internal error, encoding failed.");
+      }
+      
+      return Marshal.PtrToStringAnsi(base64);
+    }
+
+    public static byte[] Base64ToBinary(string base64, string ignoredChars, Base64Variant variant = Base64Variant.Original)
+    {
+      
+      var arr = new byte[base64.Length];
+      var bin = Marshal.AllocHGlobal(arr.Length);
+      char lastChar;
+      int binLength;
+
+      var ret = SodiumLibrary.sodium_base642bin(bin, arr.Length, base64, base64.Length, ignoredChars, out binLength,
+        out lastChar, (int)variant);
+
+      Marshal.Copy(bin, arr, 0, binLength);
+      Marshal.FreeHGlobal(bin);
+
+      if (ret != 0)
+      {
+        throw new Exception("Internal error, decoding failed.");
+      }
+
       if (arr.Length != binLength)
       {
         var tmp = new byte[binLength];

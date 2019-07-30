@@ -220,6 +220,92 @@ namespace Tests
       Assert.AreEqual(EXPECTED_UPPER, hexSharpUpper);
     }
 
+    [Test]
+    public void BinaryToBas64OriginalTest()
+    {
+      var aliceSk = new byte[]
+      {
+        0x77, 0x07, 0x6d, 0x0a, 0x73, 0x18, 0xa5, 0x7d,
+        0x3c, 0x16, 0xc1, 0x72, 0x51, 0xb2, 0x66, 0x45,
+        0xdf, 0x4c, 0x2f, 0x87, 0xeb, 0xc0, 0x99, 0x2a,
+        0xb1, 0x77, 0xfb, 0xa5, 0x1d, 0xb9, 0x2c, 0x2a
+      };
+
+      var base64 = Utilities.BinaryToBase64(aliceSk);
+      var decrypted = Utilities.Base64ToBinary(base64, null);
+      Assert.AreEqual(aliceSk, decrypted);
+    }
+
+    [Test]
+    public void BinaryToBas64OriginalNoPaddingTest()
+    {
+      var aliceSk = new byte[]
+      {
+        0x77, 0x07, 0x6d, 0x0a, 0x73, 0x18, 0xa5, 0x7d,
+        0x3c, 0x16, 0xc1, 0x72, 0x51, 0xb2, 0x66, 0x45,
+        0xdf, 0x4c, 0x2f, 0x87, 0xeb, 0xc0, 0x99, 0x2a,
+        0xb1, 0x77, 0xfb, 0xa5, 0x1d, 0xb9, 0x2c, 0x2a
+      };
+
+      var base64 = Utilities.BinaryToBase64(aliceSk, Utilities.Base64Variant.OriginalNoPadding);
+      var decrypted = Utilities.Base64ToBinary(base64, null, Utilities.Base64Variant.OriginalNoPadding);
+      Assert.AreEqual(aliceSk, decrypted);
+    }
+
+    [Test]
+    public void BinaryToBas64UrlSafeTest()
+    {
+      var aliceSk = new byte[]
+      {
+        0x77, 0x07, 0x6d, 0x0a, 0x73, 0x18, 0xa5, 0x7d,
+        0x3c, 0x16, 0xc1, 0x72, 0x51, 0xb2, 0x66, 0x45,
+        0xdf, 0x4c, 0x2f, 0x87, 0xeb, 0xc0, 0x99, 0x2a,
+        0xb1, 0x77, 0xfb, 0xa5, 0x1d, 0xb9, 0x2c, 0x2a
+      };
+
+      var base64 = Utilities.BinaryToBase64(aliceSk, Utilities.Base64Variant.UrlSafe);
+      var decrypted = Utilities.Base64ToBinary(base64, null, Utilities.Base64Variant.UrlSafe);
+      Assert.AreEqual(aliceSk, decrypted);
+    }
+
+    [Test]
+    public void BinaryToBas64UrlSafeNoPaddingTest()
+    {
+      var aliceSk = new byte[]
+      {
+        0x77, 0x07, 0x6d, 0x0a, 0x73, 0x18, 0xa5, 0x7d,
+        0x3c, 0x16, 0xc1, 0x72, 0x51, 0xb2, 0x66, 0x45,
+        0xdf, 0x4c, 0x2f, 0x87, 0xeb, 0xc0, 0x99, 0x2a,
+        0xb1, 0x77, 0xfb, 0xa5, 0x1d, 0xb9, 0x2c, 0x2a
+      };
+
+      var base64 = Utilities.BinaryToBase64(aliceSk, Utilities.Base64Variant.UrlSafeNoPadding);
+      var decrypted = Utilities.Base64ToBinary(base64, null, Utilities.Base64Variant.UrlSafeNoPadding);
+      Assert.AreEqual(aliceSk, decrypted);
+    }
+
+    [Test]
+    public void BinaryToBas64IgnoreSpaceTest()
+    {
+      var aliceSk = new byte[]
+      {
+        0x77, 0x07, 0x6d, 0x0a, 0x73, 0x18, 0xa5, 0x7d,
+        0x3c, 0x16, 0xc1, 0x72, 0x51, 0xb2, 0x66, 0x45,
+        0xdf, 0x4c, 0x2f, 0x87, 0xeb, 0xc0, 0x99, 0x2a,
+        0xb1, 0x77, 0xfb, 0xa5, 0x1d, 0xb9, 0x2c, 0x2a
+      };
+
+      string base64 = Utilities.BinaryToBase64(aliceSk, Utilities.Base64Variant.UrlSafeNoPadding);
+      string editedBase64 = "";
+      foreach (char item in base64)
+      {
+        editedBase64 += $"{item} ";
+      }
+      
+      var decrypted = Utilities.Base64ToBinary(editedBase64, " ", Utilities.Base64Variant.UrlSafeNoPadding);
+      Assert.AreEqual(aliceSk, decrypted);
+    }
+
     /// <summary>Test the increment implementation.</summary>
     [Test]
     public void IncrementTest()
