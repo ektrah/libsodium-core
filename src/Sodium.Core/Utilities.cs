@@ -177,14 +177,11 @@ namespace Sodium
     /// <returns>A byte array of decoded Base64 string</returns>
     public static byte[] Base64ToBinary(string base64, string ignoredChars, Base64Variant variant = Base64Variant.Original)
     {
-      
       var arr = new byte[base64.Length];
       var bin = Marshal.AllocHGlobal(arr.Length);
-      char lastChar;
-      int binLength;
 
-      var ret = SodiumLibrary.sodium_base642bin(bin, arr.Length, base64, base64.Length, ignoredChars, out binLength,
-        out lastChar, (int)variant);
+      var ret = SodiumLibrary.sodium_base642bin(bin, arr.Length, base64, base64.Length, ignoredChars, out var binLength,
+        out var lastChar, (int)variant);
 
       Marshal.Copy(bin, arr, 0, binLength);
       Marshal.FreeHGlobal(bin);
