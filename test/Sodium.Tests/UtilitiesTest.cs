@@ -221,7 +221,7 @@ namespace Tests
     }
 
     [Test]
-    public void BinaryToBas64OriginalTest()
+    public void BinaryToBase64OriginalTest()
     {
       var aliceSk = new byte[]
       {
@@ -237,7 +237,7 @@ namespace Tests
     }
 
     [Test]
-    public void BinaryToBas64OriginalNoPaddingTest()
+    public void BinaryToBase64OriginalNoPaddingTest()
     {
       var aliceSk = new byte[]
       {
@@ -253,7 +253,7 @@ namespace Tests
     }
 
     [Test]
-    public void BinaryToBas64UrlSafeTest()
+    public void BinaryToBase64UrlSafeTest()
     {
       var aliceSk = new byte[]
       {
@@ -269,7 +269,7 @@ namespace Tests
     }
 
     [Test]
-    public void BinaryToBas64UrlSafeNoPaddingTest()
+    public void BinaryToBase64UrlSafeNoPaddingTest()
     {
       var aliceSk = new byte[]
       {
@@ -285,7 +285,7 @@ namespace Tests
     }
 
     [Test]
-    public void BinaryToBas64IgnoreSpaceTest()
+    public void BinaryToBase64IgnoreSpaceTest()
     {
       var aliceSk = new byte[]
       {
@@ -304,6 +304,15 @@ namespace Tests
       
       var decrypted = Utilities.Base64ToBinary(editedBase64, " ", Utilities.Base64Variant.UrlSafeNoPadding);
       Assert.AreEqual(aliceSk, decrypted);
+    }
+
+    [Test]
+    public void BinaryToBase64EmptyByteArrTest()
+    {
+      var emptyArr = new byte[]{};
+      string base64 = Utilities.BinaryToBase64(emptyArr, Utilities.Base64Variant.UrlSafeNoPadding);
+      var decrypted = Utilities.Base64ToBinary(base64, " ", Utilities.Base64Variant.UrlSafeNoPadding);
+      Assert.IsEmpty(decrypted);
     }
 
     /// <summary>Test the increment implementation.</summary>

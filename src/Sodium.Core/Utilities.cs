@@ -7,7 +7,7 @@ namespace Sodium
 {
   /// <summary>Various utility methods.</summary>
   public static class Utilities
-  { 
+  {
     /// <summary>Represents HEX formats.</summary>
     public enum HexFormat
     {
@@ -158,6 +158,11 @@ namespace Sodium
     /// <returns>Base64 encoded string.</returns>
     public static string BinaryToBase64(byte[] data, Base64Variant variant = Base64Variant.Original)
     {
+      if (data == null)
+      {
+        throw new ArgumentNullException(nameof(data), "Data is null, encoding failed");
+      }
+
       int base64MaxLen = SodiumLibrary.sodium_base64_encoded_len(data.Length, (int)variant);
       var b64 = new byte[base64MaxLen - 1];
       var base64 = SodiumLibrary.sodium_bin2base64(b64, base64MaxLen, data, data.Length, (int)variant);
@@ -165,7 +170,7 @@ namespace Sodium
       {
         throw new OverflowException("Internal error, encoding failed.");
       }
-      
+
       return Marshal.PtrToStringAnsi(base64);
     }
 
@@ -177,28 +182,27 @@ namespace Sodium
     /// <returns>A byte array of decoded Base64 string</returns>
     public static byte[] Base64ToBinary(string base64, string ignoredChars, Base64Variant variant = Base64Variant.Original)
     {
+      if (base64 == null)
+      {
+        throw new ArgumentNullException(nameof(base64), "Data is null, encoding failed");
+      }
+
       var arr = new byte[base64.Length];
       var bin = Marshal.AllocHGlobal(arr.Length);
 
       var ret = SodiumLibrary.sodium_base642bin(bin, arr.Length, base64, base64.Length, ignoredChars, out var binLength,
         out var lastChar, (int)variant);
 
-      Marshal.Copy(bin, arr, 0, binLength);
-      Marshal.FreeHGlobal(bin);
-
       if (ret != 0)
       {
         throw new Exception("Internal error, decoding failed.");
       }
 
-      if (arr.Length != binLength)
-      {
-        var tmp = new byte[binLength];
-        Array.Copy(arr, 0, tmp, 0, binLength);
-        return tmp;
-      }
-
-      return arr;
+      var decodedArr = new byte[binLength];
+      Marshal.Copy(bin, arr, 0, binLength);
+      Marshal.FreeHGlobal(bin);
+      Array.Copy(arr, 0, decodedArr, 0, binLength);
+      return decodedArr;
     }
 
     /// <summary>
