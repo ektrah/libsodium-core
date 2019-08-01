@@ -186,7 +186,6 @@ namespace Sodium
       {
         throw new ArgumentNullException(nameof(base64), "Data is null, encoding failed");
       }
-
       if (base64 == string.Empty)
       {
         return new byte[] { };
