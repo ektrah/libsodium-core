@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -161,6 +160,11 @@ namespace Sodium
       if (data == null)
       {
         throw new ArgumentNullException(nameof(data), "Data is null, encoding failed");
+      }
+
+      if (data.Length == 0)
+      {
+        return string.Empty;
       }
 
       int base64MaxLen = SodiumLibrary.sodium_base64_encoded_len(data.Length, (int)variant);

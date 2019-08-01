@@ -295,14 +295,14 @@ namespace Tests
         0xb1, 0x77, 0xfb, 0xa5, 0x1d, 0xb9, 0x2c, 0x2a
       };
 
-      string base64 = Utilities.BinaryToBase64(aliceSk, Utilities.Base64Variant.UrlSafeNoPadding);
+      string base64 = Utilities.BinaryToBase64(aliceSk);
       string editedBase64 = "";
       foreach (char item in base64)
       {
         editedBase64 += $"{item} ";
       }
       
-      var decrypted = Utilities.Base64ToBinary(editedBase64, " ", Utilities.Base64Variant.UrlSafeNoPadding);
+      var decrypted = Utilities.Base64ToBinary(editedBase64, " ");
       Assert.AreEqual(aliceSk, decrypted);
     }
 
@@ -310,8 +310,8 @@ namespace Tests
     public void BinaryToBase64EmptyByteArrTest()
     {
       var emptyArr = new byte[]{};
-      string base64 = Utilities.BinaryToBase64(emptyArr, Utilities.Base64Variant.UrlSafeNoPadding);
-      var decrypted = Utilities.Base64ToBinary(base64, " ", Utilities.Base64Variant.UrlSafeNoPadding);
+      string base64 = Utilities.BinaryToBase64(emptyArr);
+      var decrypted = Utilities.Base64ToBinary(base64, " ");
       Assert.IsEmpty(decrypted);
     }
 
