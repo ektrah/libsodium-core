@@ -191,10 +191,8 @@ namespace Sodium
         return new byte[] { };
       }
 
-      var arr = new byte[base64.Length];
-      var bin = Marshal.AllocHGlobal(arr.Length);
-
-      var ret = SodiumLibrary.sodium_base642bin(bin, arr.Length, base64, base64.Length, ignoredChars, out var binLength,
+      var bin = Marshal.AllocHGlobal(base64.Length);
+      var ret = SodiumLibrary.sodium_base642bin(bin, base64.Length, base64, base64.Length, ignoredChars, out var binLength,
         out var lastChar, (int)variant);
 
       if (ret != 0)
