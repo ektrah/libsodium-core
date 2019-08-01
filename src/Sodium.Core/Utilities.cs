@@ -187,6 +187,11 @@ namespace Sodium
         throw new ArgumentNullException(nameof(base64), "Data is null, encoding failed");
       }
 
+      if (base64 == string.Empty)
+      {
+        return new byte[] { };
+      }
+
       var arr = new byte[base64.Length];
       var bin = Marshal.AllocHGlobal(arr.Length);
 
@@ -199,9 +204,9 @@ namespace Sodium
       }
 
       var decodedArr = new byte[binLength];
-      Marshal.Copy(bin, arr, 0, binLength);
+      Marshal.Copy(bin, decodedArr, 0, binLength);
       Marshal.FreeHGlobal(bin);
-      Array.Copy(arr, 0, decodedArr, 0, binLength);
+
       return decodedArr;
     }
 
