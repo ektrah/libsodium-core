@@ -3,9 +3,9 @@ using Sodium;
 
 namespace Tests
 {
-  /// <summary>Tests for the SecretAead class</summary>
+  /// <summary>Tests for the SecretAeadChaCha20Poly1305 class</summary>
   [TestFixture]
-  public class SecretAeadTest
+  public class SecretAeadChaCha20Poly1305Test
   {
     /// <summary>Test Authenticated Encryption with Additional Data</summary>
     /// <remarks>Binary source from: https://github.com/jedisct1/libsodium/blob/master/test/default/aead_chacha20poly1305.c</remarks>
@@ -34,8 +34,8 @@ namespace Tests
         0x86, 0xd0, 0x99, 0x74, 0x84, 0x0b, 0xde, 0xd2, 0xa5, 0xca
       };
 
-      var encrypted = SecretAead.Encrypt(m, nonce, key, ad);
-      var decrypted = SecretAead.Decrypt(encrypted, nonce, key, ad);
+      var encrypted = SecretAeadChaCha20Poly1305.Encrypt(m, nonce, key, ad);
+      var decrypted = SecretAeadChaCha20Poly1305.Decrypt(encrypted, nonce, key, ad);
 
       CollectionAssert.AreEqual(m, decrypted);
     }
@@ -60,8 +60,8 @@ namespace Tests
         0x86, 0xd0, 0x99, 0x74, 0x84, 0x0b, 0xde, 0xd2, 0xa5, 0xca
       };
 
-      var encrypted = SecretAead.Encrypt(m, nonce, key);
-      var decrypted = SecretAead.Decrypt(encrypted, nonce, key);
+      var encrypted = SecretAeadChaCha20Poly1305.Encrypt(m, nonce, key);
+      var decrypted = SecretAeadChaCha20Poly1305.Decrypt(encrypted, nonce, key);
 
       CollectionAssert.AreEqual(m, decrypted);
     }

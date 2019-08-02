@@ -5,37 +5,27 @@ using Sodium.Exceptions;
 
 namespace Sodium
 {
-  /// <summary>Authenticated Encryption with Additional Data using AES-GCM.
-  /// Only supported on modern x86/x64 processors.</summary>
-  /// <remarks>See here for more information: https://download.libsodium.org/doc/advanced/aes-256-gcm.html </remarks>
-  public static class SecretAeadAes
+  /// <summary>Authenticated Encryption with Additional Data.</summary>
+  public static class SecretAeadChaCha20Poly1305
   {
     private const int KEYBYTES = 32;
-    private const int NPUBBYTES = 12;
+    private const int NPUBBYTES = 8;
     private const int ABYTES = 16;
 
-    /// <summary>Detect if the current CPU supports the required instructions (SSSE3, aesni, pcmul).</summary>
-    /// <returns><c>true</c> if the CPU supports the necessary instructions, otherwise <c>false</c></returns>
-    /// <remarks>Use <see cref="SecretAeadChaCha20Poly1305"/> if portability is required.</remarks>
-    public static bool IsAvailable()
-    {
-      SodiumCore.Init();
+    //TODO: we could implement a method which increments the nonce.
 
-      return SodiumLibrary.crypto_aead_aes256gcm_is_available() != 0;
-    }
-
-    /// <summary>Generates a random 12 byte nonce.</summary>
-    /// <returns>Returns a byte array with 12 random bytes.</returns>
+    /// <summary>Generates a random 8 byte nonce.</summary>
+    /// <returns>Returns a byte array with 8 random bytes.</returns>
     public static byte[] GenerateNonce()
     {
       return SodiumCore.GetRandomBytes(NPUBBYTES);
     }
 
     /// <summary>
-    /// Encrypts a message with an authentication tag and additional data using AES-GCM.
+    /// Encrypts a message with an authentication tag and additional data.
     /// </summary>
     /// <param name="message">The message to be encrypted.</param>
-    /// <param name="nonce">The 12 byte nonce.</param>
+    /// <param name="nonce">The 8 byte nonce.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <param name="additionalData">The additional data; may be null, otherwise between 0 and 16 bytes.</param>
     /// <returns>The encrypted message with additional data.</returns>
@@ -70,8 +60,7 @@ namespace Sodium
       var bin = Marshal.AllocHGlobal(cipher.Length);
       long cipherLength;
 
-      var ret = SodiumLibrary.crypto_aead_aes256gcm_encrypt(bin, out cipherLength, message, message.Length,
-        additionalData, additionalData.Length, null,
+      var ret = SodiumLibrary.crypto_aead_chacha20poly1305_encrypt(bin, out cipherLength, message, message.Length, additionalData, additionalData.Length, null,
         nonce, key);
 
       Marshal.Copy(bin, cipher, 0, (int) cipherLength);
@@ -91,10 +80,10 @@ namespace Sodium
     }
 
     /// <summary>
-    /// Decrypts a cipher with an authentication tag and additional data using AES-GCM.
+    /// Decrypts a cipher with an authentication tag and additional data.
     /// </summary>
     /// <param name="cipher">The cipher to be decrypted.</param>
-    /// <param name="nonce">The 12 byte nonce.</param>
+    /// <param name="nonce">The 8 byte nonce.</param>
     /// <param name="key">The 32 byte key.</param>
     /// <param name="additionalData">The additional data; may be null, otherwise between 0 and 16 bytes.</param>
     /// <returns>The decrypted cipher.</returns>
@@ -127,10 +116,10 @@ namespace Sodium
       var bin = Marshal.AllocHGlobal(message.Length);
       long messageLength;
 
-      var ret = SodiumLibrary.crypto_aead_aes256gcm_decrypt(bin, out messageLength, null, cipher, cipher.Length,
+      var ret = SodiumLibrary.crypto_aead_chacha20poly1305_decrypt(bin, out messageLength, null, cipher, cipher.Length,
         additionalData, additionalData.Length, nonce, key);
 
-      Marshal.Copy(bin, message, 0, (int) messageLength);
+      Marshal.Copy(bin, message, 0, (int)messageLength);
       Marshal.FreeHGlobal(bin);
 
       if (ret != 0)
