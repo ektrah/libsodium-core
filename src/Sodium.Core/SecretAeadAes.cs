@@ -16,7 +16,7 @@ namespace Sodium
 
     /// <summary>Detect if the current CPU supports the required instructions (SSSE3, aesni, pcmul).</summary>
     /// <returns><c>true</c> if the CPU supports the necessary instructions, otherwise <c>false</c></returns>
-    /// <remarks>Use <see cref="SecretAead"/> if portability is required.</remarks>
+    /// <remarks>Use <see cref="SecretAeadChaCha20Poly1305"/> if portability is required.</remarks>
     public static bool IsAvailable()
     {
       SodiumCore.Init();
