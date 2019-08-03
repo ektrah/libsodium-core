@@ -1,17 +1,15 @@
-using System.Text;
-using Sodium;
 using NUnit.Framework;
-using System.Security.Cryptography;
+using Sodium;
 using Sodium.Exceptions;
 
 namespace Tests
 {
-  ///<summary>Exception tests for the SecretAead class</summary>
+  ///<summary>Exception tests for the SecretAeadXChaCha20Poly1305 class</summary>
   [TestFixture]
-  public class SecretAeadExceptionTest
+  public class SecretAeadXChaCha20Poly1305ExceptionTest
   {
     [Test]
-    public void SecretAeadEncryptWithBadKey()
+    public void SecretAeadXChaCha20Poly1305EncryptWithBadKey()
     {
       var key = new byte[] {
         0x42, 0x90, 0xbc, 0xb1, 0x54, 0x17, 0x35, 0x31, 0xf3, 0x14, 0xaf,
@@ -20,7 +18,7 @@ namespace Tests
       };
 
       var nonce = new byte[] {
-        0xcd, 0x7c, 0xf6, 0x7b, 0xe3, 0x9c, 0x79, 0x4a
+        0xcd, 0x7c, 0xf6, 0x7b, 0xe3, 0x9c, 0x79, 0x4a, 0x79, 0xc0, 0xd1, 0x10
       };
 
       var ad = new byte[] {
@@ -32,11 +30,11 @@ namespace Tests
       };
 
       Assert.Throws<KeyOutOfRangeException>(
-        () => SecretAead.Encrypt(m, nonce, key, ad));
+        () => SecretAeadXChaCha20Poly1305.Encrypt(m, nonce, key, ad));
     }
 
     [Test]
-    public void SecretAeadEncryptWithBadNonce()
+    public void SecretAeadXChaCha20Poly1305EncryptWithBadNonce()
     {
       var key = new byte[] {
         0x42, 0x90, 0xbc, 0xb1, 0x54, 0x17, 0x35, 0x31, 0xf3, 0x14, 0xaf,
@@ -57,11 +55,11 @@ namespace Tests
       };
 
       Assert.Throws<NonceOutOfRangeException>(
-        () => SecretAead.Encrypt(m, nonce, key, ad));
+        () => SecretAeadXChaCha20Poly1305.Encrypt(m, nonce, key, ad));
     }
 
     [Test]
-    public void SecretAeadEncryptWithBadAdditionalData()
+    public void SecretAeadXChaCha20Poly1305EncryptWithBadAdditionalData()
     {
       var key = new byte[] {
         0x42, 0x90, 0xbc, 0xb1, 0x54, 0x17, 0x35, 0x31, 0xf3, 0x14, 0xaf,
@@ -70,7 +68,8 @@ namespace Tests
       };
 
       var nonce = new byte[] {
-        0xcd, 0x7c, 0xf6, 0x7b, 0xe3, 0x9c, 0x79, 0x4a
+        0xcd, 0x7c, 0xf6, 0x7b, 0xe3, 0x9c, 0x79, 0x4a, 0x79, 0xc0, 0xd1, 0x10,
+        0xcd, 0x7c, 0xf6, 0x7b, 0xe3, 0x9c, 0x79, 0x4a, 0x79, 0xc0, 0xd1, 0x10
       };
 
       var ad = new byte[] {
@@ -84,11 +83,11 @@ namespace Tests
       };
 
       Assert.Throws<AdditionalDataOutOfRangeException>(
-        () => SecretAead.Encrypt(m, nonce, key, ad));
+        () => SecretAeadXChaCha20Poly1305.Encrypt(m, nonce, key, ad));
     }
 
     [Test]
-    public void SecretAeadDecryptWithBadKey()
+    public void SecretAeadXChaCha20Poly1305DecryptWithBadKey()
     {
       var key = new byte[] {
         0x42, 0x90, 0xbc, 0xb1, 0x54, 0x17, 0x35, 0x31, 0xf3, 0x14, 0xaf,
@@ -97,7 +96,7 @@ namespace Tests
       };
 
       var nonce = new byte[] {
-        0xcd, 0x7c, 0xf6, 0x7b, 0xe3, 0x9c, 0x79, 0x4a
+        0xcd, 0x7c, 0xf6, 0x7b, 0xe3, 0x9c, 0x79, 0x4a, 0x79, 0xc0, 0xd1, 0x10
       };
 
       var ad = new byte[] {
@@ -109,11 +108,11 @@ namespace Tests
       };
 
       Assert.Throws<KeyOutOfRangeException>(
-        () => SecretAead.Decrypt(m, nonce, key, ad));
+        () => SecretAeadXChaCha20Poly1305.Decrypt(m, nonce, key, ad));
     }
 
     [Test]
-    public void SecretAeadDecryptWithBadNonce()
+    public void SecretAeadXChaCha20Poly1305DecryptWithBadNonce()
     {
       var key = new byte[] {
         0x42, 0x90, 0xbc, 0xb1, 0x54, 0x17, 0x35, 0x31, 0xf3, 0x14, 0xaf,
@@ -134,11 +133,11 @@ namespace Tests
       };
 
       Assert.Throws<NonceOutOfRangeException>(
-        () => SecretAead.Decrypt(m, nonce, key, ad));
+        () => SecretAeadXChaCha20Poly1305.Decrypt(m, nonce, key, ad));
     }
 
     [Test]
-    public void SecretAeadDecryptWithBadAdditionalData()
+    public void SecretAeadXChaCha20Poly1305DecryptWithBadAdditionalData()
     {
       var key = new byte[] {
         0x42, 0x90, 0xbc, 0xb1, 0x54, 0x17, 0x35, 0x31, 0xf3, 0x14, 0xaf,
@@ -147,7 +146,8 @@ namespace Tests
       };
 
       var nonce = new byte[] {
-        0xcd, 0x7c, 0xf6, 0x7b, 0xe3, 0x9c, 0x79, 0x4a
+        0xcd, 0x7c, 0xf6, 0x7b, 0xe3, 0x9c, 0x79, 0x4a, 0x79, 0xc0, 0xd1, 0x10,
+        0xcd, 0x7c, 0xf6, 0x7b, 0xe3, 0x9c, 0x79, 0x4a, 0x79, 0xc0, 0xd1, 0x10
       };
 
       var ad = new byte[] {
@@ -161,7 +161,7 @@ namespace Tests
       };
 
       Assert.Throws<AdditionalDataOutOfRangeException>(
-        () => SecretAead.Decrypt(m, nonce, key, ad));
+        () => SecretAeadXChaCha20Poly1305.Decrypt(m, nonce, key, ad));
     }
   }
 }
