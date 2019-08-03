@@ -222,7 +222,7 @@ namespace Sodium
 
     //crypto_shorthash
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_shorthash(byte[] buffer, byte[] message, long messageLength, byte[] key);
+    internal static extern unsafe int crypto_shorthash(byte* buffer, byte* message, long messageLength, byte* key);
 
     //crypto_stream_xor
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
