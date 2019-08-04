@@ -20,6 +20,7 @@ jobs:
         inputs:
           projects: "**/*.csproj"
           arguments: "--configuration $(configuration) --no-restore"
+          packDirectory: "$(Build.ArtifactStagingDirectory)"
 
       - template: templates/test.yml
         parameters:
@@ -31,19 +32,21 @@ jobs:
       - template: templates/test.yml
         parameters:
           configuration: ${{ variables.configuration }}
-          framework: "netcoreapp2.0"
-          platform: "Windows"
+          framework: netcoreapp2.0
+          platform: Windows
+          codecovToken: $(CODECOV_TOKEN)
 
       - template: templates/test.yml
         parameters:
           configuration: ${{ variables.configuration }}
-          framework: "netcoreapp2.2"
-          platform: "Windows"
+          framework: netcoreapp2.2
+          platform: Windows
+          codecovToken: $(CODECOV_TOKEN)
 
       - task: PublishBuildArtifacts@1
         displayName: Save package artifacts
         inputs:
-          PathtoPublish: $(Build.ArtifactStagingDirectory)
+          PathtoPublish: "$(Build.ArtifactStagingDirectory)"
           ArtifactName: Package
 
   - job: Linux
@@ -65,21 +68,23 @@ jobs:
       - template: templates/test.yml
         parameters:
           configuration: ${{ variables.configuration }}
-          framework: "netcoreapp1.1"
-          platform: "Linux"
+          framework: netcoreapp1.1
+          platform: Linux
           collectCoverage: false
 
       - template: templates/test.yml
         parameters:
           configuration: ${{ variables.configuration }}
-          framework: "netcoreapp2.0"
-          platform: "Linux"
+          framework: netcoreapp2.0
+          platform: Linux
+          codecovToken: $(CODECOV_TOKEN)
 
       - template: templates/test.yml
         parameters:
           configuration: ${{ variables.configuration }}
-          framework: "netcoreapp2.2"
-          platform: "Linux"
+          framework: netcoreapp2.2
+          platform: Linux
+          codecovToken: $(CODECOV_TOKEN)
 
   - job: macOS
     pool:
@@ -100,18 +105,20 @@ jobs:
       - template: templates/test.yml
         parameters:
           configuration: ${{ variables.configuration }}
-          framework: "netcoreapp1.1"
-          platform: "macOS"
+          framework: netcoreapp1.1
+          platform: macOS
           collectCoverage: false
 
       - template: templates/test.yml
         parameters:
           configuration: ${{ variables.configuration }}
-          framework: "netcoreapp2.0"
-          platform: "macOS"
+          framework: netcoreapp2.0
+          platform: macOS
+          codecovToken: $(CODECOV_TOKEN)
 
       - template: templates/test.yml
         parameters:
           configuration: ${{ variables.configuration }}
-          framework: "netcoreapp2.2"
-          platform: "macOS"
+          framework: netcoreapp2.2
+          platform: macOS
+          codecovToken: $(CODECOV_TOKEN)

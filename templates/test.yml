@@ -3,6 +3,7 @@ parameters:
   framework: ""
   platform: ""
   collectCoverage: true
+  codecovToken: ""
 
 steps:
   - task: DotNetCoreCLI@2
@@ -27,4 +28,10 @@ steps:
     inputs:
       codeCoverageTool: "cobertura"
       summaryFileLocation: "$(Build.SourcesDirectory)/TestResults/${{ parameters.framework }}/coverage.cobertura.xml"
+    condition: and(succeeded(), eq('${{ parameters.collectCoverage }}', 'true'))
+
+  - bash: <(curl -s https://codecov.io/bash)
+    displayName: Upload code coverage to CodeCov
+    env:
+      CODECOV_TOKEN: ${{ parameters.codecovToken }}
     condition: and(succeeded(), eq('${{ parameters.collectCoverage }}', 'true'))
