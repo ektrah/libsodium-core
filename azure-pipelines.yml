@@ -14,7 +14,6 @@ jobs:
         inputs:
           command: restore
           projects: "**/*.csproj"
-          noCache: true
 
       - task: DotNetCoreCLI@2
         displayName: Build
@@ -30,15 +29,15 @@ jobs:
 
       - template: templates/test.yml
         parameters:
-          configuration: ${buildConfiguration}
-          framework: netcoreapp2.0
-          platform: Windows
+          configuration: "${buildConfiguration}"
+          framework: "netcoreapp2.0"
+          platform: "Windows"
 
       - template: templates/test.yml
         parameters:
-          configuration: ${buildConfiguration}
-          framework: netcoreapp2.2
-          platform: Windows
+          configuration: "${buildConfiguration}"
+          framework: "netcoreapp2.2"
+          platform: "Windows"
 
       - task: PublishBuildArtifacts@1
         displayName: Save package artifacts
@@ -55,7 +54,6 @@ jobs:
         inputs:
           command: restore
           projects: "**/*.csproj"
-          noCache: true
 
       - task: DotNetCoreCLI@2
         displayName: Build
@@ -65,21 +63,21 @@ jobs:
 
       - template: templates/test.yml
         parameters:
-          configuration: ${buildConfiguration}
-          framework: netcoreapp1.1
-          platform: Linux
+          configuration: "${buildConfiguration}"
+          framework: "netcoreapp1.1"
+          platform: "Linux"
 
       - template: templates/test.yml
         parameters:
-          configuration: ${buildConfiguration}
-          framework: netcoreapp2.0
-          platform: Linux
+          configuration: "${buildConfiguration}"
+          framework: "netcoreapp2.0"
+          platform: "Linux"
 
       - template: templates/test.yml
         parameters:
-          configuration: ${buildConfiguration}
-          framework: netcoreapp2.2
-          platform: Linux
+          configuration: "${buildConfiguration}"
+          framework: "netcoreapp2.2"
+          platform: "Linux"
 
   - job: macOS
     pool:
@@ -90,7 +88,6 @@ jobs:
         inputs:
           command: restore
           projects: "**/*.csproj"
-          noCache: true
 
       - task: DotNetCoreCLI@2
         displayName: Build
@@ -100,18 +97,18 @@ jobs:
 
       - template: templates/test.yml
         parameters:
-          configuration: ${buildConfiguration}
-          framework: netcoreapp1.1
-          platform: macOS
+          configuration: "${buildConfiguration}"
+          framework: "netcoreapp1.1"
+          platform: "macOS"
 
       - template: templates/test.yml
         parameters:
-          configuration: ${buildConfiguration}
-          framework: netcoreapp2.0
-          platform: macOS
+          configuration: "${buildConfiguration}"
+          framework: "netcoreapp2.0"
+          platform: "macOS"
 
       - template: templates/test.yml
         parameters:
-          configuration: ${buildConfiguration}
-          framework: netcoreapp2.2
-          platform: macOS
+          configuration: "${buildConfiguration}"
+          framework: "netcoreapp2.2"
+          platform: "macOS"
