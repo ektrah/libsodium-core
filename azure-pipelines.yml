@@ -1,152 +1,117 @@
 trigger:
-- master
+  - master
 
 variables:
-  buildConfiguration: 'Release'
+  buildConfiguration: "Release"
 
 jobs:
-- job: Windows
-  pool:
-    vmImage: 'windows-2019'
-  steps:
-  - task: DotNetCoreCLI@2
-    displayName: Restore
-    inputs:
-      command: restore
-      projects: '**/*.csproj'
-      noCache: true
+  - job: Windows
+    pool:
+      vmImage: "windows-2019"
+    steps:
+      - task: DotNetCoreCLI@2
+        displayName: Restore
+        inputs:
+          command: restore
+          projects: "**/*.csproj"
+          noCache: true
 
-  - task: DotNetCoreCLI@2
-    displayName: Build
-    inputs:
-      projects: '**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-restore'
-      
-  - task: DotNetCoreCLI@2
-    displayName: Test netcoreapp1.1
-    inputs:
-      command: test
-      projects: 'test/**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --framework netcoreapp1.1 --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/netcoreapp1.1/coverage -r $(Build.SourcesDirectory)/TestResults/netcoreapp1.1'
+      - task: DotNetCoreCLI@2
+        displayName: Build
+        inputs:
+          projects: "**/*.csproj"
+          arguments: "--configuration $(buildConfiguration) --no-restore"
 
-  - task: PublishTestResults@2
-    displayName: Publish netcoreapp1.1 test results
-    inputs:
-      testResultsFormat: NUnit
-      testResultsFiles: $(Build.SourcesDirectory)/TestResults/netcoreapp1.1/*.xml
-      mergeTestResults: true
-      testRunTitle: netcoreapp1.1/Windows
+      - template: templates/test.yml
+        parameters:
+          configuration: ${buildConfiguration}
+          framework: netcoreapp1.1
+          platform: Windows
 
-  - task: PublishCodeCoverageResults@1
-    displayName: Publish netcoreapp1.1 coverage results
-    inputs:
-      codeCoverageTool: 'cobertura'
-      summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/netcoreapp1.1/coverage.xml'
+      - template: templates/test.yml
+        parameters:
+          configuration: ${buildConfiguration}
+          framework: netcoreapp2.0
+          platform: Windows
 
-  - task: DotNetCoreCLI@2
-    displayName: Test netcoreapp2.0
-    inputs:
-      command: test
-      projects: 'test/**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --framework netcoreapp2.0 --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/netcoreapp2.0/coverage -r $(Build.SourcesDirectory)/TestResults/netcoreapp2.0'
+      - template: templates/test.yml
+        parameters:
+          configuration: ${buildConfiguration}
+          framework: netcoreapp2.2
+          platform: Windows
 
-  - task: PublishTestResults@2
-    displayName: Publish netcoreapp2.0 test results
-    inputs:
-      testResultsFormat: NUnit
-      testResultsFiles: $(Build.SourcesDirectory)/TestResults/netcoreapp2.0/*.xml
-      mergeTestResults: true
-      testRunTitle: netcoreapp2.0/Windows
+      - task: PublishBuildArtifacts@1
+        displayName: Save package artifacts
+        inputs:
+          PathtoPublish: $(Build.ArtifactStagingDirectory)
+          ArtifactName: Package
 
-  - task: PublishCodeCoverageResults@1
-    displayName: Publish netcoreapp2.0 coverage results
-    inputs:
-      codeCoverageTool: 'cobertura'
-      summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/netcoreapp2.0/coverage.xml'
+  - job: Linux
+    pool:
+      vmImage: "ubuntu-16.04"
+    steps:
+      - task: DotNetCoreCLI@2
+        displayName: Restore
+        inputs:
+          command: restore
+          projects: "**/*.csproj"
+          noCache: true
 
-  - task: DotNetCoreCLI@2
-    displayName: Test netcoreapp2.2
-    inputs:
-      command: test
-      projects: 'test/**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --framework netcoreapp2.2 --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/netcoreapp2.2/coverage -r $(Build.SourcesDirectory)/TestResults/netcoreapp2.2'
+      - task: DotNetCoreCLI@2
+        displayName: Build
+        inputs:
+          projects: "**/*.csproj"
+          arguments: "--configuration $(buildConfiguration) --no-restore"
 
-  - task: PublishTestResults@2
-    displayName: Publish netcoreapp2.2 test results
-    inputs:
-      testResultsFormat: NUnit
-      testResultsFiles: $(Build.SourcesDirectory)/TestResults/netcoreapp2.2/*.xml
-      mergeTestResults: true
-      testRunTitle: netcoreapp2.2/Windows
+      - template: templates/test.yml
+        parameters:
+          configuration: ${buildConfiguration}
+          framework: netcoreapp1.1
+          platform: Linux
 
-  - task: PublishCodeCoverageResults@1
-    displayName: Publish netcoreapp2.2 coverage results
-    inputs:
-      codeCoverageTool: 'cobertura'
-      summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/netcoreapp2.2/coverage.xml'
+      - template: templates/test.yml
+        parameters:
+          configuration: ${buildConfiguration}
+          framework: netcoreapp2.0
+          platform: Linux
 
-  - task: PublishBuildArtifacts@1
-    displayName: Save package artifacts
-    inputs:
-      PathtoPublish: $(Build.ArtifactStagingDirectory)
-      ArtifactName: Package
+      - template: templates/test.yml
+        parameters:
+          configuration: ${buildConfiguration}
+          framework: netcoreapp2.2
+          platform: Linux
 
-- job: Linux
-  pool:
-    vmImage: 'ubuntu-16.04'
-  steps:
-  - task: DotNetCoreCLI@2
-    displayName: Restore
-    inputs:
-      command: restore
-      projects: '**/*.csproj'
-      noCache: true
+  - job: macOS
+    pool:
+      vmImage: "macOS-10.14"
+    steps:
+      - task: DotNetCoreCLI@2
+        displayName: Restore
+        inputs:
+          command: restore
+          projects: "**/*.csproj"
+          noCache: true
 
-  - task: DotNetCoreCLI@2
-    displayName: Build
-    inputs:
-      projects: '**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-restore'
-      
-  - task: DotNetCoreCLI@2
-    displayName: Test
-    inputs:
-      command: test
-      projects: 'test/**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/coverage'
+      - task: DotNetCoreCLI@2
+        displayName: Build
+        inputs:
+          projects: "**/*.csproj"
+          arguments: "--configuration $(buildConfiguration) --no-restore"
 
-  - task: PublishCodeCoverageResults@1
-    displayName: Publish coverage results
-    inputs:
-      codeCoverageTool: 'cobertura'
-      summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/coverage.xml'
+      - template: templates/test.yml
+        parameters:
+          configuration: ${buildConfiguration}
+          framework: netcoreapp1.1
+          platform: macOS
 
-- job: macOS
-  pool:
-    vmImage: 'macOS-10.14'
-  steps:
-  - task: DotNetCoreCLI@2
-    displayName: Restore
-    inputs:
-      command: restore
-      projects: '**/*.csproj'
-      noCache: true
+      - template: templates/test.yml
+        parameters:
+          configuration: ${buildConfiguration}
+          framework: netcoreapp2.0
+          platform: macOS
 
-  - task: DotNetCoreCLI@2
-    displayName: Build
-    inputs:
-      projects: '**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-restore'
-      
-  - task: DotNetCoreCLI@2
-    displayName: Test
-    inputs:
-      command: test
-      projects: 'test/**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/coverage'
-
-  - task: PublishCodeCoverageResults@1
-    displayName: Publish coverage results
-    inputs:
-      codeCoverageTool: 'cobertura'
-      summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/coverage.xml'
+      - template: templates/test.yml
+        parameters:
+          configuration: ${buildConfiguration}
+          framework: netcoreapp2.2
+          platform: macOS
