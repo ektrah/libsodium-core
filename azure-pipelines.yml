@@ -23,7 +23,7 @@ jobs:
 
       - template: templates/test.yml
         parameters:
-          configuration: ${buildConfiguration}
+          configuration: "${buildConfiguration}"
           framework: netcoreapp1.1
           platform: Windows
 

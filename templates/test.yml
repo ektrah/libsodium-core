@@ -9,7 +9,8 @@ steps:
     inputs:
       command: test
       projects: "test/**/*.csproj"
-      arguments: "--configuration ${{ parameters.configuration }} --framework ${{ parameters.framework }} --no-build -r $(Build.SourcesDirectory)/TestResults/${{ parameters.framework }} --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/${{ parameters.framework }}/coverage"
+      arguments: "--configuration ${{ parameters.configuration }} --framework ${{ parameters.framework }} --no-build --results-directory $(Build.SourcesDirectory)/TestResults/${{ parameters.framework }} --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/${{ parameters.framework }}/coverage"
+      publishTestResults: false
 
   - task: PublishTestResults@2
     displayName: Publish ${{ parameters.framework }} test results
