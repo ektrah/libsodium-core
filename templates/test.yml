@@ -16,13 +16,15 @@ steps:
   - task: PublishTestResults@2
     displayName: Publish ${{ parameters.framework }} test results
     inputs:
-      testResultsFormat: NUnit
-      testResultsFiles: $(Build.SourcesDirectory)/TestResults/${{ parameters.framework }}/*.xml
+      testResultsFormat: VSTest
+      testResultsFiles: $(Build.SourcesDirectory)/TestResults/${{ parameters.framework }}/*.trx
       mergeTestResults: true
       testRunTitle: ${{ parameters.framework }}/${{ parameters.platform }}
+    condition: succeeded()
 
   - task: PublishCodeCoverageResults@1
     displayName: Publish ${{ parameters.framework }} coverage results
     inputs:
       codeCoverageTool: "cobertura"
       summaryFileLocation: "$(Build.SourcesDirectory)/TestResults/${{ parameters.framework }}/coverage.xml"
+    condition: and(succeeded(), eq('${{ parameters.collectCoverage }}', 'true'))
