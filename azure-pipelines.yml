@@ -2,7 +2,7 @@ trigger:
   - master
 
 variables:
-  buildConfiguration: "Release"
+  configuration: "Release"
 
 jobs:
   - job: Windows
@@ -19,23 +19,23 @@ jobs:
         displayName: Build
         inputs:
           projects: "**/*.csproj"
-          arguments: "--configuration $(buildConfiguration) --no-restore"
+          arguments: "--configuration $(configuration) --no-restore"
 
       - template: templates/test.yml
         parameters:
-          configuration: "${buildConfiguration}"
+          configuration: ${{ variables.configuration }}
           framework: netcoreapp1.1
           platform: Windows
 
       - template: templates/test.yml
         parameters:
-          configuration: "${buildConfiguration}"
+          configuration: ${{ variables.configuration }}
           framework: "netcoreapp2.0"
           platform: "Windows"
 
       - template: templates/test.yml
         parameters:
-          configuration: "${buildConfiguration}"
+          configuration: ${{ variables.configuration }}
           framework: "netcoreapp2.2"
           platform: "Windows"
 
@@ -59,23 +59,23 @@ jobs:
         displayName: Build
         inputs:
           projects: "**/*.csproj"
-          arguments: "--configuration $(buildConfiguration) --no-restore"
+          arguments: "--configuration $(configuration) --no-restore"
 
       - template: templates/test.yml
         parameters:
-          configuration: "${buildConfiguration}"
+          configuration: ${{ variables.configuration }}
           framework: "netcoreapp1.1"
           platform: "Linux"
 
       - template: templates/test.yml
         parameters:
-          configuration: "${buildConfiguration}"
+          configuration: ${{ variables.configuration }}
           framework: "netcoreapp2.0"
           platform: "Linux"
 
       - template: templates/test.yml
         parameters:
-          configuration: "${buildConfiguration}"
+          configuration: ${{ variables.configuration }}
           framework: "netcoreapp2.2"
           platform: "Linux"
 
@@ -93,22 +93,22 @@ jobs:
         displayName: Build
         inputs:
           projects: "**/*.csproj"
-          arguments: "--configuration $(buildConfiguration) --no-restore"
+          arguments: "--configuration $(configuration) --no-restore"
 
       - template: templates/test.yml
         parameters:
-          configuration: "${buildConfiguration}"
+          configuration: ${{ variables.configuration }}
           framework: "netcoreapp1.1"
           platform: "macOS"
 
       - template: templates/test.yml
         parameters:
-          configuration: "${buildConfiguration}"
+          configuration: ${{ variables.configuration }}
           framework: "netcoreapp2.0"
           platform: "macOS"
 
       - template: templates/test.yml
         parameters:
-          configuration: "${buildConfiguration}"
+          configuration: ${{ variables.configuration }}
           framework: "netcoreapp2.2"
           platform: "macOS"
