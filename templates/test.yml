@@ -2,6 +2,7 @@ parameters:
   configuration: ""
   framework: ""
   platform: ""
+  collectCoverage: true
 
 steps:
   - task: DotNetCoreCLI@2
@@ -9,7 +10,7 @@ steps:
     inputs:
       command: test
       projects: "test/**/*.csproj"
-      arguments: "--configuration ${{ parameters.configuration }} --framework ${{ parameters.framework }} --no-build --results-directory $(Build.SourcesDirectory)/TestResults/${{ parameters.framework }} --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/${{ parameters.framework }}/coverage"
+      arguments: "--configuration ${{ parameters.configuration }} --framework ${{ parameters.framework }} --no-build --results-directory $(Build.SourcesDirectory)/TestResults/${{ parameters.framework }} --logger trx /p:CollectCoverage=${{ parameters.collectCoverage }} /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/${{ parameters.framework }}/coverage"
       publishTestResults: false
 
   - task: PublishTestResults@2

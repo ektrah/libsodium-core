@@ -26,6 +26,7 @@ jobs:
           configuration: ${{ variables.configuration }}
           framework: netcoreapp1.1
           platform: Windows
+          collectCoverage: false
 
       - template: templates/test.yml
         parameters:
@@ -66,6 +67,7 @@ jobs:
           configuration: ${{ variables.configuration }}
           framework: "netcoreapp1.1"
           platform: "Linux"
+          collectCoverage: false
 
       - template: templates/test.yml
         parameters:
@@ -100,6 +102,7 @@ jobs:
           configuration: ${{ variables.configuration }}
           framework: "netcoreapp1.1"
           platform: "macOS"
+          collectCoverage: false
 
       - template: templates/test.yml
         parameters:
