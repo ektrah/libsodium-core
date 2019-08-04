@@ -23,17 +23,73 @@ jobs:
       arguments: '--configuration $(buildConfiguration) --no-restore'
       
   - task: DotNetCoreCLI@2
-    displayName: Test
+    displayName: Test netcoreapp1.1
     inputs:
       command: test
       projects: 'test/**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/coverage'
+      arguments: '--configuration $(buildConfiguration) --framework netcoreapp1.1 --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/netcoreapp1.1/coverage -r $(Build.SourcesDirectory)/TestResults/netcoreapp1.1'
+
+  - task: PublishTestResults@2
+    displayName: Publish netcoreapp1.1 test results
+    inputs:
+      testResultsFormat: NUnit
+      testResultsFiles: $(Build.SourcesDirectory)/TestResults/netcoreapp1.1/*.xml
+      mergeTestResults: true
+      testRunTitle: netcoreapp1.1/Windows
 
   - task: PublishCodeCoverageResults@1
-    displayName: Publish coverage results
+    displayName: Publish netcoreapp1.1 coverage results
     inputs:
       codeCoverageTool: 'cobertura'
-      summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/coverage.xml'
+      summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/netcoreapp1.1/coverage.xml'
+
+  - task: DotNetCoreCLI@2
+    displayName: Test netcoreapp2.0
+    inputs:
+      command: test
+      projects: 'test/**/*.csproj'
+      arguments: '--configuration $(buildConfiguration) --framework netcoreapp2.0 --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/netcoreapp2.0/coverage -r $(Build.SourcesDirectory)/TestResults/netcoreapp2.0'
+
+  - task: PublishTestResults@2
+    displayName: Publish netcoreapp2.0 test results
+    inputs:
+      testResultsFormat: NUnit
+      testResultsFiles: $(Build.SourcesDirectory)/TestResults/netcoreapp2.0/*.xml
+      mergeTestResults: true
+      testRunTitle: netcoreapp2.0/Windows
+
+  - task: PublishCodeCoverageResults@1
+    displayName: Publish netcoreapp2.0 coverage results
+    inputs:
+      codeCoverageTool: 'cobertura'
+      summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/netcoreapp2.0/coverage.xml'
+
+  - task: DotNetCoreCLI@2
+    displayName: Test netcoreapp2.2
+    inputs:
+      command: test
+      projects: 'test/**/*.csproj'
+      arguments: '--configuration $(buildConfiguration) --framework netcoreapp2.2 --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/netcoreapp2.2/coverage -r $(Build.SourcesDirectory)/TestResults/netcoreapp2.2'
+
+  - task: PublishTestResults@2
+    displayName: Publish netcoreapp2.2 test results
+    inputs:
+      testResultsFormat: NUnit
+      testResultsFiles: $(Build.SourcesDirectory)/TestResults/netcoreapp2.2/*.xml
+      mergeTestResults: true
+      testRunTitle: netcoreapp2.2/Windows
+
+  - task: PublishCodeCoverageResults@1
+    displayName: Publish netcoreapp2.2 coverage results
+    inputs:
+      codeCoverageTool: 'cobertura'
+      summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/netcoreapp2.2/coverage.xml'
+
+  - task: PublishBuildArtifacts@1
+    displayName: Save package artifacts
+    inputs:
+      PathtoPublish: $(Build.ArtifactStagingDirectory)
+      ArtifactName: Package
 
 - job: Linux
   pool:
