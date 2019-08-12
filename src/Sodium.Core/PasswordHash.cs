@@ -7,10 +7,6 @@ namespace Sodium
   /// <summary>Hashes passwords using the argon2i and scrypt algorithm</summary>
   public class PasswordHash
   {
-    /// <summary>
-    /// Is an identifier for the algorithm to use and should 
-    /// be currently set to crypto_pwhash_ALG_DEFAULT.
-    /// </summary>
     private const uint ARGON_STRBYTES = 128U;
     private const uint ARGON_SALTBYTES = 16U;
 
