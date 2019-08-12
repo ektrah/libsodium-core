@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Sodium.Exceptions;
+using System;
 using System.Text;
-using Sodium.Exceptions;
 
 namespace Sodium
 {
@@ -11,7 +11,6 @@ namespace Sodium
     /// Is an identifier for the algorithm to use and should 
     /// be currently set to crypto_pwhash_ALG_DEFAULT.
     /// </summary>
-    private const int ARGON_ALGORITHM_DEFAULT = 1;
     private const uint ARGON_STRBYTES = 128U;
     private const uint ARGON_SALTBYTES = 16U;
 
@@ -27,14 +26,23 @@ namespace Sodium
     private const uint SCRYPT_SALSA208_SHA256_SALTBYTES = 32U;
 
     private const long SCRYPT_OPSLIMIT_INTERACTIVE = 524288;
-    private const long SCRYPT_OPSLIMIT_MODERATE =   8388608; 
-    private const long SCRYPT_OPSLIMIT_MEDIUM =     8388608;
+    private const long SCRYPT_OPSLIMIT_MODERATE = 8388608;
+    private const long SCRYPT_OPSLIMIT_MEDIUM = 8388608;
     private const long SCRYPT_OPSLIMIT_SENSITIVE = 33554432;
 
-    private const int SCRYPT_MEMLIMIT_INTERACTIVE =  16777216;
-    private const int SCRYPT_MEMLIMIT_MODERATE =    100000000;
-    private const int SCRYPT_MEMLIMIT_MEDIUM =      134217728;
-    private const int SCRYPT_MEMLIMIT_SENSITIVE =  1073741824;
+    private const int SCRYPT_MEMLIMIT_INTERACTIVE = 16777216;
+    private const int SCRYPT_MEMLIMIT_MODERATE = 100000000;
+    private const int SCRYPT_MEMLIMIT_MEDIUM = 134217728;
+    private const int SCRYPT_MEMLIMIT_SENSITIVE = 1073741824;
+
+    /// <summary>Represents available Argon algorithms</summary>
+    public enum ArgonAlgorithm
+    {
+      /// <summary>2I13, default Argon algorithm</summary>
+      Argon_2I13 = 1,
+      /// <summary>2ID13 Argon algorithm</summary>
+      Argon_2ID13 = 2
+    }
 
     /// <summary>Represents predefined and useful limits for ArgonHashBinary() and ArgonHashString().</summary>
     public enum StrengthArgon
@@ -103,12 +111,13 @@ namespace Sodium
     /// <param name="opsLimit">Represents a maximum amount of computations to perform.</param>
     /// <param name="memLimit">Is the maximum amount of RAM that the function will use, in bytes.</param>
     /// <param name="outputLength">The length of the computed output array.</param>
+    /// <param name="alg">Argon Algorithm</param>
     /// <returns>Returns a byte array of the given size.</returns>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     /// <exception cref="SaltOutOfRangeException"></exception>
     /// <exception cref="OutOfMemoryException"></exception>
-    public static byte[] ArgonHashBinary(byte[] password, byte[] salt, long opsLimit, int memLimit, long outputLength = ARGON_SALTBYTES)
+    public static byte[] ArgonHashBinary(byte[] password, byte[] salt, long opsLimit, int memLimit, long outputLength = ARGON_SALTBYTES, ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
     {
       if (password == null)
         throw new ArgumentNullException("password", "Password cannot be null");
@@ -131,7 +140,7 @@ namespace Sodium
       var buffer = new byte[outputLength];
 
       SodiumCore.Init();
-      var ret = SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit, ARGON_ALGORITHM_DEFAULT);
+      var ret = SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit, (int)alg);
 
       if (ret != 0)
         throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
@@ -144,14 +153,15 @@ namespace Sodium
     /// <param name="salt">The salt.</param>
     /// <param name="limit">The limit for computation.</param>
     /// <param name="outputLength">The length of the computed output array.</param>
+    /// <param name="alg">Argon Algorithm</param>
     /// <returns>Returns a byte array of the given size.</returns>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     /// <exception cref="SaltOutOfRangeException"></exception>
     /// <exception cref="OutOfMemoryException"></exception>
-    public static byte[] ArgonHashBinary(string password, string salt, StrengthArgon limit = StrengthArgon.Interactive, long outputLength = ARGON_SALTBYTES)
+    public static byte[] ArgonHashBinary(string password, string salt, StrengthArgon limit = StrengthArgon.Interactive, long outputLength = ARGON_SALTBYTES, ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
     {
-      return ArgonHashBinary(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(salt), limit, outputLength);
+      return ArgonHashBinary(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(salt), limit, outputLength, alg);
     }
 
     /// <summary>Derives a secret key of any size from a password and a salt.</summary>
@@ -159,12 +169,13 @@ namespace Sodium
     /// <param name="salt">The salt.</param>
     /// <param name="limit">The limit for computation.</param>
     /// <param name="outputLength">The length of the computed output array.</param>
+    /// <param name="alg">Argon Algorithm</param>
     /// <returns>Returns a byte array of the given size.</returns>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     /// <exception cref="SaltOutOfRangeException"></exception>
     /// <exception cref="OutOfMemoryException"></exception>
-    public static byte[] ArgonHashBinary(byte[] password, byte[] salt, StrengthArgon limit = StrengthArgon.Interactive, long outputLength = ARGON_SALTBYTES)
+    public static byte[] ArgonHashBinary(byte[] password, byte[] salt, StrengthArgon limit = StrengthArgon.Interactive, long outputLength = ARGON_SALTBYTES, ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
     {
       int memLimit;
       long opsLimit;
@@ -189,7 +200,7 @@ namespace Sodium
           break;
       }
 
-      return ArgonHashBinary(password, salt, opsLimit, memLimit, outputLength);
+      return ArgonHashBinary(password, salt, opsLimit, memLimit, outputLength, alg);
     }
 
     /// <summary>
