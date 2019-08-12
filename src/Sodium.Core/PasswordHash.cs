@@ -113,7 +113,8 @@ namespace Sodium
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     /// <exception cref="SaltOutOfRangeException"></exception>
     /// <exception cref="OutOfMemoryException"></exception>
-    public static byte[] ArgonHashBinary(byte[] password, byte[] salt, long opsLimit, int memLimit, long outputLength = ARGON_SALTBYTES, ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
+    public static byte[] ArgonHashBinary(byte[] password, byte[] salt, long opsLimit, int memLimit, long outputLength = ARGON_SALTBYTES,
+      ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
     {
       if (password == null)
         throw new ArgumentNullException("password", "Password cannot be null");
@@ -155,7 +156,8 @@ namespace Sodium
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     /// <exception cref="SaltOutOfRangeException"></exception>
     /// <exception cref="OutOfMemoryException"></exception>
-    public static byte[] ArgonHashBinary(string password, string salt, StrengthArgon limit = StrengthArgon.Interactive, long outputLength = ARGON_SALTBYTES, ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
+    public static byte[] ArgonHashBinary(string password, string salt, StrengthArgon limit = StrengthArgon.Interactive, long outputLength = ARGON_SALTBYTES,
+      ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
     {
       return ArgonHashBinary(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(salt), limit, outputLength, alg);
     }
@@ -171,7 +173,8 @@ namespace Sodium
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     /// <exception cref="SaltOutOfRangeException"></exception>
     /// <exception cref="OutOfMemoryException"></exception>
-    public static byte[] ArgonHashBinary(byte[] password, byte[] salt, StrengthArgon limit = StrengthArgon.Interactive, long outputLength = ARGON_SALTBYTES, ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
+    public static byte[] ArgonHashBinary(byte[] password, byte[] salt, StrengthArgon limit = StrengthArgon.Interactive, long outputLength = ARGON_SALTBYTES,
+      ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
     {
       int memLimit;
       long opsLimit;
