@@ -20,7 +20,7 @@ namespace Tests
     }
 
     [Test]
-    public void GenerateKeyTesttest()
+    public void GenerateKeyVerifySignedDataTest()
     {
       var actual = PublicKeyAuth.GenerateKeyPair();
       byte[] randomArray = SodiumCore.GetRandomBytes(255);
