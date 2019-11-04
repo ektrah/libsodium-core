@@ -9,3 +9,4 @@ Those listed below have contributed to `libsodium-net` or `libsodium-core`, and 
  * Trond Arne Bråthen <tabrath@gmail.com>
  * Daniel (danielcrenna) <daniel.crenna@gmail.com>
  * PauliusK (Nithilim) <https://github.com/Nithilim>
+ * Jonas Schmid <https://github.com/jschmid>

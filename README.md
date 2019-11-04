@@ -10,6 +10,8 @@ libsodium-net is not compliant with .net standard, so this is just a migrated fo
 
     dotnet add package Sodium.Core
 
+To use the library with Xamarin, you have to follow additional steps described here: [Xamarin documentation](Xamarin.md).
+
 ## Documentation
 
 [libsodium-net](http://bitbeans.gitbooks.io/libsodium-net/content/) documentation is available (an adapted copy of the [original](http://doc.libsodium.org/) written by Frank Denis ([@jedisct1](https://github.com/jedisct1))).
