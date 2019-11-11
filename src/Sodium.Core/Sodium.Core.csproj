@@ -1,16 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.54">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>MonoAndroid90;Xamarin.iOS10;netstandard1.6;netstandard2.0</TargetFrameworks>
     <Description>libsodium for .net core</Description>
-    <Copyright>Copyright © tabrath 2017</Copyright>
+    <Copyright>Copyright © tabrath 2019</Copyright>
     <AssemblyTitle>Sodium.Core</AssemblyTitle>
-    <VersionPrefix>1.2.0</VersionPrefix>
+    <VersionPrefix>1.2.1</VersionPrefix>
     <Authors>tabrath</Authors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>Sodium.Core</AssemblyName>
     <PackageId>Sodium.Core</PackageId>
-    <PackageTags>libsodium</PackageTags>
+    <PackageTags>libsodium;xamarin;xamarin.ios;xamarin.android</PackageTags>
     <PackageLicenseUrl>https://github.com/tabrath/libsodium-core/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/tabrath/libsodium-core/</RepositoryUrl>
@@ -34,6 +35,13 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <DefineConstants>$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS'))">
+    <DefineConstants>$(DefineConstants);IOS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('MonoAndroid'))">
+    <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

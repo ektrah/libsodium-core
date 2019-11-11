@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 using Sodium;
+using System;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -41,10 +41,18 @@ namespace Tests
         PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH);
       var hash2 = PasswordHash.ArgonHashBinary(Utilities.HexToBinary(PASSWORD), Utilities.HexToBinary(SALT),
         PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH);
+      var hash3 = PasswordHash.ArgonHashBinary(Utilities.HexToBinary(PASSWORD), Utilities.HexToBinary(SALT),
+        PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH, PasswordHash.ArgonAlgorithm.Argon_2ID13);
+      var hash4 = PasswordHash.ArgonHashBinary(Utilities.HexToBinary(PASSWORD), Utilities.HexToBinary(SALT),
+        PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH, PasswordHash.ArgonAlgorithm.Argon_2ID13);
 
       Assert.AreEqual(OUTPUT_LENGTH, hash1.Length);
       Assert.AreEqual(OUTPUT_LENGTH, hash2.Length);
       Assert.AreEqual(hash1, hash2);
+
+      Assert.AreEqual(OUTPUT_LENGTH, hash3.Length);
+      Assert.AreEqual(OUTPUT_LENGTH, hash4.Length);
+      Assert.AreEqual(hash3, hash4);
     }
 
     /// <summary>
@@ -58,10 +66,18 @@ namespace Tests
       const long OUTPUT_LENGTH = 16;
       var hash1 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH);
       var hash2 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH);
+      var hash3 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH,
+        PasswordHash.ArgonAlgorithm.Argon_2ID13);
+      var hash4 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH,
+        PasswordHash.ArgonAlgorithm.Argon_2ID13);
 
       Assert.AreEqual(OUTPUT_LENGTH, hash1.Length);
       Assert.AreEqual(OUTPUT_LENGTH, hash2.Length);
       Assert.AreEqual(hash1, hash2);
+
+      Assert.AreEqual(OUTPUT_LENGTH, hash3.Length);
+      Assert.AreEqual(OUTPUT_LENGTH, hash4.Length);
+      Assert.AreEqual(hash3, hash4);
     }
 
     /// <summary>
@@ -75,10 +91,18 @@ namespace Tests
       const long OUTPUT_LENGTH = 32;
       var hash1 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH);
       var hash2 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH);
+      var hash3 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH,
+        PasswordHash.ArgonAlgorithm.Argon_2ID13);
+      var hash4 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH,
+        PasswordHash.ArgonAlgorithm.Argon_2ID13);
 
       Assert.AreEqual(OUTPUT_LENGTH, hash1.Length);
       Assert.AreEqual(OUTPUT_LENGTH, hash2.Length);
       Assert.AreEqual(hash1, hash2);
+
+      Assert.AreEqual(OUTPUT_LENGTH, hash3.Length);
+      Assert.AreEqual(OUTPUT_LENGTH, hash4.Length);
+      Assert.AreEqual(hash3, hash4);
     }
 
     /// <summary>
@@ -92,10 +116,18 @@ namespace Tests
       const long OUTPUT_LENGTH = 128;
       var hash1 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH);
       var hash2 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH);
+      var hash3 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH,
+        PasswordHash.ArgonAlgorithm.Argon_2ID13);
+      var hash4 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH,
+        PasswordHash.ArgonAlgorithm.Argon_2ID13);
 
       Assert.AreEqual(OUTPUT_LENGTH, hash1.Length);
       Assert.AreEqual(OUTPUT_LENGTH, hash2.Length);
       Assert.AreEqual(hash1, hash2);
+
+      Assert.AreEqual(OUTPUT_LENGTH, hash3.Length);
+      Assert.AreEqual(OUTPUT_LENGTH, hash4.Length);
+      Assert.AreEqual(hash3, hash4);
     }
 
     /// <summary>
@@ -109,10 +141,18 @@ namespace Tests
       const long OUTPUT_LENGTH = 512;
       var hash1 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH);
       var hash2 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH);
+      var hash3 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH,
+        PasswordHash.ArgonAlgorithm.Argon_2ID13);
+      var hash4 = PasswordHash.ArgonHashBinary(PASSWORD, SALT, PasswordHash.StrengthArgon.Interactive, OUTPUT_LENGTH,
+        PasswordHash.ArgonAlgorithm.Argon_2ID13);
 
       Assert.AreEqual(OUTPUT_LENGTH, hash1.Length);
       Assert.AreEqual(OUTPUT_LENGTH, hash2.Length);
       Assert.AreEqual(hash1, hash2);
+
+      Assert.AreEqual(OUTPUT_LENGTH, hash3.Length);
+      Assert.AreEqual(OUTPUT_LENGTH, hash4.Length);
+      Assert.AreEqual(hash3, hash4);
     }
 
     [Test]
@@ -248,6 +288,11 @@ namespace Tests
             PasswordHash.ArgonHashBinary(Utilities.HexToBinary(testObject.Password),
               Utilities.HexToBinary(testObject.Salt), testObject.OpsLimit, testObject.MemLimit, testObject.OutputLength)
               .Length);
+
+          Assert.AreEqual(testObject.OutputLength,
+            PasswordHash.ArgonHashBinary(Utilities.HexToBinary(testObject.Password),
+                Utilities.HexToBinary(testObject.Salt), testObject.OpsLimit, testObject.MemLimit, testObject.OutputLength,
+                PasswordHash.ArgonAlgorithm.Argon_2ID13).Length);
         }
       }
       catch (OutOfMemoryException e)
