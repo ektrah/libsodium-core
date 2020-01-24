@@ -1,5 +1,6 @@
 ﻿using Sodium.Exceptions;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Sodium
@@ -548,5 +549,69 @@ namespace Sodium
 
       return ret == 0;
     }
+
+    /// <summary>
+    /// Checks if the current password hash needs rehashing
+    /// </summary>
+    /// <param name="password">Password that needs rehashing</param>
+    /// <param name="opsLimit"></param>
+    /// <param name="memLimit"></param>
+    /// <returns></returns>
+    public static bool ArgonPasswordNeedsRehash(byte[] password, ulong opsLimit, uint memLimit)
+    {
+      if (password == null)
+      {
+        throw new ArgumentNullException("password", "Password cannot be null");
+      }
+
+      int status = SodiumLibrary.crypto_pwhash_str_needs_rehash(password, opsLimit, memLimit);
+
+      if(status == -1)
+      {
+        throw new InvalidArgonPasswordString();
+      }
+
+      return status == 1;
+    }
+
+
+    public static bool ArgonPasswordNeedsRehash(byte[] password, StrengthArgon limit = StrengthArgon.Interactive)
+    {
+      uint memLimit;
+      ulong opsLimit;
+
+      switch (limit)
+      {
+        case StrengthArgon.Interactive:
+          opsLimit = ARGON_OPSLIMIT_INTERACTIVE;
+          memLimit = ARGON_MEMLIMIT_INTERACTIVE;
+          break;
+        case StrengthArgon.Moderate:
+          opsLimit = ARGON_OPSLIMIT_MODERATE;
+          memLimit = ARGON_MEMLIMIT_MODERATE;
+          break;
+        case StrengthArgon.Sensitive:
+          opsLimit = ARGON_OPSLIMIT_SENSITIVE;
+          memLimit = ARGON_MEMLIMIT_SENSITIVE;
+          break;
+        default:
+          opsLimit = ARGON_OPSLIMIT_INTERACTIVE;
+          memLimit = ARGON_MEMLIMIT_INTERACTIVE;
+          break;
+      }
+
+      return ArgonPasswordNeedsRehash(password, opsLimit, memLimit);
+    }
+
+    public static bool ArgonPasswordNeedsRehash(string password, ulong opsLimit, uint memLimit)
+    {
+      return ArgonPasswordNeedsRehash(Encoding.UTF8.GetBytes(password), opsLimit, memLimit);
+    }
+
+    public static bool ArgonPasswordNeedsRehash(string password, StrengthArgon limit = StrengthArgon.Interactive)
+    {
+      return ArgonPasswordNeedsRehash(Encoding.UTF8.GetBytes(password), limit);
+    }
+
   }
 }
