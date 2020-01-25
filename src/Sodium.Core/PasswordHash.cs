@@ -1,6 +1,5 @@
 ﻿using Sodium.Exceptions;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Sodium
@@ -138,6 +137,7 @@ namespace Sodium
       var buffer = new byte[outputLength];
 
       SodiumCore.Init();
+      
       var ret = SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit, (int)alg);
 
       if (ret != 0)
@@ -282,6 +282,7 @@ namespace Sodium
       var pass = Encoding.UTF8.GetBytes(password);
 
       SodiumCore.Init();
+
       var ret = SodiumLibrary.crypto_pwhash_str(buffer, pass, pass.Length, opsLimit, memLimit);
 
       if (ret != 0)
@@ -313,6 +314,8 @@ namespace Sodium
         throw new ArgumentNullException("password", "Password cannot be null");
       if (hash == null)
         throw new ArgumentNullException("hash", "Hash cannot be null");
+
+      SodiumCore.Init();
 
       var ret = SodiumLibrary.crypto_pwhash_str_verify(hash, password, password.Length);
 
@@ -386,6 +389,7 @@ namespace Sodium
       var pass = Encoding.UTF8.GetBytes(password);
 
       SodiumCore.Init();
+
       var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, pass.Length, opsLimit, memLimit);
 
       if (ret != 0)
@@ -515,6 +519,7 @@ namespace Sodium
       var buffer = new byte[outputLength];
 
       SodiumCore.Init();
+
       var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit);
 
       if (ret != 0)
@@ -544,7 +549,9 @@ namespace Sodium
         throw new ArgumentNullException("password", "Password cannot be null");
       if (hash == null)
         throw new ArgumentNullException("hash", "Hash cannot be null");
-
+      
+      SodiumCore.Init();
+      
       var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str_verify(hash, password, password.Length);
 
       return ret == 0;
@@ -563,6 +570,8 @@ namespace Sodium
       {
         throw new ArgumentNullException("password", "Password cannot be null");
       }
+
+      SodiumCore.Init();
 
       int status = SodiumLibrary.crypto_pwhash_str_needs_rehash(password, opsLimit, memLimit);
 
