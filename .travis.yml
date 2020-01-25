@@ -45,7 +45,7 @@ before_install:
   - ulimit -n 1024
 
 install:
-  - dotnet restore --disable-parallel -r $TRAVIS_OS_NAME-x64 -f $DOTNET_VERSION
+  - dotnet restore --disable-parallel -r $TRAVIS_OS_NAME-x64
 
 script:
-  - dotnet test test/Sodium.Tests/Sodium.Tests.csproj -f $DOTNET_VERSION
+  - dotnet test test/Sodium.Tests/Sodium.Tests.csproj --framework $DOTNET_VERSION
