@@ -1,5 +1,5 @@
 environment:
-  PKG_VERSION: 1.2.1
+  PKG_VERSION: 1.2.2
   VERSION_SUFFIX: ""
 version: ${PKG_VERSION}-{build}
 configuration: Release
