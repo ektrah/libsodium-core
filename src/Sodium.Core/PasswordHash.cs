@@ -1,6 +1,5 @@
 ﻿using Sodium.Exceptions;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Sodium
@@ -12,10 +11,12 @@ namespace Sodium
     private const uint ARGON_SALTBYTES = 16U;
 
     private const long ARGON_OPSLIMIT_INTERACTIVE = 4;
+    private const long ARGON_OPSLIMIT_MEDIUM = 4;
     private const long ARGON_OPSLIMIT_MODERATE = 6;
     private const long ARGON_OPSLIMIT_SENSITIVE = 8;
 
     private const int ARGON_MEMLIMIT_INTERACTIVE = 33554432;
+    private const int ARGON_MEMLIMIT_MEDIUM = 67108864;
     private const int ARGON_MEMLIMIT_MODERATE = 134217728;
     private const int ARGON_MEMLIMIT_SENSITIVE = 536870912;
 
@@ -46,6 +47,8 @@ namespace Sodium
     {
       /// <summary>For interactive sessions (fast: uses 32MB of RAM).</summary>
       Interactive,
+      /// <summary>For medium use (medium: uses 64MB of RAM)</summary>
+      Medium,
       /// <summary>For normal use (moderate: uses 128MB of RAM).</summary>
       Moderate,
       /// <summary>For highly sensitive data (slow: uses 512MB of RAM).</summary>
@@ -118,27 +121,27 @@ namespace Sodium
       ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
     {
       if (password == null)
-        throw new ArgumentNullException("password", "Password cannot be null");
+        throw new ArgumentNullException(nameof(password), "Password cannot be null");
 
       if (salt == null)
-        throw new ArgumentNullException("salt", "Salt cannot be null");
+        throw new ArgumentNullException(nameof(salt), "Salt cannot be null");
 
       if (salt.Length != ARGON_SALTBYTES)
-        throw new SaltOutOfRangeException(string.Format("Salt must be {0} bytes in length.", ARGON_SALTBYTES));
+        throw new SaltOutOfRangeException($"Salt must be {ARGON_SALTBYTES} bytes in length.");
 
       if (opsLimit < 3)
-        throw new ArgumentOutOfRangeException("opsLimit", "opsLimit the number of passes, has to be at least 3");
+        throw new ArgumentOutOfRangeException(nameof(opsLimit), "opsLimit the number of passes, has to be at least 3");
 
       if (memLimit <= 0)
-        throw new ArgumentOutOfRangeException("memLimit", "memLimit cannot be zero or negative");
+        throw new ArgumentOutOfRangeException(nameof(memLimit), "memLimit cannot be zero or negative");
 
       if (outputLength <= 0)
-        throw new ArgumentOutOfRangeException("outputLength", "OutputLength cannot be zero or negative");
+        throw new ArgumentOutOfRangeException(nameof(outputLength), "OutputLength cannot be zero or negative");
 
       var buffer = new byte[outputLength];
 
       SodiumCore.Init();
-      
+
       var ret = SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit, (int)alg);
 
       if (ret != 0)
@@ -242,6 +245,10 @@ namespace Sodium
         case StrengthArgon.Interactive:
           opsLimit = ARGON_OPSLIMIT_INTERACTIVE;
           memLimit = ARGON_MEMLIMIT_INTERACTIVE;
+          break;
+        case StrengthArgon.Medium:
+          opsLimit = ARGON_OPSLIMIT_MEDIUM;
+          memLimit = ARGON_MEMLIMIT_MEDIUM;
           break;
         case StrengthArgon.Moderate:
           opsLimit = ARGON_OPSLIMIT_MODERATE;
@@ -550,9 +557,9 @@ namespace Sodium
         throw new ArgumentNullException("password", "Password cannot be null");
       if (hash == null)
         throw new ArgumentNullException("hash", "Hash cannot be null");
-      
+
       SodiumCore.Init();
-      
+
       var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str_verify(hash, password, password.Length);
 
       return ret == 0;
@@ -576,7 +583,7 @@ namespace Sodium
 
       int status = SodiumLibrary.crypto_pwhash_str_needs_rehash(password, opsLimit, memLimit);
 
-      if(status == -1)
+      if (status == -1)
       {
         throw new InvalidArgonPasswordString();
       }
@@ -595,6 +602,10 @@ namespace Sodium
         case StrengthArgon.Interactive:
           opsLimit = ARGON_OPSLIMIT_INTERACTIVE;
           memLimit = ARGON_MEMLIMIT_INTERACTIVE;
+          break;
+        case StrengthArgon.Medium:
+          opsLimit = ARGON_OPSLIMIT_MEDIUM;
+          memLimit = ARGON_MEMLIMIT_MEDIUM;
           break;
         case StrengthArgon.Moderate:
           opsLimit = ARGON_OPSLIMIT_MODERATE;
@@ -622,6 +633,5 @@ namespace Sodium
     {
       return ArgonPasswordNeedsRehash(Encoding.UTF8.GetBytes(password), limit);
     }
-
   }
 }
