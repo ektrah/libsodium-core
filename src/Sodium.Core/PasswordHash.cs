@@ -181,28 +181,7 @@ namespace Sodium
     public static byte[] ArgonHashBinary(byte[] password, byte[] salt, StrengthArgon limit = StrengthArgon.Interactive, long outputLength = ARGON_SALTBYTES,
       ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
     {
-      int memLimit;
-      long opsLimit;
-
-      switch (limit)
-      {
-        case StrengthArgon.Interactive:
-          opsLimit = ARGON_OPSLIMIT_INTERACTIVE;
-          memLimit = ARGON_MEMLIMIT_INTERACTIVE;
-          break;
-        case StrengthArgon.Moderate:
-          opsLimit = ARGON_OPSLIMIT_MODERATE;
-          memLimit = ARGON_MEMLIMIT_MODERATE;
-          break;
-        case StrengthArgon.Sensitive:
-          opsLimit = ARGON_OPSLIMIT_SENSITIVE;
-          memLimit = ARGON_MEMLIMIT_SENSITIVE;
-          break;
-        default:
-          opsLimit = ARGON_OPSLIMIT_INTERACTIVE;
-          memLimit = ARGON_MEMLIMIT_INTERACTIVE;
-          break;
-      }
+      var (opsLimit, memLimit) = GetArgonOpsAndMemoryLimit(limit);
 
       return ArgonHashBinary(password, salt, opsLimit, memLimit, outputLength, alg);
     }
@@ -237,32 +216,7 @@ namespace Sodium
     /// <exception cref="OutOfMemoryException"></exception>
     public static string ArgonHashString(string password, StrengthArgon limit = StrengthArgon.Interactive)
     {
-      int memLimit;
-      long opsLimit;
-
-      switch (limit)
-      {
-        case StrengthArgon.Interactive:
-          opsLimit = ARGON_OPSLIMIT_INTERACTIVE;
-          memLimit = ARGON_MEMLIMIT_INTERACTIVE;
-          break;
-        case StrengthArgon.Medium:
-          opsLimit = ARGON_OPSLIMIT_MEDIUM;
-          memLimit = ARGON_MEMLIMIT_MEDIUM;
-          break;
-        case StrengthArgon.Moderate:
-          opsLimit = ARGON_OPSLIMIT_MODERATE;
-          memLimit = ARGON_MEMLIMIT_MODERATE;
-          break;
-        case StrengthArgon.Sensitive:
-          opsLimit = ARGON_OPSLIMIT_SENSITIVE;
-          memLimit = ARGON_MEMLIMIT_SENSITIVE;
-          break;
-        default:
-          opsLimit = ARGON_OPSLIMIT_INTERACTIVE;
-          memLimit = ARGON_MEMLIMIT_INTERACTIVE;
-          break;
-      }
+      var (opsLimit, memLimit) = GetArgonOpsAndMemoryLimit(limit);
 
       return ArgonHashString(password, opsLimit, memLimit);
     }
@@ -278,13 +232,13 @@ namespace Sodium
     public static string ArgonHashString(string password, long opsLimit, int memLimit)
     {
       if (password == null)
-        throw new ArgumentNullException("password", "Password cannot be null");
+        throw new ArgumentNullException(nameof(password), "Password cannot be null");
 
       if (opsLimit < 3)
-        throw new ArgumentOutOfRangeException("opsLimit", "opsLimit the number of passes, has to be at least 3");
+        throw new ArgumentOutOfRangeException(nameof(opsLimit), "opsLimit the number of passes, has to be at least 3");
 
       if (memLimit <= 0)
-        throw new ArgumentOutOfRangeException("memLimit", "memLimit cannot be zero or negative");
+        throw new ArgumentOutOfRangeException(nameof(memLimit), "memLimit cannot be zero or negative");
 
       var buffer = new byte[ARGON_STRBYTES];
       var pass = Encoding.UTF8.GetBytes(password);
@@ -319,9 +273,9 @@ namespace Sodium
     public static bool ArgonHashStringVerify(byte[] hash, byte[] password)
     {
       if (password == null)
-        throw new ArgumentNullException("password", "Password cannot be null");
+        throw new ArgumentNullException(nameof(password), "Password cannot be null");
       if (hash == null)
-        throw new ArgumentNullException("hash", "Hash cannot be null");
+        throw new ArgumentNullException(nameof(hash), "Hash cannot be null");
 
       SodiumCore.Init();
 
@@ -339,37 +293,7 @@ namespace Sodium
     /// <exception cref="OutOfMemoryException"></exception>
     public static string ScryptHashString(string password, Strength limit = Strength.Interactive)
     {
-      int memLimit;
-      long opsLimit;
-
-      switch (limit)
-      {
-        case Strength.Interactive:
-          opsLimit = SCRYPT_OPSLIMIT_INTERACTIVE;
-          memLimit = SCRYPT_MEMLIMIT_INTERACTIVE;
-          break;
-        case Strength.Moderate:
-          opsLimit = SCRYPT_OPSLIMIT_MODERATE;
-          memLimit = SCRYPT_MEMLIMIT_MODERATE;
-          break;
-        case Strength.Medium:
-          opsLimit = SCRYPT_OPSLIMIT_MEDIUM;
-          memLimit = SCRYPT_MEMLIMIT_MEDIUM;
-          break;
-        case Strength.MediumSlow:
-          //to slow the process down, use the sensitive ops limit
-          opsLimit = SCRYPT_OPSLIMIT_SENSITIVE;
-          memLimit = SCRYPT_MEMLIMIT_MEDIUM;
-          break;
-        case Strength.Sensitive:
-          opsLimit = SCRYPT_OPSLIMIT_SENSITIVE;
-          memLimit = SCRYPT_MEMLIMIT_SENSITIVE;
-          break;
-        default:
-          opsLimit = SCRYPT_OPSLIMIT_INTERACTIVE;
-          memLimit = SCRYPT_MEMLIMIT_INTERACTIVE;
-          break;
-      }
+      var (opsLimit, memLimit) = GetScryptOpsAndMemoryLimit(limit);
 
       return ScryptHashString(password, opsLimit, memLimit);
     }
@@ -385,13 +309,13 @@ namespace Sodium
     public static string ScryptHashString(string password, long opsLimit, int memLimit)
     {
       if (password == null)
-        throw new ArgumentNullException("password", "Password cannot be null");
+        throw new ArgumentNullException(nameof(password), "Password cannot be null");
 
       if (opsLimit <= 0)
-        throw new ArgumentOutOfRangeException("opsLimit", "opsLimit cannot be zero or negative");
+        throw new ArgumentOutOfRangeException(nameof(opsLimit), "opsLimit cannot be zero or negative");
 
       if (memLimit <= 0)
-        throw new ArgumentOutOfRangeException("memLimit", "memLimit cannot be zero or negative");
+        throw new ArgumentOutOfRangeException(nameof(memLimit), "memLimit cannot be zero or negative");
 
       var buffer = new byte[SCRYPT_SALSA208_SHA256_STRBYTES];
       var pass = Encoding.UTF8.GetBytes(password);
@@ -435,37 +359,7 @@ namespace Sodium
     /// <exception cref="OutOfMemoryException"></exception>
     public static byte[] ScryptHashBinary(byte[] password, byte[] salt, Strength limit = Strength.Interactive, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
     {
-      int memLimit;
-      long opsLimit;
-
-      switch (limit)
-      {
-        case Strength.Interactive:
-          opsLimit = SCRYPT_OPSLIMIT_INTERACTIVE;
-          memLimit = SCRYPT_MEMLIMIT_INTERACTIVE;
-          break;
-        case Strength.Moderate:
-          opsLimit = SCRYPT_OPSLIMIT_MODERATE;
-          memLimit = SCRYPT_MEMLIMIT_MODERATE;
-          break;
-        case Strength.Medium:
-          opsLimit = SCRYPT_OPSLIMIT_MEDIUM;
-          memLimit = SCRYPT_MEMLIMIT_MEDIUM;
-          break;
-        case Strength.MediumSlow:
-          //to slow the process down, use the sensitive ops limit
-          opsLimit = SCRYPT_OPSLIMIT_SENSITIVE;
-          memLimit = SCRYPT_MEMLIMIT_MEDIUM;
-          break;
-        case Strength.Sensitive:
-          opsLimit = SCRYPT_OPSLIMIT_SENSITIVE;
-          memLimit = SCRYPT_MEMLIMIT_SENSITIVE;
-          break;
-        default:
-          opsLimit = SCRYPT_OPSLIMIT_INTERACTIVE;
-          memLimit = SCRYPT_MEMLIMIT_INTERACTIVE;
-          break;
-      }
+      var (opsLimit, memLimit) = GetScryptOpsAndMemoryLimit(limit);
 
       return ScryptHashBinary(password, salt, opsLimit, memLimit, outputLength);
     }
@@ -507,22 +401,22 @@ namespace Sodium
     public static byte[] ScryptHashBinary(byte[] password, byte[] salt, long opsLimit, int memLimit, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
     {
       if (password == null)
-        throw new ArgumentNullException("password", "Password cannot be null");
+        throw new ArgumentNullException(nameof(password), "Password cannot be null");
 
       if (salt == null)
-        throw new ArgumentNullException("salt", "Salt cannot be null");
+        throw new ArgumentNullException(nameof(salt), "Salt cannot be null");
 
       if (salt.Length != SCRYPT_SALSA208_SHA256_SALTBYTES)
-        throw new SaltOutOfRangeException(string.Format("Salt must be {0} bytes in length.", SCRYPT_SALSA208_SHA256_SALTBYTES));
+        throw new SaltOutOfRangeException($"Salt must be {SCRYPT_SALSA208_SHA256_SALTBYTES} bytes in length.");
 
       if (opsLimit <= 0)
-        throw new ArgumentOutOfRangeException("opsLimit", "opsLimit cannot be zero or negative");
+        throw new ArgumentOutOfRangeException(nameof(opsLimit), "opsLimit cannot be zero or negative");
 
       if (memLimit <= 0)
-        throw new ArgumentOutOfRangeException("memLimit", "memLimit cannot be zero or negative");
+        throw new ArgumentOutOfRangeException(nameof(memLimit), "memLimit cannot be zero or negative");
 
       if (outputLength < 16)
-        throw new ArgumentOutOfRangeException("outputLength", "OutputLength cannot be less than 16 bytes");
+        throw new ArgumentOutOfRangeException(nameof(outputLength), "OutputLength cannot be less than 16 bytes");
 
       var buffer = new byte[outputLength];
 
@@ -554,9 +448,9 @@ namespace Sodium
     public static bool ScryptHashStringVerify(byte[] hash, byte[] password)
     {
       if (password == null)
-        throw new ArgumentNullException("password", "Password cannot be null");
+        throw new ArgumentNullException(nameof(password), "Password cannot be null");
       if (hash == null)
-        throw new ArgumentNullException("hash", "Hash cannot be null");
+        throw new ArgumentNullException(nameof(hash), "Hash cannot be null");
 
       SodiumCore.Init();
 
@@ -572,7 +466,7 @@ namespace Sodium
     /// <param name="opsLimit"></param>
     /// <param name="memLimit"></param>
     /// <returns></returns>
-    public static bool ArgonPasswordNeedsRehash(byte[] password, ulong opsLimit, uint memLimit)
+    public static bool ArgonPasswordNeedsRehash(byte[] password, long opsLimit, int memLimit)
     {
       if (password == null)
       {
@@ -594,8 +488,25 @@ namespace Sodium
 
     public static bool ArgonPasswordNeedsRehash(byte[] password, StrengthArgon limit = StrengthArgon.Interactive)
     {
-      uint memLimit;
-      ulong opsLimit;
+      var (opsLimit, memLimit) = GetArgonOpsAndMemoryLimit(limit);
+
+      return ArgonPasswordNeedsRehash(password, opsLimit, memLimit);
+    }
+
+    public static bool ArgonPasswordNeedsRehash(string password, StrengthArgon limit = StrengthArgon.Interactive)
+    {
+      return ArgonPasswordNeedsRehash(Encoding.UTF8.GetBytes(password), limit);
+    }
+
+    public static bool ArgonPasswordNeedsRehash(string password, long opsLimit, int memLimit)
+    {
+      return ArgonPasswordNeedsRehash(Encoding.UTF8.GetBytes(password), opsLimit, memLimit);
+    }
+
+    private static (long opsLimit, int memLimit) GetArgonOpsAndMemoryLimit(StrengthArgon limit = StrengthArgon.Interactive)
+    {
+      int memLimit;
+      long opsLimit;
 
       switch (limit)
       {
@@ -620,18 +531,44 @@ namespace Sodium
           memLimit = ARGON_MEMLIMIT_INTERACTIVE;
           break;
       }
-
-      return ArgonPasswordNeedsRehash(password, opsLimit, memLimit);
+      return (opsLimit, memLimit);
     }
 
-    public static bool ArgonPasswordNeedsRehash(string password, ulong opsLimit, uint memLimit)
+    private static (long opsLimit, int memLimit) GetScryptOpsAndMemoryLimit(Strength limit = Strength.Interactive)
     {
-      return ArgonPasswordNeedsRehash(Encoding.UTF8.GetBytes(password), opsLimit, memLimit);
-    }
+      int memLimit;
+      long opsLimit;
 
-    public static bool ArgonPasswordNeedsRehash(string password, StrengthArgon limit = StrengthArgon.Interactive)
-    {
-      return ArgonPasswordNeedsRehash(Encoding.UTF8.GetBytes(password), limit);
+      switch (limit)
+      {
+        case Strength.Interactive:
+          opsLimit = SCRYPT_OPSLIMIT_INTERACTIVE;
+          memLimit = SCRYPT_MEMLIMIT_INTERACTIVE;
+          break;
+        case Strength.Moderate:
+          opsLimit = SCRYPT_OPSLIMIT_MODERATE;
+          memLimit = SCRYPT_MEMLIMIT_MODERATE;
+          break;
+        case Strength.Medium:
+          opsLimit = SCRYPT_OPSLIMIT_MEDIUM;
+          memLimit = SCRYPT_MEMLIMIT_MEDIUM;
+          break;
+        case Strength.MediumSlow:
+          //to slow the process down, use the sensitive ops limit
+          opsLimit = SCRYPT_OPSLIMIT_SENSITIVE;
+          memLimit = SCRYPT_MEMLIMIT_MEDIUM;
+          break;
+        case Strength.Sensitive:
+          opsLimit = SCRYPT_OPSLIMIT_SENSITIVE;
+          memLimit = SCRYPT_MEMLIMIT_SENSITIVE;
+          break;
+        default:
+          opsLimit = SCRYPT_OPSLIMIT_INTERACTIVE;
+          memLimit = SCRYPT_MEMLIMIT_INTERACTIVE;
+          break;
+      }
+
+      return (opsLimit, memLimit);
     }
   }
 }
