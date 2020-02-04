@@ -2,7 +2,6 @@ using NUnit.Framework;
 using Sodium;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Tests
 {
@@ -667,7 +666,7 @@ namespace Tests
       string password = "password";
 
       string argonHash = PasswordHash.ArgonHashString(password, 4, 134_217_728);
-      
+
       Assert.IsTrue(PasswordHash.ArgonPasswordNeedsRehash(argonHash, 4, 107_374_182_4));
 
       Assert.IsFalse(PasswordHash.ArgonPasswordNeedsRehash(argonHash, 4, 134_217_728));
