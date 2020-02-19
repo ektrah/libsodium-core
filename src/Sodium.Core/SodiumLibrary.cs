@@ -48,7 +48,6 @@ namespace Sodium
     internal static extern IntPtr sodium_version_string();
 
     //crypto_hash
-<<<<<<< HEAD
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
     internal static extern unsafe int crypto_hash(byte* buffer, byte* message, long length);
 
@@ -75,34 +74,6 @@ namespace Sodium
     //crypto_onetimeauth_verify
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
     internal static extern unsafe int crypto_onetimeauth_verify(byte* signature, byte* message, long messageLength, byte* key);
-=======
-    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_hash(byte[] buffer, byte[] message, long length);
-
-    //crypto_hash_sha512
-    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_hash_sha512(byte[] buffer, byte[] message, long length);
-
-    //crypto_hash_sha256
-    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_hash_sha256(byte[] buffer, byte[] message, long length);
-
-    //crypto_generichash
-    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_generichash(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength);
-
-    //crypto_generichash_blake2b_salt_personal
-    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_generichash_blake2b_salt_personal(byte[] buffer, int bufferLength, byte[] message, long messageLength, byte[] key, int keyLength, byte[] salt, byte[] personal);
-
-    //crypto_onetimeauth
-    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_onetimeauth(byte[] buffer, byte[] message, long messageLength, byte[] key);
-
-    //crypto_onetimeauth_verify
-    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_onetimeauth_verify(byte[] signature, byte[] message, long messageLength, byte[] key);
->>>>>>> master
 
     //crypto_pwhash_str
     [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
@@ -265,13 +236,8 @@ namespace Sodium
     internal static extern int crypto_auth_hmacsha512_verify(byte[] signature, byte[] message, long messageLength, byte[] key);
 
     //crypto_shorthash
-<<<<<<< HEAD
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
     internal static extern unsafe int crypto_shorthash(byte* buffer, byte* message, long messageLength, byte* key);
-=======
-    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int crypto_shorthash(byte[] buffer, byte[] message, long messageLength, byte[] key);
->>>>>>> master
 
     //crypto_stream_xor
     [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
@@ -282,21 +248,12 @@ namespace Sodium
     internal static extern int crypto_stream_chacha20_xor(byte[] buffer, byte[] message, long messageLength, byte[] nonce, byte[] key);
 
     //sodium_bin2hex
-<<<<<<< HEAD
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
     internal static extern unsafe IntPtr sodium_bin2hex(byte* hex, int hexMaxlen, byte* bin, int binLen);
 
     //sodium_hex2bin
     [DllImport("libsodium", CallingConvention = CallingConvention.Cdecl)]
     internal static unsafe extern int sodium_hex2bin(byte* bin, int binMaxlen, string hex, int hexLen, string ignore, out int binLen, string hexEnd);
-=======
-    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern IntPtr sodium_bin2hex(byte[] hex, int hexMaxlen, byte[] bin, int binLen);
-
-    //sodium_hex2bin
-    [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-    internal static extern int sodium_hex2bin(IntPtr bin, int binMaxlen, string hex, int hexLen, string ignore, out int binLen, string hexEnd);
->>>>>>> master
 
     //sodium_bin2base64
     [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
