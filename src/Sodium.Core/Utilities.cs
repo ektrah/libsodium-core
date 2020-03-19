@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -235,6 +235,17 @@ namespace Sodium
             var ret = SodiumLibrary.sodium_compare(a, b, a.Length);
 
             return ret == 0;
+        }
+
+        internal static string UnsafeAsciiBytesToString(byte[] buffer, int offset, int length)
+        {
+            unsafe
+            {
+                fixed (byte* ascii = buffer)
+                {
+                    return new string((sbyte*)ascii, offset, length);
+                }
+            }
         }
     }
 }
