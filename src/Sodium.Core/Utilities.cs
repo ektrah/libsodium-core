@@ -237,15 +237,27 @@ namespace Sodium
             return ret == 0;
         }
 
-        internal static string UnsafeAsciiBytesToString(byte[] buffer, int offset, int length)
+        internal static string UnsafeAsciiBytesToString(byte[] buffer)
         {
+#if NETSTANDARD1_6
+            var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            try
+            {
+                return Marshal.PtrToStringAnsi(handle.AddrOfPinnedObject());
+            }
+            finally
+            {
+                handle.Free();
+            }
+#else
             unsafe
             {
                 fixed (byte* ascii = buffer)
                 {
-                    return new string((sbyte*)ascii, offset, length);
+                    return new string((sbyte*)ascii, 0, buffer.Length);
                 }
             }
+#endif
         }
     }
 }

@@ -253,7 +253,7 @@ namespace Sodium
                 throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
             }
 
-            return Utilities.UnsafeAsciiBytesToString(buffer, 0, buffer.Length);
+            return Utilities.UnsafeAsciiBytesToString(buffer);
         }
 
         /// <summary>Verifies that a hash generated with ArgonHashString matches the supplied password.</summary>
@@ -330,7 +330,7 @@ namespace Sodium
                 throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
             }
 
-            return Utilities.UnsafeAsciiBytesToString(buffer, 0, buffer.Length);
+            return Utilities.UnsafeAsciiBytesToString(buffer);
         }
 
         /// <summary>Derives a secret key of any size from a password and a salt.</summary>
