@@ -128,7 +128,7 @@ namespace Sodium
         /// <summary>Opens a Secret Box</summary>
         /// <param name="cipherText">The cipherText.</param>
         /// <param name="nonce">The 24 byte nonce.</param>
-        /// <param name="key">The 32 byte nonce.</param>
+        /// <param name="key">The 32 byte key.</param>
         /// <returns>The decrypted text.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="NonceOutOfRangeException"></exception>
@@ -183,7 +183,7 @@ namespace Sodium
         /// <param name="cipherText">Hex-encoded string to be opened</param>
         /// <param name="mac">The 16 byte mac.</param>
         /// <param name="nonce">The 24 byte nonce.</param>
-        /// <param name="key">The 32 byte nonce.</param>
+        /// <param name="key">The 32 byte key.</param>
         /// <returns>The decrypted text.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="NonceOutOfRangeException"></exception>
@@ -197,7 +197,7 @@ namespace Sodium
         /// <summary>Opens a detached Secret Box</summary>
         /// <param name="detached">A detached object.</param>
         /// <param name="nonce">The 24 byte nonce.</param>
-        /// <param name="key">The 32 byte nonce.</param>
+        /// <param name="key">The 32 byte key.</param>
         /// <returns>The decrypted text.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="NonceOutOfRangeException"></exception>
@@ -212,7 +212,7 @@ namespace Sodium
         /// <param name="cipherText">The cipherText.</param>
         /// <param name="mac">The 16 byte mac.</param>
         /// <param name="nonce">The 24 byte nonce.</param>
-        /// <param name="key">The 32 byte nonce.</param>
+        /// <param name="key">The 32 byte key.</param>
         /// <returns>The decrypted text.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="NonceOutOfRangeException"></exception>
