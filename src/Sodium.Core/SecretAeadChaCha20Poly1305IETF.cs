@@ -10,7 +10,7 @@ namespace Sodium
     public static class SecretAeadChaCha20Poly1305IETF
     {
         private const int KEYBYTES = 32;
-        private const int NPUBBYTES = 8;
+        private const int NPUBBYTES = 12;
         private const int ABYTES = 16;
 
         //TODO: we could implement a method which increments the nonce.
