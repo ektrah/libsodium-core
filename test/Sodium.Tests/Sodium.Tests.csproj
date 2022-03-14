@@ -2,9 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <OutputType>Exe</OutputType>
-    <StartupObject>Sodium.Tests.Program</StartupObject>
-    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -22,9 +20,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-    <PackageReference Include="nunit" Version="3.13.2" />
-    <PackageReference Include="nunit3testadapter" Version="4.2.1" />
-    <PackageReference Include="NUnitLite" Version="3.13.2" />
+    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Sodium.Core\Sodium.Core.csproj" />
