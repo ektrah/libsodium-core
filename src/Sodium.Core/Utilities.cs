@@ -168,14 +168,14 @@ namespace Sodium
             }
 
             int base64MaxLen = SodiumLibrary.sodium_base64_encoded_len(data.Length, (int)variant);
-            var b64 = new byte[base64MaxLen - 1];
+            var b64 = new byte[base64MaxLen];
             var base64 = SodiumLibrary.sodium_bin2base64(b64, base64MaxLen, data, data.Length, (int)variant);
             if (base64 == IntPtr.Zero)
             {
                 throw new OverflowException("Internal error, encoding failed.");
             }
 
-            return Marshal.PtrToStringAnsi(base64);
+            return Marshal.PtrToStringAnsi(base64)?.TrimEnd('\0');
         }
 
         /// <summary>Converts Base64 encoded string to byte array.</summary>
