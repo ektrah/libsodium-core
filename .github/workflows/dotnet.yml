@@ -1,0 +1,25 @@
+name: Build and Test
+
+on: [push, pull_request]
+
+jobs:
+
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET 6.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - run: dotnet --info
+    - name: Test (.NET 6.0/Debug)
+      run: dotnet test -f net6.0 -c Debug
+    - name: Test (.NET 6.0/Release)
+      run: dotnet test -f net6.0 -c Release
+    - name: Pack
+      run: dotnet pack -c Release
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        path: '**/*.nupkg'
