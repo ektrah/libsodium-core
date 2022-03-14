@@ -29,8 +29,8 @@ namespace Sodium
             return SodiumCore.GetRandomBytes(XSALSA20_NONCE_BYTES);
         }
 
-        /// <summary>Generates a random 24 byte nonce.</summary>
-        /// <returns>Returns a byte array with 24 random bytes</returns>
+        /// <summary>Generates a random 8 byte nonce.</summary>
+        /// <returns>Returns a byte array with 8 random bytes</returns>
         public static byte[] GenerateNonceChaCha20()
         {
             return SodiumCore.GetRandomBytes(CHACHA20_NONCEBYTES);
