@@ -1,15 +1,14 @@
 root = true
 
 [*]
-charset = utf-8
-end_of_line = crlf
 indent_style = space
-insert_final_newline = true
-trim_trailing_whitespace = true
+
+[*.{csproj,props,targets}]
+indent_size = 2
+charset = utf-8-bom
 
 [*.cs]
 indent_size = 4
-
-[*.{sln,csproj,json}]
-indent_size = 2
-
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
