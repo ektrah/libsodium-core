@@ -545,7 +545,9 @@ namespace Sodium
                     opsLimit = SCRYPT_OPSLIMIT_INTERACTIVE;
                     memLimit = SCRYPT_MEMLIMIT_INTERACTIVE;
                     break;
+#pragma warning disable CS0618
                 case Strength.Moderate:
+#pragma warning restore CS0618
                     opsLimit = SCRYPT_OPSLIMIT_MODERATE;
                     memLimit = SCRYPT_MEMLIMIT_MODERATE;
                     break;

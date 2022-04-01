@@ -338,7 +338,9 @@ namespace Tests
         [Test]
         public void TestGenerateSalt()
         {
+#pragma warning disable CS0618
             Assert.AreEqual(32, PasswordHash.GenerateSalt().Length);
+#pragma warning restore CS0618
         }
 
         [Test]
@@ -368,7 +370,9 @@ namespace Tests
         public void ScryptHashStringModerateTest()
         {
             const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
+#pragma warning disable CS0618
             var hash = PasswordHash.ScryptHashString(PASSWORD, PasswordHash.Strength.Moderate);
+#pragma warning restore CS0618
 
             Assert.IsTrue(PasswordHash.ScryptHashStringVerify(hash, PASSWORD));
         }
