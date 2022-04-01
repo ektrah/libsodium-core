@@ -6,7 +6,7 @@ using Sodium.Exceptions;
 namespace Sodium
 {
     /// <summary>Hashes passwords using the argon2i and scrypt algorithm</summary>
-    public class PasswordHash
+    public static class PasswordHash
     {
         private const uint ARGON_STRBYTES = 128U;
         private const uint ARGON_SALTBYTES = 16U;

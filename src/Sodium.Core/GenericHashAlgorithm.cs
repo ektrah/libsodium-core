@@ -7,7 +7,7 @@ using Sodium.Exceptions;
 
 namespace Sodium
 {
-    public partial class GenericHash
+    public static partial class GenericHash
     {
         /// <summary>
         /// Blake2b implementation of HashAlgorithm suitable for hashing streams.
