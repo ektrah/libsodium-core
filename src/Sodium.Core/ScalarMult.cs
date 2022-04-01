@@ -1,3 +1,4 @@
+using System;
 using Sodium.Exceptions;
 
 namespace Sodium

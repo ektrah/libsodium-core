@@ -1,4 +1,4 @@
-﻿namespace Sodium
+namespace Sodium
 {
     /// <summary>A ciphertext / mac pair.</summary>
     public class DetachedBox

@@ -1,7 +1,5 @@
 using System.Text;
-
 using NUnit.Framework;
-
 using Sodium;
 using Sodium.Exceptions;
 

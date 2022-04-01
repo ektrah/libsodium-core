@@ -1,32 +1,4 @@
-﻿
-/* Unmerged change from project 'Sodium.Core (netstandard1.6)'
-Before:
 using System;
-After:
-using Sodium.Exceptions;
-
-using System;
-*/
-
-/* Unmerged change from project 'Sodium.Core (netstandard2.0)'
-Before:
-using System;
-After:
-using Sodium.Exceptions;
-
-using System;
-*/
-
-/* Unmerged change from project 'Sodium.Core (Xamarin.iOS10)'
-Before:
-using System;
-After:
-using Sodium.Exceptions;
-
-using System;
-*/
-using System;
-
 using Sodium.Exceptions;
 
 namespace Sodium

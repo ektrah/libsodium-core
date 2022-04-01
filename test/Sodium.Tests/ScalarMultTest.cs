@@ -1,7 +1,5 @@
 using System.Linq;
-
 using NUnit.Framework;
-
 using Sodium;
 
 namespace Tests

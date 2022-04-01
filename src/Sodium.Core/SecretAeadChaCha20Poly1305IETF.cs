@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-
 using Sodium.Exceptions;
 
 namespace Sodium

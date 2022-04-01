@@ -1,5 +1,4 @@
 using NUnit.Framework;
-
 using Sodium;
 using Sodium.Exceptions;
 

@@ -1,8 +1,6 @@
-﻿using System.IO;
+using System.IO;
 using System.Text;
-
 using NUnit.Framework;
-
 using Sodium;
 
 namespace Tests
