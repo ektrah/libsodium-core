@@ -239,17 +239,6 @@ namespace Sodium
 
         internal static string UnsafeAsciiBytesToString(byte[] buffer)
         {
-#if NETSTANDARD1_6
-            var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            try
-            {
-                return Marshal.PtrToStringAnsi(handle.AddrOfPinnedObject());
-            }
-            finally
-            {
-                handle.Free();
-            }
-#else
             unsafe
             {
                 fixed (byte* ascii = buffer)
@@ -257,7 +246,6 @@ namespace Sodium
                     return new string((sbyte*)ascii, 0, buffer.Length);
                 }
             }
-#endif
         }
     }
 }
