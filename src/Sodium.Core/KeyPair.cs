@@ -20,9 +20,7 @@ namespace Sodium
                 throw new KeyOutOfRangeException("Private Key length must be a multiple of 16 bytes.");
 
             _publicKey = publicKey;
-
             _privateKey = privateKey;
-            _ProtectKey();
         }
 
         ~KeyPair()
@@ -41,10 +39,8 @@ namespace Sodium
         {
             get
             {
-                _UnprotectKey();
                 var tmp = new byte[_privateKey.Length];
                 Array.Copy(_privateKey, tmp, tmp.Length);
-                _ProtectKey();
 
                 return tmp;
             }
@@ -55,20 +51,6 @@ namespace Sodium
         {
             if (_privateKey != null && _privateKey.Length > 0)
                 Array.Clear(_privateKey, 0, _privateKey.Length);
-        }
-
-        private void _ProtectKey()
-        {
-#if NET461
-      ProtectedMemory.Protect(_privateKey, MemoryProtectionScope.SameProcess);
-#endif
-        }
-
-        private void _UnprotectKey()
-        {
-#if NET461
-      ProtectedMemory.Unprotect(_privateKey, MemoryProtectionScope.SameProcess);
-#endif
         }
     }
 }
