@@ -185,7 +185,7 @@ namespace Sodium
                 throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
             }
 
-            return Utilities.UnsafeAsciiBytesToString(buffer);
+            return Encoding.UTF8.GetString(buffer, 0, Array.IndexOf<byte>(buffer, 0));
         }
 
         /// <summary>Verifies that a hash generated with ScryptHashString matches the supplied password.</summary>
@@ -209,10 +209,15 @@ namespace Sodium
                 throw new ArgumentNullException(nameof(password), "Password cannot be null");
             if (hash == null)
                 throw new ArgumentNullException(nameof(hash), "Hash cannot be null");
+            if (hash.Length >= SCRYPT_SALSA208_SHA256_STRBYTES)
+                throw new ArgumentOutOfRangeException(nameof(hash), "Hash is invalid");
+
+            var buffer = new byte[SCRYPT_SALSA208_SHA256_STRBYTES];
+            Array.Copy(hash, buffer, hash.Length);
 
             SodiumCore.Init();
 
-            var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str_verify(hash, password, password.Length);
+            var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str_verify(buffer, password, password.Length);
 
             return ret == 0;
         }

@@ -197,7 +197,7 @@ namespace Sodium
                 throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
             }
 
-            return Utilities.UnsafeAsciiBytesToString(buffer);
+            return Encoding.UTF8.GetString(buffer, 0, Array.IndexOf<byte>(buffer, 0));
         }
 
         /// <summary>Verifies that a hash generated with ArgonHashString matches the supplied password.</summary>
@@ -221,29 +221,34 @@ namespace Sodium
                 throw new ArgumentNullException(nameof(password), "Password cannot be null");
             if (hash == null)
                 throw new ArgumentNullException(nameof(hash), "Hash cannot be null");
+            if (hash.Length >= ARGON_STRBYTES)
+                throw new ArgumentOutOfRangeException(nameof(hash), "Hash is invalid");
+
+            var buffer = new byte[ARGON_STRBYTES];
+            Array.Copy(hash, buffer, hash.Length);
 
             SodiumCore.Init();
 
-            var ret = SodiumLibrary.crypto_pwhash_str_verify(hash, password, password.Length);
+            var ret = SodiumLibrary.crypto_pwhash_str_verify(buffer, password, password.Length);
 
             return ret == 0;
         }
 
-        public static bool ArgonPasswordNeedsRehash(string password, StrengthArgon limit = StrengthArgon.Interactive)
+        public static bool ArgonPasswordNeedsRehash(string hash, StrengthArgon limit = StrengthArgon.Interactive)
         {
-            return ArgonPasswordNeedsRehash(Encoding.UTF8.GetBytes(password), limit);
+            return ArgonPasswordNeedsRehash(Encoding.UTF8.GetBytes(hash), limit);
         }
 
-        public static bool ArgonPasswordNeedsRehash(string password, long opsLimit, int memLimit)
+        public static bool ArgonPasswordNeedsRehash(string hash, long opsLimit, int memLimit)
         {
-            return ArgonPasswordNeedsRehash(Encoding.UTF8.GetBytes(password), opsLimit, memLimit);
+            return ArgonPasswordNeedsRehash(Encoding.UTF8.GetBytes(hash), opsLimit, memLimit);
         }
 
-        public static bool ArgonPasswordNeedsRehash(byte[] password, StrengthArgon limit = StrengthArgon.Interactive)
+        public static bool ArgonPasswordNeedsRehash(byte[] hash, StrengthArgon limit = StrengthArgon.Interactive)
         {
             var (opsLimit, memLimit) = GetArgonOpsAndMemoryLimit(limit);
 
-            return ArgonPasswordNeedsRehash(password, opsLimit, memLimit);
+            return ArgonPasswordNeedsRehash(hash, opsLimit, memLimit);
         }
 
         /// <summary>
@@ -253,16 +258,19 @@ namespace Sodium
         /// <param name="opsLimit"></param>
         /// <param name="memLimit"></param>
         /// <returns></returns>
-        public static bool ArgonPasswordNeedsRehash(byte[] password, long opsLimit, int memLimit)
+        public static bool ArgonPasswordNeedsRehash(byte[] hash, long opsLimit, int memLimit)
         {
-            if (password == null)
-            {
-                throw new ArgumentNullException("password", "Password cannot be null");
-            }
+            if (hash == null)
+                throw new ArgumentNullException(nameof(hash), "Hash cannot be null");
+            if (hash.Length >= ARGON_STRBYTES)
+                throw new ArgumentOutOfRangeException(nameof(hash), "Hash is invalid");
+
+            var buffer = new byte[ARGON_STRBYTES];
+            Array.Copy(hash, buffer, hash.Length);
 
             SodiumCore.Init();
 
-            int status = SodiumLibrary.crypto_pwhash_str_needs_rehash(password, opsLimit, memLimit);
+            int status = SodiumLibrary.crypto_pwhash_str_needs_rehash(buffer, opsLimit, memLimit);
 
             if (status == -1)
             {
