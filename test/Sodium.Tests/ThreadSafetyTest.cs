@@ -7,7 +7,7 @@ namespace Tests
 {
     class TestWorker
     {
-        public Exception Exception;
+        public Exception? Exception;
 
         public void Random()
         {

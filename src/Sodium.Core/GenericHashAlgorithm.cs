@@ -24,7 +24,7 @@ namespace Sodium
             /// <param name="bytes">The size (in bytes) of the desired result.</param>
             /// <exception cref="KeyOutOfRangeException"></exception>
             /// <exception cref="BytesOutOfRangeException"></exception>
-            public GenericHashAlgorithm(string key, int bytes) : this(Encoding.UTF8.GetBytes(key), bytes) { }
+            public GenericHashAlgorithm(string? key, int bytes) : this(key != null ? Encoding.UTF8.GetBytes(key) : null, bytes) { }
 
             /// <summary>
             /// Initializes the hashing algorithm.
@@ -33,7 +33,7 @@ namespace Sodium
             /// <param name="bytes">The size (in bytes) of the desired result.</param>
             /// <exception cref="KeyOutOfRangeException"></exception>
             /// <exception cref="BytesOutOfRangeException"></exception>
-            public GenericHashAlgorithm(byte[] key, int bytes)
+            public GenericHashAlgorithm(byte[]? key, int bytes)
             {
                 //validate the length of the key
                 if (key != null)
@@ -46,7 +46,7 @@ namespace Sodium
                 }
                 else
                 {
-                    key = new byte[0];
+                    key = Array.Empty<byte>();
                 }
 
                 this.key = key;

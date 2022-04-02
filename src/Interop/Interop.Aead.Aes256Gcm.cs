@@ -13,7 +13,7 @@ internal static partial class Interop
         internal static extern int crypto_aead_aes256gcm_decrypt(
             byte[] m,
             ref ulong mlen_p,
-            byte[] nsec,
+            IntPtr nsec,
             byte[] c,
             ulong clen,
             byte[] ad,
@@ -29,7 +29,7 @@ internal static partial class Interop
             ulong mlen,
             byte[] ad,
             ulong adlen,
-            byte[] nsec,
+            IntPtr nsec,
             byte[] npub,
             byte[] k);
 

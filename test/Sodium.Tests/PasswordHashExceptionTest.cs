@@ -15,7 +15,7 @@ namespace Tests
             const int MEM_LIMIT = 7256678;
             Assert.Throws<System.ArgumentNullException>(() =>
             {
-                PasswordHash.ScryptHashString(null, OPS_LIMIT, MEM_LIMIT);
+                PasswordHash.ScryptHashString(null!, OPS_LIMIT, MEM_LIMIT);
             });
         }
 
@@ -59,7 +59,7 @@ namespace Tests
             const long OUTPUT_LENGTH = 32;
             Assert.Throws<System.ArgumentNullException>(() =>
             {
-                PasswordHash.ScryptHashBinary(null, SALT, PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
+                PasswordHash.ScryptHashBinary(null!, SALT, PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
             });
         }
 
@@ -70,7 +70,7 @@ namespace Tests
             const long OUTPUT_LENGTH = 32;
             Assert.Throws<System.ArgumentNullException>(() =>
             {
-                PasswordHash.ScryptHashBinary(PASSWORD, null, PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
+                PasswordHash.ScryptHashBinary(PASSWORD, null!, PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
             });
         }
 
@@ -145,7 +145,7 @@ namespace Tests
             const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
             Assert.Throws<System.ArgumentNullException>(() =>
             {
-                PasswordHash.ScryptHashStringVerify(null, PASSWORD);
+                PasswordHash.ScryptHashStringVerify(null!, PASSWORD);
             });
         }
 
@@ -156,7 +156,7 @@ namespace Tests
             Assert.Throws<System.ArgumentNullException>(() =>
             {
                 var hash = PasswordHash.ScryptHashString(PASSWORD);
-                PasswordHash.ScryptHashStringVerify(hash, null);
+                PasswordHash.ScryptHashStringVerify(hash, null!);
             });
         }
 

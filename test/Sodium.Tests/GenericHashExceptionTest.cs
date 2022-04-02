@@ -48,7 +48,7 @@ namespace Tests
             const string KEY = "1234567891123456";
             Assert.Throws<System.ArgumentNullException>(() =>
             {
-                Utilities.BinaryToHex(GenericHash.HashSaltPersonal(null, KEY, SALT, PERSONAL));
+                Utilities.BinaryToHex(GenericHash.HashSaltPersonal(null!, KEY, SALT, PERSONAL));
             });
         }
 
@@ -59,7 +59,7 @@ namespace Tests
             const string KEY = "1234567891123456";
             Assert.Throws<System.ArgumentNullException>(() =>
             {
-                Utilities.BinaryToHex(GenericHash.HashSaltPersonal("message", KEY, null, PERSONAL));
+                Utilities.BinaryToHex(GenericHash.HashSaltPersonal("message", KEY, null!, PERSONAL));
             });
         }
 
@@ -70,7 +70,7 @@ namespace Tests
             const string KEY = "1234567891123456";
             Assert.Throws<System.ArgumentNullException>(() =>
             {
-                Utilities.BinaryToHex(GenericHash.HashSaltPersonal("message", KEY, SALT, null));
+                Utilities.BinaryToHex(GenericHash.HashSaltPersonal("message", KEY, SALT, null!));
             });
         }
 

@@ -13,8 +13,8 @@ namespace Tests
         /// </summary>
         private class HashTestObject
         {
-            public string Password { get; set; }
-            public string Salt { get; set; }
+            public string Password { get; set; } = string.Empty;
+            public string Salt { get; set; } = string.Empty;
             public long OpsLimit { get; set; }
             public int MemLimit { get; set; }
             public long OutputLength { get; set; }

@@ -249,7 +249,7 @@ namespace Tests
 
             Assert.Throws<MacOutOfRangeException>(() =>
             {
-                PublicKeyBox.OpenDetached(actual.CipherText, null,
+                PublicKeyBox.OpenDetached(actual.CipherText, null!,
             Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
             Utilities.HexToBinary("2a5c92fac62514f793c0bfd374f629a138c5702793a32c61dadc593728a15975"),
             Utilities.HexToBinary("83638e30326e2f55509286ac86afeb5bfd0732a3d11747bd50eb96bb9ec85645"));

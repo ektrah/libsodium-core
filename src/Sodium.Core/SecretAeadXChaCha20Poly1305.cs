@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using Sodium.Exceptions;
 using static Interop.Libsodium;
@@ -33,11 +34,11 @@ namespace Sodium
         /// <exception cref="NonceOutOfRangeException"></exception>
         /// <exception cref="AdditionalDataOutOfRangeException"></exception>
         /// <exception cref="CryptographicException"></exception>
-        public static byte[] Encrypt(byte[] message, byte[] nonce, byte[] key, byte[] additionalData = null)
+        public static byte[] Encrypt(byte[] message, byte[] nonce, byte[] key, byte[]? additionalData = null)
         {
             //additionalData can be null
             if (additionalData == null)
-                additionalData = new byte[0x00];
+                additionalData = Array.Empty<byte>();
 
             //validate the length of the key
             if (key == null || key.Length != KEYBYTES)
@@ -53,7 +54,7 @@ namespace Sodium
             ulong cipherLength = 0;
 
             var ret = crypto_aead_xchacha20poly1305_ietf_encrypt(cipher, ref cipherLength, message, (ulong)message.Length,
-              additionalData, (ulong)additionalData.Length, null,
+              additionalData, (ulong)additionalData.Length, IntPtr.Zero,
               nonce, key);
 
             if (ret != 0)
@@ -74,11 +75,11 @@ namespace Sodium
         /// <exception cref="NonceOutOfRangeException"></exception>
         /// <exception cref="AdditionalDataOutOfRangeException"></exception>
         /// <exception cref="CryptographicException"></exception>
-        public static byte[] Decrypt(byte[] cipher, byte[] nonce, byte[] key, byte[] additionalData = null)
+        public static byte[] Decrypt(byte[] cipher, byte[] nonce, byte[] key, byte[]? additionalData = null)
         {
             //additionalData can be null
             if (additionalData == null)
-                additionalData = new byte[0x00];
+                additionalData = Array.Empty<byte>();
 
             //validate the length of the key
             if (key == null || key.Length != KEYBYTES)
@@ -93,7 +94,7 @@ namespace Sodium
             var message = new byte[cipher.Length - ABYTES];
             ulong messageLength = 0;
 
-            var ret = crypto_aead_xchacha20poly1305_ietf_decrypt(message, ref messageLength, null, cipher, (ulong)cipher.Length,
+            var ret = crypto_aead_xchacha20poly1305_ietf_decrypt(message, ref messageLength, IntPtr.Zero, cipher, (ulong)cipher.Length,
               additionalData, (ulong)additionalData.Length, nonce, key);
 
             if (ret != 0)

@@ -14,7 +14,7 @@ namespace Tests
         {
             Assert.Throws<KeyOutOfRangeException>(() =>
             {
-                OneTimeAuth.Sign(Encoding.UTF8.GetBytes("Adam Caudill"), null);
+                OneTimeAuth.Sign(Encoding.UTF8.GetBytes("Adam Caudill"), null!);
             });
         }
 

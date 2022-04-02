@@ -12,8 +12,8 @@ Interop.Aead.Aes256Gcm.cs:
   - crypto_aead_aes256gcm_KEYBYTES
   - crypto_aead_aes256gcm_NPUBBYTES
   functions:
-  - crypto_aead_aes256gcm_decrypt
-  - crypto_aead_aes256gcm_encrypt
+  - crypto_aead_aes256gcm_decrypt (IntPtr nsec)
+  - crypto_aead_aes256gcm_encrypt (IntPtr nsec)
   - crypto_aead_aes256gcm_is_available
 
 Interop.Aead.ChaCha20Poly1305.cs:
@@ -26,10 +26,10 @@ Interop.Aead.ChaCha20Poly1305.cs:
   - crypto_aead_chacha20poly1305_ietf_KEYBYTES
   - crypto_aead_chacha20poly1305_ietf_NPUBBYTES
   functions:
-  - crypto_aead_chacha20poly1305_decrypt
-  - crypto_aead_chacha20poly1305_encrypt
-  - crypto_aead_chacha20poly1305_ietf_decrypt
-  - crypto_aead_chacha20poly1305_ietf_encrypt
+  - crypto_aead_chacha20poly1305_decrypt (IntPtr nsec)
+  - crypto_aead_chacha20poly1305_encrypt (IntPtr nsec)
+  - crypto_aead_chacha20poly1305_ietf_decrypt (IntPtr nsec)
+  - crypto_aead_chacha20poly1305_ietf_encrypt (IntPtr nsec)
 
 Interop.Aead.XChaCha20Poly1305.cs:
   include: include/sodium/crypto_aead_xchacha20poly1305.h
@@ -38,8 +38,8 @@ Interop.Aead.XChaCha20Poly1305.cs:
   - crypto_aead_xchacha20poly1305_ietf_KEYBYTES
   - crypto_aead_xchacha20poly1305_ietf_NPUBBYTES
   functions:
-  - crypto_aead_xchacha20poly1305_ietf_decrypt
-  - crypto_aead_xchacha20poly1305_ietf_encrypt
+  - crypto_aead_xchacha20poly1305_ietf_decrypt (IntPtr nsec)
+  - crypto_aead_xchacha20poly1305_ietf_encrypt (IntPtr nsec)
 
 Interop.Auth.HmacSha256.cs:
   include: include/sodium/crypto_auth_hmacsha256.h

@@ -56,7 +56,7 @@ namespace Sodium
         /// <param name="variant">Base64 encoding variant</param>
         /// <exception cref="Exception"></exception>
         /// <returns>A byte array of decoded Base64 string</returns>
-        public static byte[] Base64ToBinary(string base64, string ignoredChars, Base64Variant variant = Base64Variant.Original)
+        public static byte[] Base64ToBinary(string base64, string? ignoredChars, Base64Variant variant = Base64Variant.Original)
         {
             if (base64 == null)
                 throw new ArgumentNullException(nameof(base64), "Data is null, encoding failed");

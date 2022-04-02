@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <LangVersion>9.0</LangVersion>
+    <Features>strict</Features>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -31,7 +33,7 @@
     <None Include="..\..\LICENSE" Pack="true" PackagePath="" Visible="false" />
     <None Include="..\..\icon.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="libsodium" Version="1.0.18.2" />
   </ItemGroup>

@@ -123,7 +123,7 @@ namespace Tests
 
             Assert.Throws<MacOutOfRangeException>(() =>
             {
-                SecretBox.OpenDetached(actual.CipherText, null,
+                SecretBox.OpenDetached(actual.CipherText, null!,
             Encoding.UTF8.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWX"),
             Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
             });
