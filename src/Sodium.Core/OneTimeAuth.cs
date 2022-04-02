@@ -1,13 +1,14 @@
 using System.Text;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
     /// <summary>One Time Message Authentication</summary>
     public static class OneTimeAuth
     {
-        private const int KEY_BYTES = 32;
-        private const int BYTES = 16;
+        private const int KEY_BYTES = crypto_onetimeauth_poly1305_KEYBYTES;
+        private const int BYTES = crypto_onetimeauth_poly1305_BYTES;
 
         /// <summary>Generates a random 32 byte key.</summary>
         /// <returns>Returns a byte array with 32 random bytes</returns>
@@ -39,7 +40,7 @@ namespace Sodium
                   string.Format("key must be {0} bytes in length.", KEY_BYTES));
 
             var buffer = new byte[BYTES];
-            SodiumLibrary.crypto_onetimeauth(buffer, message, message.Length, key);
+            crypto_onetimeauth_poly1305(buffer, message, (ulong)message.Length, key);
 
             return buffer;
         }
@@ -75,7 +76,7 @@ namespace Sodium
                 throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
                   string.Format("signature must be {0} bytes in length.", BYTES));
 
-            var ret = SodiumLibrary.crypto_onetimeauth_verify(signature, message, message.Length, key);
+            var ret = crypto_onetimeauth_poly1305_verify(signature, message, (ulong)message.Length, key);
 
             return ret == 0;
         }

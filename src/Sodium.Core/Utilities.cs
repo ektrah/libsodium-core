@@ -1,3 +1,5 @@
+using static Interop.Libsodium;
+
 namespace Sodium
 {
     /// <summary>Various utility methods.</summary>
@@ -11,7 +13,7 @@ namespace Sodium
         public static byte[] Increment(byte[] value)
         {
             var buffer = value;
-            SodiumLibrary.sodium_increment(buffer, buffer.Length);
+            sodium_increment(buffer, (nuint)buffer.Length);
 
             return buffer;
         }
@@ -24,7 +26,7 @@ namespace Sodium
         /// <returns><c>true</c> if the values are equal, otherwise <c>false</c></returns>
         public static bool Compare(byte[] a, byte[] b)
         {
-            var ret = SodiumLibrary.sodium_compare(a, b, a.Length);
+            var ret = sodium_compare(a, b, (nuint)a.Length);
 
             return ret == 0;
         }

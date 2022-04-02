@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
@@ -59,7 +60,7 @@ namespace Sodium
                     string.Format("recipientPublicKey must be {0} bytes in length.", RecipientPublicKeyBytes));
 
             var buffer = new byte[message.Length + CryptoBoxSealbytes];
-            var ret = SodiumLibrary.crypto_box_seal(buffer, message, message.Length, recipientPublicKey);
+            var ret = crypto_box_seal(buffer, message, (ulong)message.Length, recipientPublicKey);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to create SealedBox");
@@ -124,7 +125,7 @@ namespace Sodium
 
 
             var buffer = new byte[cipherText.Length - CryptoBoxSealbytes];
-            var ret = SodiumLibrary.crypto_box_seal_open(buffer, cipherText, cipherText.Length, recipientPublicKey,
+            var ret = crypto_box_seal_open(buffer, cipherText, (ulong)cipherText.Length, recipientPublicKey,
                 recipientSecretKey);
 
             if (ret != 0)

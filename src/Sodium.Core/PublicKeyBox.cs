@@ -2,17 +2,18 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
     /// <summary>Create and Open Boxes.</summary>
     public static class PublicKeyBox
     {
-        public const int PublicKeyBytes = 32;
-        public const int SecretKeyBytes = 32;
+        public const int PublicKeyBytes = crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES;
+        public const int SecretKeyBytes = crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES;
 
-        private const int NONCE_BYTES = 24;
-        private const int MAC_BYTES = 16;
+        private const int NONCE_BYTES = crypto_box_curve25519xsalsa20poly1305_NONCEBYTES;
+        private const int MAC_BYTES = crypto_box_curve25519xsalsa20poly1305_MACBYTES;
 
         /// <summary>Creates a new key pair based on a random seed.</summary>
         /// <returns>A KeyPair.</returns>
@@ -21,7 +22,7 @@ namespace Sodium
             var publicKey = new byte[PublicKeyBytes];
             var privateKey = new byte[SecretKeyBytes];
 
-            SodiumLibrary.crypto_box_keypair(publicKey, privateKey);
+            crypto_box_curve25519xsalsa20poly1305_keypair(publicKey, privateKey);
 
             return new KeyPair(publicKey, privateKey);
         }
@@ -51,13 +52,13 @@ namespace Sodium
             var publicKey = new byte[PublicKeyBytes];
             var privateKey = new byte[SecretKeyBytes];
             // Expected length of the keypair seed
-            int seedBytes = SodiumLibrary.crypto_box_seedbytes();
+            nuint seedBytes = crypto_box_curve25519xsalsa20poly1305_seedbytes();
             //validate the length of the seed
-            if (seed == null || seed.Length != seedBytes)
+            if (seed == null || (nuint)seed.Length != seedBytes)
                 throw new SeedOutOfRangeException("seed", (seed == null) ? 0 : seed.Length,
                   string.Format("Key seed must be {0} bytes in length.", SecretKeyBytes));
 
-            SodiumLibrary.crypto_box_seed_keypair(publicKey, privateKey, seed);
+            crypto_box_curve25519xsalsa20poly1305_seed_keypair(publicKey, privateKey, seed);
 
             return new KeyPair(publicKey, privateKey);
         }
@@ -110,7 +111,7 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
 
             var buffer = new byte[message.Length + MAC_BYTES];
-            var ret = SodiumLibrary.crypto_box_easy(buffer, message, message.Length, nonce, publicKey, secretKey);
+            var ret = crypto_box_easy(buffer, message, (ulong)message.Length, nonce, publicKey, secretKey);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to create PublicKeyBox");
@@ -161,7 +162,7 @@ namespace Sodium
             var cipher = new byte[message.Length];
             var mac = new byte[MAC_BYTES];
 
-            var ret = SodiumLibrary.crypto_box_detached(cipher, mac, message, message.Length, nonce, secretKey, publicKey);
+            var ret = crypto_box_detached(cipher, mac, message, (ulong)message.Length, nonce, secretKey, publicKey);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to create public detached Box");
@@ -221,7 +222,7 @@ namespace Sodium
             }
 
             var buffer = new byte[cipherText.Length - MAC_BYTES];
-            var ret = SodiumLibrary.crypto_box_open_easy(buffer, cipherText, cipherText.Length, nonce, publicKey, secretKey);
+            var ret = crypto_box_open_easy(buffer, cipherText, (ulong)cipherText.Length, nonce, publicKey, secretKey);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to open PublicKeyBox");
@@ -294,7 +295,7 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
 
             var buffer = new byte[cipherText.Length];
-            var ret = SodiumLibrary.crypto_box_open_detached(buffer, cipherText, mac, cipherText.Length, nonce, secretKey, publicKey);
+            var ret = crypto_box_open_detached(buffer, cipherText, mac, (ulong)cipherText.Length, nonce, secretKey, publicKey);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to open public detached Box");

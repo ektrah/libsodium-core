@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
@@ -20,7 +21,7 @@ namespace Sodium
         public static byte[] GetRandomBytes(int count)
         {
             var buffer = new byte[count];
-            SodiumLibrary.randombytes_buf(buffer, count);
+            randombytes_buf(buffer, (nuint)buffer.Length);
 
             return buffer;
         }
@@ -32,9 +33,12 @@ namespace Sodium
         /// <returns>An unpredictable value between 0 and upperBound (excluded).</returns>
         public static int GetRandomNumber(int upperBound)
         {
-            var randomNumber = SodiumLibrary.randombytes_uniform(upperBound);
+            if (upperBound < 0)
+                throw new System.ArgumentOutOfRangeException(nameof(upperBound), "upperBound cannot be negative");
 
-            return randomNumber;
+            var randomNumber = randombytes_uniform((uint)upperBound);
+
+            return (int)randomNumber;
         }
 
         /// <summary>
@@ -45,7 +49,7 @@ namespace Sodium
         /// </returns>
         public static string SodiumVersionString()
         {
-            var ptr = SodiumLibrary.sodium_version_string();
+            var ptr = sodium_version_string();
 
             return Marshal.PtrToStringAnsi(ptr);
         }
@@ -56,7 +60,7 @@ namespace Sodium
         {
             if (!_isInit)
             {
-                SodiumLibrary.sodium_init();
+                sodium_init();
                 _isInit = true;
             }
         }

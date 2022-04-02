@@ -2,17 +2,18 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
     /// <summary>Public-key signatures</summary>
     public static class PublicKeyAuth
     {
-        private const int SECRET_KEY_BYTES = 64;
-        private const int PUBLIC_KEY_BYTES = 32;
-        private const int SIGNATURE_BYTES = 64;
-        private const int BYTES = 64;
-        private const int SEED_BYTES = 32;
+        private const int SECRET_KEY_BYTES = crypto_sign_ed25519_SECRETKEYBYTES;
+        private const int PUBLIC_KEY_BYTES = crypto_sign_ed25519_PUBLICKEYBYTES;
+        private const int SIGNATURE_BYTES = crypto_sign_ed25519_BYTES;
+        private const int BYTES = crypto_sign_ed25519_BYTES;
+        private const int SEED_BYTES = crypto_sign_ed25519_SEEDBYTES;
 
         /// <summary>Creates a new key pair based on a random seed.</summary>
         /// <returns>A KeyPair.</returns>
@@ -21,7 +22,7 @@ namespace Sodium
             var publicKey = new byte[PUBLIC_KEY_BYTES];
             var privateKey = new byte[SECRET_KEY_BYTES];
 
-            SodiumLibrary.crypto_sign_keypair(publicKey, privateKey);
+            crypto_sign_ed25519_keypair(publicKey, privateKey);
 
             return new KeyPair(publicKey, privateKey);
         }
@@ -40,7 +41,7 @@ namespace Sodium
                 throw new SeedOutOfRangeException("seed", (seed == null) ? 0 : seed.Length,
                   string.Format("seed must be {0} bytes in length.", SEED_BYTES));
 
-            SodiumLibrary.crypto_sign_seed_keypair(publicKey, privateKey, seed);
+            crypto_sign_ed25519_seed_keypair(publicKey, privateKey, seed);
 
             return new KeyPair(publicKey, privateKey);
         }
@@ -68,9 +69,9 @@ namespace Sodium
                   string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
 
             var buffer = new byte[message.Length + BYTES];
-            long bufferLength = 0;
+            ulong bufferLength = 0;
 
-            SodiumLibrary.crypto_sign(buffer, ref bufferLength, message, message.Length, key);
+            crypto_sign_ed25519(buffer, ref bufferLength, message, (ulong)message.Length, key);
 
             var final = new byte[bufferLength];
             Array.Copy(buffer, 0, final, 0, (int)bufferLength);
@@ -92,9 +93,9 @@ namespace Sodium
                   string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
 
             var buffer = new byte[signedMessage.Length];
-            long bufferLength = 0;
+            ulong bufferLength = 0;
 
-            var ret = SodiumLibrary.crypto_sign_open(buffer, ref bufferLength, signedMessage, signedMessage.Length, key);
+            var ret = crypto_sign_ed25519_open(buffer, ref bufferLength, signedMessage, (ulong)signedMessage.Length, key);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to verify signature.");
@@ -128,9 +129,9 @@ namespace Sodium
                   string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
 
             var signature = new byte[SIGNATURE_BYTES];
-            long signatureLength = 0;
+            ulong signatureLength = 0;
 
-            SodiumLibrary.crypto_sign_detached(signature, ref signatureLength, message, message.Length, key);
+            crypto_sign_ed25519_detached(signature, ref signatureLength, message, (ulong)message.Length, key);
 
             return signature;
         }
@@ -154,7 +155,7 @@ namespace Sodium
                 throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
                   string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
 
-            var ret = SodiumLibrary.crypto_sign_verify_detached(signature, message, message.Length, key);
+            var ret = crypto_sign_ed25519_verify_detached(signature, message, (ulong)message.Length, key);
 
             return ret == 0;
         }
@@ -173,7 +174,7 @@ namespace Sodium
 
             var buffer = new byte[PublicKeyBox.PublicKeyBytes];
 
-            var ret = SodiumLibrary.crypto_sign_ed25519_pk_to_curve25519(buffer, ed25519PublicKey);
+            var ret = crypto_sign_ed25519_pk_to_curve25519(buffer, ed25519PublicKey);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to convert public key.");
@@ -196,7 +197,7 @@ namespace Sodium
 
             var buffer = new byte[PublicKeyBox.SecretKeyBytes];
 
-            var ret = SodiumLibrary.crypto_sign_ed25519_sk_to_curve25519(buffer, ed25519SecretKey);
+            var ret = crypto_sign_ed25519_sk_to_curve25519(buffer, ed25519SecretKey);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to convert secret key.");
@@ -218,7 +219,7 @@ namespace Sodium
 
             var buffer = new byte[SEED_BYTES];
 
-            var ret = SodiumLibrary.crypto_sign_ed25519_sk_to_seed(buffer, ed25519SecretKey);
+            var ret = crypto_sign_ed25519_sk_to_seed(buffer, ed25519SecretKey);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to extract seed from secret key.");
@@ -240,7 +241,7 @@ namespace Sodium
 
             var buffer = new byte[PUBLIC_KEY_BYTES];
 
-            var ret = SodiumLibrary.crypto_sign_ed25519_sk_to_pk(buffer, ed25519SecretKey);
+            var ret = crypto_sign_ed25519_sk_to_pk(buffer, ed25519SecretKey);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to extract public key from secret key.");

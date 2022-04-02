@@ -1,13 +1,14 @@
 using System;
 using System.Text;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
     public static partial class PasswordHash
     {
-        private const uint SCRYPT_SALSA208_SHA256_STRBYTES = 102U;
-        private const uint SCRYPT_SALSA208_SHA256_SALTBYTES = 32U;
+        private const int SCRYPT_SALSA208_SHA256_STRBYTES = crypto_pwhash_scryptsalsa208sha256_STRBYTES;
+        private const int SCRYPT_SALSA208_SHA256_SALTBYTES = crypto_pwhash_scryptsalsa208sha256_SALTBYTES;
 
         private const long SCRYPT_OPSLIMIT_INTERACTIVE = 524288;
         private const long SCRYPT_OPSLIMIT_MODERATE = 8388608;
@@ -39,7 +40,7 @@ namespace Sodium
         /// <returns>Returns a byte array with 32 random bytes</returns>
         public static byte[] ScryptGenerateSalt()
         {
-            return SodiumCore.GetRandomBytes((int)SCRYPT_SALSA208_SHA256_SALTBYTES);
+            return SodiumCore.GetRandomBytes(SCRYPT_SALSA208_SHA256_SALTBYTES);
         }
 
         /// <summary>Derives a secret key of any size from a password and a salt.</summary>
@@ -132,7 +133,7 @@ namespace Sodium
 
             SodiumCore.Init();
 
-            var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit);
+            var ret = crypto_pwhash_scryptsalsa208sha256(buffer, (ulong)buffer.Length, password, (ulong)password.Length, salt, (ulong)opsLimit, (nuint)memLimit);
 
             if (ret != 0)
                 throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
@@ -178,7 +179,7 @@ namespace Sodium
 
             SodiumCore.Init();
 
-            var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, pass.Length, opsLimit, memLimit);
+            var ret = crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, (ulong)pass.Length, (ulong)opsLimit, (nuint)memLimit);
 
             if (ret != 0)
             {
@@ -217,7 +218,7 @@ namespace Sodium
 
             SodiumCore.Init();
 
-            var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str_verify(buffer, password, password.Length);
+            var ret = crypto_pwhash_scryptsalsa208sha256_str_verify(buffer, password, (ulong)password.Length);
 
             return ret == 0;
         }

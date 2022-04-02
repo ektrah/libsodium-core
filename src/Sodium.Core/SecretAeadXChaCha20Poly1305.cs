@@ -1,7 +1,6 @@
-using System;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
@@ -9,9 +8,9 @@ namespace Sodium
     /// <remarks>See here for more information: https://download.libsodium.org/doc/secret-key_cryptography/chacha20-poly1305.html </remarks>
     public static class SecretAeadXChaCha20Poly1305
     {
-        private const int KEYBYTES = 32;
-        private const int NPUBBYTES = 24;
-        private const int ABYTES = 16;
+        private const int KEYBYTES = crypto_aead_xchacha20poly1305_ietf_KEYBYTES;
+        private const int NPUBBYTES = crypto_aead_xchacha20poly1305_ietf_NPUBBYTES;
+        private const int ABYTES = crypto_aead_xchacha20poly1305_ietf_ABYTES;
 
         /// <summary>Generates a random 24 byte nonce.</summary>
         /// <returns>Returns a byte array with 24 random bytes.</returns>
@@ -51,27 +50,16 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", NPUBBYTES));
 
             var cipher = new byte[message.Length + ABYTES];
-            var bin = Marshal.AllocHGlobal(cipher.Length);
-            long cipherLength;
+            ulong cipherLength = 0;
 
-            var ret = SodiumLibrary.crypto_aead_xchacha20poly1305_ietf_encrypt(bin, out cipherLength, message, message.Length,
-              additionalData, additionalData.Length, null,
+            var ret = crypto_aead_xchacha20poly1305_ietf_encrypt(cipher, ref cipherLength, message, (ulong)message.Length,
+              additionalData, (ulong)additionalData.Length, null,
               nonce, key);
-
-            Marshal.Copy(bin, cipher, 0, (int)cipherLength);
-            Marshal.FreeHGlobal(bin);
 
             if (ret != 0)
                 throw new CryptographicException("Error encrypting message.");
 
-            if (cipher.Length == cipherLength)
-                return cipher;
-
-            //remove the trailing nulls from the array
-            var tmp = new byte[cipherLength];
-            Array.Copy(cipher, 0, tmp, 0, (int)cipherLength);
-
-            return tmp;
+            return cipher;
         }
 
         /// <summary>
@@ -103,26 +91,15 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", NPUBBYTES));
 
             var message = new byte[cipher.Length - ABYTES];
-            var bin = Marshal.AllocHGlobal(message.Length);
-            long messageLength;
+            ulong messageLength = 0;
 
-            var ret = SodiumLibrary.crypto_aead_xchacha20poly1305_ietf_decrypt(bin, out messageLength, null, cipher, cipher.Length,
-              additionalData, additionalData.Length, nonce, key);
-
-            Marshal.Copy(bin, message, 0, (int)messageLength);
-            Marshal.FreeHGlobal(bin);
+            var ret = crypto_aead_xchacha20poly1305_ietf_decrypt(message, ref messageLength, null, cipher, (ulong)cipher.Length,
+              additionalData, (ulong)additionalData.Length, nonce, key);
 
             if (ret != 0)
                 throw new CryptographicException("Error decrypting message.");
 
-            if (message.Length == messageLength)
-                return message;
-
-            //remove the trailing nulls from the array
-            var tmp = new byte[messageLength];
-            Array.Copy(message, 0, tmp, 0, (int)messageLength);
-
-            return tmp;
+            return message;
         }
     }
 }

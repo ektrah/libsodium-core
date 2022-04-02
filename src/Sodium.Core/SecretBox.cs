@@ -2,15 +2,16 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
     /// <summary>Create and Open Secret Boxes.</summary>
     public static class SecretBox
     {
-        private const int KEY_BYTES = 32;
-        private const int NONCE_BYTES = 24;
-        private const int MAC_BYTES = 16;
+        private const int KEY_BYTES = crypto_secretbox_xsalsa20poly1305_KEYBYTES;
+        private const int NONCE_BYTES = crypto_secretbox_xsalsa20poly1305_NONCEBYTES;
+        private const int MAC_BYTES = crypto_secretbox_xsalsa20poly1305_MACBYTES;
 
         /// <summary>Generates a random 32 byte key.</summary>
         /// <returns>Returns a byte array with 32 random bytes</returns>
@@ -60,7 +61,7 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
 
             var buffer = new byte[MAC_BYTES + message.Length];
-            var ret = SodiumLibrary.crypto_secretbox_easy(buffer, message, message.Length, nonce, key);
+            var ret = crypto_secretbox_easy(buffer, message, (ulong)message.Length, nonce, key);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to create SecretBox");
@@ -103,7 +104,7 @@ namespace Sodium
 
             var cipher = new byte[message.Length];
             var mac = new byte[MAC_BYTES];
-            var ret = SodiumLibrary.crypto_secretbox_detached(cipher, mac, message, message.Length, nonce, key);
+            var ret = crypto_secretbox_detached(cipher, mac, message, (ulong)message.Length, nonce, key);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to create detached SecretBox");
@@ -170,7 +171,7 @@ namespace Sodium
             }
 
             var buffer = new byte[cipherText.Length - MAC_BYTES];
-            var ret = SodiumLibrary.crypto_secretbox_open_easy(buffer, cipherText, cipherText.Length, nonce, key);
+            var ret = crypto_secretbox_open_easy(buffer, cipherText, (ulong)cipherText.Length, nonce, key);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to open SecretBox");
@@ -235,7 +236,7 @@ namespace Sodium
                   string.Format("mac must be {0} bytes in length.", MAC_BYTES));
 
             var buffer = new byte[cipherText.Length];
-            var ret = SodiumLibrary.crypto_secretbox_open_detached(buffer, cipherText, mac, cipherText.Length, nonce, key);
+            var ret = crypto_secretbox_open_detached(buffer, cipherText, mac, (ulong)cipherText.Length, nonce, key);
 
             if (ret != 0)
                 throw new CryptographicException("Failed to open detached SecretBox");

@@ -1,8 +1,8 @@
 using System;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
@@ -13,9 +13,9 @@ namespace Sodium
         /// </summary>
         public class GenericHashAlgorithm : HashAlgorithm
         {
-            private IntPtr hashStatePtr;
-            private byte[] key;
-            private int bytes;
+            private crypto_generichash_blake2b_state hashState;
+            private readonly byte[] key;
+            private readonly int bytes;
 
             /// <summary>
             /// Initializes the hashing algorithm.
@@ -35,10 +35,7 @@ namespace Sodium
             /// <exception cref="BytesOutOfRangeException"></exception>
             public GenericHashAlgorithm(byte[] key, int bytes)
             {
-                this.hashStatePtr = Marshal.AllocHGlobal(Marshal.SizeOf<SodiumLibrary.HashState>());
-
                 //validate the length of the key
-                int keyLength;
                 if (key != null)
                 {
                     if (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN)
@@ -46,13 +43,10 @@ namespace Sodium
                         throw new KeyOutOfRangeException(string.Format("key must be between {0} and {1} bytes in length.",
                           KEY_BYTES_MIN, KEY_BYTES_MAX));
                     }
-
-                    keyLength = key.Length;
                 }
                 else
                 {
                     key = new byte[0];
-                    keyLength = 0;
                 }
 
                 this.key = key;
@@ -67,27 +61,22 @@ namespace Sodium
                 Initialize();
             }
 
-            ~GenericHashAlgorithm()
-            {
-                Marshal.FreeHGlobal(hashStatePtr);
-            }
-
             override public void Initialize()
             {
-                SodiumLibrary.crypto_generichash_init(hashStatePtr, key, key.Length, bytes);
+                crypto_generichash_blake2b_init(ref hashState, key, (nuint)key.Length, (nuint)bytes);
             }
 
             override protected void HashCore(byte[] array, int ibStart, int cbSize)
             {
                 byte[] subArray = new byte[cbSize];
                 Array.Copy(array, ibStart, subArray, 0, cbSize);
-                SodiumLibrary.crypto_generichash_update(hashStatePtr, subArray, cbSize);
+                crypto_generichash_blake2b_update(ref hashState, subArray, (ulong)cbSize);
             }
 
             override protected byte[] HashFinal()
             {
                 byte[] buffer = new byte[bytes];
-                SodiumLibrary.crypto_generichash_final(hashStatePtr, buffer, bytes);
+                crypto_generichash_blake2b_final(ref hashState, buffer, (nuint)bytes);
                 return buffer;
             }
         }

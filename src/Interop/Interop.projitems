@@ -1,0 +1,37 @@
+﻿<Project>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <SharedGUID>f9492d32-4406-41ee-b90e-f9ae33f0f4dc</SharedGUID>
+    <HasSharedItems>true</HasSharedItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Interop.yaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Aead.Aes256Gcm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Aead.ChaCha20Poly1305.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Aead.XChaCha20Poly1305.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Auth.HmacSha256.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Auth.HmacSha512.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Auth.HmacSha512256.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Box.Curve25519XSalsa20Poly1305.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Core.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.GenericHash.Blake2b.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Hash.Sha256.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Hash.Sha512.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Libraries.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.OneTimeAuth.Poly1305.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Pwhash.Argon2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Pwhash.Scrypt.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Random.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Scalarmult.X25519.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.SecretBox.XSalsa20Poly1305.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.ShortHash.SipHash24.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Sign.Ed25519.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Stream.ChaCha20.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Stream.XChaCha20.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Stream.XSalsa20.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interop.Version.cs" />
+  </ItemGroup>
+</Project>

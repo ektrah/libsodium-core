@@ -1,18 +1,19 @@
 using System.Security.Cryptography;
 using System.Text;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
     /// <summary>Encrypt and decrypt messages via XSalsa20 or ChaCha20</summary>
     public static class StreamEncryption
     {
-        private const int XSALSA20_KEY_BYTES = 32;
-        private const int XSALSA20_NONCE_BYTES = 24;
-        private const int CHACHA20_KEY_BYTES = 32;
-        private const int CHACHA20_NONCEBYTES = 8;
-        private const int XCHACHA20_KEY_BYTES = 32;
-        private const int XCHACHA20_NONCEBYTES = 24;
+        private const int XSALSA20_KEY_BYTES = crypto_stream_xsalsa20_KEYBYTES;
+        private const int XSALSA20_NONCE_BYTES = crypto_stream_xsalsa20_NONCEBYTES;
+        private const int CHACHA20_KEY_BYTES = crypto_stream_chacha20_KEYBYTES;
+        private const int CHACHA20_NONCEBYTES = crypto_stream_chacha20_NONCEBYTES;
+        private const int XCHACHA20_KEY_BYTES = crypto_stream_xchacha20_KEYBYTES;
+        private const int XCHACHA20_NONCEBYTES = crypto_stream_xchacha20_NONCEBYTES;
 
         /// <summary>Generates a random 32 byte key.</summary>
         /// <returns>Returns a byte array with 32 random bytes</returns>
@@ -77,7 +78,7 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", XSALSA20_NONCE_BYTES));
 
             var buffer = new byte[message.Length];
-            var ret = SodiumLibrary.crypto_stream_xor(buffer, message, message.Length, nonce, key);
+            var ret = crypto_stream_xsalsa20_xor(buffer, message, (ulong)message.Length, nonce, key);
 
             if (ret != 0)
                 throw new CryptographicException("Error encrypting message.");
@@ -119,7 +120,7 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
 
             var buffer = new byte[message.Length];
-            var ret = SodiumLibrary.crypto_stream_chacha20_xor(buffer, message, message.Length, nonce, key);
+            var ret = crypto_stream_chacha20_xor(buffer, message, (ulong)message.Length, nonce, key);
 
             if (ret != 0)
                 throw new CryptographicException("Error encrypting message.");
@@ -161,7 +162,7 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", XCHACHA20_NONCEBYTES));
 
             var buffer = new byte[message.Length];
-            var ret = SodiumLibrary.crypto_stream_xchacha20_xor(buffer, message, message.Length, nonce, key);
+            var ret = crypto_stream_xchacha20_xor(buffer, message, (ulong)message.Length, nonce, key);
 
             if (ret != 0)
                 throw new CryptographicException("Error encrypting message.");
@@ -203,7 +204,7 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", XSALSA20_NONCE_BYTES));
 
             var buffer = new byte[cipherText.Length];
-            var ret = SodiumLibrary.crypto_stream_xor(buffer, cipherText, cipherText.Length, nonce, key);
+            var ret = crypto_stream_xsalsa20_xor(buffer, cipherText, (ulong)cipherText.Length, nonce, key);
 
             if (ret != 0)
                 throw new CryptographicException("Error derypting message.");
@@ -245,7 +246,7 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
 
             var buffer = new byte[cipherText.Length];
-            var ret = SodiumLibrary.crypto_stream_chacha20_xor(buffer, cipherText, cipherText.Length, nonce, key);
+            var ret = crypto_stream_chacha20_xor(buffer, cipherText, (ulong)cipherText.Length, nonce, key);
 
             if (ret != 0)
                 throw new CryptographicException("Error derypting message.");
@@ -288,7 +289,7 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", XCHACHA20_NONCEBYTES));
 
             var buffer = new byte[cipherText.Length];
-            var ret = SodiumLibrary.crypto_stream_xchacha20_xor(buffer, cipherText, cipherText.Length, nonce, key);
+            var ret = crypto_stream_xchacha20_xor(buffer, cipherText, (ulong)cipherText.Length, nonce, key);
 
             if (ret != 0)
                 throw new CryptographicException("Error derypting message.");

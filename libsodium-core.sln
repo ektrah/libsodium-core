@@ -20,7 +20,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Interop", "src\Interop\Interop.shproj", "{F9492D32-4406-41EE-B90E-F9AE33F0F4DC}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Interop\Interop.projitems*{82926129-541c-424b-a2eb-49ea383caddd}*SharedItemsImports = 5
+		src\Interop\Interop.projitems*{f9492d32-4406-41ee-b90e-f9ae33f0f4dc}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -61,6 +67,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3C9C640E-9134-4EE7-AFA3-4BA99A12D287} = {36E9B400-7AB1-47E5-9D93-4F5E9049CB25}
 		{82926129-541C-424B-A2EB-49EA383CADDD} = {C436A2F7-76A5-4F7F-B71B-E6A72766FC5C}
+		{F9492D32-4406-41EE-B90E-F9AE33F0F4DC} = {C436A2F7-76A5-4F7F-B71B-E6A72766FC5C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2735E965-4924-482B-9205-78552CB1518B}

@@ -1,7 +1,6 @@
-using System;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
@@ -10,9 +9,9 @@ namespace Sodium
     /// <remarks>See here for more information: https://download.libsodium.org/doc/advanced/aes-256-gcm.html </remarks>
     public static class SecretAeadAes
     {
-        private const int KEYBYTES = 32;
-        private const int NPUBBYTES = 12;
-        private const int ABYTES = 16;
+        private const int KEYBYTES = crypto_aead_aes256gcm_KEYBYTES;
+        private const int NPUBBYTES = crypto_aead_aes256gcm_NPUBBYTES;
+        private const int ABYTES = crypto_aead_aes256gcm_ABYTES;
 
         /// <summary>Detect if the current CPU supports the required instructions (SSSE3, aesni, pcmul).</summary>
         /// <returns><c>true</c> if the CPU supports the necessary instructions, otherwise <c>false</c></returns>
@@ -21,7 +20,7 @@ namespace Sodium
         {
             SodiumCore.Init();
 
-            return SodiumLibrary.crypto_aead_aes256gcm_is_available() != 0;
+            return crypto_aead_aes256gcm_is_available() != 0;
         }
 
         /// <summary>Generates a random 12 byte nonce.</summary>
@@ -67,27 +66,16 @@ namespace Sodium
                   string.Format("additionalData must be between {0} and {1} bytes in length.", 0, ABYTES));
 
             var cipher = new byte[message.Length + ABYTES];
-            var bin = Marshal.AllocHGlobal(cipher.Length);
-            long cipherLength;
+            ulong cipherLength = 0;
 
-            var ret = SodiumLibrary.crypto_aead_aes256gcm_encrypt(bin, out cipherLength, message, message.Length,
-              additionalData, additionalData.Length, null,
+            var ret = crypto_aead_aes256gcm_encrypt(cipher, ref cipherLength, message, (ulong)message.Length,
+              additionalData, (ulong)additionalData.Length, null,
               nonce, key);
-
-            Marshal.Copy(bin, cipher, 0, (int)cipherLength);
-            Marshal.FreeHGlobal(bin);
 
             if (ret != 0)
                 throw new CryptographicException("Error encrypting message.");
 
-            if (cipher.Length == cipherLength)
-                return cipher;
-
-            //remove the trailing nulls from the array
-            var tmp = new byte[cipherLength];
-            Array.Copy(cipher, 0, tmp, 0, (int)cipherLength);
-
-            return tmp;
+            return cipher;
         }
 
         /// <summary>
@@ -124,26 +112,15 @@ namespace Sodium
                   string.Format("additionalData must be between {0} and {1} bytes in length.", 0, ABYTES));
 
             var message = new byte[cipher.Length - ABYTES];
-            var bin = Marshal.AllocHGlobal(message.Length);
-            long messageLength;
+            ulong messageLength = 0;
 
-            var ret = SodiumLibrary.crypto_aead_aes256gcm_decrypt(bin, out messageLength, null, cipher, cipher.Length,
-              additionalData, additionalData.Length, nonce, key);
-
-            Marshal.Copy(bin, message, 0, (int)messageLength);
-            Marshal.FreeHGlobal(bin);
+            var ret = crypto_aead_aes256gcm_decrypt(message, ref messageLength, null, cipher, (ulong)cipher.Length,
+              additionalData, (ulong)additionalData.Length, nonce, key);
 
             if (ret != 0)
                 throw new CryptographicException("Error decrypting message.");
 
-            if (message.Length == messageLength)
-                return message;
-
-            //remove the trailing nulls from the array
-            var tmp = new byte[messageLength];
-            Array.Copy(message, 0, tmp, 0, (int)messageLength);
-
-            return tmp;
+            return message;
         }
     }
 }

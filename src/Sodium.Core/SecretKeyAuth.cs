@@ -1,19 +1,20 @@
 using System.Text;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
     /// <summary>One Time Message Authentication</summary>
     public static class SecretKeyAuth
     {
-        private const int KEY_BYTES = 32;
-        private const int BYTES = 32;
+        private const int KEY_BYTES = crypto_auth_hmacsha512256_KEYBYTES;
+        private const int BYTES = crypto_auth_hmacsha512256_BYTES;
 
-        private const int CRYPTO_AUTH_HMACSHA256_KEY_BYTES = 32;
-        private const int CRYPTO_AUTH_HMACSHA256_BYTES = 32;
+        private const int CRYPTO_AUTH_HMACSHA256_KEY_BYTES = crypto_auth_hmacsha256_KEYBYTES;
+        private const int CRYPTO_AUTH_HMACSHA256_BYTES = crypto_auth_hmacsha256_BYTES;
 
-        private const int CRYPTO_AUTH_HMACSHA512_KEY_BYTES = 32;
-        private const int CRYPTO_AUTH_HMACSHA512_BYTES = 64;
+        private const int CRYPTO_AUTH_HMACSHA512_KEY_BYTES = crypto_auth_hmacsha512_KEYBYTES;
+        private const int CRYPTO_AUTH_HMACSHA512_BYTES = crypto_auth_hmacsha512_BYTES;
 
         /// <summary>Generates a random 32 byte key.</summary>
         /// <returns>Returns a byte array with 32 random bytes</returns>
@@ -44,7 +45,7 @@ namespace Sodium
                   string.Format("key must be {0} bytes in length.", KEY_BYTES));
 
             var buffer = new byte[BYTES];
-            SodiumLibrary.crypto_auth(buffer, message, message.Length, key);
+            crypto_auth_hmacsha512256(buffer, message, (ulong)message.Length, key);
 
             return buffer;
         }
@@ -80,7 +81,7 @@ namespace Sodium
                 throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
                   string.Format("signature must be {0} bytes in length.", BYTES));
 
-            var ret = SodiumLibrary.crypto_auth_verify(signature, message, message.Length, key);
+            var ret = crypto_auth_hmacsha512256_verify(signature, message, (ulong)message.Length, key);
 
             return ret == 0;
         }
@@ -98,7 +99,7 @@ namespace Sodium
                   string.Format("key must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA256_KEY_BYTES));
 
             var buffer = new byte[CRYPTO_AUTH_HMACSHA256_BYTES];
-            SodiumLibrary.crypto_auth_hmacsha256(buffer, message, message.Length, key);
+            crypto_auth_hmacsha256(buffer, message, (ulong)message.Length, key);
 
             return buffer;
         }
@@ -126,7 +127,7 @@ namespace Sodium
                   string.Format("key must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA512_KEY_BYTES));
 
             var buffer = new byte[CRYPTO_AUTH_HMACSHA512_BYTES];
-            SodiumLibrary.crypto_auth_hmacsha512(buffer, message, message.Length, key);
+            crypto_auth_hmacsha512(buffer, message, (ulong)message.Length, key);
 
             return buffer;
         }
@@ -172,7 +173,7 @@ namespace Sodium
                 throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
                   string.Format("signature must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA256_BYTES));
 
-            var ret = SodiumLibrary.crypto_auth_hmacsha256_verify(signature, message, message.Length, key);
+            var ret = crypto_auth_hmacsha256_verify(signature, message, (ulong)message.Length, key);
 
             return ret == 0;
         }
@@ -208,7 +209,7 @@ namespace Sodium
                 throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
                   string.Format("signature must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA512_BYTES));
 
-            var ret = SodiumLibrary.crypto_auth_hmacsha512_verify(signature, message, message.Length, key);
+            var ret = crypto_auth_hmacsha512_verify(signature, message, (ulong)message.Length, key);
 
             return ret == 0;
         }

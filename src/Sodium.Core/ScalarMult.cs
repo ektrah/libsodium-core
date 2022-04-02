@@ -1,31 +1,24 @@
-using System;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
     /// <summary>Scalar Multiplication</summary>
     public static class ScalarMult
     {
-        private const int BYTES = 32;
-        private const int SCALAR_BYTES = 32;
+        private const int BYTES = crypto_scalarmult_curve25519_BYTES;
+        private const int SCALAR_BYTES = crypto_scalarmult_curve25519_SCALARBYTES;
 
         //TODO: Add documentation header
         public static int Bytes()
         {
-            return SodiumLibrary.crypto_scalarmult_bytes();
+            return (int)crypto_scalarmult_curve25519_bytes();
         }
 
         //TODO: Add documentation header
         public static int ScalarBytes()
         {
-            return SodiumLibrary.crypto_scalarmult_scalarbytes();
-        }
-
-        //TODO: Add documentation header
-        //TODO: Unit test(s)
-        static byte Primitive()
-        {
-            return SodiumLibrary.crypto_scalarmult_primitive();
+            return (int)crypto_scalarmult_curve25519_scalarbytes();
         }
 
         /// <summary>
@@ -42,7 +35,7 @@ namespace Sodium
                   string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
 
             var publicKey = new byte[SCALAR_BYTES];
-            SodiumLibrary.crypto_scalarmult_base(publicKey, secretKey);
+            crypto_scalarmult_curve25519_base(publicKey, secretKey);
 
             return publicKey;
         }
@@ -67,7 +60,7 @@ namespace Sodium
                   string.Format("publicKey must be {0} bytes in length.", BYTES));
 
             var secretShared = new byte[BYTES];
-            SodiumLibrary.crypto_scalarmult(secretShared, secretKey, publicKey);
+            crypto_scalarmult_curve25519(secretShared, secretKey, publicKey);
 
             return secretShared;
         }

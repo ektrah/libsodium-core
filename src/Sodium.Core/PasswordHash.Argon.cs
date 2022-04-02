@@ -1,13 +1,14 @@
 using System;
 using System.Text;
 using Sodium.Exceptions;
+using static Interop.Libsodium;
 
 namespace Sodium
 {
     public static partial class PasswordHash
     {
-        private const uint ARGON_STRBYTES = 128U;
-        private const uint ARGON_SALTBYTES = 16U;
+        private const int ARGON_STRBYTES = crypto_pwhash_argon2id_STRBYTES;
+        private const int ARGON_SALTBYTES = crypto_pwhash_argon2id_SALTBYTES;
 
         private const long ARGON_OPSLIMIT_INTERACTIVE = 4;
         private const long ARGON_OPSLIMIT_MEDIUM = 4;
@@ -23,9 +24,9 @@ namespace Sodium
         public enum ArgonAlgorithm
         {
             /// <summary>2I13, default Argon algorithm</summary>
-            Argon_2I13 = 1,
+            Argon_2I13 = crypto_pwhash_argon2i_ALG_ARGON2I13,
             /// <summary>2ID13 Argon algorithm</summary>
-            Argon_2ID13 = 2
+            Argon_2ID13 = crypto_pwhash_argon2id_ALG_ARGON2ID13,
         }
 
         /// <summary>Represents predefined and useful limits for ArgonHashBinary() and ArgonHashString().</summary>
@@ -45,7 +46,7 @@ namespace Sodium
         /// <returns>Returns a byte array with 16 random bytes</returns>
         public static byte[] ArgonGenerateSalt()
         {
-            return SodiumCore.GetRandomBytes((int)ARGON_SALTBYTES);
+            return SodiumCore.GetRandomBytes(ARGON_SALTBYTES);
         }
 
         /// <summary>Derives a secret key of any size from a password and a salt.</summary>
@@ -78,12 +79,13 @@ namespace Sodium
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         /// <exception cref="SaltOutOfRangeException"></exception>
         /// <exception cref="OutOfMemoryException"></exception>
-        public static byte[] ArgonHashBinary(string password, string salt, long opsLimit, int memLimit, long outputLength = ARGON_SALTBYTES)
+        public static byte[] ArgonHashBinary(string password, string salt, long opsLimit, int memLimit, long outputLength = ARGON_SALTBYTES,
+          ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
         {
             var pass = Encoding.UTF8.GetBytes(password);
             var saltAsBytes = Encoding.UTF8.GetBytes(salt);
 
-            return ArgonHashBinary(pass, saltAsBytes, opsLimit, memLimit, outputLength);
+            return ArgonHashBinary(pass, saltAsBytes, opsLimit, memLimit, outputLength, alg);
         }
 
         /// <summary>Derives a secret key of any size from a password and a salt.</summary>
@@ -144,7 +146,7 @@ namespace Sodium
 
             SodiumCore.Init();
 
-            var ret = SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.Length, salt, opsLimit, memLimit, (int)alg);
+            var ret = crypto_pwhash(buffer, (ulong)buffer.Length, password, (ulong)password.Length, salt, (ulong)opsLimit, (nuint)memLimit, (int)alg);
 
             if (ret != 0)
                 throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
@@ -190,7 +192,7 @@ namespace Sodium
 
             SodiumCore.Init();
 
-            var ret = SodiumLibrary.crypto_pwhash_str(buffer, pass, pass.Length, opsLimit, memLimit);
+            var ret = crypto_pwhash_str(buffer, pass, (ulong)pass.Length, (ulong)opsLimit, (nuint)memLimit);
 
             if (ret != 0)
             {
@@ -229,7 +231,7 @@ namespace Sodium
 
             SodiumCore.Init();
 
-            var ret = SodiumLibrary.crypto_pwhash_str_verify(buffer, password, password.Length);
+            var ret = crypto_pwhash_str_verify(buffer, password, (ulong)password.Length);
 
             return ret == 0;
         }
@@ -270,7 +272,7 @@ namespace Sodium
 
             SodiumCore.Init();
 
-            int status = SodiumLibrary.crypto_pwhash_str_needs_rehash(buffer, opsLimit, memLimit);
+            int status = crypto_pwhash_str_needs_rehash(buffer, (ulong)opsLimit, (nuint)memLimit);
 
             if (status == -1)
             {
