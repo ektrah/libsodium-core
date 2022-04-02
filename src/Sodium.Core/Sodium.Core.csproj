@@ -2,45 +2,35 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
-    <Description>libsodium for .net core</Description>
-    <Copyright>Copyright © tabrath 2019</Copyright>
-    <AssemblyTitle>Sodium.Core</AssemblyTitle>
-    <VersionPrefix>1.2.3</VersionPrefix>
-    <Authors>tabrath</Authors>
     <LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <AssemblyName>Sodium.Core</AssemblyName>
-    <PackageId>Sodium.Core</PackageId>
-    <PackageTags>libsodium;xamarin;xamarin.ios;xamarin.android</PackageTags>
-    <PackageLicenseUrl>https://github.com/tabrath/libsodium-core/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/tabrath/libsodium-core/</RepositoryUrl>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputType>Library</OutputType>
-    <PackageProjectUrl>https://github.com/tabrath/libsodium-core/</PackageProjectUrl>
     <RootNamespace>Sodium</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.2.3</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>libsodium for .net core</Description>
+    <Authors>Adam Caudill, Trond Arne Br&#229;then &#38; Contributors</Authors>
+    <Copyright>&#169; $([System.DateTime]::UtcNow.ToString(yyyy)) Adam Caudill, Trond Arne Br&#229;then &#38; Contributors</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>libsodium</PackageTags>
     <PackageIconUrl>http://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Salt_shaker_on_white_background.jpg/220px-Salt_shaker_on_white_background.jpg</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/ektrah/libsodium-core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ektrah/libsodium-core.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <MinClientVersion>4.0</MinClientVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>$(DefineConstants)</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('Xamarin.iOS'))">
-    <DefineConstants>$(DefineConstants);IOS</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('MonoAndroid'))">
-    <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
-  </PropertyGroup>
-
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="" Visible="false" />
+  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="libsodium" Version="1.0.18.2" />
   </ItemGroup>
