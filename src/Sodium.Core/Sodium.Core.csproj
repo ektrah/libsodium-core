@@ -20,7 +20,7 @@
     <Copyright>&#169; $([System.DateTime]::UtcNow.ToString(yyyy)) Adam Caudill, Trond Arne Br&#229;then &#38; Contributors</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>libsodium</PackageTags>
-    <PackageIconUrl>http://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Salt_shaker_on_white_background.jpg/220px-Salt_shaker_on_white_background.jpg</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/ektrah/libsodium-core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ektrah/libsodium-core.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <None Include="..\..\LICENSE" Pack="true" PackagePath="" Visible="false" />
+    <None Include="..\..\icon.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
   
   <ItemGroup>
