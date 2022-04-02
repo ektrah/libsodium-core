@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Sodium
 {
@@ -34,15 +32,7 @@ namespace Sodium
         /// <exception cref="OverflowException"></exception>
         public static string BinaryToHex(byte[] data)
         {
-            var hex = new byte[data.Length * 2 + 1];
-            var ret = SodiumLibrary.sodium_bin2hex(hex, hex.Length, data, data.Length);
-
-            if (ret == IntPtr.Zero)
-            {
-                throw new OverflowException("Internal error, encoding failed.");
-            }
-
-            return Marshal.PtrToStringAnsi(ret);
+            return BinaryToHex(data, HexFormat.None, HexCase.Lower);
         }
 
         /// <summary>Takes a byte array and returns a hex-encoded string.</summary>
@@ -54,52 +44,56 @@ namespace Sodium
         /// <remarks>This method don`t use libsodium, but it can be useful for generating human readable fingerprints.</remarks>
         public static string BinaryToHex(byte[] data, HexFormat format, HexCase hcase = HexCase.Lower)
         {
-            var sb = new StringBuilder();
+            if (data.Length == 0)
+                return string.Empty;
+
+            var hex = new char[data.Length * 3];
+            var pos = 0;
 
             for (var i = 0; i < data.Length; i++)
             {
-                if ((i != 0) && (format != HexFormat.None))
+                var b = data[i] >> 4;
+                var c = data[i] & 0xF;
+
+                switch (hcase)
                 {
-                    switch (format)
-                    {
-                        case HexFormat.Colon:
-                            sb.Append((char)58);
-                            break;
-                        case HexFormat.Hyphen:
-                            sb.Append((char)45);
-                            break;
-                        case HexFormat.Space:
-                            sb.Append((char)32);
-                            break;
-                        default:
-                            //no formatting
-                            break;
-                    }
+                    case HexCase.Lower:
+                        hex[pos++] = (char)(87 + b + (((b - 10) >> 31) & -39));
+                        hex[pos++] = (char)(87 + c + (((c - 10) >> 31) & -39));
+                        break;
+                    default:
+                        hex[pos++] = (char)(55 + b + (((b - 10) >> 31) & -7));
+                        hex[pos++] = (char)(55 + c + (((c - 10) >> 31) & -7));
+                        break;
                 }
 
-                var byteValue = data[i] >> 4;
-
-                if (hcase == HexCase.Lower)
+                switch (format)
                 {
-                    sb.Append((char)(87 + byteValue + (((byteValue - 10) >> 31) & -39))); //lower
-                }
-                else
-                {
-                    sb.Append((char)(55 + byteValue + (((byteValue - 10) >> 31) & -7))); //upper 
-                }
-                byteValue = data[i] & 0xF;
-
-                if (hcase == HexCase.Lower)
-                {
-                    sb.Append((char)(87 + byteValue + (((byteValue - 10) >> 31) & -39))); //lower
-                }
-                else
-                {
-                    sb.Append((char)(55 + byteValue + (((byteValue - 10) >> 31) & -7))); //upper 
+                    case HexFormat.Colon:
+                        hex[pos++] = ':';
+                        break;
+                    case HexFormat.Hyphen:
+                        hex[pos++] = '-';
+                        break;
+                    case HexFormat.Space:
+                        hex[pos++] = ' ';
+                        break;
+                    default:
+                        //no formatting
+                        break;
                 }
             }
 
-            return sb.ToString();
+            switch (format)
+            {
+                case HexFormat.Colon:
+                case HexFormat.Hyphen:
+                case HexFormat.Space:
+                    pos--;
+                    break;
+            }
+
+            return new string(hex, 0, pos);
         }
 
         /// <summary>Converts a hex-encoded string to a byte array.</summary>
@@ -110,30 +104,49 @@ namespace Sodium
         {
             const string IGNORED_CHARS = ":- ";
 
-            var arr = new byte[hex.Length >> 1];
-            var bin = Marshal.AllocHGlobal(arr.Length);
-            int binLength;
+            var bin = new byte[hex.Length >> 1];
+            int bin_pos = 0;
+            uint c_acc = 0;
+            int state = 0;
 
-            //we call sodium_hex2bin with some chars to be ignored
-            var ret = SodiumLibrary.sodium_hex2bin(bin, arr.Length, hex, hex.Length, IGNORED_CHARS, out binLength, null);
-
-            Marshal.Copy(bin, arr, 0, binLength);
-            Marshal.FreeHGlobal(bin);
-
-            if (ret != 0)
+            for (var hex_pos = 0; hex_pos < hex.Length; hex_pos++)
             {
-                throw new Exception("Internal error, decoding failed.");
+                var c = hex[hex_pos];
+                var c_num = c ^ 48U;
+                var c_num0 = (c_num - 10U) >> 8;
+                var c_alpha = (c & ~32U) - 55U;
+                var c_alpha0 = ((c_alpha - 10U) ^ (c_alpha - 16U)) >> 8;
+
+                if ((c_num0 | c_alpha0) == 0U)
+                {
+                    if (state == 0 && IGNORED_CHARS.Contains(c))
+                    {
+                        continue;
+                    }
+                    throw new Exception("Decoding failed");
+                }
+
+                var c_val = (c_num0 & c_num) | (c_alpha0 & c_alpha);
+
+                if (state == 0)
+                {
+                    c_acc = c_val << 4;
+                }
+                else
+                {
+                    bin[bin_pos++] = (byte)(c_acc | c_val);
+                }
+
+                state = ~state;
             }
 
-            //remove the trailing nulls from the array, if there were some format characters in the hex string before
-            if (arr.Length != binLength)
+            if (state != 0)
             {
-                var tmp = new byte[binLength];
-                Array.Copy(arr, 0, tmp, 0, binLength);
-                return tmp;
+                throw new Exception("Decoding failed");
             }
 
-            return arr;
+            Array.Resize(ref bin, bin_pos);
+            return bin;
         }
     }
 }
