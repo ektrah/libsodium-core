@@ -25,7 +25,7 @@ namespace Sodium
         /// <param name="message">The message to be encrypted.</param>
         /// <param name="nonce">The 12 byte nonce.</param>
         /// <param name="key">The 32 byte key.</param>
-        /// <param name="additionalData">The additional data; may be null, otherwise between 0 and 16 bytes.</param>
+        /// <param name="additionalData">The additional data; may be null.</param>
         /// <returns>The encrypted message with additional data.</returns>
         /// <remarks>The nonce should never ever be reused with the same key.</remarks>
         /// <remarks>The recommended way to generate it is to use GenerateNonce() for the first message, and increment it for each subsequent message using the same key.</remarks>
@@ -49,11 +49,6 @@ namespace Sodium
                 throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
                   string.Format("nonce must be {0} bytes in length.", NPUBBYTES));
 
-            //validate the length of the additionalData
-            if (additionalData.Length > ABYTES || additionalData.Length < 0)
-                throw new AdditionalDataOutOfRangeException(
-                  string.Format("additionalData must be between {0} and {1} bytes in length.", 0, ABYTES));
-
             var cipher = new byte[message.Length + ABYTES];
             ulong cipherLength = 0;
 
@@ -73,7 +68,7 @@ namespace Sodium
         /// <param name="cipher">The cipher to be decrypted.</param>
         /// <param name="nonce">The 12 byte nonce.</param>
         /// <param name="key">The 32 byte key.</param>
-        /// <param name="additionalData">The additional data; may be null, otherwise between 0 and 16 bytes.</param>
+        /// <param name="additionalData">The additional data; may be null.</param>
         /// <returns>The decrypted cipher.</returns>
         /// <exception cref="KeyOutOfRangeException"></exception>
         /// <exception cref="NonceOutOfRangeException"></exception>
@@ -95,10 +90,6 @@ namespace Sodium
                 throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
                   string.Format("nonce must be {0} bytes in length.", NPUBBYTES));
 
-            //validate the length of the additionalData
-            if (additionalData.Length > ABYTES || additionalData.Length < 0)
-                throw new AdditionalDataOutOfRangeException(
-                  string.Format("additionalData must be between {0} and {1} bytes in length.", 0, ABYTES));
 
             var message = new byte[cipher.Length - ABYTES];
             ulong messageLength = 0;
