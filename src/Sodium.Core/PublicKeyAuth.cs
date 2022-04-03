@@ -11,7 +11,6 @@ namespace Sodium
     {
         private const int SECRET_KEY_BYTES = crypto_sign_ed25519_SECRETKEYBYTES;
         private const int PUBLIC_KEY_BYTES = crypto_sign_ed25519_PUBLICKEYBYTES;
-        private const int SIGNATURE_BYTES = crypto_sign_ed25519_BYTES;
         private const int BYTES = crypto_sign_ed25519_BYTES;
         private const int SEED_BYTES = crypto_sign_ed25519_SEEDBYTES;
 
@@ -33,13 +32,13 @@ namespace Sodium
         /// <exception cref="SeedOutOfRangeException"></exception>
         public static KeyPair GenerateKeyPair(byte[] seed)
         {
-            var publicKey = new byte[PUBLIC_KEY_BYTES];
-            var privateKey = new byte[SECRET_KEY_BYTES];
-
             //validate the length of the seed
             if (seed == null || seed.Length != SEED_BYTES)
                 throw new SeedOutOfRangeException("seed", (seed == null) ? 0 : seed.Length,
                   string.Format("seed must be {0} bytes in length.", SEED_BYTES));
+
+            var publicKey = new byte[PUBLIC_KEY_BYTES];
+            var privateKey = new byte[SECRET_KEY_BYTES];
 
             crypto_sign_ed25519_seed_keypair(publicKey, privateKey, seed);
 
@@ -73,10 +72,8 @@ namespace Sodium
 
             crypto_sign_ed25519(buffer, ref bufferLength, message, (ulong)message.Length, key);
 
-            var final = new byte[bufferLength];
-            Array.Copy(buffer, 0, final, 0, (int)bufferLength);
-
-            return final;
+            Array.Resize(ref buffer, (int)bufferLength);
+            return buffer;
         }
 
         /// <summary>Verifies a message signed with the Sign method.</summary>
@@ -92,7 +89,10 @@ namespace Sodium
                 throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
                   string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
 
-            var buffer = new byte[signedMessage.Length];
+            if (signedMessage.Length < BYTES)
+                throw new CryptographicException("Failed to verify signature.");
+
+            var buffer = new byte[signedMessage.Length - BYTES];
             ulong bufferLength = 0;
 
             var ret = crypto_sign_ed25519_open(buffer, ref bufferLength, signedMessage, (ulong)signedMessage.Length, key);
@@ -100,10 +100,8 @@ namespace Sodium
             if (ret != 0)
                 throw new CryptographicException("Failed to verify signature.");
 
-            var final = new byte[bufferLength];
-            Array.Copy(buffer, 0, final, 0, (int)bufferLength);
-
-            return final;
+            Array.Resize(ref buffer, (int)bufferLength);
+            return buffer;
         }
 
         /// <summary>Signs a message with Ed25519.</summary>
@@ -128,7 +126,7 @@ namespace Sodium
                 throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
                   string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
 
-            var signature = new byte[SIGNATURE_BYTES];
+            var signature = new byte[BYTES];
             ulong signatureLength = 0;
 
             crypto_sign_ed25519_detached(signature, ref signatureLength, message, (ulong)message.Length, key);
@@ -146,9 +144,9 @@ namespace Sodium
         public static bool VerifyDetached(byte[] signature, byte[] message, byte[] key)
         {
             //validate the length of the signature
-            if (signature == null || signature.Length != SIGNATURE_BYTES)
+            if (signature == null || signature.Length != BYTES)
                 throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
-                  string.Format("signature must be {0} bytes in length.", SIGNATURE_BYTES));
+                  string.Format("signature must be {0} bytes in length.", BYTES));
 
             //validate the length of the key
             if (key == null || key.Length != PUBLIC_KEY_BYTES)
@@ -172,7 +170,7 @@ namespace Sodium
                 throw new KeyOutOfRangeException("ed25519PublicKey", (ed25519PublicKey == null) ? 0 : ed25519PublicKey.Length,
                   string.Format("ed25519PublicKey must be {0} bytes in length.", PUBLIC_KEY_BYTES));
 
-            var buffer = new byte[PublicKeyBox.PublicKeyBytes];
+            var buffer = new byte[crypto_scalarmult_curve25519_BYTES];
 
             var ret = crypto_sign_ed25519_pk_to_curve25519(buffer, ed25519PublicKey);
 
@@ -195,7 +193,7 @@ namespace Sodium
                   string.Format("ed25519SecretKey must be either {0} or {1} bytes in length.", PUBLIC_KEY_BYTES,
                     SECRET_KEY_BYTES));
 
-            var buffer = new byte[PublicKeyBox.SecretKeyBytes];
+            var buffer = new byte[crypto_scalarmult_curve25519_SCALARBYTES];
 
             var ret = crypto_sign_ed25519_sk_to_curve25519(buffer, ed25519SecretKey);
 
