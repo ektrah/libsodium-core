@@ -82,10 +82,7 @@ namespace Sodium
         public static byte[] ArgonHashBinary(string password, string salt, long opsLimit, int memLimit, long outputLength = ARGON_SALTBYTES,
           ArgonAlgorithm alg = ArgonAlgorithm.Argon_2I13)
         {
-            var pass = Encoding.UTF8.GetBytes(password);
-            var saltAsBytes = Encoding.UTF8.GetBytes(salt);
-
-            return ArgonHashBinary(pass, saltAsBytes, opsLimit, memLimit, outputLength, alg);
+            return ArgonHashBinary(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(salt), opsLimit, memLimit, outputLength, alg);
         }
 
         /// <summary>Derives a secret key of any size from a password and a salt.</summary>

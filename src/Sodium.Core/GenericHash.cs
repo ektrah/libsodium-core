@@ -10,7 +10,6 @@ namespace Sodium
     /// </summary>
     public static partial class GenericHash
     {
-        //this was pulled from the headers; should be more dynamic
         private const int BYTES_MIN = crypto_generichash_blake2b_BYTES_MIN;
         private const int BYTES_MAX = crypto_generichash_blake2b_BYTES_MAX;
         private const int KEY_BYTES_MIN = crypto_generichash_blake2b_KEYBYTES_MIN;

@@ -49,9 +49,7 @@ namespace Sodium
         /// </returns>
         public static string SodiumVersionString()
         {
-            var ptr = sodium_version_string();
-
-            return Marshal.PtrToStringAnsi(ptr);
+            return Marshal.PtrToStringAnsi(sodium_version_string());
         }
 
         /// <summary>Initialize libsodium.</summary>

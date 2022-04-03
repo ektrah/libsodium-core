@@ -43,7 +43,6 @@ namespace Sodium
             return SodiumCore.GetRandomBytes(XCHACHA20_NONCEBYTES);
         }
 
-
         /// <summary>Encryptes messages via XSalsa20</summary>
         /// <param name="message">The message to be encrypted.</param>
         /// <param name="nonce">The nonce.</param>
@@ -266,7 +265,6 @@ namespace Sodium
         {
             return DecryptXChaCha20(Utilities.HexToBinary(cipherText), nonce, key);
         }
-
 
         /// <summary>Decryptes messages via XChaCha20</summary>
         /// <param name="cipherText">The chipher text to be opened.</param>

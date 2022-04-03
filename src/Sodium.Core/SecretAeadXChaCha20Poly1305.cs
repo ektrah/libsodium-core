@@ -5,8 +5,7 @@ using static Interop.Libsodium;
 
 namespace Sodium
 {
-    /// <summary>Authenticated Encryption with Additional Data using XChaCha20-Poly1305.
-    /// <remarks>See here for more information: https://download.libsodium.org/doc/secret-key_cryptography/chacha20-poly1305.html </remarks>
+    /// <summary>Authenticated Encryption with Additional Data using XChaCha20-Poly1305.</summary>
     public static class SecretAeadXChaCha20Poly1305
     {
         private const int KEYBYTES = crypto_aead_xchacha20poly1305_ietf_KEYBYTES;

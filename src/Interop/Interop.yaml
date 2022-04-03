@@ -165,8 +165,6 @@ Interop.Scalarmult.X25519.cs:
   functions:
   - crypto_scalarmult_curve25519
   - crypto_scalarmult_curve25519_base
-  - crypto_scalarmult_curve25519_bytes
-  - crypto_scalarmult_curve25519_scalarbytes
 
 Interop.SecretBox.XSalsa20Poly1305.cs:
   include:

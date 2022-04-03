@@ -5,14 +5,12 @@ using static Interop.Libsodium;
 
 namespace Sodium
 {
-    /// <summary>Authenticated Encryption with Additional Data.</summary>
+    /// <summary>Authenticated Encryption with Additional Data using ChaCha20-Poly1305.</summary>
     public static class SecretAeadChaCha20Poly1305IETF
     {
         private const int KEYBYTES = crypto_aead_chacha20poly1305_ietf_KEYBYTES;
         private const int NPUBBYTES = crypto_aead_chacha20poly1305_ietf_NPUBBYTES;
         private const int ABYTES = crypto_aead_chacha20poly1305_ietf_ABYTES;
-
-        //TODO: we could implement a method which increments the nonce.
 
         /// <summary>Generates a random 12 byte nonce.</summary>
         /// <returns>Returns a byte array with 12 random bytes.</returns>
@@ -22,7 +20,7 @@ namespace Sodium
         }
 
         /// <summary>
-        /// Encrypts a message with an authentication tag and additional data.
+        /// Encrypts a message with an authentication tag and additional data using ChaCha20-Poly1305.
         /// </summary>
         /// <param name="message">The message to be encrypted.</param>
         /// <param name="nonce">The 12 byte nonce.</param>
@@ -59,7 +57,8 @@ namespace Sodium
             var cipher = new byte[message.Length + ABYTES];
             ulong cipherLength = 0;
 
-            var ret = crypto_aead_chacha20poly1305_ietf_encrypt(cipher, ref cipherLength, message, (ulong)message.Length, additionalData, (ulong)additionalData.Length, IntPtr.Zero,
+            var ret = crypto_aead_chacha20poly1305_ietf_encrypt(cipher, ref cipherLength, message, (ulong)message.Length,
+                additionalData, (ulong)additionalData.Length, IntPtr.Zero,
               nonce, key);
 
             if (ret != 0)
@@ -69,7 +68,7 @@ namespace Sodium
         }
 
         /// <summary>
-        /// Decrypts a cipher with an authentication tag and additional data.
+        /// Decrypts a cipher with an authentication tag and additional data using ChaCha20-Poly1305.
         /// </summary>
         /// <param name="cipher">The cipher to be decrypted.</param>
         /// <param name="nonce">The 12 byte nonce.</param>

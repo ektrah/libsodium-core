@@ -6,7 +6,6 @@ namespace Sodium
     /// <summary>Provides hashing via selected primitive.</summary>
     public static class CryptoHash
     {
-        //pulled from various #define statements; may break with new versions
         private const int SHA512_BYTES = crypto_hash_sha512_BYTES;
         private const int SHA256_BYTES = crypto_hash_sha256_BYTES;
 

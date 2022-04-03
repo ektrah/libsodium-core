@@ -12,8 +12,6 @@ namespace Sodium
         private const int NPUBBYTES = crypto_aead_chacha20poly1305_NPUBBYTES;
         private const int ABYTES = crypto_aead_chacha20poly1305_ABYTES;
 
-        //TODO: we could implement a method which increments the nonce.
-
         /// <summary>Generates a random 8 byte nonce.</summary>
         /// <returns>Returns a byte array with 8 random bytes.</returns>
         public static byte[] GenerateNonce()

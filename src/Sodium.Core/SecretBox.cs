@@ -60,7 +60,7 @@ namespace Sodium
                 throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
                   string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
 
-            var buffer = new byte[MAC_BYTES + message.Length];
+            var buffer = new byte[message.Length + MAC_BYTES];
             var ret = crypto_secretbox_easy(buffer, message, (ulong)message.Length, nonce, key);
 
             if (ret != 0)

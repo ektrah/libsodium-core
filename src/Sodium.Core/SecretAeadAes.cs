@@ -5,9 +5,8 @@ using static Interop.Libsodium;
 
 namespace Sodium
 {
-    /// <summary>Authenticated Encryption with Additional Data using AES-GCM.
-    /// Only supported on modern x86/x64 processors.</summary>
-    /// <remarks>See here for more information: https://download.libsodium.org/doc/advanced/aes-256-gcm.html </remarks>
+    /// <summary>Authenticated Encryption with Additional Data using AES-GCM.</summary>
+    /// <remarks>Only supported on modern x86/x64 processors.</remarks>
     public static class SecretAeadAes
     {
         private const int KEYBYTES = crypto_aead_aes256gcm_KEYBYTES;

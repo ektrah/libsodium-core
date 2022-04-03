@@ -8,9 +8,9 @@ namespace Sodium
     /// <summary> Create and Open SealedPublicKeyBoxes. </summary>
     public static class SealedPublicKeyBox
     {
-        public const int RecipientPublicKeyBytes = 32;
-        public const int RecipientSecretKeyBytes = 32;
-        private const int CryptoBoxSealbytes = 48;
+        public const int RecipientPublicKeyBytes = crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES;
+        public const int RecipientSecretKeyBytes = crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES;
+        private const int CryptoBoxSealbytes = crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES + crypto_box_curve25519xsalsa20poly1305_MACBYTES;
 
         /// <summary> Creates a SealedPublicKeyBox</summary>
         /// <param name="message">The message.</param>

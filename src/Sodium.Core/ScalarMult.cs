@@ -12,13 +12,13 @@ namespace Sodium
         //TODO: Add documentation header
         public static int Bytes()
         {
-            return (int)crypto_scalarmult_curve25519_bytes();
+            return crypto_scalarmult_curve25519_BYTES;
         }
 
         //TODO: Add documentation header
         public static int ScalarBytes()
         {
-            return (int)crypto_scalarmult_curve25519_scalarbytes();
+            return crypto_scalarmult_curve25519_SCALARBYTES;
         }
 
         /// <summary>

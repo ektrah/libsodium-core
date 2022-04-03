@@ -73,10 +73,7 @@ namespace Sodium
         /// <exception cref="OutOfMemoryException"></exception>
         public static byte[] ScryptHashBinary(string password, string salt, long opsLimit, int memLimit, long outputLength = SCRYPT_SALSA208_SHA256_SALTBYTES)
         {
-            var pass = Encoding.UTF8.GetBytes(password);
-            var saltAsBytes = Encoding.UTF8.GetBytes(salt);
-
-            return ScryptHashBinary(pass, saltAsBytes, opsLimit, memLimit, outputLength);
+            return ScryptHashBinary(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(salt), opsLimit, memLimit, outputLength);
         }
 
         /// <summary>Derives a secret key of any size from a password and a salt.</summary>
