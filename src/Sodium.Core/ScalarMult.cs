@@ -34,7 +34,7 @@ namespace Sodium
                 throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
                   string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
 
-            var publicKey = new byte[SCALAR_BYTES];
+            var publicKey = new byte[BYTES];
             crypto_scalarmult_curve25519_base(publicKey, secretKey);
 
             return publicKey;
