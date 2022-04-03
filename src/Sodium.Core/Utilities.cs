@@ -26,9 +26,7 @@ namespace Sodium
         /// <returns><c>true</c> if the values are equal, otherwise <c>false</c></returns>
         public static bool Compare(byte[] a, byte[] b)
         {
-            var ret = sodium_compare(a, b, (nuint)a.Length);
-
-            return ret == 0;
+            return (a.Length == b.Length) && sodium_compare(a, b, (nuint)a.Length) == 0;
         }
     }
 }
