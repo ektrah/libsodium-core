@@ -196,6 +196,9 @@ namespace Sodium
                 throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
                   string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
 
+            if (cipherText.Length < MAC_BYTES)
+                throw new CryptographicException("Failed to open PublicKeyBox");
+
             //check to see if there are MAC_BYTES of leading nulls, if so, trim.
             //this is required due to an error in older versions.
             if (cipherText[0] == 0)

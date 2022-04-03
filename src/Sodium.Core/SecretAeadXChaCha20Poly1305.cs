@@ -90,6 +90,9 @@ namespace Sodium
                 throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
                   string.Format("nonce must be {0} bytes in length.", NPUBBYTES));
 
+            if (cipher.Length < ABYTES)
+                throw new CryptographicException("Error decrypting message.");
+
             var message = new byte[cipher.Length - ABYTES];
             ulong messageLength = 0;
 
