@@ -14,6 +14,7 @@ namespace Sodium
 
         private const int NONCE_BYTES = crypto_box_curve25519xsalsa20poly1305_NONCEBYTES;
         private const int MAC_BYTES = crypto_box_curve25519xsalsa20poly1305_MACBYTES;
+        private const int SEED_BYTES = crypto_box_curve25519xsalsa20poly1305_SEEDBYTES;
 
         /// <summary>Creates a new key pair based on a random seed.</summary>
         /// <returns>A KeyPair.</returns>
@@ -49,14 +50,13 @@ namespace Sodium
         /// <exception cref="SeedOutOfRangeException"></exception>
         public static KeyPair GenerateSeededKeyPair(byte[] seed)
         {
-            var publicKey = new byte[PublicKeyBytes];
-            var privateKey = new byte[SecretKeyBytes];
-            // Expected length of the keypair seed
-            nuint seedBytes = crypto_box_curve25519xsalsa20poly1305_seedbytes();
             //validate the length of the seed
-            if (seed == null || (nuint)seed.Length != seedBytes)
+            if (seed == null || (nuint)seed.Length != SEED_BYTES)
                 throw new SeedOutOfRangeException("seed", (seed == null) ? 0 : seed.Length,
                   string.Format("Key seed must be {0} bytes in length.", SecretKeyBytes));
+
+            var publicKey = new byte[PublicKeyBytes];
+            var privateKey = new byte[SecretKeyBytes];
 
             crypto_box_curve25519xsalsa20poly1305_seed_keypair(publicKey, privateKey, seed);
 

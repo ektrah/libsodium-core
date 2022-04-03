@@ -9,6 +9,7 @@ internal static partial class Interop
         internal const int crypto_box_curve25519xsalsa20poly1305_NONCEBYTES = 24;
         internal const int crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES = 32;
         internal const int crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES = 32;
+        internal const int crypto_box_curve25519xsalsa20poly1305_SEEDBYTES = 32;
 
         [DllImport(Libraries.Libsodium, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int crypto_box_curve25519xsalsa20poly1305_keypair(
@@ -20,9 +21,6 @@ internal static partial class Interop
             byte[] pk,
             byte[] sk,
             byte[] seed);
-
-        [DllImport(Libraries.Libsodium, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern nuint crypto_box_curve25519xsalsa20poly1305_seedbytes();
 
         [DllImport(Libraries.Libsodium, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int crypto_box_detached(

@@ -77,10 +77,10 @@ Interop.Box.Curve25519XSalsa20Poly1305.cs:
   - crypto_box_curve25519xsalsa20poly1305_NONCEBYTES
   - crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES
   - crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES
+  - crypto_box_curve25519xsalsa20poly1305_SEEDBYTES
   functions:
   - crypto_box_curve25519xsalsa20poly1305_keypair
   - crypto_box_curve25519xsalsa20poly1305_seed_keypair
-  - crypto_box_curve25519xsalsa20poly1305_seedbytes
   - crypto_box_detached
   - crypto_box_easy
   - crypto_box_open_detached
