@@ -678,5 +678,28 @@ namespace Tests
             Assert.IsTrue(PasswordHash.ArgonPasswordNeedsRehash(argonHash, PasswordHash.StrengthArgon.Sensitive));
 
         }
+
+        [Test]
+        public void ScryptPasswordNeedsRehashOnStringTest()
+        {
+            string hash = PasswordHash.ScryptHashString("password", PasswordHash.Strength.Medium);
+            Assert.IsTrue(PasswordHash.ScryptPasswordNeedsRehash(hash, PasswordHash.Strength.Sensitive));
+            Assert.IsTrue(PasswordHash.ScryptPasswordNeedsRehash(hash, PasswordHash.Strength.Interactive));
+            Assert.IsFalse(PasswordHash.ScryptPasswordNeedsRehash(hash, PasswordHash.Strength.Medium));
+        }
+
+        [Test]
+        public void ScryptPasswordNeedsRehashOnStringNullStringTest()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => PasswordHash.ScryptPasswordNeedsRehash((string)null!, PasswordHash.Strength.Sensitive));
+        }
+
+        [Test]
+        public void ScryptPasswordNeedsRehashOnStringBadStringTest()
+        {
+            Assert.Throws<Sodium.Exceptions.InvalidPasswordStringException>(
+                () => PasswordHash.ScryptPasswordNeedsRehash("nope", PasswordHash.Strength.Sensitive));
+        }
     }
 }

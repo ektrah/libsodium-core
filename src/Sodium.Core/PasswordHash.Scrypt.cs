@@ -220,6 +220,53 @@ namespace Sodium
             return ret == 0;
         }
 
+        public static bool ScryptPasswordNeedsRehash(string hash, Strength limit = Strength.Interactive)
+        {
+            return ScryptPasswordNeedsRehash(Encoding.UTF8.GetBytes(hash), limit);
+        }
+
+        public static bool ScryptPasswordNeedsRehash(string hash, long opsLimit, int memLimit)
+        {
+            return ScryptPasswordNeedsRehash(Encoding.UTF8.GetBytes(hash), opsLimit, memLimit);
+        }
+
+        public static bool ScryptPasswordNeedsRehash(byte[] hash, Strength limit = Strength.Interactive)
+        {
+            var (opsLimit, memLimit) = GetScryptOpsAndMemoryLimit(limit);
+
+            return ScryptPasswordNeedsRehash(hash, opsLimit, memLimit);
+        }
+
+        /// <summary>
+        /// Checks if the current SCrypt password hash needs rehashing.  Will return false
+        /// if the hash values don't match what is expected.
+        /// </summary>
+        /// <param name="hash">Password that needs rehashing</param>
+        /// <param name="opsLimit">Expected opsLimit</param>
+        /// <param name="memLimit">Expected memLimit</param>
+        /// <returns>True if the hash has the expected ops and mem limits, false otherwise.</returns>
+        public static bool ScryptPasswordNeedsRehash(byte[] hash, long opsLimit, int memLimit)
+        {
+            if (hash == null)
+                throw new ArgumentNullException(nameof(hash), "Hash cannot be null");
+            if (hash.Length >= crypto_pwhash_scryptsalsa208sha256_STRBYTES)
+                throw new ArgumentOutOfRangeException(nameof(hash), "Hash is invalid");
+
+            var buffer = new byte[crypto_pwhash_scryptsalsa208sha256_STRBYTES];
+            Array.Copy(hash, buffer, hash.Length);
+
+            SodiumCore.Init();
+
+            int status = crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(buffer, (ulong)opsLimit, (nuint)memLimit);
+
+            if (status == -1)
+            {
+                throw new InvalidPasswordStringException("Invalid Password string for Scrypt");
+            }
+
+            return status == 1;
+        }
+
         private static (long opsLimit, int memLimit) GetScryptOpsAndMemoryLimit(Strength limit = Strength.Interactive)
         {
             int memLimit;

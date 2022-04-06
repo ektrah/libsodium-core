@@ -156,6 +156,7 @@ Interop.Pwhash.Scrypt.cs:
   - crypto_pwhash_scryptsalsa208sha256 (byte[] passwd)
   - crypto_pwhash_scryptsalsa208sha256_str (byte[] out, byte[] passwd)
   - crypto_pwhash_scryptsalsa208sha256_str_verify (byte[] str, byte[] passwd)
+  - crypto_pwhash_scryptsalsa208sha256_str_needs_rehash (byte[] str)
 
 Interop.Scalarmult.X25519.cs:
   include: include/sodium/crypto_scalarmult_curve25519.h

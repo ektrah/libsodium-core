@@ -27,6 +27,12 @@ internal static partial class Interop
             nuint memlimit);
 
         [DllImport(Libraries.Libsodium, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern int crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(
+            byte[] str,
+            ulong opslimit,
+            nuint memlimit);
+
+        [DllImport(Libraries.Libsodium, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int crypto_pwhash_scryptsalsa208sha256_str_verify(
             byte[] str,
             byte[] passwd,

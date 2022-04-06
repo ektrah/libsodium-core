@@ -273,7 +273,7 @@ namespace Sodium
 
             if (status == -1)
             {
-                throw new InvalidArgonPasswordString();
+                throw new InvalidPasswordStringException("Invalid Password string for Argon 2");
             }
 
             return status == 1;
