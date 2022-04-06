@@ -14,6 +14,11 @@ namespace Sodium
         private const int BYTES = crypto_sign_ed25519_BYTES;
         private const int SEED_BYTES = crypto_sign_ed25519_SEEDBYTES;
 
+        public static int SecretKeyBytes { get; } = SECRET_KEY_BYTES;
+        public static int PublicKeyBytes { get; } = PUBLIC_KEY_BYTES;
+        public static int SignatureBytes { get; } = BYTES;
+        public static int SeedBytes { get; } = SEED_BYTES;
+
         /// <summary>Creates a new key pair based on a random seed.</summary>
         /// <returns>A KeyPair.</returns>
         public static KeyPair GenerateKeyPair()
