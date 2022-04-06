@@ -9,19 +9,22 @@ namespace Sodium
     /// <summary>Create and Open Boxes.</summary>
     public static class PublicKeyBox
     {
-        public const int PublicKeyBytes = crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES;
-        public const int SecretKeyBytes = crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES;
+        private const int PUBLIC_KEY_BYTES = crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES;
+        private const int SECRET_KEY_BYTES = crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES;
 
         private const int NONCE_BYTES = crypto_box_curve25519xsalsa20poly1305_NONCEBYTES;
         private const int MAC_BYTES = crypto_box_curve25519xsalsa20poly1305_MACBYTES;
         private const int SEED_BYTES = crypto_box_curve25519xsalsa20poly1305_SEEDBYTES;
 
+        public static int PublicKeyBytes { get; } = PUBLIC_KEY_BYTES;
+        public static int SecretKeyBytes { get; } = SECRET_KEY_BYTES;
+
         /// <summary>Creates a new key pair based on a random seed.</summary>
         /// <returns>A KeyPair.</returns>
         public static KeyPair GenerateKeyPair()
         {
-            var publicKey = new byte[PublicKeyBytes];
-            var privateKey = new byte[SecretKeyBytes];
+            var publicKey = new byte[PUBLIC_KEY_BYTES];
+            var privateKey = new byte[SECRET_KEY_BYTES];
 
             crypto_box_curve25519xsalsa20poly1305_keypair(publicKey, privateKey);
 
@@ -35,9 +38,9 @@ namespace Sodium
         public static KeyPair GenerateKeyPair(byte[] privateKey)
         {
             //validate the length of the seed
-            if (privateKey == null || privateKey.Length != SecretKeyBytes)
+            if (privateKey == null || privateKey.Length != SECRET_KEY_BYTES)
                 throw new SeedOutOfRangeException("privateKey", (privateKey == null) ? 0 : privateKey.Length,
-                  string.Format("privateKey must be {0} bytes in length.", SecretKeyBytes));
+                  string.Format("privateKey must be {0} bytes in length.", SECRET_KEY_BYTES));
 
             var publicKey = ScalarMult.Base(privateKey);
 
@@ -53,10 +56,10 @@ namespace Sodium
             //validate the length of the seed
             if (seed == null || (nuint)seed.Length != SEED_BYTES)
                 throw new SeedOutOfRangeException("seed", (seed == null) ? 0 : seed.Length,
-                  string.Format("Key seed must be {0} bytes in length.", SecretKeyBytes));
+                  string.Format("Key seed must be {0} bytes in length.", SECRET_KEY_BYTES));
 
-            var publicKey = new byte[PublicKeyBytes];
-            var privateKey = new byte[SecretKeyBytes];
+            var publicKey = new byte[PUBLIC_KEY_BYTES];
+            var privateKey = new byte[SECRET_KEY_BYTES];
 
             crypto_box_curve25519xsalsa20poly1305_seed_keypair(publicKey, privateKey, seed);
 
@@ -96,14 +99,14 @@ namespace Sodium
         public static byte[] Create(byte[] message, byte[] nonce, byte[] secretKey, byte[] publicKey)
         {
             //validate the length of the secret key
-            if (secretKey == null || secretKey.Length != SecretKeyBytes)
+            if (secretKey == null || secretKey.Length != SECRET_KEY_BYTES)
                 throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", SecretKeyBytes));
+                  string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
 
             //validate the length of the public key
-            if (publicKey == null || publicKey.Length != PublicKeyBytes)
+            if (publicKey == null || publicKey.Length != PUBLIC_KEY_BYTES)
                 throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : publicKey.Length,
-                  string.Format("key must be {0} bytes in length.", PublicKeyBytes));
+                  string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
 
             //validate the length of the nonce
             if (nonce == null || nonce.Length != NONCE_BYTES)
@@ -145,14 +148,14 @@ namespace Sodium
         public static DetachedBox CreateDetached(byte[] message, byte[] nonce, byte[] secretKey, byte[] publicKey)
         {
             //validate the length of the secret key
-            if (secretKey == null || secretKey.Length != SecretKeyBytes)
+            if (secretKey == null || secretKey.Length != SECRET_KEY_BYTES)
                 throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", SecretKeyBytes));
+                  string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
 
             //validate the length of the public key
-            if (publicKey == null || publicKey.Length != PublicKeyBytes)
+            if (publicKey == null || publicKey.Length != PUBLIC_KEY_BYTES)
                 throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", PublicKeyBytes));
+                  string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
 
             //validate the length of the nonce
             if (nonce == null || nonce.Length != NONCE_BYTES)
@@ -182,14 +185,14 @@ namespace Sodium
         public static byte[] Open(byte[] cipherText, byte[] nonce, byte[] secretKey, byte[] publicKey)
         {
             //validate the length of the secret key
-            if (secretKey == null || secretKey.Length != SecretKeyBytes)
+            if (secretKey == null || secretKey.Length != SECRET_KEY_BYTES)
                 throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", SecretKeyBytes));
+                  string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
 
             //validate the length of the public key
-            if (publicKey == null || publicKey.Length != PublicKeyBytes)
+            if (publicKey == null || publicKey.Length != PUBLIC_KEY_BYTES)
                 throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", PublicKeyBytes));
+                  string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
 
             //validate the length of the nonce
             if (nonce == null || nonce.Length != NONCE_BYTES)
@@ -278,14 +281,14 @@ namespace Sodium
         public static byte[] OpenDetached(byte[] cipherText, byte[] mac, byte[] nonce, byte[] secretKey, byte[] publicKey)
         {
             //validate the length of the secret key
-            if (secretKey == null || secretKey.Length != SecretKeyBytes)
+            if (secretKey == null || secretKey.Length != SECRET_KEY_BYTES)
                 throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", SecretKeyBytes));
+                  string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
 
             //validate the length of the public key
-            if (publicKey == null || publicKey.Length != PublicKeyBytes)
+            if (publicKey == null || publicKey.Length != PUBLIC_KEY_BYTES)
                 throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", PublicKeyBytes));
+                  string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
 
             //validate the length of the mac
             if (mac == null || mac.Length != MAC_BYTES)
