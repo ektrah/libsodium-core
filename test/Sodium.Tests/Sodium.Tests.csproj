@@ -5,6 +5,7 @@
     <LangVersion>9.0</LangVersion>
     <Features>strict</Features>
     <Nullable>enable</Nullable>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

@@ -58,12 +58,12 @@ namespace Sodium
                 switch (hcase)
                 {
                     case HexCase.Lower:
-                        hex[pos++] = (char)(87 + b + (((b - 10) >> 31) & -39));
-                        hex[pos++] = (char)(87 + c + (((c - 10) >> 31) & -39));
+                        hex[pos++] = unchecked((char)(87 + b + (((b - 10) >> 31) & -39)));
+                        hex[pos++] = unchecked((char)(87 + c + (((c - 10) >> 31) & -39)));
                         break;
                     default:
-                        hex[pos++] = (char)(55 + b + (((b - 10) >> 31) & -7));
-                        hex[pos++] = (char)(55 + c + (((c - 10) >> 31) & -7));
+                        hex[pos++] = unchecked((char)(55 + b + (((b - 10) >> 31) & -7)));
+                        hex[pos++] = unchecked((char)(55 + c + (((c - 10) >> 31) & -7)));
                         break;
                 }
 
@@ -112,10 +112,10 @@ namespace Sodium
             for (var hex_pos = 0; hex_pos < hex.Length; hex_pos++)
             {
                 var c = hex[hex_pos];
-                var c_num = c ^ 48U;
-                var c_num0 = (c_num - 10U) >> 8;
-                var c_alpha = (c & ~32U) - 55U;
-                var c_alpha0 = ((c_alpha - 10U) ^ (c_alpha - 16U)) >> 8;
+                var c_num = unchecked(c ^ 48U);
+                var c_num0 = unchecked((c_num - 10U) >> 8);
+                var c_alpha = unchecked((c & ~32U) - 55U);
+                var c_alpha0 = unchecked(((c_alpha - 10U) ^ (c_alpha - 16U)) >> 8);
 
                 if ((c_num0 | c_alpha0) == 0U)
                 {
