@@ -53,11 +53,8 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] Create(byte[] message, byte[] recipientPublicKey)
         {
-            //validate the length of the recipient public key
             if (recipientPublicKey == null || recipientPublicKey.Length != RecipientPublicKeyBytes)
-                throw new KeyOutOfRangeException("recipientPublicKey",
-                    (recipientPublicKey == null) ? 0 : recipientPublicKey.Length,
-                    string.Format("recipientPublicKey must be {0} bytes in length.", RecipientPublicKeyBytes));
+                throw new KeyOutOfRangeException(nameof(recipientPublicKey), recipientPublicKey?.Length ?? 0, $"recipientPublicKey must be {RecipientPublicKeyBytes} bytes in length.");
 
             var buffer = new byte[message.Length + CryptoBoxSealbytes];
 
@@ -113,17 +110,10 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] Open(byte[] cipherText, byte[] recipientSecretKey, byte[] recipientPublicKey)
         {
-            //validate the length of the recipient secret key
             if (recipientSecretKey == null || recipientSecretKey.Length != RecipientSecretKeyBytes)
-                throw new KeyOutOfRangeException("recipientPublicKey",
-                    (recipientSecretKey == null) ? 0 : recipientSecretKey.Length,
-                    string.Format("recipientSecretKey must be {0} bytes in length.", RecipientSecretKeyBytes));
-
-            //validate the length of the recipient public key
+                throw new KeyOutOfRangeException(nameof(recipientPublicKey), recipientSecretKey?.Length ?? 0, $"recipientSecretKey must be {RecipientSecretKeyBytes} bytes in length.");
             if (recipientPublicKey == null || recipientPublicKey.Length != RecipientPublicKeyBytes)
-                throw new KeyOutOfRangeException("recipientPublicKey",
-                    (recipientPublicKey == null) ? 0 : recipientPublicKey.Length,
-                    string.Format("recipientPublicKey must be {0} bytes in length.", RecipientPublicKeyBytes));
+                throw new KeyOutOfRangeException(nameof(recipientPublicKey), recipientPublicKey?.Length ?? 0, $"recipientPublicKey must be {RecipientPublicKeyBytes} bytes in length.");
 
             if (cipherText.Length < CryptoBoxSealbytes)
                 throw new CryptographicException("Failed to open SealedBox");

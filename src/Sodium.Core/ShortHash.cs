@@ -45,10 +45,8 @@ namespace Sodium
         /// <exception cref="KeyOutOfRangeException"></exception>
         public static byte[] Hash(byte[] message, byte[] key)
         {
-            //validate the length of the key
             if (key == null || key.Length != KEY_BYTES)
-                throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-                  string.Format("key must be {0} bytes in length.", KEY_BYTES));
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEY_BYTES} bytes in length.");
 
             var buffer = new byte[BYTES];
 

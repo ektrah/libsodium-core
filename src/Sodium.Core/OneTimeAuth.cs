@@ -34,10 +34,8 @@ namespace Sodium
         /// <exception cref="KeyOutOfRangeException"></exception>
         public static byte[] Sign(byte[] message, byte[] key)
         {
-            //validate the length of the key
             if (key == null || key.Length != KEY_BYTES)
-                throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-                  string.Format("key must be {0} bytes in length.", KEY_BYTES));
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEY_BYTES} bytes in length.");
 
             var buffer = new byte[BYTES];
 
@@ -68,15 +66,10 @@ namespace Sodium
         /// <exception cref="SignatureOutOfRangeException"></exception>
         public static bool Verify(byte[] message, byte[] signature, byte[] key)
         {
-            //validate the length of the key
             if (key == null || key.Length != KEY_BYTES)
-                throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-                  string.Format("key must be {0} bytes in length.", KEY_BYTES));
-
-            //validate the length of the signature
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEY_BYTES} bytes in length.");
             if (signature == null || signature.Length != BYTES)
-                throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
-                  string.Format("signature must be {0} bytes in length.", BYTES));
+                throw new SignatureOutOfRangeException(nameof(signature), signature?.Length ?? 0, $"signature must be {BYTES} bytes in length.");
 
             SodiumCore.Initialize();
             var ret = crypto_onetimeauth_poly1305_verify(signature, message, (ulong)message.Length, key);

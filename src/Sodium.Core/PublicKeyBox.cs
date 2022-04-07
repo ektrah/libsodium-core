@@ -38,10 +38,8 @@ namespace Sodium
         /// <exception cref="SeedOutOfRangeException"></exception>
         public static KeyPair GenerateKeyPair(byte[] privateKey)
         {
-            //validate the length of the seed
             if (privateKey == null || privateKey.Length != SECRET_KEY_BYTES)
-                throw new SeedOutOfRangeException("privateKey", (privateKey == null) ? 0 : privateKey.Length,
-                  string.Format("privateKey must be {0} bytes in length.", SECRET_KEY_BYTES));
+                throw new SeedOutOfRangeException(nameof(privateKey), privateKey?.Length ?? 0, $"privateKey must be {SECRET_KEY_BYTES} bytes in length.");
 
             var publicKey = ScalarMult.Base(privateKey);
 
@@ -54,10 +52,8 @@ namespace Sodium
         /// <exception cref="SeedOutOfRangeException"></exception>
         public static KeyPair GenerateSeededKeyPair(byte[] seed)
         {
-            //validate the length of the seed
             if (seed == null || (nuint)seed.Length != SEED_BYTES)
-                throw new SeedOutOfRangeException("seed", (seed == null) ? 0 : seed.Length,
-                  string.Format("Key seed must be {0} bytes in length.", SECRET_KEY_BYTES));
+                throw new SeedOutOfRangeException(nameof(seed), seed?.Length ?? 0, $"Key seed must be {SECRET_KEY_BYTES} bytes in length.");
 
             var publicKey = new byte[PUBLIC_KEY_BYTES];
             var privateKey = new byte[SECRET_KEY_BYTES];
@@ -100,20 +96,12 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] Create(byte[] message, byte[] nonce, byte[] secretKey, byte[] publicKey)
         {
-            //validate the length of the secret key
             if (secretKey == null || secretKey.Length != SECRET_KEY_BYTES)
-                throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
-
-            //validate the length of the public key
+                throw new KeyOutOfRangeException(nameof(secretKey), secretKey?.Length ?? 0, $"key must be {SECRET_KEY_BYTES} bytes in length.");
             if (publicKey == null || publicKey.Length != PUBLIC_KEY_BYTES)
-                throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : publicKey.Length,
-                  string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
-
-            //validate the length of the nonce
+                throw new KeyOutOfRangeException(nameof(publicKey), publicKey?.Length ?? 0, $"key must be {PUBLIC_KEY_BYTES} bytes in length.");
             if (nonce == null || nonce.Length != NONCE_BYTES)
-                throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-                  string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NONCE_BYTES} bytes in length.");
 
             var buffer = new byte[message.Length + MAC_BYTES];
 
@@ -151,20 +139,12 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static DetachedBox CreateDetached(byte[] message, byte[] nonce, byte[] secretKey, byte[] publicKey)
         {
-            //validate the length of the secret key
             if (secretKey == null || secretKey.Length != SECRET_KEY_BYTES)
-                throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
-
-            //validate the length of the public key
+                throw new KeyOutOfRangeException(nameof(secretKey), secretKey?.Length ?? 0, $"key must be {SECRET_KEY_BYTES} bytes in length.");
             if (publicKey == null || publicKey.Length != PUBLIC_KEY_BYTES)
-                throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
-
-            //validate the length of the nonce
+                throw new KeyOutOfRangeException(nameof(publicKey), publicKey?.Length ?? 0, $"key must be {PUBLIC_KEY_BYTES} bytes in length.");
             if (nonce == null || nonce.Length != NONCE_BYTES)
-                throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-                  string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NONCE_BYTES} bytes in length.");
 
             var cipher = new byte[message.Length];
             var mac = new byte[MAC_BYTES];
@@ -189,20 +169,12 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] Open(byte[] cipherText, byte[] nonce, byte[] secretKey, byte[] publicKey)
         {
-            //validate the length of the secret key
             if (secretKey == null || secretKey.Length != SECRET_KEY_BYTES)
-                throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
-
-            //validate the length of the public key
+                throw new KeyOutOfRangeException(nameof(secretKey), secretKey?.Length ?? 0, $"key must be {SECRET_KEY_BYTES} bytes in length.");
             if (publicKey == null || publicKey.Length != PUBLIC_KEY_BYTES)
-                throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
-
-            //validate the length of the nonce
+                throw new KeyOutOfRangeException(nameof(publicKey), publicKey?.Length ?? 0, $"key must be {PUBLIC_KEY_BYTES} bytes in length.");
             if (nonce == null || nonce.Length != NONCE_BYTES)
-                throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-                  string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NONCE_BYTES} bytes in length.");
 
             if (cipherText.Length < MAC_BYTES)
                 throw new CryptographicException("Failed to open PublicKeyBox");
@@ -287,25 +259,14 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] OpenDetached(byte[] cipherText, byte[] mac, byte[] nonce, byte[] secretKey, byte[] publicKey)
         {
-            //validate the length of the secret key
             if (secretKey == null || secretKey.Length != SECRET_KEY_BYTES)
-                throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", SECRET_KEY_BYTES));
-
-            //validate the length of the public key
+                throw new KeyOutOfRangeException(nameof(secretKey), secretKey?.Length ?? 0, $"key must be {SECRET_KEY_BYTES} bytes in length.");
             if (publicKey == null || publicKey.Length != PUBLIC_KEY_BYTES)
-                throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
-                  string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
-
-            //validate the length of the mac
+                throw new KeyOutOfRangeException(nameof(publicKey), publicKey?.Length ?? 0, $"key must be {PUBLIC_KEY_BYTES} bytes in length.");
             if (mac == null || mac.Length != MAC_BYTES)
-                throw new MacOutOfRangeException("mac", (mac == null) ? 0 : mac.Length,
-                  string.Format("mac must be {0} bytes in length.", MAC_BYTES));
-
-            //validate the length of the nonce
+                throw new MacOutOfRangeException(nameof(mac), mac?.Length ?? 0, $"mac must be {MAC_BYTES} bytes in length.");
             if (nonce == null || nonce.Length != NONCE_BYTES)
-                throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-                  string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NONCE_BYTES} bytes in length.");
 
             var buffer = new byte[cipherText.Length];
 

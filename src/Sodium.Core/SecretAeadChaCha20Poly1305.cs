@@ -35,19 +35,12 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] Encrypt(byte[] message, byte[] nonce, byte[] key, byte[]? additionalData = null)
         {
-            //additionalData can be null
             if (additionalData == null)
                 additionalData = Array.Empty<byte>();
-
-            //validate the length of the key
             if (key == null || key.Length != KEYBYTES)
-                throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-                  string.Format("key must be {0} bytes in length.", KEYBYTES));
-
-            //validate the length of the nonce
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEYBYTES} bytes in length.");
             if (nonce == null || nonce.Length != NPUBBYTES)
-                throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-                  string.Format("nonce must be {0} bytes in length.", NPUBBYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NPUBBYTES} bytes in length.");
 
             var cipher = new byte[message.Length + ABYTES];
             ulong cipherLength = 0;
@@ -76,19 +69,12 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] Decrypt(byte[] cipher, byte[] nonce, byte[] key, byte[]? additionalData = null)
         {
-            //additionalData can be null
             if (additionalData == null)
                 additionalData = Array.Empty<byte>();
-
-            //validate the length of the key
             if (key == null || key.Length != KEYBYTES)
-                throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-                  string.Format("key must be {0} bytes in length.", KEYBYTES));
-
-            //validate the length of the nonce
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEYBYTES} bytes in length.");
             if (nonce == null || nonce.Length != NPUBBYTES)
-                throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-                  string.Format("nonce must be {0} bytes in length.", NPUBBYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NPUBBYTES} bytes in length.");
 
             if (cipher.Length < ABYTES)
                 throw new CryptographicException("Error decrypting message.");

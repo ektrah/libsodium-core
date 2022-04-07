@@ -66,15 +66,10 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] Encrypt(byte[] message, byte[] nonce, byte[] key)
         {
-            //validate the length of the key
             if (key == null || key.Length != XSALSA20_KEY_BYTES)
-                throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-                  string.Format("key must be {0} bytes in length.", XSALSA20_KEY_BYTES));
-
-            //validate the length of the nonce
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {XSALSA20_KEY_BYTES} bytes in length.");
             if (nonce == null || nonce.Length != XSALSA20_NONCE_BYTES)
-                throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-                  string.Format("nonce must be {0} bytes in length.", XSALSA20_NONCE_BYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {XSALSA20_NONCE_BYTES} bytes in length.");
 
             var buffer = new byte[message.Length];
 
@@ -110,15 +105,10 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] EncryptChaCha20(byte[] message, byte[] nonce, byte[] key)
         {
-            //validate the length of the key
             if (key == null || key.Length != CHACHA20_KEY_BYTES)
-                throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-                  string.Format("key must be {0} bytes in length.", CHACHA20_KEY_BYTES));
-
-            //validate the length of the nonce
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {CHACHA20_KEY_BYTES} bytes in length.");
             if (nonce == null || nonce.Length != CHACHA20_NONCEBYTES)
-                throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-                  string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {CHACHA20_NONCEBYTES} bytes in length.");
 
             var buffer = new byte[message.Length];
 
@@ -154,15 +144,10 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] EncryptXChaCha20(byte[] message, byte[] nonce, byte[] key)
         {
-            //validate the length of the key
             if (key == null || key.Length != XCHACHA20_KEY_BYTES)
-                throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-                  string.Format("key must be {0} bytes in length.", XCHACHA20_KEY_BYTES));
-
-            //validate the length of the nonce
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {XCHACHA20_KEY_BYTES} bytes in length.");
             if (nonce == null || nonce.Length != XCHACHA20_NONCEBYTES)
-                throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-                  string.Format("nonce must be {0} bytes in length.", XCHACHA20_NONCEBYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {XCHACHA20_NONCEBYTES} bytes in length.");
 
             var buffer = new byte[message.Length];
 
@@ -198,15 +183,10 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] Decrypt(byte[] cipherText, byte[] nonce, byte[] key)
         {
-            //validate the length of the key
             if (key == null || key.Length != XSALSA20_KEY_BYTES)
-                throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-                  string.Format("key must be {0} bytes in length.", XSALSA20_KEY_BYTES));
-
-            //validate the length of the nonce
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {XSALSA20_KEY_BYTES} bytes in length.");
             if (nonce == null || nonce.Length != XSALSA20_NONCE_BYTES)
-                throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-                  string.Format("nonce must be {0} bytes in length.", XSALSA20_NONCE_BYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {XSALSA20_NONCE_BYTES} bytes in length.");
 
             var buffer = new byte[cipherText.Length];
 
@@ -242,15 +222,10 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] DecryptChaCha20(byte[] cipherText, byte[] nonce, byte[] key)
         {
-            //validate the length of the key
             if (key == null || key.Length != CHACHA20_KEY_BYTES)
-                throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-                  string.Format("key must be {0} bytes in length.", CHACHA20_KEY_BYTES));
-
-            //validate the length of the nonce
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {CHACHA20_KEY_BYTES} bytes in length.");
             if (nonce == null || nonce.Length != CHACHA20_NONCEBYTES)
-                throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-                  string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {CHACHA20_NONCEBYTES} bytes in length.");
 
             var buffer = new byte[cipherText.Length];
 
@@ -286,15 +261,10 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] DecryptXChaCha20(byte[] cipherText, byte[] nonce, byte[] key)
         {
-            //validate the length of the key
             if (key == null || key.Length != XCHACHA20_KEY_BYTES)
-                throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
-                  string.Format("key must be {0} bytes in length.", XCHACHA20_KEY_BYTES));
-
-            //validate the length of the nonce
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {XCHACHA20_KEY_BYTES} bytes in length.");
             if (nonce == null || nonce.Length != XCHACHA20_NONCEBYTES)
-                throw new NonceOutOfRangeException("nonce", (nonce == null) ? 0 : nonce.Length,
-                  string.Format("nonce must be {0} bytes in length.", XCHACHA20_NONCEBYTES));
+                throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {XCHACHA20_NONCEBYTES} bytes in length.");
 
             var buffer = new byte[cipherText.Length];
 

@@ -123,19 +123,14 @@ namespace Sodium
         {
             if (password == null)
                 throw new ArgumentNullException(nameof(password), "Password cannot be null");
-
             if (salt == null)
                 throw new ArgumentNullException(nameof(salt), "Salt cannot be null");
-
             if (salt.Length != ARGON_SALTBYTES)
-                throw new SaltOutOfRangeException($"Salt must be {ARGON_SALTBYTES} bytes in length.");
-
+                throw new SaltOutOfRangeException(nameof(salt), salt?.Length ?? 0, $"Salt must be {ARGON_SALTBYTES} bytes in length.");
             if (opsLimit < 3)
                 throw new ArgumentOutOfRangeException(nameof(opsLimit), "opsLimit the number of passes, has to be at least 3");
-
             if (memLimit <= 0)
                 throw new ArgumentOutOfRangeException(nameof(memLimit), "memLimit cannot be zero or negative");
-
             if (outputLength <= 0)
                 throw new ArgumentOutOfRangeException(nameof(outputLength), "OutputLength cannot be zero or negative");
 
@@ -176,10 +171,8 @@ namespace Sodium
         {
             if (password == null)
                 throw new ArgumentNullException(nameof(password), "Password cannot be null");
-
             if (opsLimit < 3)
                 throw new ArgumentOutOfRangeException(nameof(opsLimit), "opsLimit the number of passes, has to be at least 3");
-
             if (memLimit <= 0)
                 throw new ArgumentOutOfRangeException(nameof(memLimit), "memLimit cannot be zero or negative");
 
@@ -303,6 +296,7 @@ namespace Sodium
                     memLimit = ARGON_MEMLIMIT_INTERACTIVE;
                     break;
             }
+
             return (opsLimit, memLimit);
         }
     }

@@ -110,19 +110,14 @@ namespace Sodium
         {
             if (password == null)
                 throw new ArgumentNullException(nameof(password), "Password cannot be null");
-
             if (salt == null)
                 throw new ArgumentNullException(nameof(salt), "Salt cannot be null");
-
             if (salt.Length != SCRYPT_SALSA208_SHA256_SALTBYTES)
-                throw new SaltOutOfRangeException($"Salt must be {SCRYPT_SALSA208_SHA256_SALTBYTES} bytes in length.");
-
+                throw new SaltOutOfRangeException(nameof(salt), salt?.Length ?? 0, $"Salt must be {SCRYPT_SALSA208_SHA256_SALTBYTES} bytes in length.");
             if (opsLimit <= 0)
                 throw new ArgumentOutOfRangeException(nameof(opsLimit), "opsLimit cannot be zero or negative");
-
             if (memLimit <= 0)
                 throw new ArgumentOutOfRangeException(nameof(memLimit), "memLimit cannot be zero or negative");
-
             if (outputLength < 16)
                 throw new ArgumentOutOfRangeException(nameof(outputLength), "OutputLength cannot be less than 16 bytes");
 
@@ -163,10 +158,8 @@ namespace Sodium
         {
             if (password == null)
                 throw new ArgumentNullException(nameof(password), "Password cannot be null");
-
             if (opsLimit <= 0)
                 throw new ArgumentOutOfRangeException(nameof(opsLimit), "opsLimit cannot be zero or negative");
-
             if (memLimit <= 0)
                 throw new ArgumentOutOfRangeException(nameof(memLimit), "memLimit cannot be zero or negative");
 

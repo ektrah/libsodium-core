@@ -57,24 +57,12 @@ namespace Sodium
         /// <exception cref="BytesOutOfRangeException"></exception>
         public static byte[] Hash(byte[] message, byte[]? key, int bytes)
         {
-            //validate the length of the key
-            if (key != null)
-            {
-                if (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN)
-                {
-                    throw new KeyOutOfRangeException(string.Format("key must be between {0} and {1} bytes in length.",
-                      KEY_BYTES_MIN, KEY_BYTES_MAX));
-                }
-            }
-            else
-            {
+            if (key == null)
                 key = Array.Empty<byte>();
-            }
-
-            //validate output length
+            else if (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN)
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be between {KEY_BYTES_MIN} and {KEY_BYTES_MAX} bytes in length.");
             if (bytes > BYTES_MAX || bytes < BYTES_MIN)
-                throw new BytesOutOfRangeException("bytes", bytes,
-                  string.Format("bytes must be between {0} and {1} bytes in length.", BYTES_MIN, BYTES_MAX));
+                throw new BytesOutOfRangeException(nameof(bytes), bytes, $"bytes must be between {BYTES_MIN} and {BYTES_MAX} bytes in length.");
 
             var buffer = new byte[bytes];
 
@@ -114,30 +102,21 @@ namespace Sodium
         public static byte[] HashSaltPersonal(byte[] message, byte[]? key, byte[] salt, byte[] personal, int bytes = 64)
         {
             if (message == null)
-                throw new ArgumentNullException("message", "Message cannot be null");
-
+                throw new ArgumentNullException(nameof(message), "Message cannot be null");
             if (salt == null)
-                throw new ArgumentNullException("salt", "Salt cannot be null");
-
+                throw new ArgumentNullException(nameof(salt), "Salt cannot be null");
             if (personal == null)
-                throw new ArgumentNullException("personal", "Personal string cannot be null");
-
-            if (key != null && (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN))
-                throw new KeyOutOfRangeException(string.Format("key must be between {0} and {1} bytes in length.", KEY_BYTES_MIN, KEY_BYTES_MAX));
-
+                throw new ArgumentNullException(nameof(personal), "Personal string cannot be null");
             if (key == null)
                 key = Array.Empty<byte>();
-
+            if (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN)
+                throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be between {KEY_BYTES_MIN} and {KEY_BYTES_MAX} bytes in length.");
             if (salt.Length != SALT_BYTES)
-                throw new SaltOutOfRangeException(string.Format("Salt must be {0} bytes in length.", SALT_BYTES));
-
+                throw new SaltOutOfRangeException(nameof(salt), salt?.Length ?? 0, $"Salt must be {SALT_BYTES} bytes in length.");
             if (personal.Length != PERSONAL_BYTES)
-                throw new PersonalOutOfRangeException(string.Format("Personal bytes must be {0} bytes in length.", PERSONAL_BYTES));
-
-            //validate output length
+                throw new PersonalOutOfRangeException(nameof(personal), personal?.Length ?? 0, $"Personal bytes must be {PERSONAL_BYTES} bytes in length.");
             if (bytes > BYTES_MAX || bytes < BYTES_MIN)
-                throw new BytesOutOfRangeException("bytes", bytes,
-                  string.Format("bytes must be between {0} and {1} bytes in length.", BYTES_MIN, BYTES_MAX));
+                throw new BytesOutOfRangeException(nameof(bytes), bytes, $"bytes must be between {BYTES_MIN} and {BYTES_MAX} bytes in length.");
 
             var buffer = new byte[bytes];
 

@@ -29,10 +29,8 @@ namespace Sodium
         /// <exception cref="KeyOutOfRangeException"></exception>
         public static byte[] Base(byte[] secretKey)
         {
-            //validate the length of the scalar
             if (secretKey == null || secretKey.Length != SCALAR_BYTES)
-                throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-                  string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
+                throw new KeyOutOfRangeException(nameof(secretKey), secretKey?.Length ?? 0, $"secretKey must be {SCALAR_BYTES} bytes in length.");
 
             var publicKey = new byte[BYTES];
 
@@ -51,15 +49,10 @@ namespace Sodium
         /// <exception cref="KeyOutOfRangeException"></exception>
         public static byte[] Mult(byte[] secretKey, byte[] publicKey)
         {
-            //validate the length of the scalar
             if (secretKey == null || secretKey.Length != SCALAR_BYTES)
-                throw new KeyOutOfRangeException("secretKey", (secretKey == null) ? 0 : secretKey.Length,
-                  string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
-
-            //validate the length of the group element
+                throw new KeyOutOfRangeException(nameof(secretKey), secretKey?.Length ?? 0, $"secretKey must be {SCALAR_BYTES} bytes in length.");
             if (publicKey == null || publicKey.Length != BYTES)
-                throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : publicKey.Length,
-                  string.Format("publicKey must be {0} bytes in length.", BYTES));
+                throw new KeyOutOfRangeException(nameof(publicKey), publicKey?.Length ?? 0, $"publicKey must be {BYTES} bytes in length.");
 
             var secretShared = new byte[BYTES];
 
