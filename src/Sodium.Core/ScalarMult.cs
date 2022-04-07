@@ -9,17 +9,8 @@ namespace Sodium
         private const int BYTES = crypto_scalarmult_curve25519_BYTES;
         private const int SCALAR_BYTES = crypto_scalarmult_curve25519_SCALARBYTES;
 
-        //TODO: Add documentation header
-        public static int Bytes()
-        {
-            return crypto_scalarmult_curve25519_BYTES;
-        }
-
-        //TODO: Add documentation header
-        public static int ScalarBytes()
-        {
-            return crypto_scalarmult_curve25519_SCALARBYTES;
-        }
+        public static int Bytes { get; } = crypto_scalarmult_curve25519_BYTES;
+        public static int ScalarBytes { get; } = crypto_scalarmult_curve25519_SCALARBYTES;
 
         /// <summary>
         /// Diffie-Hellman (function computes the public key)
