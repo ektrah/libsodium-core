@@ -77,6 +77,8 @@ namespace Sodium
                   string.Format("bytes must be between {0} and {1} bytes in length.", BYTES_MIN, BYTES_MAX));
 
             var buffer = new byte[bytes];
+
+            SodiumCore.Initialize();
             crypto_generichash_blake2b(buffer, (nuint)buffer.Length, message, (nuint)message.Length, key, (nuint)key.Length);
 
             return buffer;
@@ -138,6 +140,8 @@ namespace Sodium
                   string.Format("bytes must be between {0} and {1} bytes in length.", BYTES_MIN, BYTES_MAX));
 
             var buffer = new byte[bytes];
+
+            SodiumCore.Initialize();
             crypto_generichash_blake2b_salt_personal(buffer, (nuint)buffer.Length, message, (nuint)message.Length, key, (nuint)key.Length, salt, personal);
 
             return buffer;

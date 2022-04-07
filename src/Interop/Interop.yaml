@@ -4,6 +4,7 @@ Interop.Core.cs:
   include: include/sodium/core.h
   functions:
   - sodium_init
+  - sodium_set_misuse_handler
 
 Interop.Aead.Aes256Gcm.cs:
   include: include/sodium/crypto_aead_aes256gcm.h
@@ -254,5 +255,11 @@ Interop.Utils.cs:
 
 Interop.Version.cs:
   include: include/sodium/version.h
+  constants:
+  - SODIUM_LIBRARY_VERSION_MAJOR
+  - SODIUM_LIBRARY_VERSION_MINOR
+  - SODIUM_VERSION_STRING
   functions:
+  - sodium_library_version_major
+  - sodium_library_version_minor
   - sodium_version_string (IntPtr)

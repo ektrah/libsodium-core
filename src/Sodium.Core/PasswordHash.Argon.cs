@@ -141,8 +141,7 @@ namespace Sodium
 
             var buffer = new byte[outputLength];
 
-            SodiumCore.Init();
-
+            SodiumCore.Initialize();
             var ret = crypto_pwhash(buffer, (ulong)buffer.Length, password, (ulong)password.Length, salt, (ulong)opsLimit, (nuint)memLimit, (int)alg);
 
             if (ret != 0)
@@ -187,8 +186,7 @@ namespace Sodium
             var buffer = new byte[ARGON_STRBYTES];
             var pass = Encoding.UTF8.GetBytes(password);
 
-            SodiumCore.Init();
-
+            SodiumCore.Initialize();
             var ret = crypto_pwhash_str(buffer, pass, (ulong)pass.Length, (ulong)opsLimit, (nuint)memLimit);
 
             if (ret != 0)
@@ -226,8 +224,7 @@ namespace Sodium
             var buffer = new byte[ARGON_STRBYTES];
             Array.Copy(hash, buffer, hash.Length);
 
-            SodiumCore.Init();
-
+            SodiumCore.Initialize();
             var ret = crypto_pwhash_str_verify(buffer, password, (ulong)password.Length);
 
             return ret == 0;
@@ -267,8 +264,7 @@ namespace Sodium
             var buffer = new byte[ARGON_STRBYTES];
             Array.Copy(hash, buffer, hash.Length);
 
-            SodiumCore.Init();
-
+            SodiumCore.Initialize();
             int status = crypto_pwhash_str_needs_rehash(buffer, (ulong)opsLimit, (nuint)memLimit);
 
             if (status == -1)

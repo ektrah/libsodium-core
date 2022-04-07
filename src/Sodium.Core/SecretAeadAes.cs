@@ -18,8 +18,7 @@ namespace Sodium
         /// <remarks>Use <see cref="SecretAeadChaCha20Poly1305"/> if portability is required.</remarks>
         public static bool IsAvailable()
         {
-            SodiumCore.Init();
-
+            SodiumCore.Initialize();
             return crypto_aead_aes256gcm_is_available() != 0;
         }
 
@@ -63,6 +62,7 @@ namespace Sodium
             var cipher = new byte[message.Length + ABYTES];
             ulong cipherLength = 0;
 
+            SodiumCore.Initialize();
             var ret = crypto_aead_aes256gcm_encrypt(cipher, ref cipherLength, message, (ulong)message.Length,
               additionalData, (ulong)additionalData.Length, IntPtr.Zero,
               nonce, key);
@@ -107,6 +107,7 @@ namespace Sodium
             var message = new byte[cipher.Length - ABYTES];
             ulong messageLength = 0;
 
+            SodiumCore.Initialize();
             var ret = crypto_aead_aes256gcm_decrypt(message, ref messageLength, IntPtr.Zero, cipher, (ulong)cipher.Length,
               additionalData, (ulong)additionalData.Length, nonce, key);
 

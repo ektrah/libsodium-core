@@ -45,6 +45,8 @@ namespace Sodium
                   string.Format("key must be {0} bytes in length.", KEY_BYTES));
 
             var buffer = new byte[BYTES];
+
+            SodiumCore.Initialize();
             crypto_auth_hmacsha512256(buffer, message, (ulong)message.Length, key);
 
             return buffer;
@@ -81,6 +83,7 @@ namespace Sodium
                 throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
                   string.Format("signature must be {0} bytes in length.", BYTES));
 
+            SodiumCore.Initialize();
             var ret = crypto_auth_hmacsha512256_verify(signature, message, (ulong)message.Length, key);
 
             return ret == 0;
@@ -99,6 +102,8 @@ namespace Sodium
                   string.Format("key must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA256_KEY_BYTES));
 
             var buffer = new byte[CRYPTO_AUTH_HMACSHA256_BYTES];
+
+            SodiumCore.Initialize();
             crypto_auth_hmacsha256(buffer, message, (ulong)message.Length, key);
 
             return buffer;
@@ -127,6 +132,8 @@ namespace Sodium
                   string.Format("key must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA512_KEY_BYTES));
 
             var buffer = new byte[CRYPTO_AUTH_HMACSHA512_BYTES];
+
+            SodiumCore.Initialize();
             crypto_auth_hmacsha512(buffer, message, (ulong)message.Length, key);
 
             return buffer;
@@ -173,6 +180,7 @@ namespace Sodium
                 throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
                   string.Format("signature must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA256_BYTES));
 
+            SodiumCore.Initialize();
             var ret = crypto_auth_hmacsha256_verify(signature, message, (ulong)message.Length, key);
 
             return ret == 0;
@@ -209,6 +217,7 @@ namespace Sodium
                 throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
                   string.Format("signature must be {0} bytes in length.", CRYPTO_AUTH_HMACSHA512_BYTES));
 
+            SodiumCore.Initialize();
             var ret = crypto_auth_hmacsha512_verify(signature, message, (ulong)message.Length, key);
 
             return ret == 0;

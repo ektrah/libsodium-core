@@ -40,6 +40,8 @@ namespace Sodium
                   string.Format("key must be {0} bytes in length.", KEY_BYTES));
 
             var buffer = new byte[BYTES];
+
+            SodiumCore.Initialize();
             crypto_onetimeauth_poly1305(buffer, message, (ulong)message.Length, key);
 
             return buffer;
@@ -76,6 +78,7 @@ namespace Sodium
                 throw new SignatureOutOfRangeException("signature", (signature == null) ? 0 : signature.Length,
                   string.Format("signature must be {0} bytes in length.", BYTES));
 
+            SodiumCore.Initialize();
             var ret = crypto_onetimeauth_poly1305_verify(signature, message, (ulong)message.Length, key);
 
             return ret == 0;

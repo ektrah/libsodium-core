@@ -26,6 +26,7 @@ namespace Sodium
             var publicKey = new byte[PUBLIC_KEY_BYTES];
             var privateKey = new byte[SECRET_KEY_BYTES];
 
+            SodiumCore.Initialize();
             crypto_box_curve25519xsalsa20poly1305_keypair(publicKey, privateKey);
 
             return new KeyPair(publicKey, privateKey);
@@ -61,6 +62,7 @@ namespace Sodium
             var publicKey = new byte[PUBLIC_KEY_BYTES];
             var privateKey = new byte[SECRET_KEY_BYTES];
 
+            SodiumCore.Initialize();
             crypto_box_curve25519xsalsa20poly1305_seed_keypair(publicKey, privateKey, seed);
 
             return new KeyPair(publicKey, privateKey);
@@ -114,6 +116,8 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
 
             var buffer = new byte[message.Length + MAC_BYTES];
+
+            SodiumCore.Initialize();
             var ret = crypto_box_easy(buffer, message, (ulong)message.Length, nonce, publicKey, secretKey);
 
             if (ret != 0)
@@ -165,6 +169,7 @@ namespace Sodium
             var cipher = new byte[message.Length];
             var mac = new byte[MAC_BYTES];
 
+            SodiumCore.Initialize();
             var ret = crypto_box_detached(cipher, mac, message, (ulong)message.Length, nonce, secretKey, publicKey);
 
             if (ret != 0)
@@ -228,6 +233,8 @@ namespace Sodium
             }
 
             var buffer = new byte[cipherText.Length - MAC_BYTES];
+
+            SodiumCore.Initialize();
             var ret = crypto_box_open_easy(buffer, cipherText, (ulong)cipherText.Length, nonce, publicKey, secretKey);
 
             if (ret != 0)
@@ -301,6 +308,8 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", NONCE_BYTES));
 
             var buffer = new byte[cipherText.Length];
+
+            SodiumCore.Initialize();
             var ret = crypto_box_open_detached(buffer, cipherText, mac, (ulong)cipherText.Length, nonce, secretKey, publicKey);
 
             if (ret != 0)

@@ -6,21 +6,16 @@ namespace Sodium
     /// <summary>
     /// libsodium core information.
     /// </summary>
-    public static class SodiumCore
+    public static partial class SodiumCore
     {
-        private static bool _isInit;
-
-        static SodiumCore()
-        {
-            Init();
-        }
-
         /// <summary>Gets random bytes</summary>
         /// <param name="count">The count of bytes to return.</param>
         /// <returns>An array of random bytes.</returns>
         public static byte[] GetRandomBytes(int count)
         {
             var buffer = new byte[count];
+
+            SodiumCore.Initialize();
             randombytes_buf(buffer, (nuint)buffer.Length);
 
             return buffer;
@@ -36,6 +31,7 @@ namespace Sodium
             if (upperBound < 0)
                 throw new System.ArgumentOutOfRangeException(nameof(upperBound), "upperBound cannot be negative");
 
+            SodiumCore.Initialize();
             var randomNumber = randombytes_uniform((uint)upperBound);
 
             return (int)randomNumber;
@@ -56,11 +52,7 @@ namespace Sodium
         /// <remarks>This only needs to be done once, so this prevents repeated calls.</remarks>
         public static void Init()
         {
-            if (!_isInit)
-            {
-                sodium_init();
-                _isInit = true;
-            }
+            SodiumCore.Initialize();
         }
     }
 }

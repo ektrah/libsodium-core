@@ -77,6 +77,8 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", XSALSA20_NONCE_BYTES));
 
             var buffer = new byte[message.Length];
+
+            SodiumCore.Initialize();
             var ret = crypto_stream_xsalsa20_xor(buffer, message, (ulong)message.Length, nonce, key);
 
             if (ret != 0)
@@ -119,6 +121,8 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
 
             var buffer = new byte[message.Length];
+
+            SodiumCore.Initialize();
             var ret = crypto_stream_chacha20_xor(buffer, message, (ulong)message.Length, nonce, key);
 
             if (ret != 0)
@@ -161,6 +165,8 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", XCHACHA20_NONCEBYTES));
 
             var buffer = new byte[message.Length];
+
+            SodiumCore.Initialize();
             var ret = crypto_stream_xchacha20_xor(buffer, message, (ulong)message.Length, nonce, key);
 
             if (ret != 0)
@@ -203,6 +209,8 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", XSALSA20_NONCE_BYTES));
 
             var buffer = new byte[cipherText.Length];
+
+            SodiumCore.Initialize();
             var ret = crypto_stream_xsalsa20_xor(buffer, cipherText, (ulong)cipherText.Length, nonce, key);
 
             if (ret != 0)
@@ -245,6 +253,8 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", CHACHA20_NONCEBYTES));
 
             var buffer = new byte[cipherText.Length];
+
+            SodiumCore.Initialize();
             var ret = crypto_stream_chacha20_xor(buffer, cipherText, (ulong)cipherText.Length, nonce, key);
 
             if (ret != 0)
@@ -287,6 +297,8 @@ namespace Sodium
                   string.Format("nonce must be {0} bytes in length.", XCHACHA20_NONCEBYTES));
 
             var buffer = new byte[cipherText.Length];
+
+            SodiumCore.Initialize();
             var ret = crypto_stream_xchacha20_xor(buffer, cipherText, (ulong)cipherText.Length, nonce, key);
 
             if (ret != 0)

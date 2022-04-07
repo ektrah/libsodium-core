@@ -35,6 +35,8 @@ namespace Sodium
                   string.Format("secretKey must be {0} bytes in length.", SCALAR_BYTES));
 
             var publicKey = new byte[BYTES];
+
+            SodiumCore.Initialize();
             crypto_scalarmult_curve25519_base(publicKey, secretKey);
 
             return publicKey;
@@ -60,6 +62,8 @@ namespace Sodium
                   string.Format("publicKey must be {0} bytes in length.", BYTES));
 
             var secretShared = new byte[BYTES];
+
+            SodiumCore.Initialize();
             crypto_scalarmult_curve25519(secretShared, secretKey, publicKey);
 
             return secretShared;

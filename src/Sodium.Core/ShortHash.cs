@@ -51,6 +51,8 @@ namespace Sodium
                   string.Format("key must be {0} bytes in length.", KEY_BYTES));
 
             var buffer = new byte[BYTES];
+
+            SodiumCore.Initialize();
             crypto_shorthash_siphash24(buffer, message, (ulong)message.Length, key);
 
             return buffer;

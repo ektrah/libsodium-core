@@ -60,6 +60,8 @@ namespace Sodium
                     string.Format("recipientPublicKey must be {0} bytes in length.", RecipientPublicKeyBytes));
 
             var buffer = new byte[message.Length + CryptoBoxSealbytes];
+
+            SodiumCore.Initialize();
             var ret = crypto_box_seal(buffer, message, (ulong)message.Length, recipientPublicKey);
 
             if (ret != 0)
@@ -127,6 +129,8 @@ namespace Sodium
                 throw new CryptographicException("Failed to open SealedBox");
 
             var buffer = new byte[cipherText.Length - CryptoBoxSealbytes];
+
+            SodiumCore.Initialize();
             var ret = crypto_box_seal_open(buffer, cipherText, (ulong)cipherText.Length, recipientPublicKey,
                 recipientSecretKey);
 

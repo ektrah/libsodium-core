@@ -26,6 +26,7 @@ namespace Sodium
             var publicKey = new byte[PUBLIC_KEY_BYTES];
             var privateKey = new byte[SECRET_KEY_BYTES];
 
+            SodiumCore.Initialize();
             crypto_sign_ed25519_keypair(publicKey, privateKey);
 
             return new KeyPair(publicKey, privateKey);
@@ -45,6 +46,7 @@ namespace Sodium
             var publicKey = new byte[PUBLIC_KEY_BYTES];
             var privateKey = new byte[SECRET_KEY_BYTES];
 
+            SodiumCore.Initialize();
             crypto_sign_ed25519_seed_keypair(publicKey, privateKey, seed);
 
             return new KeyPair(publicKey, privateKey);
@@ -75,6 +77,7 @@ namespace Sodium
             var buffer = new byte[message.Length + BYTES];
             ulong bufferLength = 0;
 
+            SodiumCore.Initialize();
             crypto_sign_ed25519(buffer, ref bufferLength, message, (ulong)message.Length, key);
 
             Array.Resize(ref buffer, (int)bufferLength);
@@ -100,6 +103,7 @@ namespace Sodium
             var buffer = new byte[signedMessage.Length - BYTES];
             ulong bufferLength = 0;
 
+            SodiumCore.Initialize();
             var ret = crypto_sign_ed25519_open(buffer, ref bufferLength, signedMessage, (ulong)signedMessage.Length, key);
 
             if (ret != 0)
@@ -134,6 +138,7 @@ namespace Sodium
             var signature = new byte[BYTES];
             ulong signatureLength = 0;
 
+            SodiumCore.Initialize();
             crypto_sign_ed25519_detached(signature, ref signatureLength, message, (ulong)message.Length, key);
 
             return signature;
@@ -158,6 +163,7 @@ namespace Sodium
                 throw new KeyOutOfRangeException("key", (key == null) ? 0 : key.Length,
                   string.Format("key must be {0} bytes in length.", PUBLIC_KEY_BYTES));
 
+            SodiumCore.Initialize();
             var ret = crypto_sign_ed25519_verify_detached(signature, message, (ulong)message.Length, key);
 
             return ret == 0;
@@ -177,6 +183,7 @@ namespace Sodium
 
             var buffer = new byte[crypto_scalarmult_curve25519_BYTES];
 
+            SodiumCore.Initialize();
             var ret = crypto_sign_ed25519_pk_to_curve25519(buffer, ed25519PublicKey);
 
             if (ret != 0)
@@ -200,6 +207,7 @@ namespace Sodium
 
             var buffer = new byte[crypto_scalarmult_curve25519_SCALARBYTES];
 
+            SodiumCore.Initialize();
             var ret = crypto_sign_ed25519_sk_to_curve25519(buffer, ed25519SecretKey);
 
             if (ret != 0)
@@ -222,6 +230,7 @@ namespace Sodium
 
             var buffer = new byte[SEED_BYTES];
 
+            SodiumCore.Initialize();
             var ret = crypto_sign_ed25519_sk_to_seed(buffer, ed25519SecretKey);
 
             if (ret != 0)
@@ -244,6 +253,7 @@ namespace Sodium
 
             var buffer = new byte[PUBLIC_KEY_BYTES];
 
+            SodiumCore.Initialize();
             var ret = crypto_sign_ed25519_sk_to_pk(buffer, ed25519SecretKey);
 
             if (ret != 0)

@@ -52,6 +52,7 @@ namespace Sodium
             var cipher = new byte[message.Length + ABYTES];
             ulong cipherLength = 0;
 
+            SodiumCore.Initialize();
             var ret = crypto_aead_xchacha20poly1305_ietf_encrypt(cipher, ref cipherLength, message, (ulong)message.Length,
               additionalData, (ulong)additionalData.Length, IntPtr.Zero,
               nonce, key);
@@ -96,6 +97,7 @@ namespace Sodium
             var message = new byte[cipher.Length - ABYTES];
             ulong messageLength = 0;
 
+            SodiumCore.Initialize();
             var ret = crypto_aead_xchacha20poly1305_ietf_decrypt(message, ref messageLength, IntPtr.Zero, cipher, (ulong)cipher.Length,
               additionalData, (ulong)additionalData.Length, nonce, key);
 

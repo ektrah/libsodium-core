@@ -23,6 +23,8 @@ namespace Sodium
         public static byte[] Hash(byte[] message)
         {
             var buffer = new byte[SHA512_BYTES];
+
+            SodiumCore.Initialize();
             crypto_hash_sha512(buffer, message, (ulong)message.Length);
 
             return buffer;
@@ -42,6 +44,8 @@ namespace Sodium
         public static byte[] Sha512(byte[] message)
         {
             var buffer = new byte[SHA512_BYTES];
+
+            SodiumCore.Initialize();
             crypto_hash_sha512(buffer, message, (ulong)message.Length);
 
             return buffer;
@@ -61,6 +65,8 @@ namespace Sodium
         public static byte[] Sha256(byte[] message)
         {
             var buffer = new byte[SHA256_BYTES];
+
+            SodiumCore.Initialize();
             crypto_hash_sha256(buffer, message, (ulong)message.Length);
 
             return buffer;
