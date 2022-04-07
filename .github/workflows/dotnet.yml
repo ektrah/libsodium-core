@@ -25,7 +25,7 @@ jobs:
         path: '**/*.nupkg'
 
   test-linux:
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET 6.0
