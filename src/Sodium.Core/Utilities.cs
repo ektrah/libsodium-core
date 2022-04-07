@@ -12,10 +12,8 @@ namespace Sodium
         /// <returns>The incremented value.</returns>
         public static byte[] Increment(byte[] value)
         {
-            var buffer = value;
-            sodium_increment(buffer, (nuint)buffer.Length);
-
-            return buffer;
+            sodium_increment(value, (nuint)value.Length);
+            return value;
         }
 
         /// <summary>
