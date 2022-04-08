@@ -4,7 +4,9 @@
 
     dotnet add package Sodium.Core --version 1.3.0-preview1
 
-The *Sodium.Core* package is intended to run on supported versions of .NET on the following platforms:
+The *Sodium.Core* package is intended to run on
+[supported versions of .NET](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core)
+on the following platforms:
 
 * Windows
     * `win-x64`
@@ -18,7 +20,9 @@ The *Sodium.Core* package is intended to run on supported versions of .NET on th
     * `osx-x64`
     * `osx-arm64`
 
-Specifically, *Sodium.Core* 1.3.0-preview1 has been tested to run on the following platforms and .NET versions:
+Specifically,
+[Sodium.Core 1.3.0-preview1](https://www.nuget.org/packages/Sodium.Core/1.3.0-preview1)
+has been tested to run on the following platforms and .NET versions:
 
 | OS       | Version    | Architectures | .NET |
 |:---------|:---------- |:------------- |:-----|
@@ -27,3 +31,13 @@ Specifically, *Sodium.Core* 1.3.0-preview1 has been tested to run on the followi
 | Ubuntu   | 20.04      | x64           | 6.0  |
 
 Other, similar platforms supported by .NET should work as well but have not been tested.
+
+Using NSec on Windows requires the
+[Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017, 2019, and 2022](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads).
+This dependency is included in the .NET SDK but might
+not be present, for example, when deploying a self-contained application.
+
+The implementation of AES-GCM in NSec is hardware-accelerated and requires an
+x64 processor with the AES-NI extension. The availability of this extension can
+be determined at runtime using the static `IsAvailable()` method of the
+`Sodium.SecretAeadAes` class.
