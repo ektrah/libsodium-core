@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using System.Threading;
 using Sodium.Exceptions;
 using static Interop.Libsodium;
 
@@ -13,13 +14,22 @@ namespace Sodium
         private const int NPUBBYTES = crypto_aead_aes256gcm_NPUBBYTES;
         private const int ABYTES = crypto_aead_aes256gcm_ABYTES;
 
+        private static int s_isAvailable;
+
         /// <summary>Detect if the current CPU supports the required instructions (SSSE3, aesni, pcmul).</summary>
         /// <returns><c>true</c> if the CPU supports the necessary instructions, otherwise <c>false</c></returns>
         /// <remarks>Use <see cref="SecretAeadChaCha20Poly1305"/> if portability is required.</remarks>
-        public static bool IsAvailable()
+        public static bool IsAvailable
         {
-            SodiumCore.Initialize();
-            return crypto_aead_aes256gcm_is_available() != 0;
+            get
+            {
+                if (s_isAvailable == 0)
+                {
+                    SodiumCore.Initialize();
+                    Interlocked.Exchange(ref s_isAvailable, crypto_aead_aes256gcm_is_available() != 0 ? 1 : -1);
+                }
+                return s_isAvailable > 0;
+            }
         }
 
         /// <summary>Generates a random 12 byte nonce.</summary>
@@ -51,6 +61,8 @@ namespace Sodium
                 throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEYBYTES} bytes in length.");
             if (nonce == null || nonce.Length != NPUBBYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NPUBBYTES} bytes in length.");
+            if (!IsAvailable)
+                throw new PlatformNotSupportedException("AES-GCM is not supported on this platform. See https://github.com/ektrah/libsodium-core/blob/master/INSTALL.md for more information.");
 
             var cipher = new byte[message.Length + ABYTES];
             ulong cipherLength = 0;
@@ -86,6 +98,8 @@ namespace Sodium
                 throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEYBYTES} bytes in length.");
             if (nonce == null || nonce.Length != NPUBBYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NPUBBYTES} bytes in length.");
+            if (!IsAvailable)
+                throw new PlatformNotSupportedException("AES-GCM is not supported on this platform. See https://github.com/ektrah/libsodium-core/blob/master/INSTALL.md for more information.");
 
             if (cipher.Length < ABYTES)
                 throw new CryptographicException("Error decrypting message.");

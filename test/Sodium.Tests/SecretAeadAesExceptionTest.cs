@@ -29,7 +29,7 @@ namespace Tests
         0x86, 0xd0, 0x99, 0x74, 0x84, 0x0b, 0xde, 0xd2, 0xa5, 0xca
       };
 
-            if (SecretAeadAes.IsAvailable())
+            if (SecretAeadAes.IsAvailable)
             {
                 Assert.Throws<KeyOutOfRangeException>(
                   () => SecretAeadAes.Encrypt(m, nonce, key, ad));
@@ -61,7 +61,7 @@ namespace Tests
         0x86, 0xd0, 0x99, 0x74, 0x84, 0x0b, 0xde, 0xd2, 0xa5, 0xca
       };
 
-            if (SecretAeadAes.IsAvailable())
+            if (SecretAeadAes.IsAvailable)
             {
                 Assert.Throws<NonceOutOfRangeException>(
                   () => SecretAeadAes.Encrypt(m, nonce, key, ad));
@@ -92,7 +92,7 @@ namespace Tests
             var m = new byte[] {
         0x86, 0xd0, 0x99, 0x74, 0x84, 0x0b, 0xde, 0xd2, 0xa5, 0xca
       };
-            if (SecretAeadAes.IsAvailable())
+            if (SecretAeadAes.IsAvailable)
             {
                 Assert.Throws<KeyOutOfRangeException>(
                   () => SecretAeadAes.Decrypt(m, nonce, key, ad));
@@ -124,7 +124,7 @@ namespace Tests
         0x86, 0xd0, 0x99, 0x74, 0x84, 0x0b, 0xde, 0xd2, 0xa5, 0xca
       };
 
-            if (SecretAeadAes.IsAvailable())
+            if (SecretAeadAes.IsAvailable)
             {
                 Assert.Throws<NonceOutOfRangeException>(
                   () => SecretAeadAes.Decrypt(m, nonce, key, ad));

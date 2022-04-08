@@ -39,5 +39,5 @@ not be present, for example, when deploying a self-contained application.
 
 The implementation of AES-GCM in NSec is hardware-accelerated and requires an
 x64 processor with the AES-NI extension. The availability of this extension can
-be determined at runtime using the static `IsAvailable()` method of the
+be determined at runtime using the static `IsAvailable` property of the
 `Sodium.SecretAeadAes` class.
