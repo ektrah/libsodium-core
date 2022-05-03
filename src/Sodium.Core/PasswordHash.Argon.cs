@@ -211,11 +211,15 @@ namespace Sodium
                 throw new ArgumentNullException(nameof(password), "Password cannot be null");
             if (hash == null)
                 throw new ArgumentNullException(nameof(hash), "Hash cannot be null");
-            if (hash.Length >= ARGON_STRBYTES)
+
+            var length = Array.IndexOf<byte>(hash, 0);
+            if (length < 0)
+                length = hash.Length;
+            if (length >= ARGON_STRBYTES)
                 throw new ArgumentOutOfRangeException(nameof(hash), "Hash is invalid");
 
             var buffer = new byte[ARGON_STRBYTES];
-            Array.Copy(hash, buffer, hash.Length);
+            Array.Copy(hash, buffer, length);
 
             SodiumCore.Initialize();
             var ret = crypto_pwhash_str_verify(buffer, password, (ulong)password.Length);
@@ -251,11 +255,15 @@ namespace Sodium
         {
             if (hash == null)
                 throw new ArgumentNullException(nameof(hash), "Hash cannot be null");
-            if (hash.Length >= ARGON_STRBYTES)
+
+            var length = Array.IndexOf<byte>(hash, 0);
+            if (length < 0)
+                length = hash.Length;
+            if (length >= ARGON_STRBYTES)
                 throw new ArgumentOutOfRangeException(nameof(hash), "Hash is invalid");
 
             var buffer = new byte[ARGON_STRBYTES];
-            Array.Copy(hash, buffer, hash.Length);
+            Array.Copy(hash, buffer, length);
 
             SodiumCore.Initialize();
             int status = crypto_pwhash_str_needs_rehash(buffer, (ulong)opsLimit, (nuint)memLimit);

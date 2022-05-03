@@ -198,11 +198,15 @@ namespace Sodium
                 throw new ArgumentNullException(nameof(password), "Password cannot be null");
             if (hash == null)
                 throw new ArgumentNullException(nameof(hash), "Hash cannot be null");
-            if (hash.Length >= SCRYPT_SALSA208_SHA256_STRBYTES)
+
+            var length = Array.IndexOf<byte>(hash, 0);
+            if (length < 0)
+                length = hash.Length;
+            if (length >= SCRYPT_SALSA208_SHA256_STRBYTES)
                 throw new ArgumentOutOfRangeException(nameof(hash), "Hash is invalid");
 
             var buffer = new byte[SCRYPT_SALSA208_SHA256_STRBYTES];
-            Array.Copy(hash, buffer, hash.Length);
+            Array.Copy(hash, buffer, length);
 
             SodiumCore.Initialize();
             var ret = crypto_pwhash_scryptsalsa208sha256_str_verify(buffer, password, (ulong)password.Length);
@@ -239,11 +243,15 @@ namespace Sodium
         {
             if (hash == null)
                 throw new ArgumentNullException(nameof(hash), "Hash cannot be null");
-            if (hash.Length >= crypto_pwhash_scryptsalsa208sha256_STRBYTES)
+
+            var length = Array.IndexOf<byte>(hash, 0);
+            if (length < 0)
+                length = hash.Length;
+            if (length >= SCRYPT_SALSA208_SHA256_STRBYTES)
                 throw new ArgumentOutOfRangeException(nameof(hash), "Hash is invalid");
 
             var buffer = new byte[crypto_pwhash_scryptsalsa208sha256_STRBYTES];
-            Array.Copy(hash, buffer, hash.Length);
+            Array.Copy(hash, buffer, length);
 
             SodiumCore.Initialize();
             int status = crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(buffer, (ulong)opsLimit, (nuint)memLimit);
