@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
 
-  test-windows:
+  test-windows-x64:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -24,7 +24,7 @@ jobs:
       with:
         path: '**/*.nupkg'
 
-  test-linux:
+  test-ubuntu-x64:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -38,7 +38,19 @@ jobs:
     - name: Test (.NET 6.0/Release)
       run: dotnet test -f net6.0 -c Release
 
-  test-macos:
+  test-alpine-x64:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:6.0-alpine
+    steps:
+    - uses: actions/checkout@v3
+    - run: dotnet --info
+    - name: Test (.NET 6.0/Debug)
+      run: dotnet test -f net6.0 -c Debug
+    - name: Test (.NET 6.0/Release)
+      run: dotnet test -f net6.0 -c Release
+
+  test-macos-x64:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3

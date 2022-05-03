@@ -29,6 +29,7 @@ has been tested to run on the following platforms and .NET versions:
 | Windows  | 10.0.20348 | x64           | 6.0.4 |
 | macOS    | 11.6       | x64           | 6.0.4 |
 | Ubuntu   | 20.04      | x64           | 6.0.4 |
+| Alpine   | 3.15       | x64           | 6.0.4 |
 
 Other, similar platforms supported by .NET should work as well but have not been tested.
 
