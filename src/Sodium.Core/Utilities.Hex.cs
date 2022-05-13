@@ -102,8 +102,6 @@ namespace Sodium
         /// <exception cref="Exception"></exception>
         public static byte[] HexToBinary(string hex)
         {
-            const string IGNORED_CHARS = ":- ";
-
             var bin = new byte[hex.Length >> 1];
             int bin_pos = 0;
             uint c_acc = 0;
@@ -119,7 +117,7 @@ namespace Sodium
 
                 if ((c_num0 | c_alpha0) == 0U)
                 {
-                    if (state == 0 && IGNORED_CHARS.Contains(c))
+                    if (state == 0 && (c == ':' || c == '-' || c == ' '))
                     {
                         continue;
                     }
