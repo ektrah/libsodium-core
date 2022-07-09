@@ -38,6 +38,8 @@ namespace Sodium
             return SodiumCore.GetRandomBytes(CHACHA20_NONCEBYTES);
         }
 
+        /// <summary>Generates a random 12 byte nonce.</summary>
+        /// <returns>Returns a byte array with 12 random bytes</returns>
         public static byte[] GenerateNonceChaCha20Ietf()
         {
             return SodiumCore.GetRandomBytes(CHACHA20_IETF_NONCEBYTES);
