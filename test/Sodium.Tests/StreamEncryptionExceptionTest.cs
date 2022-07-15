@@ -152,7 +152,7 @@ namespace Tests
 
             });
         }
-        
+
         [Test]
         public void StreamEncryptionEncryptChaCha20IetfBadKey()
         {

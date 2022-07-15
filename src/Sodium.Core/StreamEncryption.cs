@@ -129,7 +129,7 @@ namespace Sodium
 
             return buffer;
         }
-        
+
         /// <summary>Encrypts messages via ChaCha20 IETF</summary>
         /// <param name="message">The message to be encrypted.</param>
         /// <param name="nonce">The 12 byte nonce.</param>
@@ -246,7 +246,7 @@ namespace Sodium
 
             return buffer;
         }
-        
+
         /// <summary>Decrypts messages via ChaCha20</summary>
         /// <param name="cipherText">The ciphertext as hex-encoded string.</param>
         /// <param name="nonce">The 8 byte nonce.</param>
@@ -285,7 +285,7 @@ namespace Sodium
 
             return buffer;
         }
-        
+
         /// <summary>Decrypts messages via ChaCha20 IETF</summary>
         /// <param name="cipherText">The ciphertext as hex-encoded string.</param>
         /// <param name="nonce">The 12 byte nonce.</param>
@@ -324,7 +324,7 @@ namespace Sodium
 
             return buffer;
         }
-        
+
         /// <summary>Decrypts messages via XChaCha20</summary>
         /// <param name="cipherText">The ciphertext as hex-encoded string.</param>
         /// <param name="nonce">The 24 byte nonce.</param>

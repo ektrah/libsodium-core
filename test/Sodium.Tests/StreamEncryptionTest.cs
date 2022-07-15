@@ -28,7 +28,7 @@ namespace Tests
         {
             Assert.AreEqual(8, StreamEncryption.GenerateNonceChaCha20().Length);
         }
-        
+
         /// <summary>Verify that the length of the returned nonce is correct.</summary>
         [Test]
         public void TestGenerateNonceChaCha20Ietf()
