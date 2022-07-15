@@ -217,6 +217,14 @@ Interop.Stream.ChaCha20.cs:
   functions:
     - crypto_stream_chacha20_xor
 
+Interop.Stream.ChaCha20Ietf.cs:
+  include: include/sodium/crypto_stream_chacha20.h
+  constants:
+    - crypto_stream_chacha20_ietf_KEYBYTES
+    - crypto_stream_chacha20_ietf_NONCEBYTES
+  functions:
+    - crypto_stream_chacha20_ietf_xor
+
 Interop.Stream.XChaCha20.cs:
   include: include/sodium/crypto_stream_xchacha20.h
   constants:

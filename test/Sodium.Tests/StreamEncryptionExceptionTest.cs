@@ -152,5 +152,76 @@ namespace Tests
 
             });
         }
+
+        [Test]
+        public void StreamEncryptionEncryptChaCha20IetfBadKey()
+        {
+            Assert.Throws<KeyOutOfRangeException>(() =>
+            {
+                StreamEncryption.EncryptChaCha20Ietf(
+            Encoding.UTF8.GetBytes("Adam Caudill"),
+            Encoding.UTF8.GetBytes("ABCDEFGHIJKL"),
+            Encoding.UTF8.GetBytes("123456789012345678901234567890"));
+            });
+
+        }
+
+        [Test]
+        public void StreamEncryptionEncryptChaCha20IetfBadNonce()
+        {
+            Assert.Throws<NonceOutOfRangeException>(() =>
+            {
+                StreamEncryption.EncryptChaCha20Ietf(
+            Encoding.UTF8.GetBytes("Adam Caudill"),
+            Encoding.UTF8.GetBytes("ABC"),
+            Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
+            });
+
+        }
+
+        [Test]
+        public void StreamEncryptionDecryptChaCha20IetfBadKey()
+        {
+            Assert.Throws<KeyOutOfRangeException>(() =>
+            {
+                StreamEncryption.DecryptChaCha20Ietf(
+            Utilities.HexToBinary("a6ce598d8b865fb328581bcd"),
+            Encoding.UTF8.GetBytes("ABCDEFGHIJKL"),
+            Encoding.UTF8.GetBytes("123456789012345678901234567890"));
+            });
+
+        }
+
+        [Test]
+        public void StreamEncryptionDecryptChaCha20IetfBadNonce()
+        {
+            Assert.Throws<NonceOutOfRangeException>(() =>
+            {
+                StreamEncryption.DecryptChaCha20Ietf(
+            Utilities.HexToBinary("a6ce598d8b865fb328581bcd"),
+            Encoding.UTF8.GetBytes("ABC"),
+            Encoding.UTF8.GetBytes("12345678901234567890123456789012"));
+            });
+        }
+
+        [Test, Ignore("not implemented")]
+        public void StreamEncryptionEncryptChaCha20IetfBadCrypto()
+        {
+            //TODO: implement
+            Assert.Throws<CryptographicException>(() =>
+            {
+
+            });
+        }
+
+        [Test, Ignore("not implemented")]
+        public void StreamEncryptionDecryptChaCha20IetfBadCrypto()
+        {
+            //TODO: implement
+            Assert.Throws<CryptographicException>(() =>
+            {
+
+            });
+        }
     }
 }
