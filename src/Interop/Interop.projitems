@@ -34,5 +34,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interop.Stream.XSalsa20.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interop.Utils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interop.Version.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mono\MonoPInvokeCallbackAttribute.cs" />
   </ItemGroup>
 </Project>

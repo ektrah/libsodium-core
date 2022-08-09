@@ -1,3 +1,4 @@
+using AOT;
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -8,7 +9,7 @@ namespace Sodium
 {
     public static partial class SodiumCore
     {
-        private static readonly Action s_misuseHandler = new(InternalError);
+        private static readonly SodiumMisuseHandlerDelegate s_misuseHandler = InternalErrorCallback;
 
         private static int s_initialized;
 
@@ -58,7 +59,8 @@ namespace Sodium
             Interlocked.Exchange(ref s_initialized, 1);
         }
 
-        private static void InternalError()
+        [MonoPInvokeCallback(typeof(SodiumMisuseHandlerDelegate))]
+        private static void InternalErrorCallback()
         {
             throw new NotSupportedException("An internal error occurred.");
         }
