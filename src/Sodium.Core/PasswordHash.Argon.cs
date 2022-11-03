@@ -247,7 +247,7 @@ namespace Sodium
         /// <summary>
         /// Checks if the current password hash needs rehashing
         /// </summary>
-        /// <param name="password">Password that needs rehashing</param>
+        /// <param name="hash">Password that needs rehashing</param>
         /// <param name="opsLimit"></param>
         /// <param name="memLimit"></param>
         /// <returns></returns>
