@@ -43,7 +43,7 @@ namespace Sodium
         /// <returns>
         /// The sodium version string.
         /// </returns>
-        public static string SodiumVersionString()
+        public static string? SodiumVersionString()
         {
             return Marshal.PtrToStringAnsi(sodium_version_string());
         }
