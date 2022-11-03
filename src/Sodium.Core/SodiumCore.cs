@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using static Interop.Libsodium;
 
@@ -29,7 +30,7 @@ namespace Sodium
         public static int GetRandomNumber(int upperBound)
         {
             if (upperBound < 0)
-                throw new System.ArgumentOutOfRangeException(nameof(upperBound), "upperBound cannot be negative");
+                throw new ArgumentOutOfRangeException(nameof(upperBound), "upperBound cannot be negative");
 
             SodiumCore.Initialize();
             var randomNumber = randombytes_uniform((uint)upperBound);

@@ -1,3 +1,6 @@
+#if !NETSTANDARD2_0_OR_GREATER
+using System;
+#endif
 using static Interop.Libsodium;
 
 namespace Sodium
