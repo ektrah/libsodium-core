@@ -1,3 +1,4 @@
+using System;
 using static Interop.Libsodium;
 
 namespace Sodium
