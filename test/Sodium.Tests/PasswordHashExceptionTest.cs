@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using Sodium;
 using Sodium.Exceptions;
@@ -13,7 +14,7 @@ namespace Tests
         {
             const long OPS_LIMIT = 481326;
             const int MEM_LIMIT = 7256678;
-            Assert.Throws<System.ArgumentNullException>(() =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
                 PasswordHash.ScryptHashString(null!, OPS_LIMIT, MEM_LIMIT);
             });
@@ -24,7 +25,7 @@ namespace Tests
         {
             const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
             const int MEM_LIMIT = 7256678;
-            Assert.Throws<System.ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 PasswordHash.ScryptHashString(PASSWORD, 0, MEM_LIMIT);
             });
@@ -35,7 +36,7 @@ namespace Tests
         {
             const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
             const long OPS_LIMIT = 481326;
-            Assert.Throws<System.ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 PasswordHash.ScryptHashString(PASSWORD, OPS_LIMIT, 0);
             });
@@ -46,7 +47,7 @@ namespace Tests
         {
             //TODO: implement (should work on any testsystem)
             //Note: Int32.MaxValue
-            Assert.Throws<System.OutOfMemoryException>(() =>
+            Assert.Throws<OutOfMemoryException>(() =>
             {
 
             });
@@ -57,7 +58,7 @@ namespace Tests
         {
             const string SALT = "qa~t](84z<1t<1oz:ik.@IRNyhG=8q(o";
             const long OUTPUT_LENGTH = 32;
-            Assert.Throws<System.ArgumentNullException>(() =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
                 PasswordHash.ScryptHashBinary(null!, SALT, PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
             });
@@ -68,7 +69,7 @@ namespace Tests
         {
             const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
             const long OUTPUT_LENGTH = 32;
-            Assert.Throws<System.ArgumentNullException>(() =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
                 PasswordHash.ScryptHashBinary(PASSWORD, null!, PasswordHash.Strength.Interactive, OUTPUT_LENGTH);
             });
@@ -94,7 +95,7 @@ namespace Tests
             const long OUTPUT_LENGTH = 32;
             const long OPS_LIMIT = 0;
             const int MEM_LIMIT = 7256678;
-            Assert.Throws<System.ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 PasswordHash.ScryptHashBinary(PASSWORD, SALT, OPS_LIMIT, MEM_LIMIT, OUTPUT_LENGTH);
             });
@@ -108,7 +109,7 @@ namespace Tests
             const long OUTPUT_LENGTH = 32;
             const long OPS_LIMIT = 481326;
             const int MEM_LIMIT = 0;
-            Assert.Throws<System.ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 PasswordHash.ScryptHashBinary(PASSWORD, SALT, OPS_LIMIT, MEM_LIMIT, OUTPUT_LENGTH);
             });
@@ -122,7 +123,7 @@ namespace Tests
             const long OUTPUT_LENGTH = 0;
             const long OPS_LIMIT = 481326;
             const int MEM_LIMIT = 7256678;
-            Assert.Throws<System.ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 PasswordHash.ScryptHashBinary(PASSWORD, SALT, OPS_LIMIT, MEM_LIMIT, OUTPUT_LENGTH);
             });
@@ -133,7 +134,7 @@ namespace Tests
         {
             //TODO: implement (should work on any testsystem)
             //Note: Int32.MaxValue
-            Assert.Throws<System.OutOfMemoryException>(() =>
+            Assert.Throws<OutOfMemoryException>(() =>
             {
 
             });
@@ -143,7 +144,7 @@ namespace Tests
         public void ScryptHashStringVerifyNoHash()
         {
             const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
-            Assert.Throws<System.ArgumentNullException>(() =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
                 PasswordHash.ScryptHashStringVerify(null!, PASSWORD);
             });
@@ -153,12 +154,11 @@ namespace Tests
         public void ScryptHashStringVerifyNoPassword()
         {
             const string PASSWORD = "gkahjfkjewrykjKJHKJHKJbhuiqyr  8923fhsjfkajwehkjg";
-            Assert.Throws<System.ArgumentNullException>(() =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
                 var hash = PasswordHash.ScryptHashString(PASSWORD);
                 PasswordHash.ScryptHashStringVerify(hash, null!);
             });
         }
-
     }
 }
