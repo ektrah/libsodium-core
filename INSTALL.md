@@ -24,12 +24,12 @@ Specifically,
 [Sodium.Core 1.3.1](https://www.nuget.org/packages/Sodium.Core/1.3.1)
 has been tested to run on the following platforms and .NET versions:
 
-| OS       | Version    | Architectures | .NET  |
-|:---------|:---------- |:------------- |:------|
-| Windows  | 10.0.20348 | x64           | 6.0.4 |
-| macOS    | 11.6       | x64           | 6.0.4 |
-| Ubuntu   | 20.04      | x64           | 6.0.4 |
-| Alpine   | 3.15       | x64           | 6.0.4 |
+| OS       | Version    | Architectures | .NET          |
+|:---------|:---------- |:------------- |:--------------|
+| Windows  | 10.0.20348 | x64           | 7.0.0, 6.0.11 |
+| macOS    | 11.7       | x64           | 7.0.0, 6.0.11 |
+| Ubuntu   | 20.04      | x64           | 7.0.0, 6.0.11 |
+| Alpine   | 3.16       | x64           | 7.0.0         |
 
 Other, similar platforms supported by .NET should work as well but have not been tested.
 
