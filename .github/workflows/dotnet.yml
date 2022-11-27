@@ -7,13 +7,19 @@ jobs:
   test-windows-x64:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET 6.0
-      uses: actions/setup-dotnet@v2
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: |
+          6.0.x
+          7.0.x
     - run: dotnet workload install android ios maccatalyst
     - run: dotnet --info
+    - uses: actions/checkout@v3
+    - name: Test (.NET 7.0/Debug)
+      run: dotnet test -f net7.0 -c Debug
+    - name: Test (.NET 7.0/Release)
+      run: dotnet test -f net7.0 -c Release
     - name: Test (.NET 6.0/Debug)
       run: dotnet test -f net6.0 -c Debug
     - name: Test (.NET 6.0/Release)
@@ -28,13 +34,19 @@ jobs:
   test-ubuntu-x64:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET 6.0
-      uses: actions/setup-dotnet@v2
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: |
+          6.0.x
+          7.0.x
     - run: dotnet workload install android
     - run: dotnet --info
+    - uses: actions/checkout@v3
+    - name: Test (.NET 7.0/Debug)
+      run: dotnet test -f net7.0 -c Debug
+    - name: Test (.NET 7.0/Release)
+      run: dotnet test -f net7.0 -c Release
     - name: Test (.NET 6.0/Debug)
       run: dotnet test -f net6.0 -c Debug
     - name: Test (.NET 6.0/Release)
@@ -43,26 +55,32 @@ jobs:
   test-alpine-x64:
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/dotnet/sdk:6.0-alpine
+      image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
     steps:
-    - uses: actions/checkout@v3
     - run: dotnet workload install android
     - run: dotnet --info
-    - name: Test (.NET 6.0/Debug)
-      run: dotnet test -f net6.0 -c Debug
-    - name: Test (.NET 6.0/Release)
-      run: dotnet test -f net6.0 -c Release
+    - uses: actions/checkout@v3
+    - name: Test (.NET 7.0/Debug)
+      run: dotnet test -f net7.0 -c Debug
+    - name: Test (.NET 7.0/Release)
+      run: dotnet test -f net7.0 -c Release
 
   test-macos-x64:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET 6.0
-      uses: actions/setup-dotnet@v2
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: |
+          6.0.x
+          7.0.x
     - run: dotnet workload install android ios maccatalyst
     - run: dotnet --info
+    - uses: actions/checkout@v3
+    - name: Test (.NET 7.0/Debug)
+      run: dotnet test -f net7.0 -c Debug
+    - name: Test (.NET 7.0/Release)
+      run: dotnet test -f net7.0 -c Release
     - name: Test (.NET 6.0/Debug)
       run: dotnet test -f net6.0 -c Debug
     - name: Test (.NET 6.0/Release)
