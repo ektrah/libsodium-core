@@ -1,31 +1,35 @@
-[![NuGet](https://img.shields.io/nuget/vpre/Sodium.Core)](https://www.nuget.org/packages/Sodium.Core/1.3.2)
+[![NuGet](https://img.shields.io/nuget/vpre/Sodium.Core)](https://www.nuget.org/packages/Sodium.Core/1.3.1)
 
 **libsodium for .NET** can be installed as follows:
 
-    dotnet add package Sodium.Core --version 1.3.2
+    dotnet add package Sodium.Core --version 1.3.1
 
 The *Sodium.Core* package is intended to run on
 [supported versions of .NET](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core)
 on the following platforms:
 
-|                   | `-x64`   | `-x86`   | `-arm64` | `-arm`   |
-|:------------------|:--------:|:--------:|:--------:|:--------:|
-| **`win-`**        | &check;  | &check;  |          |          |
-| **`linux-`**      | &check;  |          | &check;  | &check;  |
-| **`linux-musl-`** | &check;  |          | &check;  |          |
-| **`osx-`**        | &check;  |          | &check;  |          |
+* Windows
+    * `win-x64`
+    * `win-x86`
+* Linux
+    * `linux-x64` (Most desktop distributions like CentOS, Debian, Fedora, Ubuntu, and derivatives)
+    * `linux-musl-x64` (Lightweight distributions using musl like Alpine Linux)
+    * `linux-arm` (Linux distributions running on ARM like Raspbian on Raspberry Pi Model 2+)
+    * `linux-arm64` (Linux distributions running on 64-bit ARM like Ubuntu Server 64-bit on Raspberry Pi Model 3+)
+* macOS
+    * `osx-x64`
+    * `osx-arm64`
 
 Specifically,
-[Sodium.Core 1.3.2](https://www.nuget.org/packages/Sodium.Core/1.3.2)
+[Sodium.Core 1.3.1](https://www.nuget.org/packages/Sodium.Core/1.3.1)
 has been tested to run on the following platforms and .NET versions:
 
-| OS                   | Version  | Architectures | .NET            |
-|:-------------------- |:-------- |:------------- |:--------------- |
-| Windows 10 Client    | 20H2     | x64           | 7.0.0 / 6.0.11  |
-| Windows Server       | 2022     | x64           | 7.0.0 / 6.0.11  |
-| macOS                | 11.7     | x64           | 7.0.0 / 6.0.11  |
-| Ubuntu               | 22.04    | x64           | 7.0.0 / 6.0.11  |
-| Alpine               | 3.16     | x64           | 7.0.0           |
+| OS       | Version    | Architectures | .NET          |
+|:---------|:---------- |:------------- |:--------------|
+| Windows  | 10.0.20348 | x64           | 7.0.0, 6.0.11 |
+| macOS    | 11.7       | x64           | 7.0.0, 6.0.11 |
+| Ubuntu   | 20.04      | x64           | 7.0.0, 6.0.11 |
+| Alpine   | 3.16       | x64           | 7.0.0         |
 
 Other, similar platforms supported by .NET should work as well but have not been tested.
 
