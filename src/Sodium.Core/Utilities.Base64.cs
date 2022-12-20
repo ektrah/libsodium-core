@@ -42,7 +42,7 @@ namespace Sodium
                     throw new OverflowException("Internal error, encoding failed");
                 }
 
-                return Marshal.PtrToStringAnsi(base64);
+                return Marshal.PtrToStringAnsi(base64)!;
             }
             finally
             {
