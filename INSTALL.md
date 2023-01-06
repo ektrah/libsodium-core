@@ -8,12 +8,14 @@ The *Sodium.Core* package is intended to run on
 [supported versions of .NET](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core)
 on the following platforms:
 
-|                   | `-x64`   | `-x86`   | `-arm64` | `-arm`   |
-|:------------------|:--------:|:--------:|:--------:|:--------:|
-| **`win-`**        | &check;  | &check;  |          |          |
-| **`linux-`**      | &check;  |          | &check;  | &check;  |
-| **`linux-musl-`** | &check;  |          | &check;  | &check;  |
-| **`osx-`**        | &check;  |          | &check;  |          |
+|                       | `-x64`   | `-x86`   | `-arm64` | `-arm`   |
+|:----------------------|:--------:|:--------:|:--------:|:--------:|
+| **`win-`**            | &check;  | &check;  |          |          |
+| **`linux-`**          | &check;  |          | &check;  | &check;  |
+| **`linux-musl-`**     | &check;  |          | &check;  | &check;  |
+| **`osx-`**            | &check;  |          | &check;  |          |
+| **`ios-`**            |          |          |          |          |
+| **`android-`**        |          |          |          |          |
 
 Specifically,
 [Sodium.Core 1.3.2](https://www.nuget.org/packages/Sodium.Core/1.3.2)
