@@ -74,6 +74,7 @@ namespace Sodium
         /// <param name="opsLimit">Represents a maximum amount of computations to perform.</param>
         /// <param name="memLimit">Is the maximum amount of RAM that the function will use, in bytes.</param>
         /// <param name="outputLength">The length of the computed output array.</param>
+        /// <param name="alg">Argon Algorithm</param>
         /// <returns>Returns a byte array of the given size.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
