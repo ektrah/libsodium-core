@@ -40,3 +40,18 @@ The implementation of AES-GCM in libsodium is hardware-accelerated and requires 
 x64 processor with the AES-NI extension. The availability of this extension can
 be determined at runtime using the static `IsAvailable` property of the
 `Sodium.SecretAeadAes` class.
+
+# Image (Docker) support
+
+All of the above also applies to Container images, and the default images from Microsoft does not contain the `vc_redist`.
+
+Here an example of how to install the `vc_redist` in the image.
+
+```dockerfile
+FROM mcr.microsoft.com/dotnet/aspnet:7.0-windowsservercore-ltsc2022 AS base
+USER ContainerAdministrator
+RUN curl -fSLo vc_redist.x64.exe https://aka.ms/vs/17/release/vc_redist.x64.exe `
+    && start /w vc_redist.x64.exe /install /quiet /norestart `
+    && del vc_redist.x64.exe
+```
+
