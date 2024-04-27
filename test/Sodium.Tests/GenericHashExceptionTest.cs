@@ -76,6 +76,17 @@ namespace Tests
         }
 
         [Test]
+        public void GenericHashSaltPersonalNoKey()
+        {
+            const string SALT = "5b6b41ed9b343fe0";
+            const string PERSONAL = "5126fb2a37400d2a";
+            Assert.DoesNotThrow(() =>
+            {
+                Utilities.BinaryToHex(GenericHash.HashSaltPersonal("message", null, SALT, PERSONAL));
+            });
+        }
+
+        [Test]
         public void GenericHashSaltPersonalKeyTooLong()
         {
             const string SALT = "5b6b41ed9b343fe0";
