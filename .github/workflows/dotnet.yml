@@ -8,17 +8,17 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Set up .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
           6.0.x
-          7.0.x
+          8.0.x
     - run: dotnet --info
-    - uses: actions/checkout@v3
-    - name: Test (.NET 7.0/Debug)
-      run: dotnet test -f net7.0 -c Debug
-    - name: Test (.NET 7.0/Release)
-      run: dotnet test -f net7.0 -c Release
+    - uses: actions/checkout@v4
+    - name: Test (.NET 8.0/Debug)
+      run: dotnet test -f net8.0 -c Debug
+    - name: Test (.NET 8.0/Release)
+      run: dotnet test -f net8.0 -c Release
     - name: Test (.NET 6.0/Debug)
       run: dotnet test -f net6.0 -c Debug
     - name: Test (.NET 6.0/Release)
@@ -26,7 +26,7 @@ jobs:
     - name: Pack
       run: dotnet pack -c Release
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         path: '**/*.nupkg'
 
@@ -34,17 +34,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Set up .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
           6.0.x
-          7.0.x
+          8.0.x
     - run: dotnet --info
-    - uses: actions/checkout@v3
-    - name: Test (.NET 7.0/Debug)
-      run: dotnet test -f net7.0 -c Debug
-    - name: Test (.NET 7.0/Release)
-      run: dotnet test -f net7.0 -c Release
+    - uses: actions/checkout@v4
+    - name: Test (.NET 8.0/Debug)
+      run: dotnet test -f net8.0 -c Debug
+    - name: Test (.NET 8.0/Release)
+      run: dotnet test -f net8.0 -c Release
     - name: Test (.NET 6.0/Debug)
       run: dotnet test -f net6.0 -c Debug
     - name: Test (.NET 6.0/Release)
@@ -53,30 +53,30 @@ jobs:
   test-alpine-x64:
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/dotnet/sdk:7.0-alpine
+      image: mcr.microsoft.com/dotnet/sdk:8.0-alpine
     steps:
     - run: dotnet --info
-    - uses: actions/checkout@v3
-    - name: Test (.NET 7.0/Debug)
-      run: dotnet test -f net7.0 -c Debug
-    - name: Test (.NET 7.0/Release)
-      run: dotnet test -f net7.0 -c Release
+    - uses: actions/checkout@v4
+    - name: Test (.NET 8.0/Debug)
+      run: dotnet test -f net8.0 -c Debug
+    - name: Test (.NET 8.0/Release)
+      run: dotnet test -f net8.0 -c Release
 
-  test-macos-x64:
+  test-macos-arm64:
     runs-on: macos-latest
     steps:
     - name: Set up .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: |
           6.0.x
-          7.0.x
+          8.0.x
     - run: dotnet --info
-    - uses: actions/checkout@v3
-    - name: Test (.NET 7.0/Debug)
-      run: dotnet test -f net7.0 -c Debug
-    - name: Test (.NET 7.0/Release)
-      run: dotnet test -f net7.0 -c Release
+    - uses: actions/checkout@v4
+    - name: Test (.NET 8.0/Debug)
+      run: dotnet test -f net8.0 -c Debug
+    - name: Test (.NET 8.0/Release)
+      run: dotnet test -f net8.0 -c Release
     - name: Test (.NET 6.0/Debug)
       run: dotnet test -f net6.0 -c Debug
     - name: Test (.NET 6.0/Release)
