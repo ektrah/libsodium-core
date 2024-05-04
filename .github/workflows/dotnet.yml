@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
 
   test-windows-x64:
+    needs: test-alpine-x64
     runs-on: windows-latest
     steps:
     - name: Set up .NET
@@ -12,6 +13,8 @@ jobs:
       with:
         dotnet-version: |
           8.0.x
+    - name: Install workloads
+      run: dotnet workload install ios tvos maccatalyst
     - run: dotnet --info
     - uses: actions/checkout@v4
     - name: Test (.NET 8.0/Debug)
@@ -26,6 +29,7 @@ jobs:
         path: '**/*.nupkg'
 
   test-ubuntu-x64:
+    needs: test-macos-arm64
     runs-on: ubuntu-latest
     steps:
     - name: Set up .NET
@@ -53,6 +57,7 @@ jobs:
       run: dotnet test -f net8.0 -c Release
 
   test-macos-arm64:
+    needs: test-windows-x64
     runs-on: macos-latest
     steps:
     - name: Set up .NET
