@@ -42,6 +42,9 @@
     <PackageReference Include="libsodium" Version="[1.0.19.2,1.0.20)" />
   </ItemGroup>
 
-  <Import Project="..\Interop\Interop.projitems" Label="Shared" />
+  <ItemGroup>
+    <Compile Include="..\Interop\*.cs" Link="Interop\%(RecursiveDir)%(Filename)%(Extension)" />
+    <None Include="..\Interop\*.yaml" Link="Interop\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
 
 </Project>
