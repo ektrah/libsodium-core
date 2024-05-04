@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading;
 using NUnit.Framework;
 
@@ -16,7 +15,7 @@ namespace Tests
                 var bytes = Sodium.SodiumCore.GetRandomBytes(32);
 
                 //this is mostly to make the compiler happier, as otherwise, bytes is never used
-                if (bytes.Count() != 32)
+                if (bytes.Length != 32)
                     throw new Exception("GetRandomCountMismatch");
             }
             catch (Exception ex)

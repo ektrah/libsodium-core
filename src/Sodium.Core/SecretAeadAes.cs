@@ -55,14 +55,14 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] Encrypt(byte[] message, byte[] nonce, byte[] key, byte[]? additionalData = null)
         {
-            if (additionalData == null)
-                additionalData = Array.Empty<byte>();
             if (key == null || key.Length != KEYBYTES)
                 throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEYBYTES} bytes in length.");
             if (nonce == null || nonce.Length != NPUBBYTES)
                 throw new NonceOutOfRangeException(nameof(nonce), nonce?.Length ?? 0, $"nonce must be {NPUBBYTES} bytes in length.");
             if (!IsAvailable)
                 throw new PlatformNotSupportedException("AES-GCM is not supported on this platform. See https://github.com/ektrah/libsodium-core/blob/master/INSTALL.md for more information.");
+
+            additionalData ??= [];
 
             var cipher = new byte[message.Length + ABYTES];
             ulong cipherLength = 0;
@@ -92,8 +92,6 @@ namespace Sodium
         /// <exception cref="CryptographicException"></exception>
         public static byte[] Decrypt(byte[] cipher, byte[] nonce, byte[] key, byte[]? additionalData = null)
         {
-            if (additionalData == null)
-                additionalData = Array.Empty<byte>();
             if (key == null || key.Length != KEYBYTES)
                 throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be {KEYBYTES} bytes in length.");
             if (nonce == null || nonce.Length != NPUBBYTES)
@@ -103,6 +101,8 @@ namespace Sodium
 
             if (cipher.Length < ABYTES)
                 throw new CryptographicException("Error decrypting message.");
+
+            additionalData ??= [];
 
             var message = new byte[cipher.Length - ABYTES];
             ulong messageLength = 0;

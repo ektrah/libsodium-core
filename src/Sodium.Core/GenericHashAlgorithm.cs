@@ -36,7 +36,7 @@ namespace Sodium
             public GenericHashAlgorithm(byte[]? key, int bytes)
             {
                 if (key == null)
-                    key = Array.Empty<byte>();
+                    key = [];
                 else if (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN)
                     throw new KeyOutOfRangeException(nameof(key), key?.Length ?? 0, $"key must be between {KEY_BYTES_MIN} and {KEY_BYTES_MAX} bytes in length.");
                 if (bytes > BYTES_MAX || bytes < BYTES_MIN)

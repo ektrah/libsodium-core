@@ -58,7 +58,7 @@ namespace Sodium
         public static byte[] Hash(byte[] message, byte[]? key, int bytes)
         {
             if (key == null)
-                key = Array.Empty<byte>();
+                key = [];
             else if (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN)
                 throw new KeyOutOfRangeException(nameof(key), key.Length, $"key must be between {KEY_BYTES_MIN} and {KEY_BYTES_MAX} bytes in length.");
             if (bytes > BYTES_MAX || bytes < BYTES_MIN)
@@ -108,7 +108,7 @@ namespace Sodium
             if (personal == null)
                 throw new ArgumentNullException(nameof(personal), "Personal string cannot be null");
             if (key == null)
-                key = Array.Empty<byte>();
+                key = [];
             else if (key.Length > KEY_BYTES_MAX || key.Length < KEY_BYTES_MIN)
                 throw new KeyOutOfRangeException(nameof(key), key.Length, $"key must be between {KEY_BYTES_MIN} and {KEY_BYTES_MAX} bytes in length.");
             if (salt.Length != SALT_BYTES)

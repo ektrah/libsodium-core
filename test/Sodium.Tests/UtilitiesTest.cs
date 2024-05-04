@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using Sodium;
 
@@ -309,7 +310,7 @@ namespace Tests
         [Test]
         public void BinaryToBase64EmptyByteArrTest()
         {
-            var emptyArr = new byte[] { };
+            var emptyArr = Array.Empty<byte>();
             string base64 = Utilities.BinaryToBase64(emptyArr);
             var decrypted = Utilities.Base64ToBinary(base64, " ");
             Assert.IsEmpty(decrypted);

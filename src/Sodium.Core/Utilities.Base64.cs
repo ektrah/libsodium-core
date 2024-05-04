@@ -61,7 +61,7 @@ namespace Sodium
             if (base64 == null)
                 throw new ArgumentNullException(nameof(base64), "Data is null, encoding failed");
             if (base64.Length == 0)
-                return Array.Empty<byte>();
+                return [];
 
             var b64 = Encoding.UTF8.GetBytes(base64);
             var ignore = Encoding.UTF8.GetBytes(ignoredChars ?? string.Empty);
