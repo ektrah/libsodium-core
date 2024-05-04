@@ -13,12 +13,14 @@ on the following platforms:
 
 |                       | `-x64`   | `-x86`   | `-arm64` | `-arm`   |
 |:----------------------|:--------:|:--------:|:--------:|:--------:|
-| **`win-`**            | &check;  | &check;  |          |          |
+| **`android-`**        |          |          |          |          |
+| **`ios-`**            |          |          | &check;  |          |
 | **`linux-`**          | &check;  |          | &check;  | &check;  |
 | **`linux-musl-`**     | &check;  |          | &check;  | &check;  |
+| **`maccatalyst-`**    | &check;  |          | &check;  |          |
 | **`osx-`**            | &check;  |          | &check;  |          |
-| **`ios-`**            |          |          |          |          |
-| **`android-`**        |          |          |          |          |
+| **`tvos-`**           |          |          | &check;  |          |
+| **`win-`**            | &check;  | &check;  | &check;  |          |
 
 
 Please note:
@@ -46,7 +48,7 @@ has been tested to run on the following platforms and .NET versions:
 | Alpine Linux         | 3.19     | x64           | 8.0.4          |
 | Ubuntu               | 22.04    | x64           | 8.0.4 / 6.0.29 |
 
-The other supported platforms should work as well, but haven't been tested.
+The other supported platforms should work as well, but have not been tested.
 
 
 ## Frequently Asked Questions
