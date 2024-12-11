@@ -40,13 +40,13 @@ Please note:
 [Sodium.Core 1.4.0-preview.1](https://www.nuget.org/packages/Sodium.Core/1.4.0-preview.1)
 has been tested to run on the following platforms and .NET versions:
 
-| OS                   | Version  | Architecture  | .NET  |
-|:-------------------- |:-------- |:------------- |:------|
-| Windows 11           | 23H2     | x64           | 8.0.4 |
-| Windows Server       | 2022     | x64           | 8.0.4 |
-| macOS                | 14.4     | arm64         | 8.0.4 |
-| Alpine Linux         | 3.19     | x64           | 8.0.4 |
-| Ubuntu               | 22.04    | x64           | 8.0.4 |
+| OS                   | Version  | Architecture  | .NET   |
+|:-------------------- |:-------- |:------------- |:-------|
+| Windows 11           | 23H2     | x64           | 8.0.11 |
+| Windows Server 2022  | LTSC     | x64           | 8.0.11 |
+| macOS                | 14.7     | arm64         | 8.0.11 |
+| Alpine Linux         | 3.20     | x64           | 8.0.11 |
+| Ubuntu               | 22.04    | x64           | 8.0.11 |
 
 The other supported platforms should work as well, but have not been tested.
 
