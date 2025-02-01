@@ -1,4 +1,4 @@
-[![NuGet](https://img.shields.io/nuget/vpre/Sodium.Core)](https://www.nuget.org/packages/Sodium.Core/1.4.0-preview.1)
+[![NuGet](https://img.shields.io/nuget/vpre/Sodium.Core)](https://www.nuget.org/packages/Sodium.Core/1.4.0-preview.2)
 
 **libsodium for .NET** is a C# wrapper around [libsodium](https://libsodium.org/),
 created by [@adamcaudill](https://github.com/adamcaudill/) in 2013 for .NET Framework ("libsodium-net") and
