@@ -25,10 +25,10 @@ on the following platforms:
 
 Please note:
 
-1. For Windows, the
+1. On Windows, the
    [Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017, 2019, and 2022](https://learn.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist)
-   is required. This is part of the .NET SDK but might not be present on a
-   clean Windows installation.
+   is required. This is part of Visual Studio and the .NET SDK but might
+   not be present on a clean Windows installation.
 
 2. The AES-GCM implementation in libsodium is hardware-accelerated and may not be
    available on all architectures. Support can be determined at runtime using
@@ -40,13 +40,13 @@ Please note:
 [Sodium.Core 1.4.0-preview.2](https://www.nuget.org/packages/Sodium.Core/1.4.0-preview.1)
 has been tested to run on the following platforms and .NET versions:
 
-| OS                   | Version  | Architecture  | .NET   |
-|:-------------------- |:-------- |:------------- |:-------|
-| Windows 11           | 23H2     | x64           | 8.0.11 |
-| Windows Server 2022  | LTSC     | x64           | 8.0.11 |
-| macOS                | 14.7     | arm64         | 8.0.11 |
-| Alpine Linux         | 3.20     | x64           | 8.0.11 |
-| Ubuntu               | 22.04    | x64           | 8.0.11 |
+| OS                   | Version  | Architecture  | .NET           |
+|:-------------------- |:-------- |:------------- |:---------------|
+| Windows 11           | 23H2     | x64           | 9.0.3 / 8.0.14 |
+| Windows Server 2022  | LTSC     | x64           | 9.0.3 / 8.0.14 |
+| macOS                | 14.7     | arm64         | 9.0.3 / 8.0.14 |
+| Alpine Linux         | 3.21     | x64           | 9.0.3          |
+| Ubuntu               | 24.04    | x64           | 9.0.3 / 8.0.14 |
 
 The other supported platforms should work as well, but have not been tested.
 
