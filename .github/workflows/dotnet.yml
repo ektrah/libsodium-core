@@ -9,15 +9,20 @@ jobs:
     runs-on: windows-2022
     steps:
     - name: Set up .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
           8.0.x
           9.0.x
+          10.0.x
     - name: Install workloads
       run: dotnet workload install ios tvos maccatalyst
     - run: dotnet --info
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
+    - name: Test (.NET 10.0/Debug)
+      run: dotnet test -f net10.0 -c Debug
+    - name: Test (.NET 10.0/Release)
+      run: dotnet test -f net10.0 -c Release
     - name: Test (.NET 9.0/Debug)
       run: dotnet test -f net9.0 -c Debug
     - name: Test (.NET 9.0/Release)
@@ -38,13 +43,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Set up .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
           8.0.x
           9.0.x
+          10.0.x
     - run: dotnet --info
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
+    - name: Test (.NET 10.0/Debug)
+      run: dotnet test -f net10.0 -c Debug
+    - name: Test (.NET 10.0/Release)
+      run: dotnet test -f net10.0 -c Release
     - name: Test (.NET 9.0/Debug)
       run: dotnet test -f net9.0 -c Debug
     - name: Test (.NET 9.0/Release)
@@ -57,10 +67,14 @@ jobs:
   test-alpine-x64:
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/dotnet/sdk:9.0-alpine
+      image: mcr.microsoft.com/dotnet/sdk:10.0-alpine
     steps:
     - run: dotnet --info
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
+    - name: Test (.NET 10.0/Debug)
+      run: dotnet test -f net10.0 -c Debug
+    - name: Test (.NET 10.0/Release)
+      run: dotnet test -f net10.0 -c Release
     - name: Test (.NET 9.0/Debug)
       run: dotnet test -f net9.0 -c Debug
     - name: Test (.NET 9.0/Release)
@@ -71,13 +85,18 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: Set up .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
           8.0.x
           9.0.x
+          10.0.x
     - run: dotnet --info
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
+    - name: Test (.NET 10.0/Debug)
+      run: dotnet test -f net10.0 -c Debug
+    - name: Test (.NET 10.0/Release)
+      run: dotnet test -f net10.0 -c Release
     - name: Test (.NET 9.0/Debug)
       run: dotnet test -f net9.0 -c Debug
     - name: Test (.NET 9.0/Release)
