@@ -38,15 +38,16 @@ Please note:
 ## Tested Platforms
 
 [Sodium.Core 1.4.0](https://www.nuget.org/packages/Sodium.Core/1.4.0)
-has been tested to run on the following platforms and .NET versions:
+has been tested to run on the following platforms and .NET versions at
+the time of release:
 
-| OS                   | Version  | Architecture  | .NET           |
-|:-------------------- |:-------- |:------------- |:---------------|
-| Windows 11           | 23H2     | x64           | 9.0.3 / 8.0.14 |
-| Windows Server 2022  | LTSC     | x64           | 9.0.3 / 8.0.14 |
-| macOS                | 14.7     | arm64         | 9.0.3 / 8.0.14 |
-| Alpine Linux         | 3.21     | x64           | 9.0.3          |
-| Ubuntu               | 24.04    | x64           | 9.0.3 / 8.0.14 |
+| OS                   | Version  | Architecture  | .NET   |
+|:-------------------- |:-------- |:------------- |:-------|
+| Windows 11           | 24H2     | x64           | 9.0.11 |
+| Windows Server 2025  | LTSC     | x64           | 9.0.11 |
+| macOS                | 15.7     | arm64         | 9.0.11 |
+| Alpine Linux         | 3.22     | x64           | 9.0.11 |
+| Ubuntu               | 24.04    | x64           | 9.0.11 |
 
 The other supported platforms should work as well, but have not been tested.
 
