@@ -1,8 +1,8 @@
-[![NuGet](https://img.shields.io/nuget/vpre/Sodium.Core)](https://www.nuget.org/packages/Sodium.Core/1.4.0)
+[![NuGet](https://img.shields.io/nuget/vpre/Sodium.Core)](https://www.nuget.org/packages/Sodium.Core/1.4.1-preview.1)
 
 **libsodium for .NET** can be installed as follows:
 
-    $ dotnet add package Sodium.Core --version 1.4.0
+    $ dotnet add package Sodium.Core --version 1.4.1-preview.1
 
 
 ## Supported Platforms
@@ -37,7 +37,7 @@ Please note:
 
 ## Tested Platforms
 
-[Sodium.Core 1.4.0](https://www.nuget.org/packages/Sodium.Core/1.4.0)
+[Sodium.Core 1.4.1-preview.1](https://www.nuget.org/packages/Sodium.Core/1.4.1-preview.1)
 has been tested to run on the following platforms and .NET versions at
 the time of release:
 
