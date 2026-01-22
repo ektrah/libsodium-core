@@ -11,7 +11,7 @@ namespace Tests
         [Test]
         public void SodiumVersionStringTest()
         {
-            const string EXPECTED = "1.0.20";
+            const string EXPECTED = "1.0.21";
             var actual = SodiumCore.SodiumVersionString();
             Assert.AreEqual(EXPECTED, actual);
         }

@@ -6,13 +6,12 @@ jobs:
 
   test-windows-x64:
     needs: test-alpine-x64
-    runs-on: windows-2022
+    runs-on: windows-latest
     steps:
     - name: Set up .NET
       uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
-          8.0.x
           9.0.x
           10.0.x
     - name: Install workloads
@@ -27,10 +26,6 @@ jobs:
       run: dotnet test -f net9.0 -c Debug
     - name: Test (.NET 9.0/Release)
       run: dotnet test -f net9.0 -c Release
-    - name: Test (.NET 8.0/Debug)
-      run: dotnet test -f net8.0 -c Debug
-    - name: Test (.NET 8.0/Release)
-      run: dotnet test -f net8.0 -c Release
     - name: Pack
       run: dotnet pack -c Release
     - name: Upload artifacts
@@ -46,7 +41,6 @@ jobs:
       uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
-          8.0.x
           9.0.x
           10.0.x
     - run: dotnet --info
@@ -59,10 +53,6 @@ jobs:
       run: dotnet test -f net9.0 -c Debug
     - name: Test (.NET 9.0/Release)
       run: dotnet test -f net9.0 -c Release
-    - name: Test (.NET 8.0/Debug)
-      run: dotnet test -f net8.0 -c Debug
-    - name: Test (.NET 8.0/Release)
-      run: dotnet test -f net8.0 -c Release
 
   test-alpine-x64:
     runs-on: ubuntu-latest
@@ -88,7 +78,6 @@ jobs:
       uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
-          8.0.x
           9.0.x
           10.0.x
     - run: dotnet --info
@@ -101,7 +90,3 @@ jobs:
       run: dotnet test -f net9.0 -c Debug
     - name: Test (.NET 9.0/Release)
       run: dotnet test -f net9.0 -c Release
-    - name: Test (.NET 8.0/Debug)
-      run: dotnet test -f net8.0 -c Debug
-    - name: Test (.NET 8.0/Release)
-      run: dotnet test -f net8.0 -c Release
