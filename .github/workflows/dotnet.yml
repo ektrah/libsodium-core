@@ -65,10 +65,6 @@ jobs:
       run: dotnet test -f net10.0 -c Debug
     - name: Test (.NET 10.0/Release)
       run: dotnet test -f net10.0 -c Release
-    - name: Test (.NET 9.0/Debug)
-      run: dotnet test -f net9.0 -c Debug
-    - name: Test (.NET 9.0/Release)
-      run: dotnet test -f net9.0 -c Release
 
   test-macos-arm64:
     needs: test-windows-x64
